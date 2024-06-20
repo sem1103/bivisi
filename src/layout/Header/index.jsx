@@ -31,6 +31,7 @@ import subscribeOutline from "../../layout/Sidebar/icons/subscribeOutline.svg";
 import boardOutline from "../../layout/Sidebar/icons/board_outline.svg";
 import { useCart } from "react-use-cart";
 import { AiOutlineClose } from "react-icons/ai";
+import sm_user from '../../assets/icons/sm-user.svg'
 
 const Header = ({ isOpen }) => {
   const { pathname } = useLocation();
@@ -219,8 +220,6 @@ const Header = ({ isOpen }) => {
                     />
                   </div>
                   {inputValue && (
-                    // <IoMdClose className="close_btn" onClick={() => setInputValue('')} />
-                    // <p className="close_btn" onClick={() => setInputValue('')}>x</p>
                     <img
                       src={close}
                       alt=""
@@ -331,7 +330,7 @@ const Header = ({ isOpen }) => {
           </header>
         </div>
 
-        <div className="d-block d-xl-none d-xxl-none d-lg-none">
+        <div className="d-block d-xl-none d-xxl-none d-lg-none pt-2">
           <div className="sm_header container-fluid">
             <div className="d-flex align-items-center justify-content-between ">
               <div className={`top_section mb-3 ${openMenu ? "open" : ""}`}>
@@ -352,7 +351,7 @@ const Header = ({ isOpen }) => {
                   <div onClick={toggleMenu} className="close-button d-flex justify-content-between align-items-center gap-2 mb-3">
                     <img src={logo} alt="" className="logo" />
                     {/* <img src={close} alt="" className="close_btn" /> */}
-                    <AiOutlineClose className="close_btn"/>
+                    <AiOutlineClose className="close_btn" />
                   </div>
                   <div
                     className="menu-section"
@@ -502,7 +501,7 @@ const Header = ({ isOpen }) => {
                     <footer className="footer">
                       <div className="link-column">
                         <a href="/refund-policy">Refund Policy</a>
-                        <NavLink to="/faq">FAQs</NavLink>
+                        <NavLink onClick={toggleMenu} to="/faq">FAQs</NavLink>
                       </div>
                       <div className="link-column">
                         <a href="/about">Terms of use</a>
@@ -530,13 +529,46 @@ const Header = ({ isOpen }) => {
                 </div>
               </div>
               <div className="burger_menu d-flex align-content-center gap-2">
-                <button>
-                  <img src={upload} alt="" />
-                </button>
-                <Link>
-                  <img src={login} alt="" />
-                  Login
-                </Link>
+                {
+                  user ? (
+                    <div className="d-flex align-items-center gap-2">
+
+                      <div className="upload-container">
+                        <div className="upload " onClick={toggleUploadOptions}>
+                          <img src={upload} alt="" />
+                        </div>
+                        {isUploadOptionsVisible && (
+                          <div className="upload-options mt-2">
+                            <Link
+                              to="/your_profile/upload_video"
+                              onClick={handleOptionClick}
+                            >
+                              <img src={videoOutline} alt="" className="me-2" />
+                              Video
+                            </Link>
+                            <Link
+                              to="/your_profile/upload_shorts"
+                              onClick={handleOptionClick}
+                            >
+                              <img src={shortsOutline} alt="" className="me-2" />
+                              Shorts
+                            </Link>
+                          </div>
+                        )}
+                      </div>
+                      <button className="sm_ntf">
+                        <img src={Notification} alt="" />
+                      </button>
+                      <ProfileMenu />
+
+                    </div>
+                  ) : (
+                    <NavLink to="/login" className=" sm_login ">
+                      <img src={login} alt="" />
+                      Login
+                    </NavLink>
+                  )
+                }
               </div>
             </div>
 
