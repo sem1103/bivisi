@@ -3,6 +3,10 @@
     height: auto;
     padding: 12px 0;
 
+    .favorites__categories {
+        gap: 5px 15px;
+    }
+
     h1 {
         color: #FFF;
         /* Poppins/28/Medium */
@@ -26,7 +30,7 @@
         background-color: transparent;
         /* Poppins/16/Medium */
         font-family: Poppins;
-        font-size: 16px;
+        font-size: 14px;
         font-style: normal;
         font-weight: 500;
         line-height: 24px;
@@ -88,4 +92,38 @@
 
 
     }
+}
+
+
+@media only screen and (width < 560px) {
+    .favorites_profile {
+        .custom-select {
+            .ant-select {
+                width: initial;
+                min-width: 80px;
+
+                .ant-select-selector {
+                    padding: 12px 16px;
+                }
+            }
+
+        }
+
+        .ant-select-selection-item {
+            display: flex;
+            align-items: center;
+
+            &::before {
+                content: '';
+                display: inline-block;
+                margin: 0 8px 0 0;
+                width: 20px;
+                height: 20px;
+                background: url("data:image/svg+xml,%3Csvg width='20'  viewBox='0 0 14 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M7.39123 8.94194L9.89123 11.4419C10.1353 11.686 10.531 11.686 10.7751 11.4419L13.2751 8.94194C13.5192 8.69786 13.5192 8.30214 13.2751 8.05806C13.031 7.81398 12.6353 7.81398 12.3912 8.05806L10.9582 9.49112V1C10.9582 0.654822 10.6783 0.375 10.3332 0.375C9.98799 0.375 9.70817 0.654822 9.70817 1L9.70817 9.49112L8.27511 8.05806C8.03103 7.81398 7.63531 7.81398 7.39123 8.05806C7.14715 8.30214 7.14715 8.69786 7.39123 8.94194ZM4.10845 0.558059C3.86437 0.313981 3.46864 0.313981 3.22456 0.558059L0.724562 3.05806C0.480484 3.30214 0.480484 3.69786 0.724562 3.94194C0.96864 4.18602 1.36437 4.18602 1.60845 3.94194L3.0415 2.50888V11C3.0415 11.3452 3.32133 11.625 3.6665 11.625C4.01168 11.625 4.2915 11.3452 4.2915 11V2.50888L5.72456 3.94194C5.96864 4.18602 6.36437 4.18602 6.60845 3.94194C6.85252 3.69786 6.85252 3.30214 6.60845 3.05806L4.10845 0.558059Z' fill='white' /%3E%3C/svg%3E") no-repeat center/contain;
+            }
+        }
+
+    }
+
+
 }

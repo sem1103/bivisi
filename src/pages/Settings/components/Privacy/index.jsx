@@ -7,7 +7,7 @@ const Privacy = () => {
       <div className="heading_text">
         <h1>Privacy</h1>
       </div>
-      <div className="privacy_content">
+      <div className="privacy_content pt-5">
         <Switch
           defaultChecked
           labelPosition="left"

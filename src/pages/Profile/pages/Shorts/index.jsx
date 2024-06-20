@@ -53,15 +53,15 @@ const Shorts = () => {
       <div className="shorts_profile">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  ">
+            <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  flex-wrap shorts__categories">
               <h1>Shorts</h1>
-              <div className="d-flex gap-3">
+              <div className="d-flex gap-3  flex-wrap">
                 <Link
                   to="/your_profile/upload_shorts"
                   className="shorts_upload"
                 >
                   <img src={upload} alt="upload" />
-                  Upload
+                  <span>Upload</span>
                 </Link>
                 {/* <div className="shorts-sort">
                   <img src={sort} alt="sort" />
