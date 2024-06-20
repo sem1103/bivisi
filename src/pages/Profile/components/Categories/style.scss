@@ -1,0 +1,36 @@
+.profile_categories {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 0;
+  .active {
+    border-radius: 16px !important;
+    background: var(--Text-11, #23272e) !important;
+  }
+  a {
+    display: flex;
+    padding: 12px 24px;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border-radius: 16px;
+    border: 1px solid var(--Text-11, #23272e);
+    color: var(--Text-4, #a2a8b7);
+    text-decoration: none;
+
+    /* Poppins/16/SemiBold */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px; /* 150% */
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-radius: 16px;
+      background: var(--Gray-400, #292929);
+    }
+  }
+}

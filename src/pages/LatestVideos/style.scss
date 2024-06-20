@@ -1,0 +1,117 @@
+.latest_videos {
+  width: 100%;
+  height: auto;
+  padding: 10px 0;
+
+  h1 {
+    color: #fff;
+    /* Poppins/28/Medium */
+    font-family: Poppins;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 36px;
+    /* 128.571% */
+  }
+
+  .sort_btn,
+  .mantine-focus-auto,
+  .mantine-active {
+    display: flex;
+    padding: 12px 24px !important;
+    justify-content: center;
+    height: 50px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 16px;
+    border: 1px solid var(--Text-11, #23272e);
+    color: var(--Neutral-White, #fff);
+    background-color: transparent;
+    /* Poppins/16/SemiBold */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    /* 150% */
+  }
+
+  .m_38a85659,
+  .mantine-Menu-dropdown,
+  .m_dc9b7c9f {
+    height: auto !important;
+    padding: 20px !important;
+    border-radius: 12px !important;
+
+    .ant-select {
+      width: 100%;
+    }
+  }
+
+  .custom-select {
+    .ant-select {
+      width: 250px;
+      background-color: #0f0f0f !important;
+      height: 50px;
+      text-align: center;
+
+      .ant-select-selector {
+        background-color: transparent !important;
+        color: white;
+        padding: 16px 20px;
+        border-radius: 16px;
+        border: 1px solid #23272e;
+        display: flex;
+        /* Flexbox kullanarak içeriği yatay hizalama */
+        align-items: center;
+        /* İçeriği dikeyde ortala */
+        justify-content: space-between;
+        /* İçeriği yatayda sağa doğru uzat */
+      }
+
+      .ant-select-selection-item {
+        color: white;
+      }
+    }
+  }
+}
+
+// .filter_box {
+//   width: auto;
+//   height: auto;
+//   padding: 20px;
+//   gap: 12px;
+//   background-color: black;
+//   display: flex;
+//   flex-direction: column;
+// }
+
+
+
+@media (max-width:540px) {
+  .latest_videos {
+    h1{
+      font-size: 20px;
+    }
+    .custom-select{
+      .ant-select{
+        width: 150px !important;
+      }
+    }
+  }
+}
+
+
+@media (max-width:370px) {
+  .latest_videos {
+    h1{
+      font-size: 15px;
+    }
+  }
+  
+}

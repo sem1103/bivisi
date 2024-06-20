@@ -1,0 +1,92 @@
+.shorts_profile {
+    width: 100%;
+    height: auto;
+    padding: 12px 0;
+
+    h1 {
+        color: #FFF;
+
+        /* Poppins/28/Medium */
+        font-family: Poppins;
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 36px;
+        /* 128.571% */
+    }
+
+    .shorts_upload {
+        display: flex;
+        padding: 12px 24px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border-radius: 16px;
+        background: var(--blue-blue-500, #0385CA);
+        border: none;
+        color: var(--Neutral-White, #FFF);
+        /* Poppins/16/SemiBold */
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+
+        /* 150% */
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .shorts-sort {
+        display: flex;
+        padding: 12px 24px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border-radius: 16px;
+        border: 1px solid var(--Text-11, #23272E);
+        color: var(--Neutral-White, #FFF);
+        /* Poppins/16/SemiBold */
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+        /* 150% */
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .custom-select {
+        .ant-select {
+            width: 250px;
+            background-color: #0F0F0F !important;
+            height: 50px;
+            text-align: center;
+
+            .ant-select-selector {
+                background-color: transparent !important;
+                color: white;
+                padding: 16px 20px;
+                border-radius: 16px;
+                border: 1px solid #23272E;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+
+            .ant-select-selection-item {
+                color: white;
+            }
+        }
+
+
+
+    }
+}

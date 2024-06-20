@@ -1,0 +1,145 @@
+.verify_otp {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .left {
+    width: 40%;
+    height: 100%;
+    background-image: url("../../assets/images/authBg.png");
+    background-position: top;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .right {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    .box_otp {
+      width: 58%;
+      height: auto;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+      .otp {
+        display: flex;
+        width: 56px !important;
+        height: 56px;
+        padding: 12px 20px;
+        align-items: center;
+        gap: 10px;
+        margin: 7px;
+        outline: none;
+        border-radius: 16px;
+        border: 1px solid var(--Gray-400, #292929);
+        background-color: transparent !important;
+        color: #a2a8b7 !important;
+      }
+      img {
+        width: 260px;
+      }
+      h2 {
+        color: #f6f3f4;
+        padding-top: 15px;
+        /* Poppins/32/SemiBold */
+        font-family: Poppins;
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 40px; /* 125% */
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .email_otp {
+        width: 100%;
+        border: none;
+        border: 1px solid var(--Gray-400, #292929);
+        background-color: transparent !important;
+        border-radius: 14px;
+        outline: none;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px;
+        color: white;
+        padding: 12px 12px;
+        margin: 6px 0;
+      }
+      .verify_otp_btn {
+        border-radius: 16px;
+        background: var(--blue-blue-500, #0385ca);
+        border: none;
+        color: white;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+      }
+    }
+    p {
+      color: var(--Text-4, #a2a8b7);
+
+      /* Poppins/18/Medium */
+      font-family: Poppins;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 26px; /* 144.444% */
+      text-align: center;
+      margin: 10px 0;
+      button {
+        color: var(--blue-blue-500, #0385ca);
+
+        /* Poppins/18/SemiBold */
+        font-family: Poppins;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 26px; /* 144.444% */
+        background-color: transparent;
+        outline: none;
+        border: none;
+      }
+    }
+  }
+}
+
+
+@media (max-width:"673px") {
+  
+  .verify_otp {
+    .left{
+      display: none;
+    }
+
+    .right{
+      width: 100% !important;
+
+      .box_otp{
+        .otp{
+          width: 36px !important;
+          height: 43px;
+          border-radius: 10px;
+        }
+
+        h2{
+          font-size: 20px;
+          padding-top: 0;
+        }
+
+        img{
+          width: 210px;
+        }
+      }
+
+    }
+  }
+
+}

@@ -1,0 +1,59 @@
+.notFound {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--Background-Color, #0f0f0f);
+  flex-direction: column;
+  gap: 10px;
+  .box {
+    width: 60%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    h1 {
+      color: var(--Neutral-White, #fff);
+
+      /* Poppins/40/SemiBold */
+      font-family: Poppins;
+      font-size: 40px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 48px; /* 120% */
+    }
+    p {
+      color: var(--Text-6, #80889d);
+
+      /* Poppins/20/Regular */
+      font-family: Poppins;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 28px; /* 140% */
+    }
+    img {
+      display: flex;
+      height: 336px;
+      padding-right: 0px;
+      align-items: center;
+    }
+    a {
+      border-radius: 16px;
+      background: var(--blue-blue-500, #0385ca);
+      display: flex;
+      padding: 14px;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      text-decoration: none;
+      margin-top: 30px;
+      img{
+        width: 20px;
+        height: auto;
+      }
+    }
+  }
+}

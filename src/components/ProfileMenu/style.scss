@@ -1,0 +1,182 @@
+// Profile
+// #mantine-yayxctz0t-dropdown{
+//   position: absolute !important;
+// right: 10px !important;
+// }
+.mantine-Menu-dropdown {
+  display: flex;
+  width: 340px !important;
+  height: auto;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  border-radius: 24px !important;
+  border: 1px solid var(--Gray-400, #292929) !important;
+  background: var(--Background-Color, #0f0f0f) !important;
+  z-index: 1000111 !important;
+  overflow: hidden;
+  // position: absolute;
+  // left:  1180px !important;
+  .profile_sidebar {
+    width: 100%;
+    height: 100%;
+    padding: 8px 15px !important;
+    border-radius: 24px !important;
+    .profile-card {
+      width: 100%;
+      height: auto;
+      display: flex;
+      justify-content: space-between;
+      .profile-image {
+        width: 20%;
+        height: auto;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .user-name {
+        width: 80%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        h1 {
+          color: var(--Neutral-White, #fff);
+
+          /* Poppins/20/SemiBold */
+          font-family: Poppins;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 28px; /* 140% */
+          margin: 0;
+        }
+        p {
+          color: var(--Text-5, #979eaf);
+
+          /* Poppins/16/Regular */
+          font-family: Poppins;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 20px; /* 150% */
+        }
+      }
+    }
+    .user-points {
+      width: 100%;
+      display: flex;
+      padding: 6px 19px 6px 12px;
+      align-items: center;
+      gap: 16px;
+      align-self: stretch;
+      border-radius: 12px;
+      background: var(--Text-12, #1b1d23);
+      .profile-point-content {
+        span {
+          color: var(--Neutral-White, #fff);
+
+          /* Poppins/16/SemiBold */
+          font-family: Poppins;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 24px; /* 150% */
+        }
+        h2 {
+          color: var(--Text-5, #979eaf);
+
+          /* Poppins/14/Regular */
+          font-family: Poppins;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 22px; /* 157.143% */
+        }
+      }
+    }
+    .profile-menu-item {
+      display: flex;
+      padding: 10px 0 13px 14px;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+      border-radius: 12px;
+      text-decoration: none;
+      &:hover {
+        background: var(--Gray-400, #292929);
+        span {
+          color: #fff !important;
+        }
+      }
+      h6 {
+        color: var(--Text-4, #a2a8b7);
+
+        /* Poppins/16/SemiBold */
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px; /* 150% */
+        margin: 0;
+      }
+      span {
+        color: var(--blue-blue-500, #0385ca);
+
+        /* Poppins/16/SemiBold */
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px; /* 150% */
+      }
+    }
+  }
+}
+
+.profile_btn {
+  border-radius: 16px !important;
+  border: 1px solid var(--Text-11, #23272e) !important;
+  background-color: transparent !important;
+  display: flex;
+  padding: 22px 18px !important;
+  justify-content: center;
+  align-items: center;
+  gap: 8px !important;
+}
+
+.dark-mode-switch {
+  cursor: pointer;
+}
+.dark-mode-switch input[type="checkbox"] {
+  display: none;
+}
+.dark-mode-switch label {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 32px;
+  background-color: #23272e;
+  border-radius: 34px;
+}
+.dark-mode-switch label::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+.dark-mode-switch input[type="checkbox"]:checked + label::after {
+  transform: translateX(26px);
+  background-color: #666;
+}

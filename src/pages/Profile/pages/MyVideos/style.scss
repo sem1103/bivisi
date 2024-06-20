@@ -1,0 +1,95 @@
+.my_video_profile {
+  width: 100%;
+  height: auto;
+  padding: 12px 0;
+
+  h1 {
+    color: #fff;
+
+    /* Poppins/28/Medium */
+    font-family: Poppins;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 36px;
+    /* 128.571% */
+  }
+
+  .myvideo_upload {
+    display: flex;
+    padding: 12px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 16px;
+    background: var(--blue-blue-500, #0385ca);
+    border: none;
+    color: var(--Neutral-White, #fff);
+    /* Poppins/16/SemiBold */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+
+    /* 150% */
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .myvideo-sort {
+    display: flex;
+    padding: 12px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 16px;
+    border: 1px solid var(--Text-11, #23272e);
+    color: var(--Neutral-White, #fff);
+    /* Poppins/16/SemiBold */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    /* 150% */
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .custom-select {
+    .ant-select {
+      width: 250px;
+      background-color: #0f0f0f !important;
+      height: 50px;
+      text-align: center;
+
+      .ant-select-selector {
+        background-color: transparent !important;
+        color: white;
+        padding: 16px 20px;
+        border-radius: 16px;
+        border: 1px solid #23272e;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .ant-select-selection-item {
+        color: white;
+      }
+    }
+  }
+}
+.no_product {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

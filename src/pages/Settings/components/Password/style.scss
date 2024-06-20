@@ -1,0 +1,93 @@
+.password_change {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .heading_text {
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h1 {
+      color: #fff;
+
+      /* Poppins/24/SemiBold */
+      font-family: Poppins;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 32px; /* 133.333% */
+    }
+    button {
+      border-radius: 16px;
+      background: var(--blue-blue-500, #0385ca);
+      display: flex;
+      width: 100px;
+      padding: 12px 14px;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      outline: none;
+      color: #fff;
+    }
+  }
+  .reset_pass_form {
+    width: 55%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    .input-data {
+      height: 50px;
+      width: 100%;
+      position: relative;
+
+      input {
+        height: 100%;
+        width: 100%;
+        border: none;
+        border: 1px solid var(--Gray-400, #292929);
+        background-color: transparent !important;
+        border-radius: 16px;
+        outline: none;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px;
+        color: white;
+        padding-left: 15px;
+      }
+
+      input:focus ~ label,
+      input:valid ~ label {
+        transform: translateY(-40px);
+        color: white;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+      }
+
+      label {
+        position: absolute;
+        bottom: 13px;
+        color: var(--Gray-200, #7a7a7a);
+        left: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        padding-left: 15px;
+      }
+    }
+
+    .password-toggle {
+      position: absolute;
+      top: 50%;
+      right: 10px; /* adjust the position as needed */
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+  }
+}

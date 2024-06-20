@@ -1,0 +1,216 @@
+.basket {
+    width: 100%;
+    height: auto;
+    padding: 10px 0;
+
+    .basket_head {
+        img {
+            width: 28px;
+            height: 28px;
+        }
+
+        a {
+            color: #FFF;
+            font-size: 28px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 36px;
+            text-decoration: none;
+        }
+    }
+
+    .basket_card {
+        border-radius: 24px;
+        background: var(--Text-14, #16181D);
+        padding: 12px;
+        // width: 784px;
+        gap: 24px;
+        position: relative;
+
+        p {
+            color: var(--Text-1, #F3F4F6);
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 28px;
+            /* 140% */
+        }
+
+        span {
+            color: var(--Neutral-White, #FFF);
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 32px;
+            /* 133.333% */
+        }
+
+        img {
+            width: 372px;
+            height: 184px;
+            border-radius: 24px;
+            background-color: #C2C2C2;
+        }
+
+        button {
+            border-radius: 16px;
+            border: 1px solid var(--Text-11, #23272E);
+            background-color: transparent;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            color: white;
+            img {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        .close {
+            border-radius: 16px;
+            border: 1px solid var(--Text-11, #23272E);
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 45px;
+            position: absolute;
+            right: 12px;
+            top: 10px;
+            cursor: pointer;
+
+
+            svg {
+                width: 20px;
+                height: 20px;
+                color: white;
+            }
+        }
+    }
+
+    .basket_summary {
+        border-radius: 24px;
+        background: var(--Text-14, #16181D);
+        padding: 24px;
+        // width: 392px;
+
+        h3 {
+            overflow: hidden;
+            color: var(--Text-1, #F3F4F6);
+            text-overflow: ellipsis;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 32px;
+            /* 133.333% */
+        }
+
+        p {
+            color: var(--Text-2, #D1D4DB);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 24px;
+            /* 150% */
+            width: 250px;
+        }
+
+        span {
+            color: var(--Text-2, #D1D4DB);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 24px;
+            /* 150% */
+        }
+
+        hr {
+            height: 1px;
+            background-color: #23272E;
+        }
+
+        .total_basket {
+            p {
+                overflow: hidden;
+                color: var(--Text-3, #C5C9D3);
+                text-overflow: ellipsis;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 28px;
+                /* 140% */
+            }
+
+            span {
+                color: var(--Neutral-White, #FFF);
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 32px;
+                /* 133.333% */
+            }
+
+        }
+
+        a {
+            padding: 14px;
+            border: none;
+            border-radius: 16px;
+            background: var(--blue-blue-500, #0385CA);
+            color: #F6F3F4;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 24px;
+            /* 150% */
+            width: 100%;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+        }
+    }
+
+    .promo_code {
+        // width: 392px;
+        padding: 24px;
+        border-radius: 24px;
+        background-color: var(--Text-14, #16181D);
+
+        h4 {
+            color: var(--Neutral-White, #FFF);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 24px;
+            /* 150% */
+        }
+
+        input {
+            padding: 12px 20px;
+            border-radius: 16px;
+            border: 1px solid var(--Gray-400, #292929);
+            background-color: transparent;
+            color: var(--Gray-300, #525252);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 24px;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 14px;
+            border-radius: 16px;
+            background: var(--blue-blue-500, #0385CA);
+            border: none;
+            color: #F6F3F4;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 24px;
+            /* 150% */
+        }
+    }
+}

@@ -1,0 +1,100 @@
+.trending_videos {
+  width: 100%;
+  height: auto;
+  padding: 10px 0;
+
+  h1 {
+    color: #fff;
+    /* Poppins/28/Medium */
+    font-family: Poppins;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 36px;
+    /* 128.571% */
+  }
+
+  .sort_btn {
+    display: flex;
+    padding: 12px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 16px;
+    border: 1px solid var(--Text-11, #23272E);
+    color: var(--Neutral-White, #FFF);
+    background-color: transparent;
+    /* Poppins/16/SemiBold */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    /* 150% */
+  }
+
+
+  .custom-select {
+    .ant-select {
+      width: 250px;
+      background-color: #0F0F0F !important;
+      height: 50px;
+      text-align: center;
+
+      .ant-select-selector {
+        background-color: transparent !important;
+        color: white;
+        padding: 16px 20px;
+        border-radius: 16px;
+        border: 1px solid #23272E;
+        display: flex;
+        /* Flexbox kullanarak içeriği yatay hizalama */
+        align-items: center;
+        /* İçeriği dikeyde ortala */
+        justify-content: space-between;
+        /* İçeriği yatayda sağa doğru uzat */
+      }
+
+      &:focus {
+        .ant-select-selector {
+          color: white;
+        }
+      }
+
+      .ant-select-selection-item {
+        color: white;
+      }
+    }
+
+    .ant-select-dropdown-menu {
+      background-color: #0F0F0F !important;
+    }
+  }
+}
+
+
+
+
+@media (max-width:540px) {
+  .trending_videos {
+    h1 {
+      font-size: 25px;
+    }
+
+    .custom-select {
+      .ant-select {
+        width: 150px !important;
+      }
+    }
+  }
+}
+
+
+@media (max-width:370px) {
+  .trending_videos {
+    h1 {
+      font-size: 25px;
+    }
+  }
+
+}

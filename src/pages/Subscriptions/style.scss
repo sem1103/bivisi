@@ -1,0 +1,118 @@
+.subscription {
+  width: 100%;
+  height: auto;
+  padding: 10px 0;
+
+  .channelCard {
+    .channelCard-context {
+      h2 {
+        color: var(--Text-1, #F3F4F6);
+        /* Poppins/20/SemiBold */
+        font-family: Poppins;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28px;
+        /* 140% */
+      }
+    }
+  }
+
+  h1 {
+    color: #fff;
+    /* Poppins/28/Medium */
+    font-family: Poppins;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 36px;
+    /* 128.571% */
+  }
+
+  .sort_btn {
+    display: flex;
+    padding: 12px 24px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 16px;
+    border: 1px solid var(--Text-11, #23272E);
+    color: var(--Neutral-White, #FFF);
+    background-color: transparent;
+    /* Poppins/16/SemiBold */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 150% */
+  }
+
+
+  .unsubs-button {
+    background-color: transparent;
+    border: 1px solid var(--Text-11, #23272E);
+    color: var(--Text-4, #A2A8B7);
+    padding: 12px 24px;
+    border-radius: 16px;
+    color: #F6F3F4;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    margin-right: 10px;
+  }
+
+
+  .custom-select {
+    .ant-select {
+      width: 250px;
+      background-color: #0F0F0F !important;
+      height: 50px;
+      text-align: center;
+
+      .ant-select-selector {
+        background-color: transparent !important;
+        color: white;
+        padding: 16px 20px;
+        border-radius: 16px;
+        border: 1px solid #23272E;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+
+      .ant-select-selection-item {
+        color: white;
+        font-weight: 400;
+      }
+    }
+
+
+
+  }
+}
+
+@media (max-width:540px) {
+  .subscription {
+    h1{
+      font-size: 20px;
+    }
+    .custom-select{
+      .ant-select{
+        width: 150px !important;
+      }
+    }
+  }
+}
+
+
+@media (max-width:370px) {
+  .subscription {
+    h1{
+      font-size: 15px;
+    }
+  }
+  
+}

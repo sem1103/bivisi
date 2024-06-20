@@ -1,0 +1,52 @@
+.my_about_profile {
+    width: 100%;
+    height: auto;
+    padding: 12px 0;
+
+    h3 {
+        color: #FFF;
+        /* Poppins/28/Medium */
+        font-family: Poppins;
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 36px;
+        /* 128.571% */
+
+
+    }
+
+    p {
+        width: 639px;
+        color: var(--Text-4, #A2A8B7);
+        /* Poppins/16/Regular */
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+        /* 150% */
+    }
+
+    .my_about_info {
+        h5 {
+            color: var(--Text-1, #F3F4F6);
+            /* Poppins/20/Medium */
+            font-family: Poppins;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 28px;
+            /* 140% */
+        }
+
+        span {
+            color: var(--Text-5, #979EAF);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            /* 150% */
+        }
+    }
+}
