@@ -1,6 +1,6 @@
 .delete_acc {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,7 +55,9 @@
       }
 
       input:focus ~ label,
-      input:valid ~ label {
+      input:valid ~ label,
+      .active__input ~ label
+       {
         transform: translateY(-40px);
         color: white;
         font-style: normal;

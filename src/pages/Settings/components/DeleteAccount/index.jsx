@@ -74,9 +74,9 @@ const DeleteAccount = () => {
       <div className="heading_text">
         <h1>Password</h1>
       </div>
-      <form className="reset_pass_form" onSubmit={handleSubmit}>
+      <form className="reset_pass_form pt-5" onSubmit={handleSubmit}>
         <div className="input-data mt-2">
-          <input type="email" required name="email" onChange={handleChange} />
+          <input type="email" className={formData.email ? 'active__input' : ''} required name="email" onChange={handleChange} />
           <label>Email</label>
         </div>
         <div className="input-data mt-2">

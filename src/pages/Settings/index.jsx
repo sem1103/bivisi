@@ -37,51 +37,55 @@ const Settings = () => {
 
   return (
     <section className="settings-container">
-      <ul className="settings_sidebar">
-        <h1>Settings</h1>
-        <li
-          className={activeTab === "general" ? "active" : ""}
-          onClick={() => setActiveTab("general")}
-        >
-          <img src={SettingsIcon} alt="" />
-          General
-        </li>
-        <li
-          className={activeTab === "profile" ? "active" : ""}
-          onClick={() => setActiveTab("profile")}
-        >
-          <img src={User} alt="" />
-          Profile Information
-        </li>
-        <li
-          className={activeTab === "privacy" ? "active" : ""}
-          onClick={() => setActiveTab("privacy")}
-        >
-          <img src={PrivacyIcon} alt="" />
-          Privacy
-        </li>
-        <li
-          className={activeTab === "password" ? "active" : ""}
-          onClick={() => setActiveTab("password")}
-        >
-          <img src={Lock} alt="" />
-          Password
-        </li>
-        <li
-          className={activeTab === "balance" ? "active" : ""}
-          onClick={() => setActiveTab("balance")}
-        >
-          <img src={MoneyBag} alt="" />
-          Balance
-        </li>
-        <li
-          className={activeTab === "delete" ? "active" : ""}
-          onClick={() => setActiveTab("delete")}
-        >
-          <img src={Trash} alt="" />
-          Delete Account
-        </li>
-      </ul>
+      <div className="settings_sidebar">
+      <h1>Settings</h1>
+      <ul>
+       
+       <li
+         className={activeTab === "general" ? "active" : ""}
+         onClick={() => setActiveTab("general")}
+       >
+         <img src={SettingsIcon} alt="" />
+         General
+       </li>
+       <li
+         className={activeTab === "profile" ? "active" : ""}
+         onClick={() => setActiveTab("profile")}
+       >
+         <img src={User} alt="" />
+         Profile Information
+       </li>
+       <li
+         className={activeTab === "privacy" ? "active" : ""}
+         onClick={() => setActiveTab("privacy")}
+       >
+         <img src={PrivacyIcon} alt="" />
+         Privacy
+       </li>
+       <li
+         className={activeTab === "password" ? "active" : ""}
+         onClick={() => setActiveTab("password")}
+       >
+         <img src={Lock} alt="" />
+         Password
+       </li>
+       <li
+         className={activeTab === "balance" ? "active" : ""}
+         onClick={() => setActiveTab("balance")}
+       >
+         <img src={MoneyBag} alt="" />
+         Balance
+       </li>
+       <li
+         className={activeTab === "delete" ? "active" : ""}
+         onClick={() => setActiveTab("delete")}
+       >
+         <img src={Trash} alt="" />
+         Delete Account
+       </li>
+     </ul>
+      </div>
+      
       <div className="content">{renderContent()}</div>
     </section>
   );

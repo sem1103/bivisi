@@ -77,10 +77,10 @@ const Favorites = () => {
       <div className="favorites_profile">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  ">
+            <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  flex-wrap favorites__categories">
               <h1>Favorites videos</h1>
-              <div className="d-flex gap-3">
-                <button className="favorites_videos_filter">
+              <div className="d-flex gap-3 flex-wrap">
+                <button className="favorites_videos_filter ">
                   <img src={filter} alt="upload" />
                   Filter
                 </button>

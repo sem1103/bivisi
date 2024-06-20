@@ -2,7 +2,9 @@
     width: 100%;
     height: auto;
     padding: 12px 0;
-
+    .liked__categories{
+        gap: 5px 15px;
+    }
     h1 {
         color: #FFF;
         /* Poppins/28/Medium */
@@ -26,7 +28,7 @@
         background-color: transparent;
         /* Poppins/16/Medium */
         font-family: Poppins;
-        font-size: 16px;
+        font-size: 14px;
         font-style: normal;
         font-weight: 500;
         line-height: 24px;
@@ -49,7 +51,7 @@
         color: var(--Neutral-White, #FFF);
         /* Poppins/16/SemiBold */
         font-family: Poppins;
-        font-size: 16px;
+        font-size: 14px;
         font-style: normal;
         font-weight: 600;
         line-height: 24px;
