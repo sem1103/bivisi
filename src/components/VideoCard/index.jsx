@@ -52,8 +52,9 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   const handleNavigation = (e) => {
     if (window.location.pathname.includes("/product_detail")) {
       e.preventDefault();
-      setLoading(true);
+      setLoading(true); 
 
+      
       setTimeout(() => {
         navigate(`/product_detail/${ProductItemVideoCard.id}`);
         setLoading(false);

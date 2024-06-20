@@ -1,6 +1,6 @@
 .fVideo {
   width: 100% !important;
-  height: 59vh;
+  // height: 59vh;
   padding-bottom: 30px;
   display: flex;
   justify-content: center;
@@ -43,7 +43,7 @@
   .fVideo {
     margin-top: 0px !important;
     .swiper {
-      height: 50vh !important;
+      height: 40vh !important;
     }
   }
 }
@@ -51,7 +51,7 @@
 @media (max-width: 992px) {
   .fVideo {
     .swiper {
-      height: 35vh;
+      height: 30vh !important;
       .swiper-slide {
         img {
           border-radius: 24px;
@@ -65,7 +65,7 @@
   .fVideo {
     margin-top: 0px;
     .swiper {
-      height: 20vh;
+      height: 20vh !important;
     }
   }
 }
