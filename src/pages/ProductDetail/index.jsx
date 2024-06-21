@@ -19,10 +19,11 @@ import RelatedVideos from "./RelatedVideos";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { BASE_URL } from "../../api/baseUrl";
-import logo from '../../assets/images/logoLight.svg'
+import logo from "../../assets/images/logoLight.svg";
 
 import WhatsAppButton from "../../components/WhatsAppButton";
 import ShareModal from "../../components/ShareModal";
+import { useCart } from "react-use-cart";
 
 const ProductDetail = () => {
   const axiosInstance = useAxios();
@@ -35,9 +36,10 @@ const ProductDetail = () => {
   const [productDetail, setProductDetail] = useState(null);
   const [liked, setLiked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [showShareOptions, setShowShareOptions] = useState(false);
   const [loading, setLoading] = useState(false);
   const playerRef = useRef(null);
+
+  const { addItem } = useCart();
 
   const handleAddToHistory = async (productDetail) => {
     try {
@@ -155,6 +157,19 @@ const ProductDetail = () => {
 
   const shareUrl = `${window.location.origin}/${productDetail?.product_link}`;
 
+  function formatViewCount(num) {
+    if (num >= 1000000000) {
+       return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
+    }
+    if (num >= 1000000) {
+       return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    }
+    if (num >= 1000) {
+       return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return num;
+}
+  
 
   return (
     <div className="product_detail">
@@ -196,7 +211,7 @@ const ProductDetail = () => {
                       <div className="eye_btn">
                         <img src={eye} alt="eye.svg" />
                       </div>
-                      <span>{productDetail?.view_count}</span>
+                      <span>{formatViewCount(productDetail?.view_count)}</span>
                     </div>
                     <div className="d-flex align-items-center gap-2">
                       <button
@@ -217,9 +232,16 @@ const ProductDetail = () => {
                     </div>
                     <div
                       className="add_basket"
-                      onClick={() =>
-                        handleAddToBasket(productDetail, user, axiosInstance)
-                      }
+                      onClick={() => {
+                        if (user.user_id === productDetail.user.id) {
+                          toast.warning(
+                            "You cannot add your own product to the basket"
+                          );
+                        } else {
+                          handleAddToBasket(productDetail, user, axiosInstance);
+                          addItem(productDetail);
+                        }
+                      }}
                     >
                       <img src={bag} alt="" />
                       <span></span>
