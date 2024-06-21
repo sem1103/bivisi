@@ -39,16 +39,21 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
     }
   }, [user, productItemShort.is_liked]);
 
+ 
+
   useEffect(() => {
     if (
       !isPlaying &&
       playerRef.current &&
       playerRef.current.getInternalPlayer()
     ) {
-      playerRef.current.seekTo(0);
+      // playerRef.current.seekTo(0);
       playerRef.current.getInternalPlayer().pause();
+      
     }
   }, [isPlaying]);
+
+
 
   useEffect(() => {
     if (productItemShort && productItemShort.id) {
@@ -214,6 +219,7 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
 
   const handlePlay = () => {
     setPlaying(productItemShort.id);
+
   };
 
   const showModal = (commentId, isSubComment) => {
@@ -250,22 +256,29 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
       <div className="col-lg-12 col-md-12 col-sm-12 col-12 pb-3 mb-4 d-flex justify-content-center align-items-center">
         <div className="shorts_page_card">
           <div className={`wrapper ${openComment ? "comment-open" : ""}`}>
-            <div className={`main ${openComment ? "comment-open" : ""}`}>
+          
+            <div  className={`main ${openComment ? "comment-open" : ""}`} onClick={() => {
+            !isPlaying ? playerRef.current.getInternalPlayer().play() :  playerRef.current.getInternalPlayer().pause();
+            isPlaying = !isPlaying;
+            
+
+              }}>
+                
               <ReactPlayer
                 ref={playerRef}
                 className="video"
-                controls={true}
+                controls={false}
                 url={productItemShort?.product_video_type[0]?.original_video}
-                width="100%"
-                height="100%"
+               
                 style={{ objectFit: "cover" }}
                 playing={isPlaying}
                 onPlay={handlePlay}
+                loop={true}
               />
             </div>
-            <div className={"shorts_page_content"}>
+            <div className={`shorts_page_content ${openComment ? "hide__buttons" : ""}`}>
               <div
-                className={`shorts_page_left ${openComment ? "d-none" : ""}`}
+                className={`shorts_page_left `}
               >
                 <div className=" pb-3">
                   <div
