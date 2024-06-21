@@ -90,7 +90,7 @@ const ShortCards = () => {
               videoProducts
                 .slice(0, 6)
                 .map((item) => 
-                <SwiperSlide><ShortCard product={item} key={item.id} /></SwiperSlide>)
+                <SwiperSlide key={item.id}><ShortCard product={item}  /></SwiperSlide>)
             )}
 
             </Swiper>

@@ -79,9 +79,9 @@ const AppRouter = () => {
             <Route element={<Otp />} path="/user/verify-otp" />
             <Route path="*" element={<Navigate replace to="/404" />} />
             <Route element={<NotFound />} path="/404" />
-            <Route element={<Settings />} path="/settings" />
 
             <Route element={<ProtectedRoute />}>
+              <Route element={<Settings />} path="/settings" />
               <Route element={<Chat />} path="/chat" />
               <Route element={<History />} path="/history" />
               <Route element={<Favorites />} path="/your_profile/favorites" />

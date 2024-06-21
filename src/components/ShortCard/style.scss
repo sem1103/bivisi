@@ -96,3 +96,9 @@
     height: 400px !important;
   }
 }
+
+@media (max-width:430px) {
+  .shortCard{
+    height: 250px !important;
+  }
+}

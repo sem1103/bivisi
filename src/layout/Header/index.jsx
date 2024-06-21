@@ -48,7 +48,7 @@ const Header = ({ isOpen }) => {
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(false);
 
-  const { totalUniqueItems } = useCart();
+  const { totalUniqueItems, totalItems } = useCart();
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
   };
@@ -290,9 +290,7 @@ const Header = ({ isOpen }) => {
                     activeclassname="active"
                   >
                     <img src={Bag2} alt="" />
-                    <span className="basket_items_count">
-                      {totalUniqueItems}
-                    </span>
+                    <span className="basket_items_count">{totalItems}</span>
                   </NavLink>
                   <div
                     className="upload ntf"
@@ -334,7 +332,6 @@ const Header = ({ isOpen }) => {
           <div className="sm_header container-fluid">
             <div className="d-flex align-items-center justify-content-between ">
               <div className={`top_section mb-3 ${openMenu ? "open" : ""}`}>
-
                 <div className="d-flex align-items-center gap-3">
                   <button onClick={toggleMenu} className="toggle-button">
                     {openMenu ? (
@@ -348,7 +345,10 @@ const Header = ({ isOpen }) => {
                   </Link>
                 </div>
                 <div className="offcanvas-menu">
-                  <div onClick={toggleMenu} className="close-button d-flex justify-content-between align-items-center gap-2 mb-3">
+                  <div
+                    onClick={toggleMenu}
+                    className="close-button d-flex justify-content-between align-items-center gap-2 mb-3"
+                  >
                     <img src={logo} alt="" className="logo" />
                     {/* <img src={close} alt="" className="close_btn" /> */}
                     <AiOutlineClose className="close_btn" />

@@ -34,7 +34,7 @@ const ResetPassword = () => {
           localStorage.setItem('email', email)
           navigate("/user/verify-otp");
         } else {
-          console.log(response.status);
+          console.log(response);
           console.log("there was a server issue");
           toast.error("An error occurred");
         }
