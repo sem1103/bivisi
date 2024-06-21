@@ -78,7 +78,7 @@ const PopularChannels = () => {
           {
             popularC.slice(0,2).map((item)=>(
 
-              <SwiperSlide><PopularChannelCard popularChannels={item} key={item.id}/></SwiperSlide>
+              <SwiperSlide key={item.id}><PopularChannelCard popularChannels={item} /></SwiperSlide>
             ))
           }
           </Swiper>
