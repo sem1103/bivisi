@@ -76,7 +76,11 @@ const ProfileMenu = () => {
                 <h2>Points for happy memories</h2>
               </div>
             </div>
-            <NavLink to="/your_profile/my_videos" className="profile-menu-item">
+            <NavLink
+              to="/your_profile/my_videos"
+              className="profile-menu-item"
+              onClick={handleMenuClose}
+            >
               <img src={userGray} alt="" />
               <h6>View profile</h6>
             </NavLink>
@@ -84,7 +88,11 @@ const ProfileMenu = () => {
               <img src={langGray} alt="" />
               <h6>English</h6>
             </div>
-            <NavLink to="/settings" className="profile-menu-item">
+            <NavLink
+              to="/settings"
+              className="profile-menu-item"
+              onClick={handleMenuClose}
+            >
               <img src={settingsGray} alt="" />
               <h6>Settings</h6>
             </NavLink>

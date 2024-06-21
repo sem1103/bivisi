@@ -13,6 +13,7 @@ import { Modal, Button } from "antd";
 const CommentsComponent = ({ productDetail }) => {
   const [comments, setComments] = useState([]);
   const [user_comment, setUser_comment] = useState("");
+  const [user_comment_sub, setUser_comment_sub] = useState("");
   const [replyToCommentId, setReplyToCommentId] = useState(null);
   const [openMenu, setOpenMenu] = useState(null);
   const [deleteCommentId, setDeleteCommentId] = useState(null);
@@ -74,6 +75,37 @@ const CommentsComponent = ({ productDetail }) => {
       console.log("Response:", res.data);
       if (res.status === 201) {
         setUser_comment("");
+        setReplyToCommentId(null);
+        toast.success("Your comment successfully posted!");
+        fetchParentComments();
+      } else {
+        toast.error("Failed to post comment");
+      }
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    }
+  };
+
+  const handlePostSubComment = async (e) => {
+    if (!user_comment_sub) {
+      toast.warning("Please write your comment");
+      return;
+    } else if (!user) {
+      toast.warning("Please sign in");
+      return;
+    }
+    const payload = {
+      user: user.user_id,
+      product: productDetail.id,
+      comment: user_comment_sub,
+      parent_comment: replyToCommentId,
+    };
+    try {
+      const res = await axiosInstance.post(`/product_comment/`, payload);
+      console.log("Payload:", payload);
+      console.log("Response:", res.data);
+      if (res.status === 201) {
+        setUser_comment_sub("");
         setReplyToCommentId(null);
         toast.success("Your comment successfully posted!");
         fetchParentComments();
@@ -173,6 +205,7 @@ const CommentsComponent = ({ productDetail }) => {
   const handleReplyToggle = (commentId) => {
     setReplyToCommentId((prevId) => (prevId === commentId ? null : commentId));
     setUser_comment("");
+    setUser_comment_sub("");
   };
 
   const handleMenuToggle = (commentId) => {
@@ -197,7 +230,7 @@ const CommentsComponent = ({ productDetail }) => {
   return (
     <>
       <Modal
-        title="Delete Account"
+        title="Delete Comment"
         visible={isModalVisible}
         onOk={handleDeleteComment}
         onCancel={handleCancel}
@@ -293,15 +326,15 @@ const CommentsComponent = ({ productDetail }) => {
                       }`}
                       onSubmit={(e) => {
                         e.preventDefault();
-                        handlePostComment();
+                        handlePostSubComment();
                       }}
                     >
                       <h1>{user.username}</h1>
                       <input
                         type="text"
-                        value={user_comment}
+                        value={user_comment_sub}
                         placeholder="Write your reply...."
-                        onChange={(e) => setUser_comment(e.target.value)}
+                        onChange={(e) => setUser_comment_sub(e.target.value)}
                       />
                       <button type="submit">Publish</button>
                     </form>

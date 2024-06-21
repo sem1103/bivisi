@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
-import { Pagination, Autoplay, Navigation } from "swiper/modules";
+import { Pagination, Autoplay, Navigation, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css/effect-fade";
 import axios from "axios";
 import { BASE_URL } from "../../../../api/baseUrl";
+import SwiperCore from "swiper/core";
+
+SwiperCore.use([Pagination, Autoplay, Navigation, A11y]);
+
 const FeaturedVideo = () => {
   const [slider, setSlider] = useState([]);
   useEffect(() => {
@@ -21,22 +24,24 @@ const FeaturedVideo = () => {
   return (
     <section className="fVideo ">
       <div className="container-fluid">
-        <Swiper
-          spaceBetween={50}
-          slidesPerView={1}
-          modules={[Pagination, Autoplay, Navigation]}
-          autoplay={{delay:100}}
-          speed={1400}
-          loop={true}
-          navigation
-          pagination={{ clickable: true }}
-        >
-          {slider?.map((item) => (
-            <SwiperSlide key={item.id}>
-              <img src={item.image} alt="" />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        {slider?.length > 0 && (
+          <Swiper
+            spaceBetween={50}
+            slidesPerView={1}
+            modules={[Pagination, Autoplay, Navigation]}
+            autoplay={{ delay: 400, disableOnInteraction: false }}
+            speed={1200}
+            loop={true}
+            navigation={true}
+            pagination={{ clickable: true }}
+          >
+            {slider?.map((item) => (
+              <SwiperSlide key={item.id}>
+                <img src={item.image} alt="" />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </section>
   );
