@@ -22,7 +22,8 @@ const MyVideos = () => {
     ? product.results.filter(
       (item) =>
         item.user.name === user.username &&
-        item.product_video_type[0].product_type === "Video"
+
+        item.product_video_type[0]?.product_type === "Video"
     )
     : [];
 
