@@ -87,7 +87,7 @@ const Sidebar = ({ children, isOpen, setIsOpen }) => {
     <div className="d-flex">
       <div className="d-none d-lg-block d-xl-block d-lg-block  b_container">
         <div
-          style={{ width: isOpen ? "260px" : "113px" }}
+          style={{ width: isOpen ? "300px" : "113px" }}
           className={
             location.pathname == "/login" ||
             location.pathname == "/register" ||

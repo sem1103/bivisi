@@ -48,6 +48,7 @@ import ChannelsDetail from "../pages/ChannelsDetail";
 import ChannelsVideos from "../pages/ChannelsDetail/pages/ChannelsVideos";
 import ChannelsShorts from "../pages/ChannelsDetail/pages/ChanellsShorts";
 import EditMyShort from "../pages/Profile/pages/EditShort";
+import AboutChanell from "../pages/ChannelsDetail/pages/About";
 const AppRouter = () => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -121,7 +122,11 @@ const AppRouter = () => {
               />
               <Route
                 element={<ChannelsShorts />}
-                path="/channels_detail/channels_shorts"
+                path="/channels_detail/channels_shorts/:username"
+              />
+               <Route
+                element={<AboutChanell />}
+                path="/channels_detail/about/:username"
               />
             </Route>
 

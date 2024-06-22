@@ -1,5 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./style.scss";
+import bag from "../../assets/icons/Bag-3.svg";
+import { handleAddToBasket } from "../../helpers";
+import { useCart } from "react-use-cart";
+
 import shortsp_img from "../../assets/images/shorts-page-card.png";
 import like from "../../assets/icons/like-light.svg";
 import chat from "../../assets/icons/chat-ligth.svg";
@@ -20,7 +24,7 @@ import replay from "../../assets/icons/replay-rectangle.png";
 import Comments from "../../pages/ProductDetail/Comments";
 import { Modal } from "antd";
 import ShareModal from "../ShareModal";
-const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
+const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, setPlaying }) => {
   const axiosInstance = useAxios();
   const { product, setProduct } = useContext(ProductContext);
   const { user, userDetails } = useContext(AuthContext);
@@ -28,6 +32,7 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
   const [animate, setAnimate] = useState(false);
   const [openComment, setOpenComment] = useState(false);
   const [openDelComment, setOpenDComment] = useState(false);
+  const { addItem } = useCart();
 
   const playerRef = useRef(null);
   const menuRef = useRef(null);
@@ -39,7 +44,7 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
     }
   }, [user, productItemShort.is_liked]);
 
- 
+
 
   useEffect(() => {
     if (
@@ -49,7 +54,7 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
     ) {
       // playerRef.current.seekTo(0);
       playerRef.current.getInternalPlayer().pause();
-      
+
     }
   }, [isPlaying]);
 
@@ -234,6 +239,8 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
     setDeleteIsSubComment(false);
   };
 
+
+
   const avatarImage =
     userDetails?.avatar ||
     "https://as2.ftcdn.net/v2/jpg/05/49/98/39/1000_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg";
@@ -256,20 +263,20 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
       <div className="col-lg-12 col-md-12 col-sm-12 col-12 pb-3 mb-4 d-flex justify-content-center align-items-center">
         <div className="shorts_page_card">
           <div className={`wrapper ${openComment ? "comment-open" : ""}`}>
-          
-            <div  className={`main ${openComment ? "comment-open" : ""}`} onClick={() => {
-            !isPlaying ? playerRef.current.getInternalPlayer().play() :  playerRef.current.getInternalPlayer().pause();
-            isPlaying = !isPlaying;
-            
 
-              }}>
-                
+            <div className={`main ${openComment ? "comment-open" : ""}`} onClick={() => {
+              !isPlaying ? playerRef.current.getInternalPlayer().play() : playerRef.current.getInternalPlayer().pause();
+              isPlaying = !isPlaying;
+
+
+            }}>
+
               <ReactPlayer
                 ref={playerRef}
                 className="video"
                 controls={false}
                 url={productItemShort?.product_video_type[0]?.original_video}
-               
+
                 style={{ objectFit: "cover" }}
                 playing={isPlaying}
                 onPlay={handlePlay}
@@ -280,6 +287,26 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
               <div
                 className={`shorts_page_left `}
               >
+                <div className=" pb-3">
+                  <div className="icons"
+                  onClick={() => {
+                    if (user.user_id === productItemShort.user.id) {
+                      toast.warning(
+                        "You cannot add your own product to the basket"
+                      );
+                    } else {
+                      handleAddToBasket(productItemShort, user, axiosInstance);
+                      addItem(productItemShort);
+                    }
+                  }}
+                  >
+                    <img
+                      src={bag}
+                      alt=""
+                      
+                    />
+                     </div>
+                </div>
                 <div className=" pb-3">
                   <div
                     className={`icons ${animate ? "animated" : ""}`}
@@ -298,6 +325,7 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
                   </div>
                   <span>{productItemShort.like_count}</span>
                 </div>
+                
 
                 <div className=" pb-3">
                   <div
@@ -322,9 +350,14 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
                   </div>
                   <span>14</span>
                 </div>
+
+
+                
+
+
               </div>
 
-              <div className={`shorts_comment ${openComment ? "open" : ""}`}>
+              <div onTouchStart={handleEnter} onTouchEnd={handleLeave} onMouseEnter={handleEnter} onMouseLeave={handleLeave} className={`shorts_comment ${openComment ? "open" : ""}`}>
                 {openComment && (
                   <div className="comment_content">
                     <div className="comment_head">
@@ -334,7 +367,10 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
                           <img
                             src={close}
                             className="close_btn"
-                            onClick={() => setOpenComment(!openComment)}
+                            onClick={() => {
+                              setOpenComment(!openComment);
+                              handleLeave()
+                            }}
                             alt=""
                           />
                         </div>
@@ -405,11 +441,10 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
                                   )}
                                 </div>
                                 <form
-                                  className={`reply-form ${
-                                    replyToCommentId === comment.id
+                                  className={`reply-form ${replyToCommentId === comment.id
                                       ? "active"
                                       : ""
-                                  }`}
+                                    }`}
                                   onSubmit={(e) => {
                                     e.preventDefault();
                                     handlePostComment();
@@ -479,40 +514,40 @@ const ShortsPCrd = ({ productItemShort, isPlaying, setPlaying }) => {
                                                   </div>
                                                   {subComment.user.id ===
                                                     user.user_id && (
-                                                    <div
-                                                      className="d-flex align-items-center gap-3"
-                                                      ref={menuRef}
-                                                    >
-                                                      <button
-                                                        className="dot_btn"
-                                                        onClick={() =>
-                                                          handleMenuToggle(
-                                                            subComment.id
-                                                          )
-                                                        }
+                                                      <div
+                                                        className="d-flex align-items-center gap-3"
+                                                        ref={menuRef}
                                                       >
-                                                        <HiOutlineDotsHorizontal />
-                                                      </button>
-                                                      {openMenu ===
-                                                        subComment.id && (
-                                                        <div className="drop_menu">
-                                                          <button
-                                                            onClick={() => {
-                                                              showModal(
-                                                                subComment.id,
-                                                                true
-                                                              );
-                                                            }}
-                                                          >
-                                                            <img
-                                                              src={delete_img}
-                                                              alt=""
-                                                            />
-                                                          </button>
-                                                        </div>
-                                                      )}
-                                                    </div>
-                                                  )}
+                                                        <button
+                                                          className="dot_btn"
+                                                          onClick={() =>
+                                                            handleMenuToggle(
+                                                              subComment.id
+                                                            )
+                                                          }
+                                                        >
+                                                          <HiOutlineDotsHorizontal />
+                                                        </button>
+                                                        {openMenu ===
+                                                          subComment.id && (
+                                                            <div className="drop_menu">
+                                                              <button
+                                                                onClick={() => {
+                                                                  showModal(
+                                                                    subComment.id,
+                                                                    true
+                                                                  );
+                                                                }}
+                                                              >
+                                                                <img
+                                                                  src={delete_img}
+                                                                  alt=""
+                                                                />
+                                                              </button>
+                                                            </div>
+                                                          )}
+                                                      </div>
+                                                    )}
                                                 </div>
                                               </div>
                                             </div>

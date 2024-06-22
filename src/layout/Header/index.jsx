@@ -33,6 +33,7 @@ import { useCart } from "react-use-cart";
 import { AiOutlineClose } from "react-icons/ai";
 import sm_user from '../../assets/icons/sm-user.svg'
 
+
 const Header = ({ isOpen }) => {
   const { pathname } = useLocation();
   const { user } = useContext(AuthContext);
@@ -290,7 +291,8 @@ const Header = ({ isOpen }) => {
                     activeclassname="active"
                   >
                     <img src={Bag2} alt="" />
-                    <span className="basket_items_count">{totalItems}</span>
+
+                    <span className="basket_items_count">{totalUniqueItems}</span>
                   </NavLink>
                   <div
                     className="upload ntf"

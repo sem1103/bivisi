@@ -1,6 +1,6 @@
 .shorts_page{
   .slider{
-    max-width: 700px;
+    max-width: 1100px;
     cursor: grab;
 
     margin: 0 auto;
@@ -133,6 +133,7 @@
     }
 
     .shorts_comment {
+      cursor: default;
       position: absolute;
       bottom: -100px;
       left: -410px;
@@ -229,7 +230,7 @@
             color: var(--Neutral-White, #fff);
             font-size: 16px;
             font-style: normal;
-            font-weight: 500;
+            font-weight: 400;
             line-height: 24px;
             /* 150% */
             text-align: start;
@@ -240,7 +241,7 @@
           color: var(--Text-4, #a2a8b7);
           font-size: 14px;
           font-style: normal;
-          font-weight: 500;
+          font-weight: 400;
           line-height: 22px;
           /* 157.143% */
           text-align: start;
@@ -361,7 +362,7 @@
           color: var(--Neutral-White, #fff);
           font-size: 16px;
           font-style: normal;
-          font-weight: 500;
+          font-weight: 400;
           line-height: 24px;
           /* 150% */
         }
@@ -409,7 +410,7 @@
       }
 
       &.open {
-        left: -500px;
+        left: -300px;
       }
 
       .comment_content {
@@ -424,7 +425,7 @@
           color: var(--Text-4, #a2a8b7);
           font-size: 14px;
           font-style: normal;
-          font-weight: 500;
+          font-weight: 400;
           line-height: 22px;
           text-align: start;
         }
@@ -456,6 +457,11 @@
     width: 90%;
     .wrapper{
       width: 100%;
+      .shorts_comment {
+        &.open {
+          left: -500px;
+        }
+      }
       .main{
         width: 100% !important;
       }

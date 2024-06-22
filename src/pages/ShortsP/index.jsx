@@ -13,15 +13,21 @@ import { Mousewheel, Pagination } from 'swiper/modules';
 
 const Shorts = () => {
   const { product } = useContext(ProductContext);
+  const copyProducts = product?.results?.filter((item) => {
+    if(item.product_video_type[0]?.product_type === "Shorts") return item
+  }) || []
+  const [activeShortId, setActiveShortId]  = useState(localStorage.activeShort != undefined ? localStorage.activeShort :  copyProducts[Math.floor(Math.random() * copyProducts.length)]?.id);
 
-  const videoProducts =
-    product?.results?.filter(
-      (item) => item.product_video_type[0]?.product_type === "Shorts"
-    ) || [];
+  
+  let videoProducts = product?.results?.filter((item) => {
+    if(item.product_video_type[0]?.product_type === "Shorts") return item
+  }).sort((a, b) => a.id == activeShortId ? -1 : b.id == activeShortId ? 1 : 0) || [];
 
+
+
+  const [shorts, setShorts] = useState([])
 
   const [activeVideo, setActiveVideo] = useState(0);
-  const [activeShortId, setActiveShortId] = useState(localStorage.activeShort != undefined ? localStorage.activeShort :  videoProducts[Math.floor(Math.random() * videoProducts.length)]?.id);
   const [toTop, setToTop] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
@@ -39,8 +45,6 @@ const Shorts = () => {
         if(Math.trunc(sliderRef.current.getBoundingClientRect().top) <= 0) setToTop(false);
           else if(Math.trunc(sliderRef.current.getBoundingClientRect().top) > 0) setToTop(true);
       }
-
-    
        if(sliderRef.current != null){
         sliderRef?.current.scrollIntoView({
           behavior: "smooth",
@@ -52,20 +56,22 @@ const Shorts = () => {
        }
      
        
-
+       localStorage.removeItem('activeShort')
       
     },[sliderRef.current]);
 
-    useEffect(() => {
-      if(swiperRef.current != null) {
-        let index = 0;
-        videoProducts.forEach((item, ind) => {
-          if(item.id == activeShortId) index = ind
-        })
-        swiperRef.current.swiper.slideTo(index);
-        localStorage.removeItem('activeShort')
-      }
-    }, [swiperRef.current])
+    // useEffect(() => {
+    
+
+    //   let copyArray = [...videoProducts];
+    //   let index = 0;
+    //     videoProducts.forEach((item, ind) => {
+    //       if(item.id == activeShortId) index = ind
+    //     })
+    //     copyArray.unshift(copyArray.splice(index, 1)[0])
+        
+    //   //  localStorage.removeItem('activeShort')   
+    // }, [product])
 
   useEffect(() => {
     const highlightedShortId = localStorage.getItem("highlightedShort");
@@ -149,6 +155,20 @@ const Shorts = () => {
 
   }
 
+  const handleEnter = () => {
+    if (swiperRef.current) {
+      swiperRef.current.swiper.disable();
+    }
+  };
+
+  const handleLeave = () => {
+    if (swiperRef.current) {
+      swiperRef.current.swiper.enable();
+    }
+  };
+
+
+
 
   return (
     <div className="shorts_page">
@@ -190,6 +210,8 @@ const Shorts = () => {
                       ref={(el) => (slideRefs.current[index] = el)}
                     >
                       <ShortsPCrd
+                      handleEnter={handleEnter}
+                      handleLeave={handleLeave}
                         productItemShort={item}
                         isPlaying={activeVideo == index}
                         setPlaying={(id) => setCurrentlyPlaying(id)}
