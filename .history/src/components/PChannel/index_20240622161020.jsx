@@ -13,7 +13,6 @@ const PopularChannelCard = ({ popularChannels, page }) => {
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
 
-  
   useEffect(() => {
     if (user) {
       const subscriptionStatus = localStorage.getItem(`subscribed_${popularChannels.id}`);
@@ -50,7 +49,7 @@ const PopularChannelCard = ({ popularChannels, page }) => {
   };
 
   const colClass = ['channelcard',].includes(page) ? 'col-lg-6 col-md-6 col-sm-12 col-12' : '';
-
+  console.log(popularChannels);
   return (
     <div className={`${colClass} p-2`}>
       <div className="channelCard">
