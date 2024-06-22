@@ -1,0 +1,110 @@
+.shorts_page {
+    width: 100%;
+    height: auto;
+    padding: 10px 0;
+    .slider{
+        position: relative;
+
+        margin: 15px auto 0 auto;
+    }
+    .back__top{
+        padding:   5px;
+        color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1111;
+        border: 0;
+        background: none ;
+        svg{
+            transition: all .3s ease-in-out;
+            border-radius: 50%;
+        }
+    }
+    .toVideo svg{
+        transform: rotate(-90deg);
+        box-shadow: 0 0 5px 2px #fff;
+    }
+    h1 {
+        color: #fff;
+        /* Poppins/28/Medium */
+        font-family: Poppins;
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 36px;
+        /* 128.571% */
+    }
+
+    .create_btn {
+        display: flex;
+        padding: 12px 24px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border-radius: 16px;
+        border: 1px solid var(--Text-11, #23272E);
+        color: var(--Neutral-White, #FFF);
+        background-color: transparent;
+        /* Poppins/16/SemiBold */
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+        /* 150% */
+    }
+
+    .shorts_page_content{
+        position: relative;
+
+    }
+
+    .slider_pn{
+        display: none;
+        position: absolute;
+        // right: 80px;
+        // bottom: 70%;
+        bottom: 250px;
+        right: 80px;
+        color: white;
+        position: fixed;
+
+        .prev{
+            background-color: #0385CA;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            font-size: 18px;
+
+            &:hover{
+                cursor: pointer;
+            }
+        }
+        .next{
+            background-color: #0385CA;
+            width: 55px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 18px;
+
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.slide.highlighted {
+    transform: scale(1.1); 
+    transition: transform 0.6s ease; 
+    z-index: 1;
+  }
+  
