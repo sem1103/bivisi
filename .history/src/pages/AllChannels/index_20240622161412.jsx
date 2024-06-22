@@ -60,6 +60,7 @@ const AllChannels = () => {
                     </div>
 
                     {sortedChannels.map((item) => {
+                        console.log(item);
                     return <PopularChannelCard key={item.id} popularChannels={item} page="channelcard"/>
 
                     }

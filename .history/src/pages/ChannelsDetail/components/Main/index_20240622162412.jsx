@@ -12,7 +12,10 @@ const MainChannels = () => {
     const fetchData = async () => {
       try {
         const res1 = await axiosInstance.get(`/user/subscriptions/`);
-        setWebChannels(res1.data?.results.filter(item => item.username == username)); 
+        // console.log("data:", res1.data.results);
+        const webChannel = res1.data?.results.filter(item => item.username == username)
+        setWebChannels(webChannel); 
+        console.log(webChannel);
       } catch (error) {
         console.error("Error fetching data:", error); 
       }

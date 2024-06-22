@@ -12,7 +12,10 @@ const MainChannels = () => {
     const fetchData = async () => {
       try {
         const res1 = await axiosInstance.get(`/user/subscriptions/`);
-        setWebChannels(res1.data?.results.filter(item => item.username == username)); 
+        // console.log("data:", res1.data.results);
+        const webChannel = res1.data?.results.filter(item => item.username == username)
+        setWebChannels(webChannel); 
+        console.log(webChannel);
       } catch (error) {
         console.error("Error fetching data:", error); 
       }
@@ -30,7 +33,7 @@ const MainChannels = () => {
 cover_image})`}}></div>
       <div className="channels_info">
         <div className="channels_text_content">
-          <div className="chanells_img_content" style={{backgroundImage: `url(${webChannels[0]?.avatar })`}}></div>
+          <div className="chanells_img_content" style={{backgroundImage: `url(${webChannels[0]?.product?.user?.avatar })`}}></div>
           <div>
             <h4>{username}</h4>
             <p><span className='me-2'>3</span>subscribers</p>

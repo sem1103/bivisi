@@ -12,6 +12,7 @@ const PopularChannelCard = ({ popularChannels, page }) => {
   const [followersCount, setFollowersCount] = useState(popularChannels?.followers_count || 0);
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
+  console.log(popularChannels.cover_image);
   useEffect(() => {
     if (user) {
       const subscriptionStatus = localStorage.getItem(`subscribed_${popularChannels.id}`);

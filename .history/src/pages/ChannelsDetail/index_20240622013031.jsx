@@ -5,6 +5,7 @@ import Categories from './components/Categories'
 import { useParams } from 'react-router-dom'
 const ChannelsDetail = () => {
   const { username } = useParams();
+  console.log(username);
   return (
     <div>
         <MainChannels username={username}/>
