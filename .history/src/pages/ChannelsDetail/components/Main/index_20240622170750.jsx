@@ -36,7 +36,7 @@ cover_image : 'https://ozartur.sk/wp-content/plugins/profilegrid-user-profiles-g
           <div className="chanells_img_content" style={{backgroundImage: `url(${webChannels[0]?.avatar ? webChannels[0]?.avatar : nullImg })`}}></div>
           <div>
             <h4>{username}</h4>
-            <p><span className='me-2'>{webChannels[0]?.followers_count}</span>subscribers</p>
+            <p><span className='me-2'>{webChannels[0].webChannels}</span>subscribers</p>
           </div>
         </div>
         <div className='subs_btn'>
