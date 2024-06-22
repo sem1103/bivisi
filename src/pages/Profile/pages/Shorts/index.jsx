@@ -24,7 +24,8 @@ const Shorts = () => {
     ? product.results.filter(
         (item) =>
           item.user.name === user.username &&
-          item.product_video_type[0].product_type === "Shorts"
+
+          item.product_video_type[0]?.product_type === "Shorts"
       )
     : [];
 

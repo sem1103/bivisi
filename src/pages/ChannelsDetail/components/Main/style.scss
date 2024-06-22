@@ -25,11 +25,12 @@
 
 
         .chanells_img_content {
+            
             // background-image: url("https://bivisi-media.s3.amazonaws.com/Accounts/Cover-images/dYWElM4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIATCKAOUIJN6CUS7GS%2F20240615%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240615T095246Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=d0aa16860d9ddcb3326e543c5818c52ba91c4b6be7bcdeddbdde65319927c34d");
             width: 200px;
             height: 200px;
             transform: translateY(-80px);
-            border-radius: 24px;
+            border-radius: 50%;
             background-position: center;
             background-size: cover;
             margin-right: 20px;
@@ -60,7 +61,7 @@
                     font-family: Poppins;
                     font-size: 14px;
                     font-style: normal;
-                    font-weight: 500;
+                    font-weight: 400;
                     line-height: 26px;
                     /* 144.444% */
                 }

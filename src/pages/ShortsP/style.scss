@@ -2,14 +2,37 @@
     width: 100%;
     height: auto;
     padding: 10px 0;
+    .slider{
+        position: relative;
 
+        margin: 15px auto 0 auto;
+    }
+    .back__top{
+        display: none;
+        padding:   5px;
+        color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1111;
+        border: 0;
+        background: none ;
+        svg{
+            transition: all .3s ease-in-out;
+            border-radius: 50%;
+        }
+    }
+    .toVideo svg{
+        transform: rotate(-90deg);
+        box-shadow: 0 0 5px 2px #fff;
+    }
     h1 {
         color: #fff;
         /* Poppins/28/Medium */
         font-family: Poppins;
         font-size: 28px;
         font-style: normal;
-        font-weight: 500;
+        font-weight: 400;
         line-height: 36px;
         /* 128.571% */
     }
@@ -39,6 +62,7 @@
     }
 
     .slider_pn{
+        display: none;
         position: absolute;
         // right: 80px;
         // bottom: 70%;
@@ -84,4 +108,10 @@
     transition: transform 0.6s ease; 
     z-index: 1;
   }
+
+@media only screen and ((width < 768px)) {
+    .shorts_page .back__top{
+        display: block;
+    }
+}
   

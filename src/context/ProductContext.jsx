@@ -14,7 +14,9 @@ export const ProductProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         const res1 = await axios.get(`${BASE_URL}/product/`);
+        
         setProduct(res1.data);
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }

@@ -1,3 +1,16 @@
+.shorts_page{
+  .slider{
+    max-width: 1100px;
+    cursor: grab;
+
+    margin: 0 auto;
+    padding: 25px 0;
+  }
+  .slider, .swiper {
+    height: 100vh;
+    overflow: hidden;
+  }
+}
 .shorts_page_card {
   display: flex;
   width: 476px;
@@ -5,12 +18,13 @@
   justify-content: center;
   align-items: center;
   gap: 24px;
-
+ 
   .wrapper {
     position: relative;
     transition: all 0.3s !important;
 
     .main {
+      cursor: default;
       width: 404px !important;
       height: 722px !important;
       flex-shrink: 0 !important;
@@ -119,13 +133,15 @@
     }
 
     .shorts_comment {
+      cursor: default;
       position: absolute;
       bottom: -100px;
       left: -410px;
       transition: left 0.3s ease;
       // z-index: 4845;
       .comment_head {
-        width: 487px;
+        min-width: 450px;
+        width: 100%;
         height: 500px;
         background-color: #16181d;
         transition: left 0.3s ease !important;
@@ -214,7 +230,7 @@
             color: var(--Neutral-White, #fff);
             font-size: 16px;
             font-style: normal;
-            font-weight: 500;
+            font-weight: 400;
             line-height: 24px;
             /* 150% */
             text-align: start;
@@ -225,7 +241,7 @@
           color: var(--Text-4, #a2a8b7);
           font-size: 14px;
           font-style: normal;
-          font-weight: 500;
+          font-weight: 400;
           line-height: 22px;
           /* 157.143% */
           text-align: start;
@@ -327,7 +343,8 @@
       .comment_write {
         margin-top: 10px;
         height: 200px;
-        width: 487px;
+        min-width: 450px;
+        width: 100%;
         background-color: #16181d;
         transition: left 0.3s ease;
         border-radius: 16px;
@@ -345,7 +362,7 @@
           color: var(--Neutral-White, #fff);
           font-size: 16px;
           font-style: normal;
-          font-weight: 500;
+          font-weight: 400;
           line-height: 24px;
           /* 150% */
         }
@@ -356,7 +373,8 @@
           border: none;
           border-bottom: 1px solid #353a45;
           color: #a2a8b7;
-          width: 347px !important;
+          max-width: 347px !important;
+          width: 100%;
           padding-bottom: 10px;
 
           &::placeholder {
@@ -396,7 +414,6 @@
       }
 
       .comment_content {
-        padding: 10px;
 
         p {
           color: #000;
@@ -408,7 +425,7 @@
           color: var(--Text-4, #a2a8b7);
           font-size: 14px;
           font-style: normal;
-          font-weight: 500;
+          font-weight: 400;
           line-height: 22px;
           text-align: start;
         }
@@ -426,11 +443,98 @@
       }
     }
   }
+ 
 }
 
 .share-btn {
   background-color: transparent !important;
   border: none !important;
   outline: none !important;
+}
+
+@media only screen and (width < 1300px){
+  .shorts_page_card {
+    width: 90%;
+    .wrapper{
+      width: 100%;
+      .shorts_comment {
+        &.open {
+          left: -500px;
+        }
+      }
+      .main{
+        width: 100% !important;
+      }
+      .shorts_page_content{
+        left: initial;
+        right: 25px;
+        bottom: 40px;
+      }
+      .shorts_page_content{
+        width: initial;
+        border-radius: 14px;
+        .shorts_page_left  {
+          .icons{
+            background: rgba(255, 255, 255, 0.753) !important;
+            border: 0;
+         }
+        }
+      } 
+    }
+  }
+  .shorts_page_content.hide__buttons  .shorts_page_left {
+    display: none;
+  }
+}
+
+@media only screen and (width < 600px){
   
+  .shorts_page_card .wrapper {
+    .shorts_comment {
+      .comment_head, .comment_write{
+        min-width: initial;
+      }
+    }
+    .shorts_comment.open{
+      position: fixed;
+      top: 30px;
+      width: 100%;
+    }
+   
+    .shorts_comment.open, .main.comment-open{
+      left: 0;
+    }
+    .shorts_page_content.hide__buttons{
+      left: 0;
+    }
+  }
+
+
+}
+
+@media only screen and (width < 480px){
+  .shorts_page_card {
+    width: 100%;
+    .wrapper {
+      .main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh !important;
+        .video {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          height: initial !important;
+          width: 100% !important;
+          video{
+            height: initial !important;
+            width: 100% !important;
+          }
+        }
+      }
+    }
+    
+  }
+
 }

@@ -176,7 +176,7 @@ const ProductDetail = () => {
       <div className="container-fluid">
         {productDetail && !loading ? (
           <div className="row">
-            <div className="col-lg-8 pt-4">
+            <div className="col-xl-9 col-xxl-9 pt-4">
               <div className="video_content">
                 <div className="video_detail_content">
                   <img src={logo} className="video_logo" alt="" />
@@ -206,7 +206,7 @@ const ProductDetail = () => {
                   </div>
                 </div>
                 <div className="video_content_bottom">
-                  <div className="d-flex gap-4">
+                  <div className="d-flex video_bottom_right">
                     <div className="d-flex align-items-center gap-1">
                       <div className="eye_btn">
                         <img src={eye} alt="eye.svg" />
@@ -226,7 +226,7 @@ const ProductDetail = () => {
                       <span>{productDetail?.like_count}</span>
                     </div>
                   </div>
-                  <div className="video_bottom_left d-flex gap-4">
+                  <div className="video_bottom_left d-flex">
                     <div className="heart">
                       <WishBtn ProductItemVideoCard={productDetail} />
                     </div>

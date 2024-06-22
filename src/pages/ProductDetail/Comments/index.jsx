@@ -297,7 +297,7 @@ const CommentsComponent = ({ productDetail }) => {
 
                       {comment.user.id === user.user_id && (
                         <div
-                          className="d-flex align-items-center gap-3"
+                          className="d-flex align-items-center gap-2"
                           ref={menuRef}
                         >
                           <button
@@ -374,7 +374,7 @@ const CommentsComponent = ({ productDetail }) => {
                                     </div>
                                     {subComment.user.id === user.user_id && (
                                       <div
-                                        className="d-flex align-items-center gap-3"
+                                        className="d-flex align-items-center gap-2"
                                         ref={menuRef}
                                       >
                                         <button

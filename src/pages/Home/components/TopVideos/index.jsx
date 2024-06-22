@@ -89,8 +89,8 @@ const TopVideo = () => {
               : videoProducts
                 ?.slice(0, 4)
                 .map((item) => (
-                  <SwiperSlide>
-                    <LastVideoCard ProductItemVideoCard={item} key={item.id} page="home"/>
+                  <SwiperSlide key={item.id}>
+                    <LastVideoCard ProductItemVideoCard={item}  page="home"/>
                   </SwiperSlide>
                 ))}
           </Swiper>
