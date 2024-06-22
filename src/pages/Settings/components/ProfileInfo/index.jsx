@@ -163,7 +163,7 @@ const ProfileInformation = () => {
         <button type="submit">Save</button>
       </div>
 
-      <div className="profileinfo_section">
+      <div className="profileinfo_section pt-5">
         <div
           className="profileinfo_bg_image"
           style={{

@@ -12,18 +12,18 @@
   }
   .profile_info {
     width: 100%;
-    height: 23vh;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    transform: translateY(-45px);
     padding-left: 50px;
+    gap: 5px 20px;
     .profile_img_content {
       width: 200px;
       height: 200px;
-      transform: translateY(-50px);
       border-radius: 100%;
       background-position: center;
       background-size: cover;
-      margin-right: 20px;
     }
     .profile_text_content {
       h1 {
@@ -43,7 +43,7 @@
         font-family: Poppins;
         font-size: 18px;
         font-style: normal;
-        font-weight: 500;
+        font-weight: 400;
         line-height: 26px; /* 144.444% */
       }
       p {
@@ -62,11 +62,24 @@
           font-family: Poppins;
           font-size: 18px;
           font-style: normal;
-          font-weight: 500;
+          font-weight: 400;
           line-height: 26px; /* 144.444% */
           margin-right: 4px;
         }
       }
+    }
+  }
+}
+
+
+@media only screen and (width < 480px) {
+  .profile_section{
+    .profile_info{
+      padding: 0 0 0 25px;
+    }
+    .profile_info .profile_img_content{
+      width: 150px;
+      height: 150px;
     }
   }
 }

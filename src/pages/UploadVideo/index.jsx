@@ -289,11 +289,7 @@ const UploadV = () => {
               </button>
             </div>
           </div>
-          <div
-            className={`col-lg-6 select_form ${
-              !videoPreview ? "disabled" : ""
-            }`}
-          >
+          <div className={`col-lg-6 select_form `}>
             <div
               className="pt-2 pb-3 d-flex gap-2 flex-column-reverse  align-items-center justify-content-center"
               style={{ width: "100%" }}
@@ -310,82 +306,85 @@ const UploadV = () => {
               </span>
             </div>
 
-            <div className="input_data">
-              <label htmlFor="title">Title</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-              />
-            </div>
-
-            <div className="input_data">
-              <label htmlFor="description">Description</label>
-              <textarea
-                name="description"
-                rows={4}
-                value={formData.description}
-                onChange={handleInputChange}
-              ></textarea>
-            </div>
-
-            <div className="input_data">
-              <label htmlFor="phone_number">Phone Number</label>
-              <input
-                type="text"
-                name="phone_number"
-                value={formData.phone_number}
-                onChange={handleInputChange}
-                placeholder="+994"
-              />
-            </div>
-
-            <div className="input_data">
-              <label htmlFor="category">Category</label>
-              <div className="custom-select">
-                <Select
-                  value={formData.category[0]}
-                  onChange={(value) => handleSelectChange("category", value)}
-                  className="select"
-                  popupClassName="custom-dropdown"
-                  suffixIcon={<img src={down_arrow} alt="Dropdown Arrow" />}
-                >
-                  {renderCategories(category)}
-                </Select>
-              </div>
-            </div>
-
-            <div className="input_data">
-              <label htmlFor="subcategory">Subcategory</label>
-              <div className="custom-select">
-                <Select
-                  value={formData.category[1]}
-                  onChange={(value) => handleSelectChange("subcategory", value)}
-                  className="select"
-                  popupClassName="custom-dropdown"
-                  suffixIcon={<img src={down_arrow} alt="Dropdown Arrow" />}
-                  notFoundContent="Məlumat Yoxdur"
-                >
-                  {renderSubcategories(subcategory)}
-                </Select>
-              </div>
-            </div>
-
-            <div className="input_data">
-              <label htmlFor="price">Price</label>
-              <div className="file_price">
-                <img src={dollar} alt="Dollar" />
+            <div className={`${!videoPreview ? "disabled" : ""}`}>
+              <div className="input_data">
+                <label htmlFor="title">Title</label>
                 <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
+                  type="text"
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
                 />
               </div>
-            </div>
 
-            <button type="submit">Publish</button>
+              <div className="input_data">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  name="description"
+                  rows={4}
+                  value={formData.description}
+                  onChange={handleInputChange}
+                ></textarea>
+              </div>
+
+              <div className="input_data">
+                <label htmlFor="phone_number">Phone Number</label>
+                <input
+                  type="text"
+                  name="phone_number"
+                  value={formData.phone_number}
+                  onChange={handleInputChange}
+                  placeholder="+994"
+                />
+              </div>
+
+              <div className="input_data">
+                <label htmlFor="category">Category</label>
+                <div className="custom-select">
+                  <Select
+                    value={formData.category[0]}
+                    onChange={(value) => handleSelectChange("category", value)}
+                    className="select"
+                    popupClassName="custom-dropdown"
+                    suffixIcon={<img src={down_arrow} alt="Dropdown Arrow" />}
+                  >
+                    {renderCategories(category)}
+                  </Select>
+                </div>
+              </div>
+
+              <div className="input_data">
+                <label htmlFor="subcategory">Subcategory</label>
+                <div className="custom-select">
+                  <Select
+                    value={formData.category[1]}
+                    onChange={(value) =>
+                      handleSelectChange("subcategory", value)
+                    }
+                    className="select"
+                    popupClassName="custom-dropdown"
+                    suffixIcon={<img src={down_arrow} alt="Dropdown Arrow" />}
+                    notFoundContent="Məlumat Yoxdur"
+                  >
+                    {renderSubcategories(subcategory)}
+                  </Select>
+                </div>
+              </div>
+
+              <div className="input_data">
+                <label htmlFor="price">Price</label>
+                <div className="file_price">
+                  <img src={dollar} alt="Dollar" />
+                  <input
+                    type="number"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <button type="submit">Publish</button>
+            </div>
           </div>
         </form>
       </div>

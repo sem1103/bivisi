@@ -68,7 +68,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
     setVideoDuration(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);
   };
 
-  const colClass = ['latestvideo', 'topvideo', 'trendvideo'].includes(page) ? 'col-lg-3 col-md-4 col-sm-6 col-12' : '';
+  const colClass = ['latestvideo', 'topvideo', 'trendvideo'].includes(page) ? 'col-xl-3 col-xxl-3 col-lg-4 col-md-4 col-sm-6 col-12' : '';
 
   return (
     <div className={`${colClass} p-2`}>

@@ -57,7 +57,7 @@
         color: #fff;
         font-size: 17px;
         font-style: normal;
-        font-weight: 500;
+        font-weight: 400;
         // line-height: 32px;
       }
     }
@@ -94,5 +94,11 @@
 @media (max-width:548px) {
   .shortCard{
     height: 400px !important;
+  }
+}
+
+@media (max-width:430px) {
+  .shortCard{
+    height: 250px !important;
   }
 }

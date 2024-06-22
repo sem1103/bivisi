@@ -3,13 +3,16 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  overflow-x: auto;
   gap: 9px;
   padding: 10px 0;
+ 
   .active {
     border-radius: 16px !important;
     background: var(--Text-11, #23272e) !important;
   }
   a {
+    white-space: nowrap;
     display: flex;
     padding: 12px 24px;
     justify-content: center;
@@ -34,3 +37,6 @@
     }
   }
 }
+
+
+

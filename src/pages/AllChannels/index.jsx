@@ -38,7 +38,6 @@ const AllChannels = () => {
         }
         setSortedChannels(sorted);
     };
-
     return (
         <div className='all_channels_page'>
             <div className="container-fluid">
@@ -60,9 +59,11 @@ const AllChannels = () => {
                         </div>
                     </div>
 
-                    {sortedChannels.map((item) => (
-                        <PopularChannelCard key={item.id} popularChannels={item} page="channelcard"/>
-                    ))}
+                    {sortedChannels.map((item) => {
+                    return <PopularChannelCard key={item.id} popularChannels={item} page="channelcard"/>
+
+                    }
+                    )}
                 </div>
             </div>
         </div>

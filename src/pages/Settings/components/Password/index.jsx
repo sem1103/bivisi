@@ -99,7 +99,7 @@ const Password = () => {
             Save
           </button>
         </div>
-        <form className="reset_pass_form">
+        <form className="reset_pass_form pt-5">
           <div className="input-data">
             <input
               type="text"

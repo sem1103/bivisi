@@ -93,7 +93,7 @@ const General = () => {
 
         <div className="container pt-5">
           <div className="general_form">
-            <div className="row row-gap-3">
+            <div className="row ">
               <div className="col-lg-6">
                 <div className="d-flex flex-column input-data">
                   <label>Username</label>

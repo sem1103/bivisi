@@ -20,10 +20,11 @@ const MyVideos = () => {
 
   const activeUserProducts = hasProducts
     ? product.results.filter(
-        (item) =>
-          item.user.name === user.username &&
-          item.product_video_type[0].product_type === "Video"
-      )
+      (item) =>
+        item.user.name === user.username &&
+
+        item.product_video_type[0]?.product_type === "Video"
+    )
     : [];
 
   const handleSelect = (value) => {
@@ -53,15 +54,15 @@ const MyVideos = () => {
       <div className="my_video_profile">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  ">
+            <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  my__videos flex-wrap">
               <h1>My videos</h1>
-              <div className="d-flex gap-3">
+              <div className="d-flex gap-3 flex-wrap">
                 <Link
                   to="/your_profile/upload_video"
                   className="myvideo_upload"
                 >
                   <img src={upload} alt="upload" />
-                  Upload
+                  <span>Upload</span>
                 </Link>
                 <div className="custom-select">
                   <Select
@@ -74,7 +75,8 @@ const MyVideos = () => {
                     prefixicon={<img src={sort} alt="plus.svg" width={20} />}
                   >
                     <Option value="" onClick={handleAllClick}>
-                      All
+                      
+                     All
                     </Option>
                     <Option value="option1">A to Z</Option>
                     <Option value="option2">Z to A</Option>

@@ -31,7 +31,9 @@ const ShortCard = ({ product }) => {
 
   const handleCardClick = () => {
     handleAddToHistory(product);
-    localStorage.setItem("highlightedShort", product.id);
+
+    localStorage.setItem("activeShort", product.id);
+    console.log(product);
     setTimeout(() => {
       navigate("/shorts");
     }, 1000);

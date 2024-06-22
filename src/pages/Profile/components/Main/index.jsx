@@ -63,6 +63,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./style.scss";
 import { AuthContext } from "../../../../context/authContext";
 import useAxios from "../../../../utils/useAxios";
+import { Img } from "@chakra-ui/react";
 
 const Main = () => {
   const { userDetails } = useContext(AuthContext);
@@ -108,6 +109,7 @@ const Main = () => {
             className="profile_img_content"
             style={{ backgroundImage: `url(${avatarImage})` }}
           ></div>
+        
           <div className="profile_text_content">
             <h1>{userDetails?.username}</h1>
             <h6>{userDetails?.email}</h6>

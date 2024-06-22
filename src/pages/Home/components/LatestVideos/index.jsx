@@ -87,8 +87,8 @@ const LatestVideos = () => {
             {latestVideos.length === 0
               ? "No product found in this category"
               : latestVideos.map((item) => (
-                <SwiperSlide>
-                  <VideoCard ProductItemVideoCard={item} key={item.id} page="home"/>
+                <SwiperSlide key={item.id}>
+                  <VideoCard ProductItemVideoCard={item}  page="home"/>
                 </SwiperSlide>
               ))}
 
