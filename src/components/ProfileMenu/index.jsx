@@ -43,10 +43,10 @@ const ProfileMenu = () => {
       <Menu
         shadow="md"
         width={200}
-        transitionProps={{ transition: "rotate-right", duration: 150 }}
-        position="bottom-end"
+        transitionProps={{ transition: "rotate-right", duration: 600 }}
+        position="bottom-right"
         arrowPosition="center"
-        offset={23}
+        offset={20}
         opened={menuOpened}
         onClose={handleMenuClose}
       >
