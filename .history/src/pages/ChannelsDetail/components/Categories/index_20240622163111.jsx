@@ -11,7 +11,7 @@ const Categories = ({ username }) => {
       <NavLink activeclassname="active" to={`/channels_detail/channels_shorts/${username}`}>
         Shorts
       </NavLink>
-      <NavLink activeclassname="active" to={`/channels_detail/about/${username}`}>
+      <NavLink activeclassname="active" to="/channels_detail/about">
         About
       </NavLink>
     </div>

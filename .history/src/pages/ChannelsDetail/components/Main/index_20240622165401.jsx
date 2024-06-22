@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './style.scss';
 import { useParams } from 'react-router-dom';
 import useAxios from '../../../../utils/useAxios';
-import nullImg from '../../../../assets/images/user-empty-avatar.png'
 
 const MainChannels = () => {
   const { username } = useParams();
@@ -33,7 +32,7 @@ cover_image ?  webChannels[0]?.
 cover_image : 'https://ozartur.sk/wp-content/plugins/profilegrid-user-profiles-groups-and-communities/public/partials/images/default-cover.jpg'})`}}></div>
       <div className="channels_info">
         <div className="channels_text_content">
-          <div className="chanells_img_content" style={{backgroundImage: `url(${webChannels[0]?.avatar ? webChannels[0]?.avatar : nullImg })`}}></div>
+          <div className="chanells_img_content" style={{backgroundImage: `url(${webChannels[0]?.avatar ? webChannels[0]?.avatar : '/assets/images/user-empty-avatar.png' })`}}></div>
           <div>
             <h4>{username}</h4>
             <p><span className='me-2'>3</span>subscribers</p>
