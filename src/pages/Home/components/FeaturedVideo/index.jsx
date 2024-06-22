@@ -26,13 +26,13 @@ const FeaturedVideo = () => {
       <div className="container-fluid">
         {slider?.length > 0 && (
           <Swiper
-            spaceBetween={50}
+            spaceBetween={7}
             slidesPerView={1}
             modules={[Pagination, Autoplay, Navigation]}
             autoplay={{ delay: 400, disableOnInteraction: false }}
-            speed={1200}
+            speed={6000}
             loop={true}
-            navigation={true}
+            navigation={false}
             pagination={{ clickable: true }}
           >
             {slider?.map((item) => (
