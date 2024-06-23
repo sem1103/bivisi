@@ -85,6 +85,21 @@ const Otp = () => {
       handleSubmit(otp_code, email);
     }
   }, [otp_code, email]);
+
+  const handleKeyPress = (e) => {
+    const charCode = e.charCode;
+    if (charCode < 48 || charCode > 57) {
+      e.preventDefault();
+    }
+  };
+
+  const handlePaste = (e) => {
+    const paste = e.clipboardData.getData('text');
+    if (!/^\d+$/.test(paste)) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
       <section className="verify_otp">
@@ -99,7 +114,13 @@ const Otp = () => {
               onChange={(value) => setOtp(value)}
               numInputs={6}
               inputStyle="otp"
-              renderInput={(props) => <input {...props} />}
+              renderInput={(props) => (
+                <input
+                  {...props}
+                  onKeyPress={handleKeyPress}
+                  onPaste={handlePaste}
+                />
+              )}
             />
           </form>
           <p>
