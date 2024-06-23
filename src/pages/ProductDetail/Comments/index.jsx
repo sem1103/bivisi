@@ -42,7 +42,7 @@ const CommentsComponent = ({ productDetail }) => {
       }));
 
       setComments(commentsWithSubComments);
-      console.log("Fetched comments:", commentsWithSubComments);
+      // console.log("Fetched comments:", commentsWithSubComments);
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
@@ -51,7 +51,7 @@ const CommentsComponent = ({ productDetail }) => {
   useEffect(() => {
     if (productDetail && productDetail.id) {
       fetchParentComments();
-      console.log("Fetching comments for product:", productDetail.id);
+      // console.log("Fetching comments for product:", productDetail.id);
     }
   }, [productDetail]);
 
@@ -102,8 +102,8 @@ const CommentsComponent = ({ productDetail }) => {
     };
     try {
       const res = await axiosInstance.post(`/product_comment/`, payload);
-      console.log("Payload:", payload);
-      console.log("Response:", res.data);
+      // console.log("Payload:", payload);
+      // console.log("Response:", res.data);
       if (res.status === 201) {
         setUser_comment_sub("");
         setReplyToCommentId(null);
@@ -159,7 +159,7 @@ const CommentsComponent = ({ productDetail }) => {
       );
 
       const response = await axiosInstance.get(`/product_comment/${id}/`);
-      console.log("Response:", res.data);
+      // console.log("Response:", res.data);
       if (res.data.message === "Product comment liked") {
         toast.success("You liked the comment successfully!");
       } else {
@@ -204,8 +204,10 @@ const CommentsComponent = ({ productDetail }) => {
 
   const handleReplyToggle = (commentId) => {
     setReplyToCommentId((prevId) => (prevId === commentId ? null : commentId));
-    setUser_comment("");
     setUser_comment_sub("");
+    if (user_comment) {
+      setUser_comment("");
+    }
   };
 
   const handleMenuToggle = (commentId) => {
@@ -256,6 +258,10 @@ const CommentsComponent = ({ productDetail }) => {
               value={user_comment}
               placeholder="Write your comment...."
               onChange={(e) => setUser_comment(e.target.value)}
+              onFocus={() => {
+                setReplyToCommentId(null);
+                setUser_comment_sub("");
+              }}
             />
             <button type="submit">Publish</button>
           </form>
@@ -335,6 +341,9 @@ const CommentsComponent = ({ productDetail }) => {
                         value={user_comment_sub}
                         placeholder="Write your reply...."
                         onChange={(e) => setUser_comment_sub(e.target.value)}
+                        onFocus={() => {
+                          setUser_comment("");
+                        }}
                       />
                       <button type="submit">Publish</button>
                     </form>

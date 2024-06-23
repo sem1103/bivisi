@@ -49,6 +49,8 @@ import ChannelsVideos from "../pages/ChannelsDetail/pages/ChannelsVideos";
 import ChannelsShorts from "../pages/ChannelsDetail/pages/ChanellsShorts";
 import EditMyShort from "../pages/Profile/pages/EditShort";
 import AboutChanell from "../pages/ChannelsDetail/pages/About";
+import LoadingBarPreloader from "../components/LoadingBarPreloader";
+
 const AppRouter = () => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -70,6 +72,7 @@ const AppRouter = () => {
         <Toaster />
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen}>
           <Header isOpen={isOpen} setIsOpen={setIsOpen} />
+          <LoadingBarPreloader />
           <Categories />
           <Routes>
             <Route element={<Home />} path="/" />
@@ -124,7 +127,7 @@ const AppRouter = () => {
                 element={<ChannelsShorts />}
                 path="/channels_detail/channels_shorts/:username"
               />
-               <Route
+              <Route
                 element={<AboutChanell />}
                 path="/channels_detail/about/:username"
               />

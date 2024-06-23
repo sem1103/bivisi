@@ -28,7 +28,7 @@ const ShareModal = ({ item }) => {
   const handleShow = () => setShow(true);
 
   const shareUrl = `${window.location.origin}/${item?.product_link}`;
-  console.log(shareUrl);
+  // console.log(shareUrl);
 
   return (
     <>
