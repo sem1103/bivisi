@@ -17,8 +17,8 @@ const PopularChannels = () => {
         const fetchPChannels = async () => {
             try {
                 const response = await axios.get(`${BASE_URL}/user/popular-channels/`);
-                console.log("popular c ", response.data);
-                const filteredChannels = response.data.filter(channel => channel.username !== user?.username);
+                console.log("popular c ", response?.data);
+                const filteredChannels = response?.data?.filter(channel => channel?.username !== user?.username);
                 setPopularC(filteredChannels);
                 setSortedChannels(filteredChannels); 
             } catch (error) {
@@ -33,9 +33,9 @@ const PopularChannels = () => {
     const handleSortChange = (value) => {
         let sorted = [...popularC];
         if (value === "option1") {
-            sorted.sort((a, b) => a.username.localeCompare(b.username));
+            sorted?.sort((a, b) => a.username.localeCompare(b.username));
         } else if (value === "option2") {
-            sorted.sort((a, b) => b.username.localeCompare(a.username));
+            sorted?.sort((a, b) => b.username.localeCompare(a.username));
         } else {
             sorted = [...popularC];
         }
@@ -63,7 +63,7 @@ const PopularChannels = () => {
                             </Select>
                         </div>
                     </div>
-                    {sortedChannels.map((item) => (
+                    {sortedChannels?.map((item) => (
                         <PopularChannelCard key={item.id} popularChannels={item} page="channelcard"/>
                     ))}
                 </div>
