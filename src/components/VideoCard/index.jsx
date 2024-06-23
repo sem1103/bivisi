@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import bag from "../../assets/icons/Bag-3.svg";
 import blueHeart from "../../assets/icons/blueHeart.svg";
 import "./style.scss";
@@ -13,8 +13,8 @@ import { useCart } from "react-use-cart";
 import { toast } from "react-toastify";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import logo from "../../assets/images/logoLight.svg";
-
-
+import Plyr from "plyr-react";
+import "plyr-react/plyr.css";
 
 const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   const { user } = useContext(AuthContext);
@@ -24,26 +24,56 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   const { addItem } = useCart();
   const [loading, setLoading] = useState(false);
 
-  const handlePlay = () => {
-    if (playingVideo !== ProductItemVideoCard.id) {
-      setPlaying(ProductItemVideoCard.id);
-    }
-  };
+  // const handlePlay = () => {
+  //   if (playingVideo !== ProductItemVideoCard.id) {
+  //     setPlaying(ProductItemVideoCard.id);
+  //   }
+  // };
 
   const playerRef = useRef(null);
 
+  const [playerState, setPlayerState] = useState({
+    playing: false,
+  });
+
+  const [isLoading, setIsLoading] = useState(true); // Yükleme durumunu takip eder
+  const isPlayingRef = useRef(false);
+
+  const playVideo = async () => {
+    const player = playerRef.current?.plyr;
+    if (player) {
+      try {
+        await player.play();
+        isPlayingRef.current = true;
+      } catch (error) {
+        console.error("Error playing video:", error);
+      }
+    }
+  };
+
+  const pauseVideo = async () => {
+    const player = playerRef.current?.plyr;
+    if (player && isPlayingRef.current) {
+      try {
+        await player.pause();
+        isPlayingRef.current = false;
+      } catch (error) {
+        console.error("Error pausing video:", error);
+      }
+    }
+  };
+
   const handleMouseEnter = () => {
     setIsHovered(true);
-    if (playerRef.current) {
-      playerRef.current.getInternalPlayer().play();
-    }
+    playVideo();
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    if (playerRef.current) {
-      playerRef.current.getInternalPlayer().pause();
-    }
+    pauseVideo();
+  };
+  const onPlayerReady = () => {
+    setIsLoading(false);
   };
 
   const axiosInstance = useAxios();
@@ -52,9 +82,8 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   const handleNavigation = (e) => {
     if (window.location.pathname.includes("/product_detail")) {
       e.preventDefault();
-      setLoading(true); 
+      setLoading(true);
 
-      
       setTimeout(() => {
         navigate(`/product_detail/${ProductItemVideoCard.id}`);
         setLoading(false);
@@ -68,7 +97,9 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
     setVideoDuration(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);
   };
 
-  const colClass = ['latestvideo', 'topvideo', 'trendvideo'].includes(page) ? 'col-xl-3 col-xxl-3 col-lg-4 col-md-4 col-sm-6 col-12' : '';
+  const colClass = ["latestvideo", "topvideo", "trendvideo"].includes(page)
+    ? "col-xl-3 col-xxl-3 col-lg-4 col-md-4 col-sm-6 col-12"
+    : "";
 
   return (
     <div className={`${colClass} p-2`}>
@@ -81,19 +112,24 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
           <img className="card_logo" src={logo} alt="" />
           <span className="video_count">{videoDuration}</span>
           <img
-            className={`coverImage ${isHovered ? "hidden" : ""}`}
+            className={`coverImage `}
             src={ProductItemVideoCard?.product_video_type[0]?.cover_image}
             alt="cover"
           />
-          <ReactPlayer
+          <Plyr
             ref={playerRef}
-            url={ProductItemVideoCard?.product_video_type[0]?.original_video}
-            playing={isHovered}
-            muted
-            autoPlay={false}
-            className="video"
-            width="100%"
-            height="100%"
+            source={{
+              type: "video",
+              sources: [
+                {
+                  src: ProductItemVideoCard?.product_video_type[0]
+                    ?.original_video,
+                  type: "video/mp4",
+                },
+              ],
+            }}
+            options={{ muted: true, controls: ["play", "pause", "progress"] }}
+            onReady={onPlayerReady}
             onDuration={handleDuration}
           />
           {loading && (
