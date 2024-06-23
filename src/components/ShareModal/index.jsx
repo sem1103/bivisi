@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import close from "../../assets/icons/close.svg";
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -35,7 +36,10 @@ const ShareModal = ({ item }) => {
         <img src={share} alt="" />
       </button>
       <Modal show={show} onHide={handleClose} centered>
-        <h1>Share</h1>
+        <div className="d-flex align-items-center justify-content-between modal_head">
+          <h1>Share</h1>
+          <img onClick={handleClose} src={close} alt="" />
+        </div>
         <div className="share_icons">
           <FacebookShareButton
             url={shareUrl}
