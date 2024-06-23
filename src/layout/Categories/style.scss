@@ -83,5 +83,18 @@
   .b_categories{
     justify-content: flex-start;
     padding: 20px 10px;
+
+    .b_cat{
+      padding-bottom: 15px !important;
+    }
+  }
+}
+
+@media (max-width:609px) {
+  .b_categories{
+
+    .b_cat{
+      padding-bottom: 15px !important;
+    }
   }
 }
