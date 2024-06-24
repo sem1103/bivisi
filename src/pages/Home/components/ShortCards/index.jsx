@@ -42,7 +42,8 @@ const ShortCards = () => {
       <section className="shortCards">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-12 d-flex justify-content-between align-items-center">
+              <h4>BiviClips</h4>
+            <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
               <div className="section__title">
                 <svg
                   width={35}
