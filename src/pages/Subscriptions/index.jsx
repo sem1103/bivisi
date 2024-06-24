@@ -22,7 +22,7 @@ const Subscription = () => {
     const fetchSubs = async () => {
       try {
         const response = await axiosInstance.get('/user/your_subscribers/');
-        setSubscriptions(response.data.results);
+        setSubscriptions(response?.data?.results);
         console.log(response.data.results);
         setSortedSubscriptions(response.data.results);
       } catch (error) {
@@ -97,25 +97,25 @@ const Subscription = () => {
           {sortedSubscriptions.map((item) => (
             <div className="col-lg-6 col-md-6 col-sm-12 col-12 p-3" key={item.id}>
               <div className="channelCard">
-                <img src={item.follows.cover_image || default_coverimg} className="img-top" alt="" />
+                <img src={item.cover_image || default_coverimg} className="img-top" alt="" />
                 <div className="opacity-img">
-                  <img src={item.follows.avatar || user_emptyavatar} alt="" />
+                  <img src={item.avatar || user_emptyavatar} alt="" />
                 </div>
                 <div className="channelCard-context">
-                  <h2>{item.follows.username}</h2>
-                  <span>{item.follows.first_name} {item.follows.last_name}</span>
-                  <p>{item.follows.bio}</p>
+                  <h2>{item.username}</h2>
+                  <span>{item.first_name} {item.last_name}</span>
+                  <p>{item.bio}</p>
                   <div className="d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center avatar-group">
                       <div className="avatar">
-                        <img src={item.follows.avatar || user_emptyavatar} alt="" />
+                        <img src={item.avatar || user_emptyavatar} alt="" />
                       </div>
                       <div className="hidden-avatars">
-                        <span>{item.follows.follower_count} subscribes</span>
+                        <span>{item.follower_count} subscribes</span>
                       </div>
                     </div>
                     <div>
-                      <button className="unsubs-button" onClick={() => toggleUnSubs(item.follows.id)}>
+                      <button className="unsubs-button" onClick={() => toggleUnSubs(item.id)}>
                         Unsubscribe
                       </button>
                     </div>

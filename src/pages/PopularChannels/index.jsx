@@ -18,7 +18,7 @@ const PopularChannels = () => {
             try {
                 const response = await axios.get(`${BASE_URL}/user/popular-channels/`);
                 console.log("popular c ", response?.data);
-                const filteredChannels = response?.data?.filter(channel => channel?.username !== user?.username);
+                const filteredChannels = response?.data?.results.filter(channel => channel?.username !== user?.username);
                 setPopularC(filteredChannels);
                 setSortedChannels(filteredChannels); 
             } catch (error) {
