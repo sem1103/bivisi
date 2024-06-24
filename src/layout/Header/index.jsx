@@ -207,6 +207,7 @@ const Header = ({ isOpen }) => {
               <img src={logo} alt="" />
             </Link>
 
+            <div className="d-flex align-items-center gap-2">
             <div className="d-flex justify-content-center align-items-center gap-3">
               <div className="search-wrapper" ref={searchRef}>
                 <div className="search">
@@ -260,6 +261,8 @@ const Header = ({ isOpen }) => {
             </div>
             {user ? (
               <div className="content_left d-flex align-items-center justify-content-end gap-3">
+
+                <div className="content_left_icons">
                 <div className="upload-container">
                   <div className="upload " onClick={toggleUploadOptions}>
                     <img src={upload} alt="" />
@@ -283,8 +286,6 @@ const Header = ({ isOpen }) => {
                     </div>
                   )}
                 </div>
-
-                <div className="content_left_icons">
                   <NavLink
                     className="upload"
                     to="/basket"
@@ -327,6 +328,7 @@ const Header = ({ isOpen }) => {
                 </NavLink>
               </div>
             )}
+            </div>
           </header>
         </div>
 

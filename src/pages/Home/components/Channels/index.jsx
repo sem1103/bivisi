@@ -22,7 +22,7 @@ const PopularChannels = () => {
     const fetchPChannels = async () => {
         try {
             const response = await axios.get(`${BASE_URL}/user/popular-channels/`);
-            const filteredChannels = response.data.filter(channel => channel.username !== user?.username);
+            const filteredChannels = response.data.results.filter(channel => channel.username !== user?.username);
                 setPopularC(filteredChannels);
         } catch (error) {
             console.error('Failed to fetch popular channels:', error);
@@ -34,7 +34,7 @@ const PopularChannels = () => {
     <section className="channels">
       <div className="container-fluid">
         <div className="row">
-          <div className="col-lg-12 d-flex justify-content-between align-items-center">
+          <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
             <h4>Popular channels</h4>
             <Link to='/popular_channels'>
               See all <img src={rightArrow} alt="" />

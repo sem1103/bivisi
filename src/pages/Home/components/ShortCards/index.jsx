@@ -42,7 +42,7 @@ const ShortCards = () => {
       <section className="shortCards">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-12 d-flex justify-content-between align-items-center">
+            <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
               <h4>BiviClips</h4>
               <Link to="/shorts">
                 See all <img src={rightArrow} alt="" />
