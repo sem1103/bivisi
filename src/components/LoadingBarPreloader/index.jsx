@@ -15,7 +15,7 @@ const LoadingBarPreloader = () => {
 
   return (
     <>
-      <LoadingBar color="white" ref={ref} height={2} />;
+      <LoadingBar color="white" ref={ref} height={2} />
     </>
   );
 };

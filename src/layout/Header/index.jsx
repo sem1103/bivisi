@@ -201,7 +201,7 @@ const Header = ({ isOpen }) => {
   ) {
     return (
       <div>
-        <div className="d-none d-lg-block d-xl-block d-lg-block container">
+        <div className="d-none d-lg-block d-xl-block d-lg-block container-fluid xl_header">
           <header className="sticky-top ">
             <Link className="logoLeft " to="/" style={{ opacity: logoOpacity }}>
               <img src={logo} alt="" />
