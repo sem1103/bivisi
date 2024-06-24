@@ -4,7 +4,7 @@ import LoadingBar from "react-top-loading-bar";
 
 const LoadingBarPreloader = () => {
   const ref = useRef(null);
-  const location = useLocation();
+  const location = useLocation(); 
 
   useEffect(() => {
     ref.current.continuousStart();
