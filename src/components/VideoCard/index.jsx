@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import logo from "../../assets/images/logoLight.svg";
 import Plyr from "plyr-react";
-import "plyr-react/plyr.css";
+import eye from "../../assets/icons/eye.svg";
 
 const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   const { user } = useContext(AuthContext);
@@ -88,6 +88,8 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
         navigate(`/product_detail/${ProductItemVideoCard.id}`);
         setLoading(false);
       }, 2000);
+    } else {
+      navigate(`/product_detail/${ProductItemVideoCard.id}`);
     }
   };
 
@@ -101,6 +103,19 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
     ? "col-xl-3 col-xxl-3 col-lg-4 col-md-4 col-sm-6 col-12"
     : "";
 
+  function formatViewCount(num) {
+    if (num >= 1000000000) {
+      return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "G";
+    }
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+    return num;
+  }
+
   return (
     <div className={`${colClass} p-2`}>
       <div
@@ -110,6 +125,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
       >
         <div className="main">
           <img className="card_logo" src={logo} alt="" />
+          <span className="card_price">$ {ProductItemVideoCard?.price}</span>
           <span className="video_count">{videoDuration}</span>
           <img
             className={`coverImage `}
@@ -138,9 +154,8 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
             </div>
           )}
         </div>
-        <NavLink
+        <div
           className="heading w-100 flex-column justify-content-start align-items-start"
-          to={`/product_detail/${ProductItemVideoCard.id}`}
           onClick={handleNavigation}
         >
           <div className="d-flex w-100 justify-content-between align-items-center">
@@ -151,9 +166,12 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
             </h6>
           </div>
           <p>{ProductItemVideoCard.name}</p>
-        </NavLink>
+        </div>
         <div className="cardBottom">
-          <span>$ {ProductItemVideoCard.price}</span>
+          <div className="card_viev_count">
+            <img src={eye} alt="eye.svg" />
+            <span>{formatViewCount(ProductItemVideoCard?.view_count)}</span>
+          </div>
           <div className="icons">
             <WishBtn ProductItemVideoCard={ProductItemVideoCard} />
             <img
