@@ -35,7 +35,10 @@ const PopularChannels = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
+            <div className="section__title">
+            <img src="/src/layout/Sidebar/icons/star-outline.svg" alt="" width={35}/>
             <h4>Popular channels</h4>
+            </div>
             <Link to='/popular_channels'>
               See all <img src={rightArrow} alt="" />
             </Link>
