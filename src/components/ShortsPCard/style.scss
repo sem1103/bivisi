@@ -26,7 +26,7 @@
     .main {
       cursor: default;
       width: 404px !important;
-      height: 722px !important;
+      height: 100vh !important;
       flex-shrink: 0 !important;
       border-radius: 25px;
       overflow: hidden;
@@ -43,13 +43,13 @@
         top: 0;
         left: 0;
         width: 100% !important;
-        height: 722px !important;
+        height: 100vh !important;
         // z-index: 2598728;
         object-fit: cover;
         video {
           width: 100% !important;
-          height: 722px !important;
-          // z-index: 2598728;
+          height: 90vh !important;
+          border-radius: 14px;
           object-fit: cover;
         }
       }
@@ -57,8 +57,12 @@
 
     .shorts_page_content {
       position: absolute;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
       left: calc(100% + 30px);
-      bottom: 100px;
+      top: 0;
+      height: 90%;
       width: 50px;
 
       p {
@@ -135,20 +139,26 @@
     .shorts_comment {
       cursor: default;
       position: absolute;
-      bottom: -100px;
+      display: flex;
       left: -410px;
+      top: 0;
+      height: 100%;
       transition: left 0.3s ease;
       // z-index: 4845;
       .comment_head {
+        overflow: hidden;
         min-width: 450px;
         width: 100%;
-        height: 500px;
+        height: 100%;
+        min-height: 150px;
+        max-height: 500px;
         background-color: #16181d;
         transition: left 0.3s ease !important;
         border-radius: 16px;
         padding: 24px;
         .comment_content_right {
           width: 100%;
+      
         }
         .reply-form {
           width: 100%;
@@ -197,8 +207,9 @@
         }
 
         .comments_heading {
-          overflow-y: scroll;
-          max-height: 400px;
+          overflow-y: auto;
+          max-height: 300px;
+          height: 100%;
 
           &::-webkit-scrollbar {
             width: 4px;
@@ -342,7 +353,8 @@
 
       .comment_write {
         margin-top: 10px;
-        height: 200px;
+        height: 100%;
+        max-height: 200px;
         min-width: 450px;
         width: 100%;
         background-color: #16181d;
@@ -414,6 +426,9 @@
       }
 
       .comment_content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
 
         p {
           color: #000;
@@ -469,22 +484,24 @@
         left: initial;
         right: 25px;
         bottom: 40px;
+        top: 0;
       }
       .shorts_page_content{
         width: initial;
         border-radius: 14px;
         .shorts_page_left  {
           .icons{
-            background: rgba(255, 255, 255, 0.753) !important;
+            background: #ffffff4d !important;
             border: 0;
          }
         }
       } 
     }
   }
-  .shorts_page_content.hide__buttons  .shorts_page_left {
-    display: none;
-  }
+  
+}
+.comment-open  .shorts_page_left {
+  display: none;
 }
 
 @media only screen and (width < 600px){
@@ -503,6 +520,7 @@
    
     .shorts_comment.open, .main.comment-open{
       left: 0;
+
     }
     .shorts_page_content.hide__buttons{
       left: 0;
@@ -529,7 +547,7 @@
           width: 100% !important;
           video{
             height: initial !important;
-            width: 100% !important;
+            width: 90% !important;
           }
         }
       }
