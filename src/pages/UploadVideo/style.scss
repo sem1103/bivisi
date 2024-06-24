@@ -451,6 +451,7 @@
         .mapboxgl-canvas {
           max-width: 250px;
           border-radius: 14px;
+          max-height: 350px;
         }
 
         .mapboxgl-ctrl-top-left {
@@ -681,6 +682,35 @@
     }
   }
 
+}
+.manual__props{
+  width: 100%;
+  button{
+    height: initial !important;
+    font-size: 14px !important;
+    width: max-content !important;
+    &.add__input{
+      width: 100% !important;
+      margin: 15px 0 0 0;
+    }
+  }
+  
+  & > div{
+    display: flex;
+    margin: 10px;
+    
+    input{
+      width: 100%;
+      border: 1px solid rgba(0, 135, 204, 0.5607843137) !important;
+      padding: 5px 15px !important;
+      font: 14px Poppins !important;
+      background: transparent;
+      color: #fff;
+      outline: 0;
+      margin: 0 5px;
+      border-radius: 16px;
+    }
+  }
 }
 
 @media only screen and (width < 768px) {

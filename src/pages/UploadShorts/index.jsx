@@ -12,6 +12,8 @@ import { FaCheck } from "react-icons/fa";
 import Map from 'react-map-gl';
 import GeocoderControl from "../../components/reactMap/geocoder-control";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
+import { useForm, useFieldArray } from 'react-hook-form';
+
 
 
 
@@ -28,6 +30,17 @@ const UploadS = () => {
   const [thumbnail, setThumbnail] = useState();
   const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA'; // Set your mapbox token here
   const currency = getCurrencyByCountry();
+
+  const { register, control } = useForm({
+    defaultValues: {
+      rows: [{ first: '', second: '' }],
+    },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'rows',
+  });
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -194,7 +207,7 @@ const UploadS = () => {
     if (!subcategories || subcategories.length === 0) {
       return [
         <Option key="no-data" disabled>
-          Empty 
+          Empty
         </Option>,
       ];
     }
@@ -276,7 +289,7 @@ const UploadS = () => {
       setVideoPreview(false);
       setHaveVideo(false)
       setShowProgressBar(false)
-      
+
     } catch (error) {
       console.error("Error uploading data", error);
       toast.error("An error occurred during upload.");
@@ -316,7 +329,7 @@ const UploadS = () => {
                   <h3>Details</h3>
                 </div>
 
-                
+
 
               </div>
 
@@ -365,8 +378,8 @@ const UploadS = () => {
 
                       />
                       <div className="upload__desc">
-                        <h4>Drag and drop short video files to upload</h4>
-                        <p>Your videos will be private until you publish them.</p>
+                        <h4>Drag and drop video files to upload</h4>
+                        <p>Your short videos will be private until you publish them.</p>
                       </div>
 
                       <button
@@ -504,21 +517,35 @@ const UploadS = () => {
 
                     </div>
 
-                    <div className="input_data">
-                      <label htmlFor="subcategory">Color</label>
-                      <div className="custom-select">
-                        <Select
-                          value={formData.category[1]}
-                          onChange={(value) =>
-                            handleSelectChange("subcategory", value)
-                          }
-                          className="select"
-                          popupClassName="custom-dropdown"
-                          suffixIcon={<img src={down_arrow} alt="Dropdown Arrow" />}
-                          notFoundContent="Empty Subcategory"
-                        >
-                          {renderSubcategories(subcategory)}
-                        </Select>
+                    <div className="input_data ">
+                      <label>Manual Property
+                      </label>
+                      <div className="manual__props">
+
+                        {fields.map((item, index) => (
+                          <div key={item.id} >
+                            <input
+                              {...register(`rows.${index}.first`)}
+                              defaultValue={item.first}
+                              placeholder="Property"
+                           
+                            />
+                            <input
+                              {...register(`rows.${index}.second`)}
+                              defaultValue={item.second}
+                              placeholder="Value"
+                              
+                            />
+                            <button type="button" onClick={() => remove(index)} style={{ padding: '5px 10px' }}>
+                              Remove
+                            </button>
+                          </div>
+                        ))}
+
+                      <button className="add__input" type="button" onClick={() => append({ first: '', second: '' })} >
+                              Add
+                            </button>
+
                       </div>
 
 
