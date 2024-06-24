@@ -61,9 +61,9 @@ const PopularChannelCard = ({ popularChannels, page }) => {
           <img src={popularChannels?.avatar || user_emptyavatar} alt="Avatar" />
         </div>
         <div className="channelCard-context">
-          <NavLink onClick={() => navigate(`/channels_detail/channels_videos/${popularChannels.username}`, { state: { followersCount } })}>
+          <div className="username" onClick={() => navigate(`/channels_detail/channels_videos/${popularChannels.username}`, { state: { followersCount } })}>
             {popularChannels?.username}
-          </NavLink>
+          </div>
           <p>
             {popularChannels.bio}
           </p>
