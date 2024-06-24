@@ -22,4 +22,17 @@
     line-height: 24px; /* 150% */
     text-decoration: none;
   }
+
+  .shorts_logo{
+    background-color: #0385CA;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+    svg{
+      color: #fff;
+      width: 25px !important;
+    }
+  }
 }

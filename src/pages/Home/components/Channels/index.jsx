@@ -7,6 +7,7 @@ import axios from "axios";
 import { BASE_URL } from "../../../../api/baseUrl";
 import { AuthContext } from "../../../../context/authContext";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import star_img from "../../../../layout/Sidebar/icons/star-outline.svg"
 import {
   Pagination,
   A11y,
@@ -36,7 +37,7 @@ const PopularChannels = () => {
         <div className="row">
           <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
             <div className="section__title">
-            <img src="/src/layout/Sidebar/icons/star-outline.svg" alt="" width={35}/>
+            <img src={star_img} alt="" width={35}/>
             <h4>Popular channels</h4>
             </div>
             <Link to='/popular_channels'>

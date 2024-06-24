@@ -95,7 +95,7 @@ const Subscription = () => {
             </div>
           </div>
           {sortedSubscriptions.map((item) => (
-            <div className="col-lg-6 col-md-6 col-sm-12 col-12 p-3" key={item.id}>
+            <div className="col-lg-6 col-md-6 col-sm-12 col-12 " key={item.id}>
               <div className="channelCard">
                 <img src={item.cover_image || default_coverimg} className="img-top" alt="" />
                 <div className="opacity-img">

@@ -5,13 +5,14 @@ import useAxios from "../../utils/useAxios";
 import default_coverimg from "../../assets/images/default-coverimg.jpg";
 import user_emptyavatar from "../../assets/images/user-empty-avatar.png";
 import { AuthContext } from "../../context/authContext";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const PopularChannelCard = ({ popularChannels, page }) => {
   const [subscribed, setSubscribed] = useState(false);
-  const [followersCount, setFollowersCount] = useState(popularChannels?.followers_count || 0);
+  const [followersCount, setFollowersCount] = useState(popularChannels?.follower_count || 0);
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   useEffect(() => {
     if (user) {
       const subscriptionStatus = localStorage.getItem(`subscribed_${popularChannels.id}`);
@@ -60,7 +61,9 @@ const PopularChannelCard = ({ popularChannels, page }) => {
           <img src={popularChannels?.avatar || user_emptyavatar} alt="Avatar" />
         </div>
         <div className="channelCard-context">
-          <NavLink to={`/channels_detail/channels_videos/${popularChannels.username}`}>{popularChannels?.username}</NavLink>
+          <NavLink onClick={() => navigate(`/channels_detail/channels_videos/${popularChannels.username}`, { state: { followersCount } })}>
+            {popularChannels?.username}
+          </NavLink>
           <p>
             {popularChannels.bio}
           </p>
