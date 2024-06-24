@@ -9,3 +9,11 @@
   flex-direction: column;
   padding-top: 30px;
 }
+.section__title{
+  display: flex;
+  align-items: center;
+  margin: 0 0 8px 0;
+  h4{
+    margin: 0 0 0 8px;
+  }
+}
