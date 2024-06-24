@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { BASE_URL } from "../../api/baseUrl";
 import logo from "../../assets/images/logoLight.svg";
-
+import Plyr from "plyr-react";
 import WhatsAppButton from "../../components/WhatsAppButton";
 import ShareModal from "../../components/ShareModal";
 import { useCart } from "react-use-cart";
@@ -159,29 +159,28 @@ const ProductDetail = () => {
 
   function formatViewCount(num) {
     if (num >= 1000000000) {
-       return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
+      return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "G";
     }
     if (num >= 1000000) {
-       return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+      return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
     }
     if (num >= 1000) {
-       return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
     }
     return num;
-}
-  
+  }
 
   return (
     <div className="product_detail">
       <div className="container-fluid">
         {productDetail && !loading ? (
           <div className="row">
-            <div className="col-xl-9 col-xxl-9 pt-4">
+            <div className="col-xl-9 col-xxl-9 ">
               <div className="video_content">
                 <div className="video_detail_content">
                   <img src={logo} className="video_logo" alt="" />
                   <div className="detail_video">
-                    <ReactPlayer
+                    {/* <ReactPlayer
                       ref={playerRef}
                       className="video"
                       controls={true}
@@ -189,6 +188,22 @@ const ProductDetail = () => {
                       url={productDetail?.product_video_type[0]?.original_video}
                       onPlay={() => setIsPlaying(true)}
                       onPause={() => setIsPlaying(false)}
+                    /> */}
+                    <Plyr
+                      // ref={playerRef}
+                      // playsInline={false}
+                      source={{
+                        type: "video",
+                        sources: [
+                          {
+                            src: productDetail?.product_video_type[0]
+                              ?.original_video,
+                            type: "video/mp4",
+                          },
+                        ],
+                      }}
+                      // onReady={onPlayerReady}
+                      // onDuration={handleDuration}
                     />
                   </div>
                   <div className={`video_top ${isPlaying ? "" : "paused"}`}>
@@ -200,19 +215,19 @@ const ProductDetail = () => {
                   </div>
                 </div>
                 <div className="video_content_name mt-3">
-                  <div>
+                  <div className="d-flex justify-content-center align-items-start flex-column h-100">
                     <h4>{productDetail.name}</h4>
                     <p>{productDetail.description}</p>
+                  </div>
+                  <div className="viev_part gap-1">
+                    <div className="eye_btn">
+                      <img src={eye} alt="eye.svg" />
+                    <span>{formatViewCount(productDetail?.view_count)}</span>
+                    </div>
                   </div>
                 </div>
                 <div className="video_content_bottom">
                   <div className="d-flex video_bottom_right">
-                    <div className="d-flex align-items-center gap-1">
-                      <div className="eye_btn">
-                        <img src={eye} alt="eye.svg" />
-                      </div>
-                      <span>{formatViewCount(productDetail?.view_count)}</span>
-                    </div>
                     <div className="d-flex align-items-center gap-2">
                       <button
                         className="like-btn"

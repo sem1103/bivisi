@@ -4,7 +4,7 @@ import LoadingBar from "react-top-loading-bar";
 
 const LoadingBarPreloader = () => {
   const ref = useRef(null);
-  const location = useLocation();
+  const location = useLocation(); 
 
   useEffect(() => {
     ref.current.continuousStart();
@@ -15,7 +15,7 @@ const LoadingBarPreloader = () => {
 
   return (
     <>
-      <LoadingBar color="#3a5eaf" ref={ref} height={3} />;
+      <LoadingBar color="white" ref={ref} height={2} />;
     </>
   );
 };

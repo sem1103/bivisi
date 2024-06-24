@@ -68,6 +68,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   }, [productItemShort]);
   const [comments, setComments] = useState([]);
   const [user_comment, setUser_comment] = useState("");
+  const [user_reply, setUserReply] = useState("");
   const [replyToCommentId, setReplyToCommentId] = useState(null);
   const [openMenu, setOpenMenu] = useState({});
   const [deleteCommentId, setDeleteCommentId] = useState(null);
@@ -97,8 +98,8 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
     }
   };
 
-  const handlePostComment = async (e) => {
-    if (!user_comment) {
+  const handlePostComment = async (comment) => {
+    if (!comment) {
       toast.warning("Please write your comment");
       return;
     } else if (!user) {
@@ -108,7 +109,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
     const payload = {
       user: user.user_id,
       product: productItemShort.id,
-      comment: user_comment,
+      comment: comment,
       parent_comment: replyToCommentId,
     };
     try {
@@ -220,6 +221,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   const handleReplyToggle = (commentId) => {
     setReplyToCommentId((prevId) => (prevId === commentId ? null : commentId));
     setUser_comment("");
+    setUserReply('')
   };
 
   const handlePlay = () => {
@@ -288,22 +290,20 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                 className={`shorts_page_left `}
               >
                 <div className=" pb-3">
-                  <div className="icons"
-                  onClick={() => {
-                    if (user.user_id === productItemShort.user.id) {
-                      toast.warning(
-                        "You cannot add your own product to the basket"
-                      );
-                    } else {
-                      handleAddToBasket(productItemShort, user, axiosInstance);
-                      addItem(productItemShort);
-                    }
-                  }}
-                  >
+                  <div className="icons">
                     <img
                       src={bag}
                       alt=""
-                      
+                      onClick={() => {
+                        if (user.user_id === productItemShort.user.id) {
+                          toast.warning(
+                            "You cannot add your own product to the basket"
+                          );
+                        } else {
+                          handleAddToBasket(productItemShort, user, axiosInstance);
+                          addItem(productItemShort);
+                        }
+                      }}
                     />
                      </div>
                 </div>
@@ -447,7 +447,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                     }`}
                                   onSubmit={(e) => {
                                     e.preventDefault();
-                                    handlePostComment();
+                                    handlePostComment(user_reply);
                                   }}
                                 >
                                   <div className="avatar ">
@@ -457,10 +457,11 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                     <h1>{user.username}</h1>
                                     <input
                                       type="text"
-                                      value={user_comment}
+                                      value={user_reply}
+                                      data-userComment='true'
                                       placeholder="Write your reply...."
                                       onChange={(e) =>
-                                        setUser_comment(e.target.value)
+                                        setUserReply(e.target.value)
                                       }
                                     />
                                   </div>
@@ -567,7 +568,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                       className="comment_write"
                       onSubmit={(e) => {
                         e.preventDefault();
-                        handlePostComment();
+                        handlePostComment(user_comment);
                       }}
                     >
                       <div className="d-flex align-items-start gap-3">

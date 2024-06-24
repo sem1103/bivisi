@@ -45,7 +45,10 @@ const LatestVideos = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
-            <h4>Latest videos</h4>
+            <div className="section__title">
+              <img src="/src/layout/Sidebar/icons/camera-outline.svg" alt="" width={35} />
+              <h4>Latest videos</h4>
+            </div>
             <Link to="/latest_videos">
               See all <img src={rightArrow} alt="" />
             </Link>
@@ -88,7 +91,7 @@ const LatestVideos = () => {
               ? "No product found in this category"
               : latestVideos.map((item) => (
                 <SwiperSlide key={item.id}>
-                  <VideoCard ProductItemVideoCard={item}  page="home"/>
+                  <VideoCard ProductItemVideoCard={item} page="home" />
                 </SwiperSlide>
               ))}
 
