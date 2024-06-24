@@ -9,7 +9,7 @@
   border-radius: 12px;
   background: var(--Gray-600, #141414);
   transition: all 0.3s ease;
-
+  cursor: pointer;
   .main {
     width: 100% !important;
     height: 204px !important;
@@ -35,18 +35,32 @@
       flex-shrink: 0;
       opacity: 0.4;
     }
-
+    .card_price {
+      position: absolute !important;
+      bottom: 10px !important;
+      right: 9px !important;
+      width: auto;
+      height: 32px;
+      flex-shrink: 0;
+      border-radius: 22px;
+      background-color: #0b90d4;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(2.08px);
+      padding: 5px 8px;
+    }
     .video_count {
       position: absolute;
       bottom: 10px;
       right: 10px;
-      background-color: rgba(0, 0, 0, .5);
-      color: #F3F4F6;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #f3f4f6;
       border-radius: 8px;
       padding: 2px 6px;
       font-size: 13px;
     }
-
 
     .plyr {
       width: 100% !important;
@@ -83,11 +97,9 @@
       opacity: 1 !important;
     }
 
-    .video_count{
+    .video_count {
       opacity: 1;
     }
-
-    
   }
 
   .heading {
@@ -143,16 +155,20 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 16px;
-
-    span {
-      color: var(--Text-1, #f3f4f6);
-      font-family: Poppins;
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 32px;
+    .card_viev_count {
+      gap: 10px;
+      img {
+        margin-right: 5px;
+      }
+      span {
+        color: var(--Text-1, #f3f4f6);
+        font-family: Poppins;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 32px;
+      }
     }
-
     .icons {
       display: flex;
       justify-content: center;
@@ -174,8 +190,6 @@
         &:hover {
           border-radius: 16px;
           background: var(--Gray-400, #292929);
-
-         
         }
       }
     }
