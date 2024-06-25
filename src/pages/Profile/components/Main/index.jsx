@@ -87,7 +87,7 @@ const Main = () => {
             (item) => item.user && item.user.id === userDetails.id
           );
           if (userSubscription) {
-            setFollowsCount(userSubscription.follows.follows_count);
+            setFollowsCount(userSubscription.follows_count);
           }
         }
       } catch (error) {
