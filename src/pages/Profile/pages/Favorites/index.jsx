@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./style.scss";
 import Main from "../../components/Main";
 import Categories from "../../components/Categories";
@@ -14,11 +14,14 @@ import { handleAddToBasket } from "../../../../helpers";
 import WishBtn from "../../../../components/WishlistBtn";
 import bag from "../../../../assets/icons/Bag-3.svg";
 import blueHeart from "../../../../assets/icons/blueHeart.svg";
+import eye from "../../../../assets/icons/eye.svg";
+import { ProductContext } from "../../../../context/ProductContext";
 
 const Favorites = () => {
   const { Option } = Select;
   const [selectedOption, setSelectedOption] = useState("");
   const [favorites, setFavorites] = useState([]);
+  const {user} = useContext(ProductContext)
   const axiosInstance = useAxios();
   useEffect(() => {
     const fetchWishlistItems = async () => {
@@ -70,6 +73,21 @@ const Favorites = () => {
     sortedProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
   }
 
+  function formatViewCount(num) {
+    if (num >= 1000000000) {
+      return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "G";
+    }
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+    return num;
+  }
+
+
+
   return (
     <>
       <Main />
@@ -115,6 +133,9 @@ const Favorites = () => {
                   <div className="col-lg-4 p-3">
                     <div className="videoCard">
                       <div className="main">
+                        <span className="card_price">
+                          $ {item?.product.price}
+                        </span>
                         <img
                           className={`coverImage`}
                           src={item?.cover_image}
@@ -140,7 +161,12 @@ const Favorites = () => {
                         <p>{item.product?.name}</p>
                       </NavLink>
                       <div className="cardBottom">
-                        <span>$ {item.product.price}</span>
+                        <div className="card_viev_count">
+                          <img src={eye} alt="eye.svg" />
+                          <span>
+                            {formatViewCount(item?.product?.view_count)}
+                          </span>
+                        </div>
                         <div className="icons">
                           <WishBtn item={item} />
                           <img
