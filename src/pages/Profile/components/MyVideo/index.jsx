@@ -29,15 +29,13 @@ const MyVideo = ({ productItem }) => {
   return (
     <div className="col-lg-4 pb-3">
       <div className="myVideoCard">
+        <span className="card_price">$ {productItem?.price}</span>
         <img
           src={productItem.product_video_type[0].cover_image}
           alt=""
           className="main"
         />
-        <NavLink
-          to={`/product_detail/${productItem?.id}`}
-          className="heading"
-        >
+        <NavLink to={`/product_detail/${productItem?.id}`} className="heading">
           <h1>{productItem.description}</h1>
           <h6>
             <img src={blueHeartd} alt="" />

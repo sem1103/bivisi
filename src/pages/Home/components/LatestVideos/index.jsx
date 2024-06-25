@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import VideoCard from "../../../../components/VideoCard";
 import rightArrow from "../../../../assets/icons/right-arrow.svg";
+import camera_img from "../../../../layout/Sidebar/icons/camera-outline.svg"
 
 import "./style.scss";
 import { ProductContext } from "../../../../context/ProductContext";
@@ -46,7 +47,7 @@ const LatestVideos = () => {
         <div className="row">
           <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
             <div className="section__title">
-              <img src="/src/layout/Sidebar/icons/camera-outline.svg" alt="" width={35} />
+              <img src={camera_img} alt="" width={35} />
               <h4>Latest videos</h4>
             </div>
             <Link to="/latest_videos">
