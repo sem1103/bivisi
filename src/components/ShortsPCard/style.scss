@@ -75,9 +75,13 @@
       }
 
       .shorts_page_left {
+       
         &.shorts_page_open {
           left: -100% !important;
         }
+         div.pb-3:last-of-type{
+          padding: 0 !important;
+      }
 
         .icons {
           display: flex;

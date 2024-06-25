@@ -1,42 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './style.scss';
-import { useParams } from 'react-router-dom';
-import useAxios from '../../../../utils/useAxios';
-import nullImg from '../../../../assets/images/user-empty-avatar.png'
+import { useParams, useLocation } from 'react-router-dom';
+import default_coverimg from "../../../../assets/images/default-coverimg.jpg";
+import user_emptyavatar from "../../../../assets/images/user-empty-avatar.png";
 
 const MainChannels = () => {
   const { username } = useParams();
-  const [webChannels, setWebChannels] = useState([]); 
-  const axiosInstance = useAxios();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res1 = await axiosInstance.get(`/user/subscriptions/`);
-        setWebChannels(res1.data?.results.filter(item => item.username == username)); 
-        console.log(res1.data?.results.filter(item => item.username == username));
-      } catch (error) {
-        console.error("Error fetching data:", error); 
-      }
-    };
-    if (username) {
-      fetchData(); 
-    }
-  }, [username]);
-
-
+  const location = useLocation();
+  const followersCount = location.state?.followersCount || 0;
+  const cover_image = location.state?.cover_image || default_coverimg;
+  const avatar = location.state?.avatar || user_emptyavatar;
 
   return (
     <div className='main_section'>
-      <div className="chanels_bg_image" style={{backgroundImage: `url(${webChannels[0]?.
-cover_image ?  webChannels[0]?.
-cover_image : 'https://ozartur.sk/wp-content/plugins/profilegrid-user-profiles-groups-and-communities/public/partials/images/default-cover.jpg'})`}}></div>
+      <div
+        className="chanels_bg_image"
+        style={{ backgroundImage: `url(${cover_image})` }}
+      ></div>
       <div className="channels_info">
         <div className="channels_text_content">
-          <div className="chanells_img_content" style={{backgroundImage: `url(${webChannels[0]?.avatar ? webChannels[0]?.avatar : nullImg })`}}></div>
+          <div
+            className="chanells_img_content"
+            style={{ backgroundImage: `url(${avatar})` }}
+          ></div>
           <div>
             <h4>{username}</h4>
-            <p><span className='me-2'>{webChannels[0]?.followers_count}</span>subscribers</p>
+            <p><span className='me-2'>{followersCount}</span>subscribers</p>
           </div>
         </div>
         <div className='subs_btn'>

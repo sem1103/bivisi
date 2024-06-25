@@ -2,7 +2,14 @@
   width: 100%;
   height: auto;
   padding: 12px 0;
+  #preview_video{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -5;
+    visibility: hidden;
 
+  }
   .upload__icon {
     svg {
       max-width: 130px;
