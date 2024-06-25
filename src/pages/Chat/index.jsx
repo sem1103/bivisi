@@ -70,6 +70,86 @@ const Chat = () => {
         },
       ],
     },
+    {
+      id: 5,
+      name: "Livia Mango",
+      messages: [
+        { text: "Good morning!", author: "other" },
+        { text: "Ready for the meeting?", author: "user" },
+        {
+          text: "Oh, hello! All perfectly I will check it and get back to you soon",
+          author: "other",
+        },
+        {
+          text: "Oh, hello! All perfectly I will check it and get back to you soon",
+          author: "user",
+        },
+      ],
+    },
+    {
+      id: 6,
+      name: "Livia Mango",
+      messages: [
+        { text: "Good morning!", author: "other" },
+        { text: "Ready for the meeting?", author: "user" },
+        {
+          text: "Oh, hello! All perfectly I will check it and get back to you soon",
+          author: "other",
+        },
+        {
+          text: "Oh, hello! All perfectly I will check it and get back to you soon",
+          author: "user",
+        },
+      ],
+    },
+    {
+      id: 7,
+      name: "Livia Mango",
+      messages: [
+        { text: "Good morning!", author: "other" },
+        { text: "Ready for the meeting?", author: "user" },
+        {
+          text: "Oh, hello! All perfectly I will check it and get back to you soon",
+          author: "other",
+        },
+        {
+          text: "Oh, hello! All perfectly I will check it and get back to you soon",
+          author: "user",
+        },
+      ],
+    },
+    {
+      id: 8,
+      name: "Livia Mango",
+      messages: [
+        { text: "Good morning!", author: "other" },
+        { text: "Ready for the meeting?", author: "user" },
+        {
+          text: "Oh, hello! All perfectly I will check it and get back to you soon",
+          author: "other",
+        },
+        {
+          text: "Oh, hello! All perfectly I will check it and get back to you soon",
+          author: "user",
+        },
+      ],
+    },
+    {
+      id: 9,
+      name: "Livia Mango",
+      messages: [
+        { text: "Good morning!", author: "other" },
+        { text: "Ready for the meeting?", author: "user" },
+        {
+          text: " will check it and get back to you soon",
+          author: "other",
+        },
+        {
+          text: "Oh, hello! All perfectly I will check it and get back to you soon",
+          author: "user",
+        },
+      ],
+    },
   ]);
   const [activeChat, setActiveChat] = useState(null);
 
@@ -112,7 +192,7 @@ const Chat = () => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [activeChat]);
 
-  const containerHeight = activeChat?.name ? "70vh" : "82vh";
+  const containerHeight = activeChat?.name ? "48vh" : "75vh";
   const containerPadding = activeChat?.name ? "48px" : "0";
   return (
     <>
@@ -150,7 +230,7 @@ const Chat = () => {
             <div className="col-lg-8 h-100">
               {activeChat?.name && (
                 <div className="chat_messages_header">
-                  <div className="d-flex align-items-center gap-3">
+                  <div className="d-flex align-items-center gap-3 message__user">
                     <div className="nickname">MG</div>
                     <div className="d-flex flex-column">
                       <h1>{activeChat.name}</h1>
