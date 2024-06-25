@@ -1,20 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './style.scss';
 import sort from '../../assets/icons/Sort.svg'
 import LastVideoCard from '../../components/VideoCard';
 import { ProductContext } from '../../context/ProductContext';
+import axios from 'axios';
+import useAxios from '../../utils/useAxios';
 
 const TopVideos = () => {
     const { product } = useContext(ProductContext);
+    const axiosInstance = useAxios();
 
     if (!product || !Array.isArray(product.results) || product.results.length === 0) {
       return null;
     }
+
   
     const videoProducts = product.results.filter(
       (item) => item.product_video_type[0]?.product_type === "Video"
     );
+    console.log(videoProducts);
 
+    const addPremiumVideoHandler = async (id) => {
+        let res = await axiosInstance.put('/update_premium_products/', {product_ids : [id]});
+        if(res.status == 201){
+            console.log('good');
+        }
+    }
 
     return (
         <div className='top_page_videos'>
@@ -25,6 +36,12 @@ const TopVideos = () => {
                         <button className='sort_btn'>
                             <img src={sort} alt="plus.svg" />
                             Sort by
+                        </button>
+
+                        <button onClick={() => {
+                            addPremiumVideoHandler(105)
+                        }}>
+                            +
                         </button>
                     </div>
                     {

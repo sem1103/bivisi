@@ -4,6 +4,7 @@ import rightArrow from "../../../../assets/icons/right-arrow.svg";
 import LastVideoCard from "../../../../components/VideoCard";
 import { ProductContext } from "../../../../context/ProductContext";
 import { Link } from "react-router-dom";
+import video_img from "../../../../layout/Sidebar/icons/video-outline.svg"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {
   Pagination,
@@ -45,7 +46,7 @@ const TopVideo = () => {
         <div className="row">
           <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
             <div className="section__title">
-            <img src="/src/layout/Sidebar/icons/video-outline.svg" alt="" width={35}/>
+            <img src={video_img} alt="" width={35}/>
             <h4>Top videos</h4>
 
             </div>

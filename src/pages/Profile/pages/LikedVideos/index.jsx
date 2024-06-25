@@ -13,6 +13,7 @@ import { ProductContext } from "../../../../context/ProductContext";
 import WishBtn from "../../../../components/WishlistBtn";
 import bag from "../../../../assets/icons/Bag-3.svg";
 import blueHeart from "../../../../assets/icons/blueHeart.svg";
+import eye from "../../../../assets/icons/eye.svg";
 
 const LikedVideos = () => {
   const axiosInstance = useAxios();
@@ -32,6 +33,20 @@ const LikedVideos = () => {
     fetchData();
   }, []);
 
+  function formatViewCount(num) {
+    if (num >= 1000000000) {
+      return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "G";
+    }
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+    return num;
+  }
+
+  
   return (
     <>
       <Main />
@@ -59,6 +74,9 @@ const LikedVideos = () => {
                   <div className="col-lg-4 p-3">
                     <div className="videoCard">
                       <div className="main">
+                        <span className="card_price">
+                          $ {item?.product.price}
+                        </span>
                         <img
                           className={`coverImage`}
                           src={item?.cover_image}
@@ -72,7 +90,7 @@ const LikedVideos = () => {
                       </div>
                       <NavLink
                         className="heading w-100 flex-column justify-content-start align-items-start"
-                        to={`/product_detail/${item.product?.id}`}
+                        to={`/product_detail/${item.id}`}
                       >
                         <div className="d-flex w-100 justify-content-between align-items-center">
                           <h1>{item.product?.user?.name}</h1>
@@ -84,7 +102,12 @@ const LikedVideos = () => {
                         <p>{item.product?.name}</p>
                       </NavLink>
                       <div className="cardBottom">
-                        <span>$ {item.product.price}</span>
+                        <div className="card_viev_count">
+                          <img src={eye} alt="eye.svg" />
+                          <span>
+                            {formatViewCount(item?.product?.view_count)}
+                          </span>
+                        </div>
                         <div className="icons">
                           <WishBtn item={item} />
                           <img

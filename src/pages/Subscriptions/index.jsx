@@ -8,6 +8,7 @@ import { Select } from 'antd';
 import PopularChannelCard from "../../components/PChannel";
 import default_coverimg from "../../assets/images/default-coverimg.jpg"
 import user_emptyavatar from "../../assets/images/user-empty-avatar.png"
+import { useNavigate } from "react-router-dom";
 
 
 const Subscription = () => {
@@ -17,7 +18,7 @@ const Subscription = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   const [sortedSubscriptions, setSortedSubscriptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchSubs = async () => {
       try {
@@ -95,14 +96,29 @@ const Subscription = () => {
             </div>
           </div>
           {sortedSubscriptions.map((item) => (
-            <div className="col-lg-6 col-md-6 col-sm-12 col-12 p-3" key={item.id}>
+            <div className="col-lg-6 col-md-6 col-sm-12 col-12 p-2" key={item.id}>
               <div className="channelCard">
                 <img src={item.cover_image || default_coverimg} className="img-top" alt="" />
                 <div className="opacity-img">
                   <img src={item.avatar || user_emptyavatar} alt="" />
                 </div>
                 <div className="channelCard-context">
-                  <h2>{item.username}</h2>
+                  {/* <h2>{item.username}</h2> */}
+                  <div 
+            className="username" 
+            onClick={() => navigate(
+              `/channels_detail/channels_videos/${item.username}`, 
+              { 
+                state: { 
+                  followersCount: item.follower_count, 
+                  cover_image: item.cover_image, 
+                  avatar: item.avatar 
+                } 
+              }
+            )}
+          >
+            {item?.username}
+          </div>
                   <span>{item.first_name} {item.last_name}</span>
                   <p>{item.bio}</p>
                   <div className="d-flex align-items-center justify-content-between">
