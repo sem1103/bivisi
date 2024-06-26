@@ -58,7 +58,6 @@ const UploadS = () => {
         const categoryRes = await axios.get(
           "http://64.226.112.70/api/categories/"
         );
-        console.log("video upload", categoryRes.data.results);
         setCategory(categoryRes.data.results);
       } catch (err) {
         console.log(err);
@@ -71,7 +70,6 @@ const UploadS = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    console.log(e.target);
     if (name === "price" && isNaN(value)) {
       toast.warning("Please enter a valid numeric value for price.");
       return;
@@ -231,9 +229,6 @@ const UploadS = () => {
       !price.trim() ||
       !original_video
     ) {
-      console.log({
-        name, description, phone_number, category, price, original_video
-      });
       return false;
     }
     return true;

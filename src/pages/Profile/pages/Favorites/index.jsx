@@ -28,7 +28,7 @@ const Favorites = () => {
           (item) => item.product_type === "Video"
         );
         setFavorites(filteredData);
-        console.log(response);
+
       } catch (error) {
         console.log(error);
       }
@@ -111,9 +111,8 @@ const Favorites = () => {
             </div>
             {sortedProducts?.map((item, index) => {
               return (
-                <>
-                  <div className="col-lg-4 p-3">
-                    <div className="videoCard">
+                  <div className="col-lg-4 p-3" key={index}>
+                    <div className="videoCard" >
                       <div className="main">
                         <img
                           className={`coverImage`}
@@ -158,7 +157,6 @@ const Favorites = () => {
                       </div>
                     </div>
                   </div>
-                </>
               );
             })}
           </div>

@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("data", response.data);
       setUserDetails(response.data);
     } catch (error) {
       console.error("Error fetching user details:", error);
@@ -38,8 +37,6 @@ export const AuthProvider = ({ children }) => {
 
   const registerUser = async (user) => {
     const response = await axios.post(`${BASE_URL}/user/register/`, user);
-    console.log(response.data);
-    console.log(response);
     return response;
   };
 
@@ -48,8 +45,6 @@ export const AuthProvider = ({ children }) => {
       otp_code,
       email,
     });
-    console.log(response.data);
-    console.log(response);
     return response;
   };
 
@@ -57,27 +52,18 @@ export const AuthProvider = ({ children }) => {
     const response = await axios.post(`${BASE_URL}/user/resend_otp/`, {
       email,
     });
-    console.log(response.data);
-    console.log(response);
     return response;
   };
 
   const confirmNewPassword = async (data) => {
     const response = await axios.post(`${BASE_URL}/user/reset_password/`, data);
-    console.log(response.data);
-    console.log(response);
     return response;
   };
 
   const loginUser = async (user) => {
     try {
       const response = await axios.post(`${BASE_URL}/user/login/`, user);
-      console.log(response.data);
       if (response.status === 200) {
-        console.log("Logged In");
-        console.log(response);
-        console.log(response.data);
-        console.log(response.data.access);
         setAuthTokens(response.data);
         setUser(jwtDecode(response.data.access));
         localStorage.setItem("authTokens", JSON.stringify(response.data));

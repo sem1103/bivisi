@@ -24,8 +24,6 @@ const ResetPassword = () => {
           `${BASE_URL}/user/send_email_reset_password/`,
           { email }
         );
-        console.log(response);
-        console.log(email);
         if (response.status === 200) {
           console.log("okey");
           toast.success("Please check your email");
@@ -34,12 +32,9 @@ const ResetPassword = () => {
           localStorage.setItem('email', email)
           navigate("/user/verify-otp");
         } else {
-          console.log(response);
-          console.log("there was a server issue");
           toast.error("An error occurred");
         }
       } catch (error) {
-        console.log(error);
         if (error.response) {
           if (error.response.status === 400) {
             toast.error("Invalid email address or user not found");

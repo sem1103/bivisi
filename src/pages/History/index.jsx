@@ -59,7 +59,6 @@ const History = () => {
       try {
         const response = await axiosInstance.get("/history/user_history_list/");
         setHistory(response.data.results);
-        console.log(response.data.results);
       } catch (error) {
         console.error("Error fetching viewing history", error);
       }
@@ -69,7 +68,6 @@ const History = () => {
   }, []);
 
   const handleDeleteFromHistory = async (historyId) => {
-    console.log("Attempting to delete history with ID:", historyId);
 
     try {
       await axiosInstance.delete("/history/user_history_delete/", {
@@ -81,7 +79,6 @@ const History = () => {
       setHistory((prevHistory) =>
         prevHistory.filter((item) => item.id !== historyId)
       );
-      console.log("Product deleted from history");
       toast.success("Product deleted from history");
     } catch (error) {
       console.error("Error deleting product from history", error);

@@ -17,7 +17,6 @@ const AllChannels = () => {
             try {
                 const response = await axios.get(`${BASE_URL}/user/subscriptions/`);
                 const filteredChannels = response.data.results.filter(channel => channel.username !== user?.username);
-                console.log(response.data.results);
                 setPopularAllC(filteredChannels);
                 setSortedChannels(filteredChannels); 
             } catch (error) {

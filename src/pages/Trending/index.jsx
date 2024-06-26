@@ -12,8 +12,7 @@ const Trending = () => {
     useEffect(()=>{
         const fetchData = async ()=>{
             try {
-                const response = await axios.get(`${BASE_URL}/trending_videos/`);
-                console.log("trednd video", response.data.results);
+                const response = await axios.get(`${BASE_URL}/web_trending_videos/`);
                 setTrendVideo(response.data.results)
             } catch (error) {
                 console.error('Failed to fetch data:', error);
