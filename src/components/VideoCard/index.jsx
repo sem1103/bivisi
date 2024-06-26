@@ -36,7 +36,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
     playing: false,
   });
 
-  const [isLoading, setIsLoading] = useState(true); // Yükleme durumunu takip eder
+  const [isLoading, setIsLoading] = useState(true); 
   const isPlayingRef = useRef(false);
 
   const playVideo = async () => {

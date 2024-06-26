@@ -38,7 +38,6 @@ const TopVideo = () => {
     );
   }
 
-  console.log(videoProducts);
 
   return (
     <section className="topVideos">

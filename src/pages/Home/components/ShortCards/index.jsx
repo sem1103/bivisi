@@ -36,7 +36,6 @@ const ShortCards = () => {
     );
   }
 
-  console.log(videoProducts)
   return (
     <>
       <section className="shortCards">

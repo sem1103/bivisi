@@ -35,7 +35,6 @@ export const handleAddToBasket = async (product, user, axiosInstance) => {
         `/order/add_basket_item/${product.id}/`
       );
       console.log("Product added to basket:", response.data);
-      console.log(response);
       toast.success("Product succesfully to your basket");
     } catch (error) {
       console.log(error);

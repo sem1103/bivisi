@@ -82,7 +82,6 @@ const NewPassword = () => {
       return;
     }
     try {
-      console.log(formData);
       const response = await confirmNewPassword(formData);
       if (response.status === 200) {
         console.log("okey");
