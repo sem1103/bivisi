@@ -126,7 +126,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
         <div className="main">
           <img className="card_logo" src={logo} alt="" />
           <span className="card_price">$ {ProductItemVideoCard?.price}</span>
-          <span className="video_count">{videoDuration}</span>
+          {/* <span className="video_count">{videoDuration}</span> */}
           <img
             className={`coverImage `}
             src={ProductItemVideoCard?.product_video_type[0]?.cover_image}
@@ -146,7 +146,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
             }}
             options={{ muted: true, controls: ["play", "pause", "progress"] }}
             onReady={onPlayerReady}
-            onDuration={handleDuration}
+            // onDuration={handleDuration}
           />
           {loading && (
             <div className="loading-overlay">

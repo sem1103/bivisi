@@ -13,6 +13,8 @@ import { VideoContext } from "../../context/VideoContext";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Pagination, A11y, Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import eye from "../../assets/icons/eye.svg";
+
 
 const History = () => {
   const { product } = useContext(ProductContext);
@@ -98,6 +100,19 @@ const History = () => {
     }, 1000);
   };
 
+  function formatViewCount(num) {
+    if (num >= 1000000000) {
+      return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "G";
+    }
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+    return num;
+  }
+
   return (
     <>
       <section className="history_cards">
@@ -114,12 +129,10 @@ const History = () => {
               speed={2000}
               loop={true}
               pagination={{ clickable: true }}
-
               breakpoints={{
                 0: {
                   spaceBetween: 5,
                   slidesPerView: 2,
-  
                 },
                 480: {
                   spaceBetween: 5,
@@ -129,7 +142,7 @@ const History = () => {
                   spaceBetween: 15,
                   slidesPerView: 3,
                 },
-  
+
                 912: {
                   spaceBetween: 15,
                   slidesPerView: 3,
@@ -194,6 +207,9 @@ const History = () => {
                   onMouseLeave={handleMouseLeave}
                 >
                   <div className="main">
+                    <span className="card_price">
+                      $ {item.product_video_type?.product?.price}
+                    </span>
                     <img
                       className={`coverImage ${isHovered ? "hidden" : ""}`}
                       src={item?.product_video_type?.cover_image}
@@ -215,14 +231,17 @@ const History = () => {
                   >
                     <div className="d-flex w-100 justify-content-between align-items-center">
                       <h1>{item.product_video_type?.product.name}</h1>
-                      <h6>
-                        {item.product_video_type?.product.like_count}
-                      </h6>
+                      <h6>{item.product_video_type?.product.like_count}</h6>
                     </div>
                     <p>{item.product_video_type?.product.description}</p>
                   </NavLink>
                   <div className="cardBottom">
-                    <span>$ {item.product_video_type?.product?.price}</span>
+                    {/* <div className="card_viev_count"> */}
+                      {/* <img src={eye} alt="eye.svg" /> */}
+                      {/* <span>
+                        {formatViewCount(item.product_video_type?.product?.view_count)}
+                      </span> */}
+                    {/* </div> */}
                     <div className="icons">
                       <WishBtn item={item} />
                       <button onClick={() => handleDeleteFromHistory(item.id)}>
