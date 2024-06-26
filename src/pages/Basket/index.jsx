@@ -21,8 +21,6 @@ const Basket = () => {
       try {
         const response = await axiosInstance.get("/order/basket/");
         setBasketItems(response.data[0].items);
-        console.log(response.data[0].items);
-        console.log(basketItems);
       } catch (error) {
         setError(error);
       }
@@ -36,7 +34,6 @@ const Basket = () => {
       const response = await axiosInstance.delete(
         `/order/delete_basket_item/${id}/`
       );
-      console.log("Product deleted from basket:", response.data);
       setBasketItems((prevItems) =>
         prevItems.filter((item) => item.product.id !== id)
       );
@@ -45,7 +42,6 @@ const Basket = () => {
       toast.success("Product removed from basket successfully!");
     } catch (error) {
       setError(error.response.data);
-      console.log("Error deleting product from basket:", error.response.data);
     }
   };
 
@@ -63,7 +59,6 @@ const Basket = () => {
           quantity: newQuantity,
         }
       );
-      console.log("Product quantity updated:", response.data);
 
       // Sepet öğelerini güncelle
       setBasketItems((prevItems) =>
@@ -75,7 +70,6 @@ const Basket = () => {
       toast.success("Product quantity updated successfully!");
     } catch (error) {
       setError(error.response.data);
-      console.log("Error updating product quantity:", error.response.data);
       toast.error("An error occurred while updating product quantity.");
     }
   };
@@ -87,7 +81,6 @@ const Basket = () => {
     );
   };
 
-  console.log(basketItems);
   return (
     <div className="basket">
       <div className="container-fluid">
@@ -102,7 +95,7 @@ const Basket = () => {
           <div className="col-lg-8">
             {basketItems?.map((item) => {
               return (
-                <div className="d-flex basket_card mb-4">
+                <div className="d-flex basket_card mb-4" key={item.id}>
                   <div>
                     <img src={item.product.product_video_type[0].cover_image} />
                   </div>

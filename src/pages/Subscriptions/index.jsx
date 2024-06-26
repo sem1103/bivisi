@@ -24,7 +24,6 @@ const Subscription = () => {
       try {
         const response = await axiosInstance.get('/user/your_subscribers/');
         setSubscriptions(response?.data?.results);
-        console.log(response.data.results);
         setSortedSubscriptions(response.data.results);
       } catch (error) {
         console.error('Failed to fetch subscriptions:', error);

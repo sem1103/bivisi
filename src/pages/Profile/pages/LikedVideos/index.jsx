@@ -24,8 +24,6 @@ const LikedVideos = () => {
       try {
         const res = await axiosInstance.get(`/liked_products/`);
         setLikedProducts(res.data.results);
-        console.log("liked products", res.data.results);
-        console.log(likedProducts);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

@@ -18,7 +18,6 @@ const Otp = () => {
     console.log(otp, email);
     try {
       const response = await verifyOtp(otp, email);
-      console.log(response);
       localStorage.setItem("otp", JSON.stringify(otp));
       if (response.status === 200) {
         const context = localStorage.getItem("context");
@@ -61,7 +60,7 @@ const Otp = () => {
   const handleSubmitResendOtp = async (e) => {
     try {
       const response = await resendOtp(email);
-      console.log(response);
+      
       if (response.status === 200) {
         console.log("okey");
         toast.success("Otp resend !");
