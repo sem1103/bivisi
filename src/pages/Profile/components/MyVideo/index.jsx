@@ -12,7 +12,6 @@ import "./style.scss";
 const MyVideo = ({ productItem }) => {
   const { product, setProduct } = useContext(ProductContext);
   const axiosInstance = useAxios();
-
   const deletePost = async (id) => {
     try {
       await axiosInstance.delete(`/product_delete/${id}/`);
