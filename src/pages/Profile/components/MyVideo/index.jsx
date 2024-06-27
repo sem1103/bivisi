@@ -45,7 +45,9 @@ const MyVideo = ({ productItem }) => {
         <div className="cardBottom">
           <span>{productItem.price}</span>
           <div className="icons">
-            <NavLink to={`/your_profile/edit_product/${productItem.id}`}>
+            <NavLink to={`/your_profile/edit_video/${productItem.id}`} onClick={() => {
+              localStorage.setItem('myEditVideo', JSON.stringify(productItem))
+            }}>
               <img src={edit} alt="" />
             </NavLink>
             <button

@@ -61,13 +61,17 @@ const Categories = () => {
       "/all_channels",
       "/channels_detail",
       "/channels_detail/channels_videos",
-      "/channels_detail/channels_shorts"
-    ];
+      "/channels_detail/channels_shorts",
+      "/your_profile/edit_video/"
+      ];
 
-    if (excludedPaths.includes(pathname)) {
+      let flag = excludedPaths.some(item => {
+        if(pathname.includes(item)) return true
+      })
+
+    if (flag) {
       return true;
     }
-
     const dynamicPaths = [
       /^\/product_detail\/\d+$/
     ];

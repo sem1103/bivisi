@@ -109,7 +109,7 @@ const AppRouter = () => {
               <Route element={<UploadS />} path="/your_profile/upload_shorts" />
               <Route
                 element={<EditVideo />}
-                path="/your_profile/edit_product/:id"
+                path="/your_profile/edit_video/:id"
               />
               <Route
                 element={<EditMyShort />}
