@@ -13,13 +13,14 @@ import Map from 'react-map-gl';
 import GeocoderControl from "../../components/reactMap/geocoder-control";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useLocation } from "react-router-dom";
-import testImg from './../../assets/images/authBg.png'
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 
 const UploadV = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
   const [editVideo, setEditVideo] = useState(localStorage.myEditVideo != undefined ? JSON.parse(localStorage.myEditVideo) : false)
   const { product, setProduct } = useContext(ProductContext);
   const { Option } = Select;
@@ -31,12 +32,16 @@ const UploadV = () => {
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [haveVideo, setHaveVideo] = useState(false);
   const [videoName, setVideoName] = useState(useState(localStorage.myEditVideo != undefined ? editVideo.name : ''))
-  const [thumbnail, setThumbnail] = useState();
+  const [thumbnail, setThumbnail] = useState(!editVideo ? [] : [
+    {
+      dataURL: editVideo.product_video_type[0].cover_image,
+      coverImageFile: {}
+    }
+  ]);
   const [activeCoverInd, setActiveCoverInd ] = useState(0);
   const imgRef = useRef(null);
   const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA'; // Set your mapbox token here
   const currency = getCurrencyByCountry();
-  const coverImg = ''
 
   const { register, control } = useForm({
     defaultValues: {
@@ -51,94 +56,18 @@ const UploadV = () => {
   const [formData, setFormData] = useState({
     name: !editVideo ? '' : editVideo.name,
     description: !editVideo ? '' : editVideo.description,
-    cover_image: null ,
+    cover_image:  null ,
     category: !editVideo ? [] : editVideo.category, 
     phone_number: !editVideo ? "+994" : editVideo.phone_number , // Default country code
     product_type: "Video",
     price: !editVideo ? '' : editVideo.price.split('.')[0],
-    original_video: !editVideo ? null : new File(
-      [editVideo.product_video_type[0].original_video],
-      "original_video.mp4",
-      { type: "video/mp4" }
-    )
+    original_video:  null 
   });
   const axiosInstance = useAxios();
 
+
+
   
-  const handleUpload =  () => {
-    const img = imgRef.current;
-    let file = '';
-    const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-    // Преобразовать холст в Blob
-    canvas.toBlob((blob) => {
-      // Создать объект File из Blob
-      coverImg = new File([blob], 'image.jpg', { type: 'image/jpeg' });
-      console.log(coverImg);
-    }, "image/jpeg");
-
-  };
-
-
-  const createEditThubernail = () => {
-    const video = document.createElement("video");
-    video.crossOrigin = "anonymous";
-    video.src = editVideo.product_video_type[0].original_video;
-     
-
-      video.onloadeddata = () => {
-        const captureTimes = [
-          video.duration * 0.25,
-          video.duration * 0.5,
-          video.duration * 0.75,
-          video.duration * 0.9
-        ];
-
-        let thumbnails = [];
-        let captureIndex = 0;
-
-        const captureThumbnail = () => {
-          if (captureIndex < captureTimes.length) {
-            video.currentTime = captureTimes[captureIndex];
-            video.onseeked = async () => {
-              const canvas = document.createElement("canvas");
-              canvas.width = video.videoWidth;
-              canvas.height = video.videoHeight;
-              const ctx = canvas.getContext("2d");
-              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-              const dataURL = canvas.toDataURL('image/png');
-
-              canvas.toBlob((blob) => {
-                const coverImageFile = new File([blob], `thumbnail.jpg`, {
-                  type: "image/jpeg",
-                });
-                thumbnails.push({dataURL,coverImageFile });
-
-                setFormData((prevData) => ({
-                  ...prevData,
-                  cover_image: coverImageFile,
-                }));
-              }, "image/jpeg");
-
-
-              captureIndex++;
-              captureThumbnail();
-            };
-          } else {
-            setThumbnail(thumbnails);
-          }
-
-        };
-        captureThumbnail();
-      };
-  }
-
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -150,15 +79,12 @@ const UploadV = () => {
           const selectedCategory = categoryRes.data.results.find((cat) => cat.id == editVideo.category[0]);
           setSubcategory(selectedCategory?.children || []);
         }
-        
       } catch (err) {
         console.log(err);
       }
     };
 
     fetchData();
-    // editVideo && createEditThubernail();
-   
     return () => {
       if(pathname.includes('upload')){
         localStorage.removeItem('myEditVideo');
@@ -224,8 +150,9 @@ const UploadV = () => {
 
       const video = document.createElement("video");
       video.src = URL.createObjectURL(file);
+      console.log(video);
 
-        console.log(video.src);
+      
       const updateProgress = (percent) => {
         setLoadingProgress(percent);
         if (percent === 100) {
@@ -274,6 +201,7 @@ const UploadV = () => {
             };
           } else {
             setThumbnail(thumbnails);
+            console.log(thumbnails);
           }
 
         };
@@ -332,26 +260,23 @@ const UploadV = () => {
   };
 
   const validateForm = () => {
-    handleUpload()
-    console.log(coverImg);
-
-    const { name, description, phone_number, category, price, original_video } =
+    const { name, description, phone_number, category, price } =
       formData;
     const isCategoryValid = category.length >= 1 && category[0];
+
+   
+
 
     if (
       !name.trim() ||
       !description.trim() ||
       !phone_number.trim() ||
       !isCategoryValid ||
-      !price.trim() ||
-      !original_video
-    ) 
-    {
-      console.log(formData);
+
+      !price.trim() 
+    ) {
       return false;
     }
-    console.log(formData);
     return true;
   };
 
@@ -361,24 +286,44 @@ const UploadV = () => {
       toast.error("Please fill out all required fields.");
       return;
     }
-
+    const { original_video, ...rest } = formData;
     const submitData = new FormData();
-    Object.keys(formData).forEach((key) => {
-      if (key === "category") {
-        // Ana və alt kateqoriyanın indekslərini birlikdə göndər
-        formData[key].forEach((categoryId) => {
-          submitData.append("category", categoryId);
-        });
-      } else if (key === "cover_image" && formData[key]) {
-        submitData.append(key, formData[key], formData[key].name);
-      } else {
-        submitData.append(key, formData[key]);
-      }
-    });
+
+    
+    if(  formData.original_video == null) {
+      Object.keys(rest).forEach((key) => {
+        console.log(rest[key]);
+        if(rest[key] == null ) return
+
+        if (key === "category") {
+          formData[key].forEach((categoryId) => {
+            submitData.append("category", categoryId);
+          });
+        }else {
+          submitData.append(key, formData[key]);
+        }
+      });
+    } else {
+      Object.keys(formData).forEach((key) => {
+        if (key === "category") {
+          // Ana və alt kateqoriyanın indekslərini birlikdə göndər
+          formData[key].forEach((categoryId) => {
+            submitData.append("category", categoryId);
+          });
+        } else if (key === "cover_image" && formData[key]) {
+          submitData.append(key, formData[key], formData[key].name);
+        } else {
+          submitData.append(key, formData[key]);
+        }
+      });
+    }
+
+    
 
     submitData.set("name", capitalizeFirstLetter(formData.name));
     submitData.set("description", capitalizeFirstLetter(formData.description));
 
+    
     try {
         await toast.promise(
           !editVideo ?
@@ -388,7 +333,7 @@ const UploadV = () => {
             },
           })
           :
-          axiosInstance.put(
+          axiosInstance.patch(
             `/update_product/${editVideo.id}/${editVideo.product_video_type[0].id}/`,
             submitData,
             {
@@ -396,7 +341,11 @@ const UploadV = () => {
                 "Content-Type": "multipart/form-data",
               },
             }
-          )
+          ).then(res => {
+            setTimeout(() => {
+              navigate('/your_profile/my_videos')
+            }, 200);
+          })
           ,
           {
             loading: "Processing...",
@@ -421,6 +370,7 @@ const UploadV = () => {
       setHaveVideo(false)
       setShowProgressBar(false)
       setActiveCoverInd(0)
+      
 
     } catch (error) {
       console.error("Error uploading data", error);
@@ -513,7 +463,7 @@ const UploadV = () => {
                   {
                   (videoPreview  || editVideo) ?
                     <div className="video__preview">
-                      <img ref={imgRef} className="thumbnail" src={!editVideo ? thumbnail[activeCoverInd]?.dataURL : /*editVideo.product_video_type[0].cover_image*/  testImg } alt="" />
+                      <img ref={imgRef} className="thumbnail" src={ thumbnail[activeCoverInd]?.dataURL} alt="" />
                       <h5>File Name</h5>
                       <h6>{videoName}</h6>
                       {
@@ -540,7 +490,7 @@ const UploadV = () => {
                       />
                       <div className="upload__desc">
                         <h4>Drag and drop video files to upload</h4>
-                        <p>Your short videos will be private until you publish them.</p>
+                        <p>Your videos will be private until you publish them.</p>
                       </div>
 
                       <button
