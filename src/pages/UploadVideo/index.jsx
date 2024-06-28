@@ -36,7 +36,6 @@ const UploadV = () => {
   const imgRef = useRef(null);
   const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA'; // Set your mapbox token here
   const currency = getCurrencyByCountry();
-  const coverImg = ''
 
   const { register, control } = useForm({
     defaultValues: {
@@ -65,31 +64,16 @@ const UploadV = () => {
   const axiosInstance = useAxios();
 
   
-  const handleUpload =  () => {
-    const img = imgRef.current;
-    let file = '';
-    const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-    // Преобразовать холст в Blob
-    canvas.toBlob((blob) => {
-      // Создать объект File из Blob
-      coverImg = new File([blob], 'image.jpg', { type: 'image/jpeg' });
-      console.log(coverImg);
-    }, "image/jpeg");
-
-  };
+ 
 
 
   const createEditThubernail = () => {
     const video = document.createElement("video");
-    video.crossOrigin = "anonymous";
-    video.src = editVideo.product_video_type[0].original_video;
-     
+    video.src = URL.createObjectURL(
+      new Blob([editVideo.product_video_type[0].original_video], { type: "video/mp4" })
+    );
 
+    
       video.onloadeddata = () => {
         const captureTimes = [
           video.duration * 0.25,
@@ -130,6 +114,8 @@ const UploadV = () => {
             };
           } else {
             setThumbnail(thumbnails);
+            console.log(thumbnails);
+            console.log();
           }
 
         };
@@ -157,7 +143,7 @@ const UploadV = () => {
     };
 
     fetchData();
-    // editVideo && createEditThubernail();
+    editVideo && createEditThubernail();
    
     return () => {
       if(pathname.includes('upload')){
@@ -224,6 +210,8 @@ const UploadV = () => {
 
       const video = document.createElement("video");
       video.src = URL.createObjectURL(file);
+
+      
 
         console.log(video.src);
       const updateProgress = (percent) => {
@@ -333,7 +321,6 @@ const UploadV = () => {
 
   const validateForm = () => {
     handleUpload()
-    console.log(coverImg);
 
     const { name, description, phone_number, category, price, original_video } =
       formData;
