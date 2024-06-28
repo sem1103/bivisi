@@ -73,7 +73,8 @@
     }
 
     .upload__steps {
-
+      position: relative;
+      z-index: -2;
       background: #121216;
       border-radius: 20px;
       margin: 0 0 20px 0;
