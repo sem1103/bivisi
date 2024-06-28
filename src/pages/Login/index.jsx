@@ -38,7 +38,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
     if (!formData.username || !formData.password) {
       toast.error("Username and password cannot be empty");
       return;

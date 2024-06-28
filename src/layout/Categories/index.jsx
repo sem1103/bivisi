@@ -15,7 +15,6 @@ const Categories = () => {
     const fetchData = async () => {
       try {
         const categoryRes = await axios.get(`${BASE_URL}/categories/`);
-        console.log(categoryRes.data)
         setCategory(categoryRes.data);
       } catch (err) {
         console.log(err);

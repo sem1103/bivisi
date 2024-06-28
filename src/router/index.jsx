@@ -115,10 +115,7 @@ const AppRouter = () => {
                 element={<EditMyShort />}
                 path="/your_profile/edit_short/:id"
               />
-              <Route
-                element={<ChannelsDetail />}
-                path="/channels_detail/channels_videos/:username"
-              />
+
               <Route
                 element={<ChannelsVideos />}
                 path="/channels_detail/channels_videos/:username"

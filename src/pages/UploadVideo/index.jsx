@@ -346,7 +346,8 @@ const UploadV = () => {
       !isCategoryValid ||
       !price.trim() ||
       !original_video
-    ) {
+    ) 
+    {
       console.log(formData);
       return false;
     }
