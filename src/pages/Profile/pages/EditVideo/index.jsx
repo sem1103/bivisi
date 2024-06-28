@@ -1,12 +1,15 @@
-import React from "react";
-import UploadS from "../../../UploadShorts";
+import React , {useState, useEffect} from "react";
 import { useParams } from "react-router-dom";
+import UploadV from "../../../UploadVideo";
+
 
 const EditVideo = () => {
   const { id } = useParams();
+
+  
   return (
     <>
-      <UploadS productId={id} type="Video" />
+        <UploadV productId={id} type="Video"  />
     </>
   );
 };

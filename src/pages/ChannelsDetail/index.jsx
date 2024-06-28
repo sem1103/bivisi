@@ -6,10 +6,10 @@ import { useParams } from 'react-router-dom'
 const ChannelsDetail = () => {
   const { username } = useParams();
   return (
-    <div>
+    <>
         <MainChannels username={username}/>
         <Categories username={username}/>
-    </div>
+    </>
   )
 }
 

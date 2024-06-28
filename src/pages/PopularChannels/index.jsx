@@ -7,6 +7,7 @@ import { BASE_URL } from '../../api/baseUrl';
 import { Select } from 'antd';
 import { AuthContext } from '../../context/authContext';
 
+
 const PopularChannels = () => {
     const { Option } = Select;
     const [popularC, setPopularC] = useState([]);
@@ -17,7 +18,6 @@ const PopularChannels = () => {
         const fetchPChannels = async () => {
             try {
                 const response = await axios.get(`${BASE_URL}/user/popular-channels/`);
-                console.log("popular c ", response?.data);
                 const filteredChannels = response?.data?.results.filter(channel => channel?.username !== user?.username);
                 setPopularC(filteredChannels);
                 setSortedChannels(filteredChannels); 

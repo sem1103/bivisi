@@ -64,7 +64,6 @@ const Password = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log(formData);
     if (!validateForm()) {
       return;
     }

@@ -42,7 +42,6 @@ const CommentsComponent = ({ productDetail }) => {
       }));
 
       setComments(commentsWithSubComments);
-      // console.log("Fetched comments:", commentsWithSubComments);
     } catch (error) {
       console.error("Error fetching comments:", error);
     }

@@ -63,7 +63,6 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   useEffect(() => {
     if (productItemShort && productItemShort.id) {
       fetchParentComments();
-      console.log("Fetching comments for product:", productItemShort.id);
     }
   }, [productItemShort]);
   const [comments, setComments] = useState([]);
@@ -92,7 +91,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
       }));
 
       setComments(commentsWithSubComments);
-      console.log("Fetched comments:", commentsWithSubComments);
+     
     } catch (error) {
       console.error("Error fetching comments:", error);
     }

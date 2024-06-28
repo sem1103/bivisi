@@ -9,7 +9,7 @@ const AboutChanell = () => {
   const { username } = useParams();
   return (
     <>
-      <MainChannels username={username} />
+      <MainChannels />
       <Categories username={username} />
 
       <div className="channels_videos">
