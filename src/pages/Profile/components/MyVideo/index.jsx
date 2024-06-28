@@ -8,10 +8,12 @@ import blueHeartd from "../../../../assets/icons/blue-heart.svg";
 import edit from "../../../../assets/icons/edit.svg";
 import trash from "../../../../assets/icons/trash.svg";
 import "./style.scss";
+import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 
 const MyVideo = ({ productItem }) => {
   const { product, setProduct } = useContext(ProductContext);
   const axiosInstance = useAxios();
+  const {countryCurrencySymbol} = getCurrencyByCountry();
   const deletePost = async (id) => {
     try {
       await axiosInstance.delete(`/product_delete/${id}/`);
@@ -28,7 +30,7 @@ const MyVideo = ({ productItem }) => {
   return (
     <div className="col-lg-4 pb-3">
       <div className="myVideoCard">
-        <span className="card_price">$ {productItem?.price}</span>
+        {/* <span className="card_price">$ {productItem?.price}</span> */}
         <img
           src={productItem.product_video_type[0].cover_image}
           alt=""
@@ -43,9 +45,11 @@ const MyVideo = ({ productItem }) => {
         </NavLink>
         <p>{productItem.name}</p>
         <div className="cardBottom">
-          <span>{productItem.price}</span>
+          <span>{productItem.price} {countryCurrencySymbol}</span>
           <div className="icons">
-            <NavLink to={`/your_profile/edit_product/${productItem.id}`}>
+            <NavLink to={`/your_profile/edit_video/${productItem.id}`} onClick={() => {
+              localStorage.setItem('myEditVideo', JSON.stringify(productItem))
+            }}>
               <img src={edit} alt="" />
             </NavLink>
             <button

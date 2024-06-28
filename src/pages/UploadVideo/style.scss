@@ -163,8 +163,6 @@
             font: 16px Poppins;
             color: #fff;
             text-transform: capitalize;
-            border-bottom: 1px solid #70707034;
-            padding: 0 0 15px 0;
           }
 
           svg {
@@ -179,12 +177,20 @@
             display: flex;
             align-items: center;
             margin: 15px 0 0 0;
+            border-top: 1px solid #70707034;
+            padding: 15px 0 0 0;
+
           }
 
           img {
             width: 100%;
+            max-width: 280px;
             border-radius: 15px;
             object-fit: cover;
+            &.thumbnail{
+              max-width: 280px;
+
+            }
           }
         }
 
