@@ -50,8 +50,8 @@ const Trending = () => {
         <div className='trending_videos'>
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-lg-12 d-flex justify-content-between align-items-start py-4">
-                        <h1 className='heading_trend text-white'>Trending</h1>
+                    <div className="col-lg-12 d-flex justify-content-between align-items-center py-4">
+                        <h4 className='heading_trend text-white' style={{fontSize:"21px", fontWeight:"400"}}>Trending</h4>
                         {/* <button className='sort_btn'>
                             <img src={sort} alt="plus.svg" />
                             Sort by

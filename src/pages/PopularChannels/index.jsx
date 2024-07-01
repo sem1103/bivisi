@@ -47,7 +47,7 @@ const PopularChannels = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-lg-12 d-flex justify-content-between align-items-start pt-4">
-                        <h1>Popular channels</h1>
+                        <h4>Popular channels</h4>
                         <div className="custom-select">
                             <Select
                                 defaultValue=""

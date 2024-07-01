@@ -18,11 +18,11 @@
     }
   }
 
-  h1 {
+  h4 {
     color: #fff;
     /* Poppins/28/Medium */
     font-family: Poppins;
-    font-size: 28px;
+    font-size: 21px;
     font-style: normal;
     font-weight: 400;
     line-height: 36px;
@@ -96,7 +96,7 @@
 
 @media (max-width:540px) {
   .subscription {
-    h1{
+    h4{
       font-size: 20px;
     }
     .custom-select{
@@ -110,7 +110,7 @@
 
 @media (max-width:370px) {
   .subscription {
-    h1{
+    h4{
       font-size: 15px;
     }
   }

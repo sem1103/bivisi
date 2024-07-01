@@ -42,7 +42,7 @@ const AllChannels = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className='col-lg-12 d-flex justify-content-between align-items-start pt-4'>
-                        <h1>All channels</h1>
+                        <h4>All channels</h4>
                         <div className="custom-select">
                             <Select
                                 defaultValue=""

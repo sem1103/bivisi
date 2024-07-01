@@ -53,7 +53,7 @@ const Lastest_Videos = () => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-lg-12 d-flex justify-content-between align-items-center py-4">
-              <h1>Latest videos</h1>
+              <h4>Latest videos</h4>
               <div className="d-flex align-items-center gap-4">
                 <div className="custom-select">
                   <Select
