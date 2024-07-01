@@ -51,7 +51,7 @@ const Trending = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-lg-12 d-flex justify-content-between align-items-start py-4">
-                        <h1>Trending</h1>
+                        <h1 className='heading_trend text-white'>Trending</h1>
                         {/* <button className='sort_btn'>
                             <img src={sort} alt="plus.svg" />
                             Sort by
