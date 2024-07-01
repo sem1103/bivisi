@@ -1,20 +1,257 @@
+// .channels_videocard {
+//     display: flex;
+//     height: 380px;
+//     width: 100%;
+//     padding: 10px 16px;
+//     flex-direction: column;
+//     align-items: flex-start;
+//     gap: 12px;
+//     border-radius: 24px;
+//     background: var(--Gray-600, #141414);
+
+//     .main {
+//         width: 100%;
+//         height: 184px;
+//         flex-shrink: 0;
+//         border-radius: 24px;
+//         background: rgba(0, 0, 0, 0.24);
+//     }
+
+//     .heading {
+//         width: 100%;
+//         display: flex;
+//         justify-content: space-between;
+//         align-items: center;
+
+//         h1 {
+//             color: var(--Text-3, #c5c9d3);
+//             margin: 0;
+//             /* Poppins/14/Medium */
+//             font-family: Poppins;
+//             font-size: 14px;
+//             font-style: normal;
+//             font-weight: 400;
+//             line-height: 22px;
+//             /* 157.143% */
+//         }
+
+//         h6 {
+//             color: var(--Text-3, #c5c9d3);
+
+//             /* Poppins/14/Medium */
+//             font-family: Poppins;
+//             font-size: 14px;
+//             font-style: normal;
+//             font-weight: 400;
+//             line-height: 22px;
+
+//             /* 157.143% */
+//             img {
+//                 margin-right: 4px;
+//             }
+//         }
+
+//     }
+
+//     p {
+//         color: var(--Text-1, #f3f4f6);
+//         font-family: Poppins;
+//         font-size: 15px;
+//         font-style: normal;
+//         font-weight: 400;
+//         line-height: 28px;
+//         /* 140% */
+//         height: 58px;
+//         margin: 0;
+//     }
+
+//     .cardBottom {
+//         width: 100%;
+//         height: auto;
+//         display: flex;
+//         justify-content: space-between;
+//         align-items: center;
+
+//         button{
+//             background-color: transparent;
+//             border: none;
+//         }
+
+//         span {
+//             color: var(--Text-1, #f3f4f6);
+
+//             /* Poppins/24/SemiBold */
+//             font-family: Poppins;
+//             font-size: 24px;
+//             font-style: normal;
+//             font-weight: 400;
+//             line-height: 32px;
+//             /* 133.333% */
+//         }
+
+//         .icons {
+//             display: flex;
+//             justify-content: center;
+//             align-items: center;
+//             gap: 10px;
+
+//             img {
+//                 display: flex;
+//                 width: 44px;
+//                 padding: 12px;
+//                 justify-content: center;
+//                 align-items: center;
+//                 gap: 8px;
+//                 border-radius: 16px;
+//                 border: 1px solid var(--Gray-400, #292929);
+//                 transition: all 0.3s ease;
+//                 cursor: pointer;
+
+//                 &:hover {
+//                     border-radius: 16px;
+//                     background: var(--Gray-400, #292929);
+//                 }
+//             }
+//         }
+//     }
+// }
+
+
+
 .channels_videocard {
     display: flex;
-    height: 380px;
+    height: 370px;
     width: 100%;
-    padding: 10px 16px;
+    position: relative;
+    // padding: 10px 16px;
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
-    border-radius: 24px;
+    border-radius: 12px;
     background: var(--Gray-600, #141414);
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    .premiup__icon {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        display: flex;
+        align-items: center;
+        background: #0385CA;
+        border-radius: 70px;
+        padding: 0 8px;
+        z-index: 777;
+        transition: all .3s ease-in-out;
+
+        p {
+            height: initial;
+            margin: 0 0 0 4px;
+            font-size: 12px;
+
+        }
+    }
+
+
+    &:hover {
+        .premiup__icon {
+            opacity: 0;
+        }
+    }
 
     .main {
-        width: 100%;
-        height: 184px;
-        flex-shrink: 0;
-        border-radius: 24px;
-        background: rgba(0, 0, 0, 0.24);
+        width: 100% !important;
+        height: 204px !important;
+        flex-shrink: 0 !important;
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+
+
+        .coverImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 1;
+        }
+
+        .card_logo {
+            position: absolute !important;
+            bottom: 10px !important;
+            left: 10px !important;
+            width: 119px;
+            height: 32px;
+            flex-shrink: 0;
+            opacity: 0.4;
+        }
+
+        .card_price {
+            position: absolute !important;
+            top: 10px !important;
+            right: 9px !important;
+            width: auto;
+            height: 32px;
+            flex-shrink: 0;
+            border-radius: 22px;
+            background-color: #0b90d4;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(2.08px);
+            padding: 5px 8px;
+        }
+
+        .video_count {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #f3f4f6;
+            border-radius: 8px;
+            padding: 2px 6px;
+            font-size: 13px;
+        }
+
+        .plyr {
+            width: 100% !important;
+            height: 100% !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            object-fit: cover;
+
+            video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            // &.visible {
+            //   opacity: 1;
+            // }
+
+            // &.hidden {
+            //   opacity: 0;
+            // }
+        }
+    }
+
+    &:hover .main {
+        .coverImage {
+            opacity: 1;
+        }
+
+        .plyr {
+            opacity: 1 !important;
+        }
+
+        .video_count {
+            opacity: 1;
+        }
     }
 
     .heading {
@@ -22,35 +259,30 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: 0 16px;
 
         h1 {
             color: var(--Text-3, #c5c9d3);
             margin: 0;
-            /* Poppins/14/Medium */
             font-family: Poppins;
             font-size: 14px;
             font-style: normal;
             font-weight: 400;
             line-height: 22px;
-            /* 157.143% */
         }
 
         h6 {
             color: var(--Text-3, #c5c9d3);
-
-            /* Poppins/14/Medium */
             font-family: Poppins;
             font-size: 14px;
             font-style: normal;
             font-weight: 400;
             line-height: 22px;
 
-            /* 157.143% */
             img {
                 margin-right: 4px;
             }
         }
-
     }
 
     p {
@@ -60,8 +292,7 @@
         font-style: normal;
         font-weight: 400;
         line-height: 28px;
-        /* 140% */
-        height: 58px;
+        height: 45px;
         margin: 0;
     }
 
@@ -71,22 +302,23 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: 10px 16px;
 
-        button{
-            background-color: transparent;
-            border: none;
-        }
+        .card_viev_count {
+            gap: 10px;
 
-        span {
-            color: var(--Text-1, #f3f4f6);
+            img {
+                margin-right: 5px;
+            }
 
-            /* Poppins/24/SemiBold */
-            font-family: Poppins;
-            font-size: 24px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 32px;
-            /* 133.333% */
+            span {
+                color: var(--Text-1, #f3f4f6);
+                font-family: Poppins;
+                font-size: 13px;
+                font-style: normal;
+                font-weight: 300;
+                line-height: 32px;
+            }
         }
 
         .icons {

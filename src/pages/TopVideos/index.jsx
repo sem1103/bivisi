@@ -77,7 +77,7 @@ const TopVideos = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-lg-12 d-flex align-items-center py-4 flex-wrap page__top">
-                        <h1>Top videos</h1>
+                        <h4>Top videos</h4>
 
                         <div className="right_tools">
                             <button

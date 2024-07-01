@@ -1,18 +1,18 @@
 .trending_videos {
   width: 100%;
   height: auto;
-  padding: 10px;
-
-  h1 {
-    color: #fff;
-    /* Poppins/28/Medium */
-    font-family: Poppins;
-    font-size: 28px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 36px;
-    /* 128.571% */
-  }
+  padding: 10px;z
+  
+    .heading_trend {
+      color: white !important;
+      /* Poppins/28/Medium */
+      font-family: Poppins;
+      font-size: 21px;
+      font-style: normal;
+      font-weight: 400 !important;
+      line-height: 36px;
+      /* 128.571% */
+    }
 
   .sort_btn {
     display: flex;
@@ -77,7 +77,7 @@
 
 @media (max-width:540px) {
   .trending_videos {
-    h1 {
+    h4 {
       font-size: 25px;
     }
 
@@ -92,7 +92,7 @@
 
 @media (max-width:370px) {
   .trending_videos {
-    h1 {
+    h4 {
       font-size: 25px;
     }
   }

@@ -14,8 +14,7 @@ export default function ChatProvider({ children }) {
 
     const axiosInstance = useAxios();
     const [myId, setMyId] = useState(false);
-    const USER_TOKKEN = localStorage.authTokens != undefined ? JSON.parse(localStorage.authTokens).access : false;
-
+    const USER_TOKKEN = localStorage.authTokens !=undefined ? JSON.parse(localStorage.authTokens).access :false
     const [socket, setSocket] = useState(null);
     const [allChats, setAllChats] = useState([]);
     const [chatId, setChatId] = useState(0);

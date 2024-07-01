@@ -47,7 +47,7 @@ const LatestVideos = () => {
         <div className="row">
           <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
             <div className="section__title">
-              <img src={camera_img} alt="" width={35} />
+              <img src={camera_img} alt="" width={27} />
               <h4>Latest videos</h4>
             </div>
             <Link to="/latest_videos">

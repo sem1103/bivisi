@@ -37,8 +37,8 @@ const ChannelsShort = ({ item }) => {
           </div>
           <div className="shortCard-content">
             <div className="text">
-              <p>fdeeg</p>
-              <span>5651$</span>
+              <p>{item?.product?.name}</p>
+              <span>{item?.product?.price}$</span>
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./style.scss";
 import MainChannels from "../../components/Main";
 import Categories from "../../components/Categories";
@@ -6,10 +6,10 @@ import ChannelsVideo from "../../components/ChannelsVideo";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../../../api/baseUrl";
 import axios from "axios";
+import { ProductContext } from "../../../../context/ProductContext";
 const ChannelsVideos = () => {
   const { username } = useParams();
   const [channels, setChannels] = useState([]);
-
   useEffect(() => {
     const fetchChannelVideos = async () => {
       try {
