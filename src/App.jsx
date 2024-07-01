@@ -1,13 +1,16 @@
 import { AuthProvider } from "./context/authContext";
 import AppRouter from "./router";
 import { VideoProvider } from "./context/VideoContext";
+import ChatProvider from "./context/ChatContext";
 
 function App() {
   return (
     <>
       <AuthProvider>
         <VideoProvider>
-          <AppRouter />
+          <ChatProvider>
+            <AppRouter />
+          </ChatProvider>
         </VideoProvider>
       </AuthProvider>
     </>
