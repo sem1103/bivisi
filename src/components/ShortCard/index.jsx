@@ -70,7 +70,7 @@ const ShortCard = ({ product }) => {
   };
 
   return (
-    <div className="p-2">
+    <div className="p-1">
       <div
         className="shortCard"
         onMouseEnter={handleMouseEnter}

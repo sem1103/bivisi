@@ -7,9 +7,9 @@
       color: white !important;
       /* Poppins/28/Medium */
       font-family: Poppins;
-      font-size: 28px;
+      font-size: 21px;
       font-style: normal;
-      font-weight: 400;
+      font-weight: 400 !important;
       line-height: 36px;
       /* 128.571% */
     }
@@ -77,7 +77,7 @@
 
 @media (max-width:540px) {
   .trending_videos {
-    h1 {
+    h4 {
       font-size: 25px;
     }
 
@@ -92,7 +92,7 @@
 
 @media (max-width:370px) {
   .trending_videos {
-    h1 {
+    h4 {
       font-size: 25px;
     }
   }

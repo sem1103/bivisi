@@ -37,7 +37,7 @@ const PopularChannels = () => {
         <div className="row">
           <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
             <div className="section__title">
-            <img src={star_img} alt="" width={35}/>
+            <img src={star_img} alt="" width={27}/>
             <h4>Popular channels</h4>
             </div>
             <Link to='/popular_channels'>
