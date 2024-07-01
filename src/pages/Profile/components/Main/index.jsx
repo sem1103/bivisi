@@ -19,6 +19,7 @@ const Main = () => {
     const fetchSubs = async () => {
       try {
         const response = await axiosInstance.get('/user/your_subscribers/');
+       
         if (response.data.results && userDetails) {
           const userSubscription = response.data.results.find(
             (item) => item.user && item.user.id === userDetails.id
@@ -33,6 +34,7 @@ const Main = () => {
     }
     fetchSubs();
   }, [axiosInstance, userDetails]);
+
 
   return (
     <>

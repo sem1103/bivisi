@@ -10,6 +10,9 @@ import trash from "../../../../assets/icons/trash.svg";
 import "./style.scss";
 import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 
+
+
+
 const MyVideo = ({ productItem }) => {
   const { product, setProduct } = useContext(ProductContext);
   const axiosInstance = useAxios();
@@ -27,6 +30,7 @@ const MyVideo = ({ productItem }) => {
     }
   };
 
+  
   return (
     <div className="col-lg-4 pb-3">
       <div className="myVideoCard">
