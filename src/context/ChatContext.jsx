@@ -33,7 +33,7 @@ export default function ChatProvider({ children }) {
             }
         })
         setAllChats(res.data.response)
-        console.log(res.data.response)
+        console.log(res.data.response);
         setLastMessages(res.data.response.map(item => {
             return {
                 lastMessage: item.lastMessage,
@@ -94,8 +94,8 @@ export default function ChatProvider({ children }) {
 
             socketInstance.on("newMessage", (data) => {
                 let { message, target } = data;
-
-                if(+message.chatId == +localStorage.chatId || !chatId){
+                
+                if(+message.chatId == +localStorage.chatId || target == localStorage.newUserChatId) {
                     setMessages((prevMessages) => {
                         return [
                                 {
@@ -108,9 +108,11 @@ export default function ChatProvider({ children }) {
                         }
                     )
                 }
+
+                
                 setLastMessages((prevMessages) => {
                     return prevMessages.map((item) => {
-                        if (+message.chatId == +item.chatId) {
+                        if (+message.chatId == +item.chatId && +message.userId == +target) {
                             return {
                                 ...item,
                                 lastMessage: message.message
@@ -122,7 +124,7 @@ export default function ChatProvider({ children }) {
                     }
                 )
                 
-
+                if(allChats.some(item => item.target.userId != target)) getChats();
 
             });
 
@@ -161,13 +163,14 @@ export default function ChatProvider({ children }) {
         );
         socket.emit('sendMessage', { target: id, message: newObjectMessage });
         setNewMessage('');
+        if(allChats.some(item => item.target.userId != id)) getChats();
+
     };
 
 
     const addChat = (newChatUser) => {
-        if(allChats.some(item => item.target.userId == newChatUser.id)) {
-            getMessage(newChatUser.id);
-        } else setMessages([])
+        
+        setMessages([])
         setNewChatUser(newChatUser);
         setChatId(false)
         localStorage.setItem('newUserChatId', newChatUser.id)
@@ -190,6 +193,7 @@ export default function ChatProvider({ children }) {
             setNewMessage,
             sendMessage,
             getMessage,
+            getChats,
             addChat
         }}>
             {children}

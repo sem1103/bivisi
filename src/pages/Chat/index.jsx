@@ -17,7 +17,7 @@ import { ChatContext } from "../../context/ChatContext";
 
 const Chat = () => {
   const axiosInstance = useAxios();
-  const {USER_TOKKEN, CHAT_API, allChats, chatId, messages,newMessage, lastMessages,setNewMessage, newChatUser, sendMessage, getMessage, addChat } = useContext(ChatContext)
+  const {USER_TOKKEN, CHAT_API, allChats, chatId, messages,newMessage, lastMessages,setNewMessage, newChatUser, sendMessage, getMessage, addChat, getChats } = useContext(ChatContext)
   
   const [findUser, setFindUser] = useState([]);
   const [openSearchList, setopenSearchList] = useState(false);
@@ -70,6 +70,12 @@ const Chat = () => {
   const containerHeight = messages.length && newChatUser.id || newChatUser ? "48vh" : "75vh";
   const containerPadding = messages.length && newChatUser.id || newChatUser ? "48px" : "";
 
+
+
+  useEffect(()=> {
+    getChats()
+  }, [])
+
   return (
     <>
       <section className="chat_section">
@@ -99,7 +105,11 @@ const Chat = () => {
                               {
                                 findUser.map(item => {
                                   return <li className="use__item" onClick={() => {
-                                    addChat(item)
+                                    
+                                    if(allChats.find(chat => +chat.target.userId == +item.id )) {
+                                      getMessage(allChats.find(chat => +chat.target.userId == +item.id ).chatId)
+                                    } else addChat(item)
+
                                   }}>
                                     <img src={item.avatar ? item.avatar : empyAvatar} alt="" />
                                     <div className="user__info">
@@ -124,7 +134,7 @@ const Chat = () => {
                   allChats.map((chat, ind) => (
                     <div
                       key={chat.chatId}
-                      className={`chat-item ${chat.chatId == chatId ? "active" : ""
+                      className={`chat-item ${lastMessages[ind].userId == localStorage.newUserChatId ? "active" : ""
                         } 
                       `}
                       onClick={() => getMessage(chat.chatId)}
@@ -147,7 +157,7 @@ const Chat = () => {
               </div>
             </div>
             <div className="col-lg-8 h-100">
-              {(messages.some(item => item.chatId == chatId) || newChatUser) && (
+              {(newChatUser) && (
                 <div className="chat_messages_header">
                   <div className="d-flex align-items-center gap-3 message__user">
                     <div className="nickname">MG</div>
@@ -179,7 +189,7 @@ const Chat = () => {
                 }}
               >
                 {
-                  (messages.some(item => item.chatId == chatId) && newChatUser ) ?
+                  (newChatUser ) ?
                   (
                     messages.length ?
                       messages.map((item, index) => {
