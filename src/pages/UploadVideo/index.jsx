@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState, useRef, useCallback } from "react";
 import "./style.scss";
 import { Progress, Select, Input, Radio, Space } from "antd";
 import down_arrow from "../../assets/icons/down-arrow.svg";
@@ -21,6 +21,9 @@ const UploadV = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  const [firstProp, setFirstProp] = useState('');
+  const [secondProp, setSecondProp] = useState('');
+
   const [editVideo, setEditVideo] = useState(localStorage.myEditVideo != undefined ? JSON.parse(localStorage.myEditVideo) : false)
   const { product, setProduct } = useContext(ProductContext);
   const { Option } = Select;
@@ -40,17 +43,19 @@ const UploadV = () => {
   ]);
   const [activeCoverInd, setActiveCoverInd ] = useState(0);
   const imgRef = useRef(null);
-  const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA'; // Set your mapbox token here
+  const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA'; 
+  const [mapLink, setMapLink] = useState('');
+
   const currency = getCurrencyByCountry();
 
-  const { register, control } = useForm({
+  const { register, control, handleSubmit } = useForm({
     defaultValues: {
-      rows: [{ first: '', second: '' }],
+      rows: [],
     },
   });
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'rows',
+    name: 'properties',
   });
 
   const [formData, setFormData] = useState({
@@ -61,10 +66,10 @@ const UploadV = () => {
     phone_number: !editVideo ? "+994" : editVideo.phone_number , // Default country code
     product_type: "Video",
     price: !editVideo ? '' : editVideo.price.split('.')[0],
-    original_video:  null 
+    original_video:  null ,
+    properties : fields.length ? null : fields
   });
   const axiosInstance = useAxios();
-
 
 
   
@@ -101,6 +106,18 @@ const UploadV = () => {
         })
       }
     }
+  }, []);
+
+  const handleGeocoderResult = useCallback((event) => {
+    const { result } = event;
+    const { center, place_name } = result;
+    const [longitude, latitude] = center;
+    
+    const link = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+    setMapLink({
+      url : link,
+      location: place_name
+    });
   }, []);
 
   
@@ -280,19 +297,25 @@ const UploadV = () => {
     return true;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      toast.error("Please fill out all required fields.");
-      return;
-    }
+  const onSubmit = async (data) => {
+    
+
+
+    // if (!validateForm()) {
+    //   toast.error("Please fill out all required fields.");
+    //   return;
+    // }
     const { original_video, ...rest } = formData;
     const submitData = new FormData();
+    submitData.append('location_url', mapLink.url)
+    submitData.append('location', mapLink.location )
+    if(!data.properties.length ) {
+      submitData.append('properties', JSON.stringify(data.properties));
+    } else submitData.set('properties', JSON.stringify(data.properties));
 
     
     if(  formData.original_video == null) {
       Object.keys(rest).forEach((key) => {
-        console.log(rest[key]);
         if(rest[key] == null ) return
 
         if (key === "category") {
@@ -317,12 +340,39 @@ const UploadV = () => {
         }
       });
     }
-
     
 
     submitData.set("name", capitalizeFirstLetter(formData.name));
     submitData.set("description", capitalizeFirstLetter(formData.description));
 
+    
+
+    // [
+    //   {
+    //     "id":"b1e6badd-7164-4eaf-94d3-3d6458d8df2d",
+    //     "product_property":"color",
+    //     "property_value":"red"
+    //   }
+    // ]
+
+      // Создаем новый объект FormData, копируя все, кроме последнего ключа
+const newSubmitData = new FormData();
+
+// Преобразуем FormData в массив ключей и значений
+const entries = Array.from(submitData.entries());
+
+// Удаляем последний ключ
+entries.pop();
+
+// Копируем оставшиеся пары ключ-значение в новый объект FormData
+entries.forEach(([key, value]) => {
+  newSubmitData.append(key, value);
+});
+
+// Логирование значений новой FormData для проверки
+newSubmitData.forEach((value, key) => {
+  console.log(`${key}: ${value}`);
+}); 
     
     try {
         await toast.promise(
@@ -335,7 +385,7 @@ const UploadV = () => {
           :
           axiosInstance.patch(
             `/update_product/${editVideo.id}/${editVideo.product_video_type[0].id}/`,
-            submitData,
+            newSubmitData,
             {
               headers: {
                 "Content-Type": "multipart/form-data",
@@ -411,7 +461,7 @@ const UploadV = () => {
   return (
     <div className="upload_video">
       <div className="container-fluid upload_video_content mt-4">
-        <form onSubmit={handleSubmit} className="row pt-1">
+        <form onSubmit={handleSubmit(onSubmit)} className="row pt-1">
           <div className="upload__video__form">
             {
               !editVideo &&
@@ -481,9 +531,9 @@ const UploadV = () => {
                     (!showProgressBar && !haveVideo && !editVideo) &&
                     <>
                       <input
+                        name="original_video"
                         title=""
                         type="file"
-                        name="original_video"
                         id="original_video"
                         onChange={handleFileChange}
 
@@ -514,8 +564,8 @@ const UploadV = () => {
                     <div className="input_data">
                       <label htmlFor="title">Title</label>
                       <input
-                        type="text"
                         name="name"
+                        type="text"
                         value={formData.name}
                         onChange={handleInputChange}
                         placeholder="Video Title"
@@ -525,7 +575,8 @@ const UploadV = () => {
                     <div className="input_data">
                       <label htmlFor="description">Description</label>
                       <textarea
-                        name="description"
+                      name="description"
+
                         rows={4}
                         value={formData.description}
                         onChange={handleInputChange}
@@ -537,8 +588,9 @@ const UploadV = () => {
                       <label htmlFor="price" >Price</label>
                       <div className="file_price" >
                         <input
-                          type="number"
                           name="price"
+
+                          type="number"
                           value={formData.price}
                           onChange={handleInputChange}
                           placeholder={currency.currencyCode}
@@ -550,8 +602,8 @@ const UploadV = () => {
                     <div className="input_data">
                       <label htmlFor="phone_number">Phone Number</label>
                       <input
-                        type="text"
                         name="phone_number"
+                        type="text"
                         value={formData.phone_number}
                         onChange={handleInputChange}
                         placeholder="+994"
@@ -643,27 +695,33 @@ const UploadV = () => {
                       </label>
                       <div className="manual__props">
 
-                        {fields.map((item, index) => (
-                          <div key={item.id} >
+                        { 
+                        fields.map((item, index) => {
+                         
+                           return  <div key={item.id} >
                             <input
-                              {...register(`rows.${index}.first`)}
-                              defaultValue={item.first}
+                              {...register(`properties.${index}.product_property`)}
                               placeholder="Property"
-                           
+                                       
                             />
                             <input
-                              {...register(`rows.${index}.second`)}
-                              defaultValue={item.second}
+                              {...register(`properties.${index}.property_value`)}
                               placeholder="Value"
                               
                             />
+                           
                             <button type="button" onClick={() => remove(index)} style={{ padding: '5px 10px' }}>
                               Remove
                             </button>
                           </div>
-                        ))}
+                          
+                          })}
 
-                      <button className="add__input" type="button" onClick={() => append({ first: '', second: '' })} >
+                      <button className="add__input" type="button" onClick={() => {
+                        append({ product_property: '', property_value: '' });
+                        
+                        
+                      }} >
                               Add
                             </button>
 
@@ -683,7 +741,8 @@ const UploadV = () => {
                         mapStyle="mapbox://styles/mapbox/streets-v9"
                         mapboxAccessToken={TOKEN}
                       >
-                        <GeocoderControl mapboxAccessToken={TOKEN} position="top-left" placeholder={' '} />
+                        <GeocoderControl mapboxAccessToken={TOKEN} position="top-left" placeholder={' '} onResult={handleGeocoderResult}
+ />
                       </Map>
                     </div>
 

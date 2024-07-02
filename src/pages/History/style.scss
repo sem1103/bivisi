@@ -1,16 +1,42 @@
 .history_cards {
   width: 100%;
   padding: 10px;
-  h1 {
-    color: #fff;
 
+  h4 {
+    color: #fff;
     /* Poppins/28/Medium */
     font-family: Poppins;
-    font-size: 28px;
+    font-size: 21px;
     font-style: normal;
     font-weight: 400;
-    line-height: 36px; /* 128.571% */
+    line-height: 36px;
+    margin-top: 7px;
+    /* 128.571% */
   }
+
+  .shorts_logo {
+    background-color: #0385CA;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+
+    svg {
+      color: #fff;
+      width: 25px !important;
+      padding-left: 2px;
+    }
+  }
+
+  .page__title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+
+  }
+
   .shortCard {
     height: 400px !important;
 
@@ -40,6 +66,7 @@
       padding: 5px 8px;
     }
   }
+
   button {
     display: flex;
     width: 45px;
@@ -60,6 +87,7 @@
       background: var(--Gray-400, #292929);
     }
   }
+
   .swiper-pagination {
     .swiper-pagination-bullet {
       background-color: #1e2c4e;
@@ -68,18 +96,18 @@
 }
 
 @media (max-width:820px) {
-  .history_cards{
+  .history_cards {
 
-    .shortCard{
+    .shortCard {
       height: 350px !important;
     }
   }
 }
 
 @media (max-width:540px) {
-  .history_cards{
+  .history_cards {
 
-    .shortCard{
+    .shortCard {
       height: 250px !important;
     }
   }

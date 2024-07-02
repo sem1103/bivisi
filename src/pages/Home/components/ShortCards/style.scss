@@ -2,37 +2,43 @@
   width: 100%;
   height: auto;
   padding: 12px 0;
+
   h4 {
     color: #fff;
     /* Poppins/28/Medium */
     font-family: Poppins;
-    font-size: 22px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 400;
-    line-height: 36px; /* 128.571% */
+    line-height: 36px;
+    /* 128.571% */
   }
+
   a {
     color: #f6f3f4;
 
     /* Poppins/16/SemiBold */
     font-family: Poppins;
-    font-size: 15px;
+    font-size: 13px;
     font-style: normal;
     font-weight: 400;
-    line-height: 24px; /* 150% */
+    line-height: 24px;
+    /* 150% */
     text-decoration: none;
   }
 
-  .shorts_logo{
-    background-color: #0385CA;
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 8px;
-    svg{
+  .shorts_logo {
+    // background-color: #0385CA;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
       color: #fff;
-      width: 25px !important;
+      width: 30px !important;
+      height: 30px;
+      padding-left: 2px;
     }
   }
 }

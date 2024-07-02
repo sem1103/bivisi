@@ -78,7 +78,7 @@ const Subscription = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-12 d-flex justify-content-between align-items-center py-4">
-            <h1>Your subscriptions</h1>
+            <h4>Your subscriptions</h4>
             <div className="custom-select">
               <Select
                 value={selectedOption}

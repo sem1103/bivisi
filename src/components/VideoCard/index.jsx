@@ -24,11 +24,6 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   const { addItem } = useCart();
   const [loading, setLoading] = useState(false);
 
-  // const handlePlay = () => {
-  //   if (playingVideo !== ProductItemVideoCard.id) {
-  //     setPlaying(ProductItemVideoCard.id);
-  //   }
-  // };
 
   const playerRef = useRef(null);
 

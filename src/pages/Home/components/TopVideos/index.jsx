@@ -45,8 +45,8 @@ const TopVideo = () => {
         <div className="row">
           <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
             <div className="section__title">
-            <img src={video_img} alt="" width={35}/>
-            <h4>Top videos</h4>
+              <img src={video_img} alt="" width={27} />
+              <h4>Top videos</h4>
 
             </div>
             <Link to="/top_videos">
@@ -94,7 +94,7 @@ const TopVideo = () => {
                 ?.slice(0, 4)
                 .map((item) => (
                   <SwiperSlide key={item.id}>
-                    <LastVideoCard ProductItemVideoCard={item}  page="home"/>
+                    <LastVideoCard ProductItemVideoCard={item} page="home" />
                   </SwiperSlide>
                 ))}
           </Swiper>
