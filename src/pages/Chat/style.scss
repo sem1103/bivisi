@@ -107,6 +107,7 @@
           max-height: 0;
           transition: all .3s ease-in-out;
           overflow: hidden;
+          z-index: 888;
           &.isOpen{
             max-height: 280px;
             padding: 8px;
@@ -520,7 +521,7 @@
     background: transparent;
     border: 0;
     outline: 0;
-    margin: 10px 0 24px 0;
+    margin: 15px 0 24px 0;
   }
   .hide__chats{
     display: none;
