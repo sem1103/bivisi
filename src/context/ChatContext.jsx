@@ -24,7 +24,7 @@ export default function ChatProvider({ children }) {
     const [newChatUser, setNewChatUser] = useState(false);
     const [messages, setMessages] = useState([]);
     const [lastMessages, setLastMessages] = useState([]);
-    const [onlineUsers, setOnlineUsers] = useState([])
+    const [onlineUsers, setOnlineUsers] = useState([]);
 
 
 
@@ -58,6 +58,7 @@ export default function ChatProvider({ children }) {
         });
         setChatId(id);
         setMessages(res.data.response.response);
+        console.log(res.data.response);
         let { firstName, lastName, picture, userId, username } = res.data.response.targetDetails;
         setNewChatUser({
             avatar: picture,
@@ -91,7 +92,6 @@ export default function ChatProvider({ children }) {
            
             socketInstance.on('online-users', (users) => {
                 setOnlineUsers(users);
-                // if(users.length > users.length && users.length >= 2) toast.info('Online ' + onlineUsers[0])
             })
               
 
@@ -145,7 +145,7 @@ export default function ChatProvider({ children }) {
         let id = localStorage.newUserChatId
         let newObjectMessage = {
             messageId: messages.length ? +messages[0].messageId + 1 : 1,
-            message: newMessage,
+            message: newMessage.split('\n').join('\n'),
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             chatId: chatId,
@@ -154,7 +154,7 @@ export default function ChatProvider({ children }) {
         }
 
 
-        await axios.post(`${CHAT_API}sendMessage/`, { target: id, message: newMessage },
+        await axios.post(`${CHAT_API}sendMessage/`, { target: id, message: newMessage.split('\n').join('\n') },
             {
                 headers: {
                     Authorization: `Bearer ${USER_TOKKEN}`,
@@ -191,6 +191,8 @@ export default function ChatProvider({ children }) {
             newMessage,
             lastMessages,
             newChatUser,
+            setMessages,
+            onlineUsers,
             setNewMessage,
             sendMessage,
             getMessage,
