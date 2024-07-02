@@ -17,7 +17,7 @@ import { ChatContext } from "../../context/ChatContext";
 
 const Chat = () => {
   const axiosInstance = useAxios();
-  const {USER_TOKKEN, CHAT_API, allChats, chatId, messages,newMessage, lastMessages,setNewMessage, newChatUser, sendMessage, getMessage, addChat, getChats } = useContext(ChatContext)
+  const {USER_TOKKEN, myId, CHAT_API, allChats, chatId, messages,newMessage, lastMessages,setNewMessage, socket, newChatUser, sendMessage, getMessage, addChat, getChats } = useContext(ChatContext)
   
   const [findUser, setFindUser] = useState([]);
   const [openSearchList, setopenSearchList] = useState(false);
@@ -137,7 +137,10 @@ const Chat = () => {
                       className={`chat-item ${lastMessages[ind].userId == localStorage.newUserChatId ? "active" : ""
                         } 
                       `}
-                      onClick={() => getMessage(chat.chatId)}
+                      onClick={() => {
+                       
+                        getMessage(chat.chatId)
+                      }} 
                     >
                       <div className="nickname">MG</div>
                       <div className="d-flex flex-column chat__user__info">
@@ -147,8 +150,7 @@ const Chat = () => {
                           lastMessages[ind].lastMessage
                          
                         }
-                        -|-
-                        {lastMessages[ind].userId}
+                      
                         </p>
                       </div>
                     </div>
