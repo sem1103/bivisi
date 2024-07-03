@@ -124,7 +124,7 @@
     /* 150% */
   }
   
-  button {
+   button {
     display: flex;
     padding: 14px 15px;
     justify-content: center;
@@ -468,6 +468,11 @@
       }
       
       .chat__options{
+        & > button{
+          border-radius: 16px;
+          color: #fff;
+
+        }
         margin: 0;
         &:hover ul{
           right: 0;
@@ -483,12 +488,9 @@
           border: 1px solid #525252;
           transition: all .4s ease-in-out;
           opacity: 0;
+          
         }
-        button{
-          border-radius: 16px;
-          color: #fff;
-
-        }
+        
       }
 
       a {
@@ -762,7 +764,7 @@ button.back__top{
 /*NICK ICONS BTNS*/
 
 
-.button {
+  ul .button {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -779,6 +781,7 @@ button.back__top{
   overflow: hidden;
   position: relative;
   gap: 2px;
+  padding: 0 !important;
 }
 
 .svgIcon {

@@ -114,6 +114,7 @@ export default function ChatProvider({ children }) {
             });
             socketInstance.on('connect', () => {
                 console.log('Connected to WebSocket server!');
+                getChats()
             });
            
             socketInstance.on('online-users', (users) => {
@@ -176,7 +177,6 @@ export default function ChatProvider({ children }) {
             setSocket(socketInstance);
         }
 
-        USER_TOKKEN && getChats();
 
     }, [user, USER_TOKKEN]);
 
