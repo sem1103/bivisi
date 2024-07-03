@@ -8,6 +8,8 @@
   align-items: flex-start;
   flex-direction: column;
   padding: 30px 10px 0 10px;
+  position: relative;
+  z-index: -2;
 }
 .section__title{
   display: flex;
