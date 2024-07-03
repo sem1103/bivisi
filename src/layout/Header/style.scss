@@ -1,3 +1,8 @@
+.top__header, .search__bar{
+  position: relative;
+  z-index: 0;
+}
+
 header {
   width: 100%;
   height: 13vh;
@@ -7,7 +12,7 @@ header {
   justify-content: space-between;
   align-items: center;
   position: relative;
-
+  
   .active {
     background: var(--Text-11, #23272e) !important;
   }

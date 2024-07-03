@@ -201,7 +201,7 @@ const Header = ({ isOpen }) => {
   ) {
     return (
       <div>
-        <div className="d-none d-lg-block d-xl-block d-lg-block container-fluid xl_header">
+        <div className="d-none d-lg-block d-xl-block d-lg-block container-fluid xl_header top__header">
           <header className="sticky-top ">
             <Link className="logoLeft " to="/" style={{ opacity: logoOpacity }}>
               <img src={logo} alt="" />
@@ -576,7 +576,7 @@ const Header = ({ isOpen }) => {
               </div>
             </div>
 
-            <div className="d-flex justify-content-between align-items-center gap-3 my-2">
+            <div className="d-flex justify-content-between align-items-center gap-3 my-2 search__bar">
               <div className="search-wrapper" ref={searchRef}>
                 <div className="search">
                   <div className="d-flex align-items-center gap-2 search_content">
