@@ -11,31 +11,34 @@
   background: var(--Gray-600, #141414);
   transition: all 0.3s ease;
   cursor: pointer;
-  .premiup__icon{
+
+  .premiup__icon {
     position: absolute;
     top: 15px;
     left: 15px;
     display: flex;
     align-items: center;
-    background: #0385CA ;
+    background: #0385CA;
     border-radius: 70px;
     padding: 0 8px;
     z-index: 777;
     transition: all .3s ease-in-out;
-    p{
+
+    p {
       height: initial;
       margin: 0 0 0 4px;
       font-size: 12px;
 
     }
   }
-  
 
-  &:hover{
+
+  &:hover {
     .premiup__icon {
       opacity: 0;
     }
   }
+
   .main {
     width: 100% !important;
     height: 204px !important;
@@ -43,7 +46,7 @@
     border-radius: 12px;
     overflow: hidden;
     position: relative;
-    
+
 
     .coverImage {
       width: 100%;
@@ -62,6 +65,7 @@
       flex-shrink: 0;
       opacity: 0.4;
     }
+
     .card_price {
       position: absolute !important;
       top: 10px !important;
@@ -78,6 +82,8 @@
       backdrop-filter: blur(2.08px);
       padding: 5px 8px;
     }
+
+
     .video_count {
       position: absolute;
       bottom: 10px;
@@ -127,6 +133,8 @@
     .video_count {
       opacity: 1;
     }
+
+    
   }
 
   .heading {
@@ -180,11 +188,14 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 16px;
+
     .card_viev_count {
       gap: 10px;
+
       img {
         margin-right: 5px;
       }
+
       span {
         color: var(--Text-1, #f3f4f6);
         font-family: Poppins;
@@ -194,6 +205,7 @@
         line-height: 32px;
       }
     }
+
     .icons {
       display: flex;
       justify-content: center;

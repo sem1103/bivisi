@@ -24,6 +24,7 @@ import replay from "../../assets/icons/replay-rectangle.png";
 import Comments from "../../pages/ProductDetail/Comments";
 import { Modal } from "antd";
 import ShareModal from "../ShareModal";
+import eye from "../../assets/icons/eye.svg";
 const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, setPlaying }) => {
   const axiosInstance = useAxios();
   const { product, setProduct } = useContext(ProductContext);
@@ -91,7 +92,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
       }));
 
       setComments(commentsWithSubComments);
-     
+
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
@@ -255,11 +256,9 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
         onOk={handleDeleteComment}
         onCancel={handleCancel}
         centered
+        className="modal-delete"
       >
-        <p>
-          {" "}
-          <p>Are you sure you want to delete this comment?</p>
-        </p>
+        <p>Are you sure you want to delete this comment?</p>
       </Modal>
       <div className="col-lg-12 col-md-12 col-sm-12 col-12 pb-3 mb-4 d-flex justify-content-center align-items-center">
         <div className="shorts_page_card">
@@ -269,7 +268,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
               !isPlaying ? playerRef.current.getInternalPlayer().play() : playerRef.current.getInternalPlayer().pause();
               isPlaying = !isPlaying;
 
-
+              
             }}>
 
               <ReactPlayer
@@ -283,6 +282,11 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                 onPlay={handlePlay}
                 loop={true}
               />
+
+              <div className="sp_desc">
+                <p className="mb-5">{productItemShort.name.slice(0,20)}... <button>Read more</button></p>
+                <span>${productItemShort.price}</span>
+              </div>
             </div>
             <div className={`shorts_page_content ${openComment ? "hide__buttons" : ""}`}>
               <div
@@ -304,7 +308,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                         }
                       }}
                     />
-                     </div>
+                  </div>
                 </div>
                 <div className=" pb-3">
                   <div
@@ -324,7 +328,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                   </div>
                   <span>{productItemShort.like_count}</span>
                 </div>
-                
+
 
                 <div className=" pb-3">
                   <div
@@ -350,8 +354,16 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                   <span>14</span>
                 </div>
 
+                <div className=" pb-3">
+                  <div className="icons">
+                    <img src={eye} alt="" />
+                  </div>
+                  <span>{productItemShort.view_count
+                  }</span>
+                </div>
 
-                
+
+
 
 
               </div>
@@ -441,8 +453,8 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                 </div>
                                 <form
                                   className={`reply-form ${replyToCommentId === comment.id
-                                      ? "active"
-                                      : ""
+                                    ? "active"
+                                    : ""
                                     }`}
                                   onSubmit={(e) => {
                                     e.preventDefault();
