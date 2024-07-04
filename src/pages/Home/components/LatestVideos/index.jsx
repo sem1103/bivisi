@@ -15,6 +15,7 @@ import {
 } from "swiper/modules";
 
 import 'swiper/css';
+import LastVideoCard from "../../../../components/VideoCard";
 
 const LatestVideos = () => {
   const { product, selectedCategory } = useContext(ProductContext);
@@ -92,7 +93,7 @@ const LatestVideos = () => {
               ? "No product found in this category"
               : latestVideos.map((item) => (
                 <SwiperSlide key={item.id}>
-                  <VideoCard ProductItemVideoCard={item} page="home" />
+                  <LastVideoCard ProductItemVideoCard={item} page="home" />
                 </SwiperSlide>
               ))}
 
