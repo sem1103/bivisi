@@ -18,7 +18,6 @@ const Shorts = () => {
   }) || []
   const [activeShortId, setActiveShortId] = useState(localStorage.activeShort != undefined ? localStorage.activeShort : copyProducts[Math.floor(Math.random() * copyProducts.length)]?.id);
 
-
   let videoProducts = product?.results?.filter((item) => {
     if (item.product_video_type[0]?.product_type === "Shorts") return item
   }).sort((a, b) => a.id == activeShortId ? -1 : b.id == activeShortId ? 1 : 0) || [];

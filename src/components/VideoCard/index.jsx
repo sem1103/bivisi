@@ -172,7 +172,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
               {ProductItemVideoCard.like_count}
             </h6>
           </div>
-          <p>{ProductItemVideoCard.name}</p>
+          <p>{ProductItemVideoCard.name.slice(0,25)}</p>
         </div>
         <div className="cardBottom">
           <div className="card_viev_count">
