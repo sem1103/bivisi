@@ -563,6 +563,13 @@ const Header = ({ isOpen }) => {
                       <button className="sm_ntf">
                         <img src={Notification} alt="" />
                       </button>
+                      <NavLink
+                    className="upload"
+                    to="/chat"
+                    activeclassname="active"
+                  >
+                    <img src={Chat} alt="" />
+                  </NavLink>
                       <ProfileMenu />
 
                     </div>
