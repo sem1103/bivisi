@@ -236,6 +236,7 @@ const CommentsComponent = ({ productDetail }) => {
         onOk={handleDeleteComment}
         onCancel={handleCancel}
         centered
+        className="modal-commentdel"
       >
         <p>Are you sure you want to delete this comment?</p>
       </Modal>

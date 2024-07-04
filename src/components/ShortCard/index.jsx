@@ -86,9 +86,10 @@ const ShortCard = ({ product }) => {
             />
           </div>
           <div className="shortCard-content">
+              <p className="price">{product.price}$</p>
             <div className="text">
-              <p className="mb-0">{product.name}</p>
-              <span>{product.price}$</span>
+              <p className="mb-0">{product.name.slice(0,10)}...</p>
+              <span>{product.view_count} Views</span>
             </div>
           </div>
         </div>

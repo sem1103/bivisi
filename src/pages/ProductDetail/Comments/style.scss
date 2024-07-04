@@ -299,3 +299,27 @@
     }
   }
 }
+
+.modal-commentdel{
+  .ant-modal-content{
+    background-color: #0F0F0F ;
+
+    .ant-modal-header{
+      background-color: #0F0F0F;
+
+      .ant-modal-title{
+        color: white;
+        font-weight: 400;
+      }
+    }
+
+    .ant-modal-close-x{
+      color: white;
+    }
+
+    .ant-modal-body{
+      color: white;
+      font-weight: 400;
+    }
+  }
+}

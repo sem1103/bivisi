@@ -16,24 +16,25 @@
 
       /* Poppins/24/SemiBold */
       font-family: Poppins;
-      font-size: 24px;
+      font-size: 20px;
       font-style: normal;
-      font-weight: 600;
+      font-weight: 400;
       line-height: 32px;
       /* 133.333% */
     }
 
     button {
       display: flex;
-      padding: 12px 14px;
+      padding: 7px 10px;
       justify-content: center;
       align-items: center;
       gap: 8px;
-      border-radius: 16px;
+      border-radius: 7px;
       background: var(--blue-blue-500, #0385ca);
       outline: none;
       color: white;
       border: none;
+      font-size: 14px;
     }
   }
 
@@ -147,9 +148,9 @@
     .input-data {
       label {
         color: var(--Neutral-White, #fff);
-        font-size: 16px;
+        font-size: 14px;
         font-style: normal;
-        font-weight: 600;
+        font-weight: 400;
         line-height: 24px;
       }
 
@@ -160,7 +161,7 @@
         background-color: transparent !important;
         border-radius: 16px;
         outline: none;
-        font-size: 16px;
+        font-size: 13px;
         font-style: normal;
         font-weight: 400;
         line-height: 24px;
