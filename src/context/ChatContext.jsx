@@ -25,7 +25,7 @@ export default function ChatProvider({ children }) {
     const [messages, setMessages] = useState([]);
     const [lastMessages, setLastMessages] = useState([]);
     const [onlineUsers, setOnlineUsers] = useState([]);
-
+    const [newChat, setNewChat] = useState(false);
 
 
     const getChats = async () => {
@@ -58,7 +58,7 @@ export default function ChatProvider({ children }) {
         });
         setChatId(id);
         setMessages(res.data.response.response);
-        console.log(res.data.response);
+        console.log(res.data.response.response);
         let { firstName, lastName, picture, userId, username } = res.data.response.targetDetails;
         setNewChatUser({
             avatar: picture,
@@ -69,14 +69,40 @@ export default function ChatProvider({ children }) {
         });
         localStorage.setItem('newUserChatId', userId);
         localStorage.setItem('chatId', id);
+     
+        setLastMessages(lastMessages.map(item => {
+
+            if(res.data.response.response.some(item => item.isRead)) {
+                let newObj = {
+                    ...item,
+                    isRead: true
+                }
+                console.log(newObj);
+
+                return newObj
+            } else {
+                console.log('-');
+                return {
+                    ...item,
+                    isRead: false
+                }
+            }
+        }))
+
     }
 
 
     useEffect(() => {
-        getChats()
+        getChats();
+
+      
     }, [newChatUser])
 
- 
+    useEffect(()=>{
+        return () => {
+            localStorage.removeItem('newUserChatId')
+        }
+    },[])
 
 
     useEffect(() => {
@@ -88,18 +114,23 @@ export default function ChatProvider({ children }) {
             });
             socketInstance.on('connect', () => {
                 console.log('Connected to WebSocket server!');
+                getChats()
             });
            
             socketInstance.on('online-users', (users) => {
                 setOnlineUsers(users);
             })
+
+            
               
 
 
             socketInstance.on("newMessage", (data) => {
                 let { message, target } = data;
-                
+                let isRead = +message.myId === +localStorage.newUserChatId;
+
                 if(+message.chatId == +localStorage.chatId || target == localStorage.newUserChatId) {
+                    localStorage.setItem('chatId', message.chatId)
                     setMessages((prevMessages) => {
                         return [
                                 {
@@ -114,20 +145,31 @@ export default function ChatProvider({ children }) {
                 }
 
                 
-                setLastMessages((prevMessages) => {
-                    return prevMessages.map((item) => {
-                        if (+message.chatId == +item.chatId && +message.userId == +target) {
-                            return {
-                                ...item,
-                                lastMessage: message.message
-                            };
-                        } else {
-                            return item;
+                setLastMessages(lastMessages.map((item) => {
+                    if (+message.chatId == +item.chatId && +message.userId == +target) {
+                        return {
+                            ...item,
+                            isRead ,
+                            lastMessage: message.message
                         }
-                    })
+                    } else {
+                        return item;
                     }
-                )
+                }))
+           
+
+                if(lastMessages.every(item => {item.userId != message.myId}))  {
+                    getChats();
+                }
+
+                if(message.myId == localStorage.newUserChatId){
+                    console.log('Message is read');
+                }
+
+
             });
+
+   
 
             socketInstance.on('disconnect', () => {
             });
@@ -135,7 +177,6 @@ export default function ChatProvider({ children }) {
             setSocket(socketInstance);
         }
 
-        USER_TOKKEN && getChats();
 
     }, [user, USER_TOKKEN]);
 
@@ -150,10 +191,8 @@ export default function ChatProvider({ children }) {
             updatedAt: new Date().toISOString(),
             chatId: chatId,
             myId: user?.user_id,
-            userId: id
+            userId: id 
         }
-
-
         await axios.post(`${CHAT_API}sendMessage/`, { target: id, message: newMessage.split('\n').join('\n') },
             {
                 headers: {
@@ -163,6 +202,7 @@ export default function ChatProvider({ children }) {
         );
         socket.emit('sendMessage', { target: id, message: newObjectMessage });
         setNewMessage('');
+          
 
     };
 
@@ -171,10 +211,23 @@ export default function ChatProvider({ children }) {
         
         setMessages([])
         setNewChatUser(newChatUser);
-        setChatId(false)
+        setChatId(false);
         localStorage.setItem('newUserChatId', newChatUser.id)
     }
 
+
+    const deleteChat = async (id) => {
+        await axios.delete(`${CHAT_API}deleteChat/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${USER_TOKKEN}`,
+                }
+            }
+        );
+        getChats();
+        setMessages([]);
+        setNewChatUser(false);
+    }
 
 
 
@@ -197,7 +250,9 @@ export default function ChatProvider({ children }) {
             sendMessage,
             getMessage,
             getChats,
-            addChat
+            setNewChatUser,
+            addChat,
+            deleteChat
         }}>
             {children}
         </ChatContext.Provider>
