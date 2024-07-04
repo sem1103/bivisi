@@ -18,7 +18,7 @@ import { Modal } from 'antd';
 
 const Chat = () => {
   const axiosInstance = useAxios();
-  const { USER_TOKKEN, myId, CHAT_API, allChats, chatId, messages, setMessages, newMessage, lastMessages, setNewMessage, socket, newChatUser, onlineUsers, sendMessage, getMessage, addChat, getChats, deleteChat, setNewChatUser } = useContext(ChatContext)
+  const { USER_TOKKEN, myId, CHAT_API, allChats, chatId, messages, setMessages, newMessage,  lastMessages, setNewMessage, socket, newChatUser, onlineUsers, sendMessage, getMessage, addChat, getChats, deleteChat, setNewChatUser } = useContext(ChatContext)
 
   const [findUser, setFindUser] = useState([]);
   const [openSearchList, setopenSearchList] = useState(false);
@@ -129,6 +129,7 @@ const Chat = () => {
                                   findUser.map(item => {
                                     return <li className="use__item" onClick={() => {
                                       setIsModalOpen(false)
+
                                       setTimeout(() => {
                                         window.innerWidth < 990 && window.scrollTo(0, document.body.scrollHeight);
                                       }, 100);
@@ -139,7 +140,6 @@ const Chat = () => {
 
                                       } else {
                                         setIsShowMessages(true)
-
                                         addChat(item)
                                         setTimeout(() => {
                                           window.innerWidth < 990 && window.scrollTo(0, document.body.scrollHeight);
@@ -182,7 +182,7 @@ const Chat = () => {
                       if (chat?.target.firstName.toLowerCase().includes(userName.toLowerCase())) {
                         return <div
                           key={chat.chatId}
-                          className={`chat-item ${lastMessages[ind]?.userId == localStorage.newUserChatId ? "active" : ""
+                          className={`chat-item ${+chat.target.userId == +localStorage.newUserChatId ? "active" : ""
                             } 
                       `}
                           onClick={() => {
@@ -204,9 +204,9 @@ const Chat = () => {
                               {
                                 lastMessages[ind]?.lastMessage
                               }
-                              {
-                                lastMessages[ind]?.isRead ? '| Read' : '| No Read'
-                              }
+                              {/* {
+                                chat.isRead ? '| Read' : '| No Read'
+                              } */}
                             </p>
                           </div>
                         </div>
@@ -219,20 +219,23 @@ const Chat = () => {
             </div>
             <div ref={messagesDisplay} className={`col-lg-8 h-100 messages__side ${isShowMessages ? 'show__messages' : ''}`}>
               <button class="back__top" onClick={() => {
+
                 setMessages([])
-                setIsShowMessages(false)
+                setIsShowMessages(false);
+                localStorage.setItem('chatId', 0)
+                localStorage.setItem('newUserChatId', 0)
               }}><svg fill="#fff" width="28" viewBox="0 0 200 200" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" stroke="#fff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title></title><path d="M100,15a85,85,0,1,0,85,85A84.93,84.93,0,0,0,100,15Zm0,150a65,65,0,1,1,65-65A64.87,64.87,0,0,1,100,165ZM116.5,57.5a9.67,9.67,0,0,0-14,0L74,86a19.92,19.92,0,0,0,0,28.5L102.5,143a9.9,9.9,0,0,0,14-14l-28-29L117,71.5C120.5,68,120.5,61.5,116.5,57.5Z"></path></g></svg></button>
               <div className="messages__display">
-                {(newChatUser) && (
+                {(newChatUser && localStorage.chatId && localStorage.newUserChatId) && (
                   <div className="chat_messages_header">
                     <div className="d-flex align-items-center gap-3 message__user">
                       <div className="nickname">
                         <img src={empyAvatar} alt="" />
                         {onlineUsers.some(item => +item == +newChatUser.id) && <hr className="is__online" />}
                       </div>
-                      <div className="d-flex flex-column">
+                      <div className="d-flex flex-column active__user__info">
                         <h2>{newChatUser.first_name} {newChatUser.last_name}</h2>
-                        <p>liviamango</p>
+                        <p>{newChatUser?.username}</p>
                       </div>
                     </div>
                     <div className="nick_icons">
@@ -251,7 +254,14 @@ const Chat = () => {
                             <li>
                               <button class="button" onClick={() => {
                               
-                                deleteChat(localStorage.chatId)
+                              if(+localStorage.chatId != 0) deleteChat(localStorage.chatId)
+                                else {
+                                  getChats();
+                                  setMessages([]);
+                                  setNewChatUser(false);
+                                  localStorage.setItem('chatId', 0)
+                              }
+
                               }}>
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"

@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import axios from "axios";
 import { AuthContext } from "./authContext";
 import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
@@ -26,7 +27,8 @@ export default function ChatProvider({ children }) {
     const [lastMessages, setLastMessages] = useState([]);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [newChat, setNewChat] = useState(false);
-
+    const [newMessages, setNewMessages] = useState([])
+    const [onlineChat, setOnlineChat] = useState(false);
 
     const getChats = async () => {
         const res = await axios.get(`${CHAT_API}getChats`, {
@@ -43,13 +45,44 @@ export default function ChatProvider({ children }) {
             }
         }))
         setNewMessage('')
+        return res.data.response;
+
     };
 
 
-
+    let newConnect = ''
 
     const getMessage = async (id) => {
-      
+    //     newConnect = io(SOCKET_URL, {
+    //         query: { customerId: user?.user_id }
+    //     });
+    //     newConnect?.on('connect', () => {
+    //         console.log('Connected to WebSocket chat!');
+    //         newConnect.emit("connect-chat", { customerId: user.user_id, chatId: id });
+
+    //     });
+
+    //     newConnect.on("new-chat-connection", (data) => {
+    //         console.log("Sohbet bağlantı durumu:", data);
+
+            
+    //     });
+
+    //     allChats.forEach(item => {
+            
+    //        if(+localStorage.newUserChatId == +item.target.userId) {
+    //            newConnect?.emit("check-chat-connection", {
+    //                customerId: user.user_id,
+    //                target: localStorage.newUserChatId,
+    //                chatId: id
+    //            });
+    //        }
+    //    })
+
+   
+
+        // if(+localStorage.chatId == +id) newConnect.emit("disconnect-chat", { customerId: user.user_id });
+
 
         const res = await axios.get(`${CHAT_API}getMessages/${id}`, {
             headers: {
@@ -58,7 +91,6 @@ export default function ChatProvider({ children }) {
         });
         setChatId(id);
         setMessages(res.data.response.response);
-        console.log(res.data.response.response);
         let { firstName, lastName, picture, userId, username } = res.data.response.targetDetails;
         setNewChatUser({
             avatar: picture,
@@ -67,6 +99,9 @@ export default function ChatProvider({ children }) {
             id: userId,
             username
         });
+
+        
+
         localStorage.setItem('newUserChatId', userId);
         localStorage.setItem('chatId', id);
      
@@ -77,11 +112,9 @@ export default function ChatProvider({ children }) {
                     ...item,
                     isRead: true
                 }
-                console.log(newObj);
 
                 return newObj
             } else {
-                console.log('-');
                 return {
                     ...item,
                     isRead: false
@@ -89,20 +122,36 @@ export default function ChatProvider({ children }) {
             }
         }))
 
+      
     }
 
 
     useEffect(() => {
         getChats();
 
-      
+
     }, [newChatUser])
+   
+
+    useEffect(() => {
+        if(newMessages.fromUserId) {
+            toast.dark('New Message! ' + newMessages?.userName + ' : ' + newMessages?.lastMessage)
+        }
+      
+    }, [newMessages])
 
     useEffect(()=>{
+        localStorage.setItem('chatId', false)
+        localStorage.setItem('newUserChatId', false)
+
         return () => {
-            localStorage.removeItem('newUserChatId')
+            localStorage.setItem('chatId', false)
+            localStorage.setItem('newUserChatId', false)
         }
     },[])
+
+
+    
 
 
     useEffect(() => {
@@ -119,22 +168,25 @@ export default function ChatProvider({ children }) {
            
             socketInstance.on('online-users', (users) => {
                 setOnlineUsers(users);
+               
             })
 
+          
             
-              
+           
+
+
 
 
             socketInstance.on("newMessage", (data) => {
                 let { message, target } = data;
-                let isRead = +message.myId === +localStorage.newUserChatId;
-
-                if(+message.chatId == +localStorage.chatId || target == localStorage.newUserChatId) {
-                    localStorage.setItem('chatId', message.chatId)
+                let isRead = +message.target == +user.user_id;
+                console.log(message);
+                if(!message.chatId ||message.chatId == +localStorage.chatId || (+target != user?.user_id && (+message.target == +user?.user_id))) {
                     setMessages((prevMessages) => {
                         return [
                                 {
-                                    author: localStorage.newUserChatId == target
+                                    author: message.target != user.user_id
                                     ,
                                     ...message
                                 }
@@ -144,27 +196,67 @@ export default function ChatProvider({ children }) {
                     )
                 }
 
+
+            
                 
-                setLastMessages(lastMessages.map((item) => {
-                    if (+message.chatId == +item.chatId && +message.userId == +target) {
-                        return {
-                            ...item,
-                            isRead ,
-                            lastMessage: message.message
+
+                if (
+                    // Условие 1: если chatId не совпадает с сохраненным chatId, и не является новым пользователем, и не является текущим пользователем
+                    (+message.chatId !== +localStorage.chatId &&
+                     +message.myId !== +localStorage.newUserChatId &&
+                     +message.myId !== +user?.user_id) ||
+                
+                    // Условие 2: если chatId отсутствует, и отправитель не является текущим пользователем
+                    (!message.chatId && +message.myId !== +user.user_id) ||
+                    (!localStorage.chatId && !localStorage.newUserChatId)
+                ) {
+                    setNewMessages({
+                        lastMessage: message.message,
+                        fromUserId: target,
+                        userName: message.userName
+                    });
+                }
+
+                setAllChats(prev => {
+                    return prev.map(item => {
+                        if(+item.chatId == +message.chatId && +message.target ==  +localStorage.newUserChatId ) {
+                            return {
+                                ...item,
+                                isRead: true
+                            }
+                        } else  return item
+                    })
+                })
+
+
+
+                
+                setLastMessages(prev => {
+                    return prev.map((item) => {
+                        if (+message.chatId == +item.chatId && +message.target == +target) {
+                            
+
+                            return {
+                                ...item,
+                                isRead ,
+                                lastMessage: message.message
+                            }
+                        } else {
+                            return item;
                         }
-                    } else {
-                        return item;
-                    }
-                }))
+                    })
+                })
            
 
-                if(lastMessages.every(item => {item.userId != message.myId}))  {
-                    getChats();
+                if(+localStorage.chatId == 0)  {
+                    getChats().then(res => localStorage.setItem('chatId', res[0].chatId))
                 }
 
                 if(message.myId == localStorage.newUserChatId){
-                    console.log('Message is read');
+                    // console.log('Message is read');
                 }
+
+
 
 
             });
@@ -184,25 +276,31 @@ export default function ChatProvider({ children }) {
 
     const sendMessage = async (newMessage) => {
         let id = localStorage.newUserChatId
-        let newObjectMessage = {
-            messageId: messages.length ? +messages[0].messageId + 1 : 1,
-            message: newMessage.split('\n').join('\n'),
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            chatId: chatId,
-            myId: user?.user_id,
-            userId: id 
-        }
-        await axios.post(`${CHAT_API}sendMessage/`, { target: id, message: newMessage.split('\n').join('\n') },
+        
+        let res = await axios.post(`${CHAT_API}sendMessage/`, { target: id, message: newMessage.split('\n').join('\n') },
             {
                 headers: {
                     Authorization: `Bearer ${USER_TOKKEN}`,
                 }
             }
         );
+
+
+        let newObjectMessage = {
+            messageId: messages.length ? +messages[0].messageId + 1 : 1,
+            message: newMessage.split('\n').join('\n'),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            chatId: chatId,
+            myId: res.data.response.data.customerDetails.customerId,
+            target: id ,
+            userName: res.data.response.data.customerDetails.username
+        }
+
+
         socket.emit('sendMessage', { target: id, message: newObjectMessage });
         setNewMessage('');
-          
+      
 
     };
 
@@ -227,6 +325,8 @@ export default function ChatProvider({ children }) {
         getChats();
         setMessages([]);
         setNewChatUser(false);
+        localStorage.setItem('chatId', 0)
+
     }
 
 
@@ -244,6 +344,7 @@ export default function ChatProvider({ children }) {
             newMessage,
             lastMessages,
             newChatUser,
+            newConnect,
             setMessages,
             onlineUsers,
             setNewMessage,
