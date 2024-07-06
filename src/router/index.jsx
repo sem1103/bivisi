@@ -50,6 +50,10 @@ import ChannelsShorts from "../pages/ChannelsDetail/pages/ChanellsShorts";
 import EditMyShort from "../pages/Profile/pages/EditShort";
 import AboutChanell from "../pages/ChannelsDetail/pages/About";
 import LoadingBarPreloader from "../components/LoadingBarPreloader";
+import LiveStreem from "../pages/LiveSteem";
+import NewStream from "../pages/LiveSteem/CreateStreem";
+import ShowMyStream from "../pages/LiveSteem/CreateStreem/ShowMyStream";
+
 
 const AppRouter = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -138,6 +142,11 @@ const AppRouter = () => {
             <Route element={<AllChannels />} path="/all_channels" />
             <Route element={<PopularChannels />} path="/popular_channels" />
             <Route element={<ProductDetail />} path="/product_detail/:id" />
+
+            <Route  element={<LiveStreem />} path="/live-streams"/>
+            <Route  element={<LiveStreem />} path="/live-streams/:roomId"/>
+            <Route  element={<NewStream />} path="/new-stream"/>
+            <Route  element={<ShowMyStream />} path="/new-stream/:roomId"/>
           </Routes>
         </Sidebar>
       </BrowserRouter>
