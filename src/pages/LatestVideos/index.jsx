@@ -5,6 +5,8 @@ import { ProductContext } from "../../context/ProductContext";
 import "./style.scss";
 import sort from "../../assets/icons/Sort.svg";
 import useAxios from "../../utils/useAxios";
+import cameraOutline from "../../layout/Sidebar/icons/camera-outline.svg";
+
 const Lastest_Videos = () => {
   const { Option } = Select;
   const axiosInstance = useAxios();
@@ -53,7 +55,10 @@ const Lastest_Videos = () => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-lg-12 d-flex justify-content-between align-items-center py-4">
-              <h4>Latest videos</h4>
+              <div className="d-flex align-items-center gap-2">
+                <img width={27} src={cameraOutline} alt="" />
+                <h4 className="mt-1">Latest videos</h4>
+              </div>
               <div className="d-flex align-items-center gap-4">
                 <div className="custom-select">
                   <Select
@@ -77,7 +82,7 @@ const Lastest_Videos = () => {
               </div>
             </div>
             {sortedProducts.map((item) => (
-              <LastVideoCard ProductItemVideoCard={item} key={item.id} page="latestvideo"/>
+              <LastVideoCard ProductItemVideoCard={item} key={item.id} page="latestvideo" />
             ))}
           </div>
         </div>

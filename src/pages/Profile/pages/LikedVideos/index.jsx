@@ -18,6 +18,8 @@ import { VideoContext } from "../../../../context/VideoContext";
 import { useCart } from "react-use-cart";
 import logo from "../../../../assets/images/logoLight.svg";
 import Plyr from "plyr-react";
+import { Select } from "antd";
+const { Option } = Select;
 const LikedVideos = ({item}) => {
   const axiosInstance = useAxios();
   const [likedProducts, setLikedProducts] = useState([]);
@@ -54,7 +56,6 @@ const LikedVideos = ({item}) => {
   const [videoDuration, setVideoDuration] = useState(null);
   const { addItem } = useCart();
   const [loading, setLoading] = useState(false);
-
 
   const playerRef = useRef(null);
 
@@ -125,6 +126,30 @@ const LikedVideos = ({item}) => {
   };
 
 
+
+
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const handleSelect = (value) => {
+    setSelectedOption(value);
+  };
+
+  const handleAllClick = () => {
+    setSelectedOption("");
+  };
+
+  const sortedProducts = [...likedProducts];
+  if (selectedOption === "option1") {
+    sortedProducts.sort((a, b) => a.product.name.localeCompare(b.product.name));
+  } else if (selectedOption === "option2") {
+    sortedProducts.sort((a, b) => b.product.name.localeCompare(a.product.name));
+  } else if (selectedOption === "option3") {
+    sortedProducts.sort((a, b) => a.product.price - b.product.price);
+  } else if (selectedOption === "option4") {
+    sortedProducts.sort((a, b) => b.product.price - a.product.price);
+  }
+ 
+
   return (
     <>
       <Main />
@@ -135,73 +160,38 @@ const LikedVideos = ({item}) => {
             <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  flex-wrap liked__categories">
               <h1>Liked videos</h1>
               <div className="d-flex gap-3">
-                <button className="liked_videos_filter">
+                {/* <button className="liked_videos_filter">
                   <img src={filter} alt="upload" />
                   Filter
                 </button>
                 <div className="liked_videos-sort">
                   <img src={sort} alt="sort" />
                   Sort by
+                </div> */}
+                <div className="custom-select">
+                <Select
+                    defaultValue=""
+                    suffixIcon={null}
+                    className="select"
+                    popupClassName="custom-dropdown"
+                    prefixIcon={<img src={sort} alt="sort" width={20} />}
+                    value={selectedOption}
+                    onChange={handleSelect}
+                  >
+                    <Option value="">All</Option>
+                    <Option value="option1">A to Z</Option>
+                    <Option value="option2">Z to A</Option>
+                    <Option value="option3">From cheap to expensive</Option>
+                    <Option value="option4">From expensive to cheap</Option>
+                  </Select>
                 </div>
               </div>
             </div>
 
-            {likedProducts && likedProducts.length > 0 ? (
-              likedProducts?.map((item) => {
+            {sortedProducts && sortedProducts.length > 0 ? (
+              sortedProducts?.map((item) => {
                 return (
                   <div className="col-lg-4 p-3">
-                    {/* <div className="videoCard">
-                      <div className="main">
-                        <span className="card_price">
-                          $ {item?.product.price}
-                        </span>
-                        <img
-                          className={`coverImage`}
-                          src={item?.cover_image}
-                          alt="cover"
-                        />
-                        <ReactPlayer
-                          className={`video`}
-                          controls={true}
-                          url={item?.original_video}
-                        />
-                      </div>
-                      <NavLink
-                        className="heading w-100 flex-column justify-content-start align-items-start"
-                        to={`/product_detail/${item.id}`}
-                      >
-                        <div className="d-flex w-100 justify-content-between align-items-center">
-                          <h1>{item.product?.user?.name}</h1>
-                          <h6>
-                            <img src={blueHeart} alt="" />
-                            {item.product?.like_count}
-                          </h6>
-                        </div>
-                        <p>{item.product?.name}</p>
-                      </NavLink>
-                      <div className="cardBottom">
-                        <div className="card_viev_count">
-                          <img src={eye} alt="eye.svg" />
-                          <span>
-                            {formatViewCount(item?.product?.view_count)}
-                          </span>
-                        </div>
-                        <div className="icons">
-                          <WishBtn item={item} />
-                          <img
-                            src={bag}
-                            alt=""
-                            onClick={() =>
-                              handleAddToBasket(
-                                item?.product,
-                                user,
-                                axiosInstance
-                              )
-                            }
-                          />
-                        </div>
-                      </div>
-                    </div> */}
 
                     <div
                       className="videoCard"

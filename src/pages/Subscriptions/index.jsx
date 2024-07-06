@@ -9,7 +9,7 @@ import PopularChannelCard from "../../components/PChannel";
 import default_coverimg from "../../assets/images/default-coverimg.jpg"
 import user_emptyavatar from "../../assets/images/user-empty-avatar.png"
 import { useNavigate } from "react-router-dom";
-
+import subscribeOutline from "../../layout/Sidebar/icons/subscribeOutline.svg"
 
 const Subscription = () => {
   const axiosInstance = useAxios();
@@ -59,14 +59,14 @@ const Subscription = () => {
     let sorted = [...subscriptions];
 
     switch (value) {
-      case 'option1': 
+      case 'option1':
         sorted.sort((a, b) => a.follows.username.localeCompare(b.follows.username));
         break;
-      case 'option2': 
+      case 'option2':
         sorted.sort((a, b) => b.follows.username.localeCompare(a.follows.username));
         break;
       default:
-        sorted = [...subscriptions]; 
+        sorted = [...subscriptions];
         break;
     }
 
@@ -78,7 +78,10 @@ const Subscription = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-12 d-flex justify-content-between align-items-center py-4">
-            <h4>Your subscriptions</h4>
+            <div className="d-flex align-items-center gap-2">
+              <img width={27} src={subscribeOutline} alt="" />
+              <h4 className="mt-1">Your subscriptions</h4>
+            </div>
             <div className="custom-select">
               <Select
                 value={selectedOption}
@@ -103,21 +106,21 @@ const Subscription = () => {
                 </div>
                 <div className="channelCard-context">
                   {/* <h2>{item.username}</h2> */}
-                  <div 
-            className="username" 
-            onClick={() => navigate(
-              `/channels_detail/channels_videos/${item.username}`, 
-              { 
-                state: { 
-                  followersCount: item.follower_count, 
-                  cover_image: item.cover_image, 
-                  avatar: item.avatar 
-                } 
-              }
-            )}
-          >
-            {item?.username}
-          </div>
+                  <div
+                    className="username"
+                    onClick={() => navigate(
+                      `/channels_detail/channels_videos/${item.username}`,
+                      {
+                        state: {
+                          followersCount: item.follower_count,
+                          cover_image: item.cover_image,
+                          avatar: item.avatar
+                        }
+                      }
+                    )}
+                  >
+                    {item?.username}
+                  </div>
                   <span>{item.first_name} {item.last_name}</span>
                   <p>{item.bio}</p>
                   <div className="d-flex align-items-center justify-content-between">
