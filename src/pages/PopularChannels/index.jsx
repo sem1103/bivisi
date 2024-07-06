@@ -6,6 +6,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../api/baseUrl';
 import { Select } from 'antd';
 import { AuthContext } from '../../context/authContext';
+import starOutline from "../../layout/Sidebar/icons/star-outline.svg";
 
 
 const PopularChannels = () => {
@@ -20,7 +21,7 @@ const PopularChannels = () => {
                 const response = await axios.get(`${BASE_URL}/user/popular-channels/`);
                 const filteredChannels = response?.data?.results.filter(channel => channel?.username !== user?.username);
                 setPopularC(filteredChannels);
-                setSortedChannels(filteredChannels); 
+                setSortedChannels(filteredChannels);
             } catch (error) {
                 console.error('Failed to fetch popular channels:', error);
             }
@@ -28,7 +29,7 @@ const PopularChannels = () => {
         fetchPChannels();
     }, [user]);
 
-    
+
 
     const handleSortChange = (value) => {
         let sorted = [...popularC];
@@ -47,7 +48,10 @@ const PopularChannels = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-lg-12 d-flex justify-content-between align-items-start pt-4">
-                        <h4>Popular channels</h4>
+                        <div className='d-flex align-items-center gap-2'>
+                            <img width={27} src={starOutline} alt="" />
+                            <h4 className='mt-2'>Popular channels</h4>
+                        </div>
                         <div className="custom-select">
                             <Select
                                 defaultValue=""
@@ -64,7 +68,7 @@ const PopularChannels = () => {
                         </div>
                     </div>
                     {sortedChannels?.map((item) => (
-                        <PopularChannelCard key={item.id} popularChannels={item} page="channelcard"/>
+                        <PopularChannelCard key={item.id} popularChannels={item} page="channelcard" />
                     ))}
                 </div>
             </div>
