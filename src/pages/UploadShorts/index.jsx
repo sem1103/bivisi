@@ -64,7 +64,7 @@ const UploadS = () => {
     cover_image:  null ,
     category: !editVideo ? [] : editVideo.category, 
     phone_number: !editVideo ? "+994" : editVideo.phone_number , // Default country code
-    product_type: "Video",
+    product_type: "Shorts",
     price: !editVideo ? '' : editVideo.price.split('.')[0],
     original_video:  null ,
     properties : fields.length ? null : fields
