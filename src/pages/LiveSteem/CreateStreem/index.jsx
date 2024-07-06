@@ -38,8 +38,7 @@ export default function NewStream() {
           const reader = new FileReader();
           reader.onload = (e) => {
             const newImageSrc = e.target.result;
-            console.log(files[0]);
-            localStorage.setItem('streamThumb', JSON.stringify(newImageSrc))
+            localStorage.setItem('streamThumb', newImageSrc)
 
            
           };
@@ -47,7 +46,12 @@ export default function NewStream() {
         }
       };
 
-    
+
+
+
+
+
+      
 
     return (
         <div className="streams">

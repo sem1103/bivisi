@@ -10,6 +10,26 @@ export default function ShowMyStream() {
     const [isJoin, setIsJoin] = useState(false)
     const zp = useRef(null)
 
+    const base64ToFile = (base64, filename) => {
+        const byteString = atob(base64.split(',')[1]);
+        const mimeString = base64.split(',')[0].split(':')[1].split(';')[0];
+    
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+    
+        const blob = new Blob([ab], { type: mimeString });
+        const file = new File([blob], filename, { type: mimeString });
+        return file;
+      };
+    
+     
+
+
+   
+
     useEffect(() => {
         const myMeeting = async (element) => {
             try {
@@ -33,20 +53,20 @@ export default function ShowMyStream() {
                  if(!isJoin){
                     zp.current.joinRoom({
                         onJoinRoom: () => {
-                            setIsJoin(true)
+                            setIsJoin(true);
                          },
                          onLiveStart: async ()=> {
                             console.log('Go live');
-                            let cover_image = localStorage.avatar == 'null' ? 'https://as2.ftcdn.net/v2/jpg/05/49/98/39/1000_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg' : localStorage.avatar;
+                        
 
                             let res = await axios.post('http://64.226.112.70/api/core/stream/',{
                                 room_id: roomId,
                                 user_name: JSON.parse(localStorage.authTokens).username,
                                 room_name: localStorage.roomName,
-                                cover_image
+                                cover_image : base64ToFile(localStorage.streamThumb, 'image.png')
                             }, {
                                 headers: {
-                                    'Content-Type': 'application/json',
+                                    'Content-Type': 'multipart/form-data',
                                     'Authorization': 'Bearer ' + JSON.parse(localStorage.authTokens).access
                                 }
                             })

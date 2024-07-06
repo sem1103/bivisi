@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef, useCallback } from "react";
 import "./style.scss";
 import { Progress, Select, Input, Radio, Space } from "antd";
 import down_arrow from "../../assets/icons/down-arrow.svg";
@@ -13,65 +13,118 @@ import Map from 'react-map-gl';
 import GeocoderControl from "../../components/reactMap/geocoder-control";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
 import { useForm, useFieldArray } from 'react-hook-form';
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 
+const UploadV = () => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
-const UploadS = () => {
+  const [firstProp, setFirstProp] = useState('');
+  const [secondProp, setSecondProp] = useState('');
+
+  const [editVideo, setEditVideo] = useState(localStorage.myEditVideo != undefined ? JSON.parse(localStorage.myEditVideo) : false)
   const { product, setProduct } = useContext(ProductContext);
   const { Option } = Select;
   const [category, setCategory] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([])
   const [subcategory, setSubcategory] = useState([]);
   const [videoPreview, setVideoPreview] = useState(null);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [haveVideo, setHaveVideo] = useState(false);
-  const [videoName, setVideoName] = useState('')
-  const [thumbnail, setThumbnail] = useState();
-  const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA'; // Set your mapbox token here
+  const [videoName, setVideoName] = useState(useState(localStorage.myEditVideo != undefined ? editVideo.name : ''))
+  const [thumbnail, setThumbnail] = useState(!editVideo ? [] : [
+    {
+      dataURL: editVideo.product_video_type[0].cover_image,
+      coverImageFile: {}
+    }
+  ]);
+  const [activeCoverInd, setActiveCoverInd ] = useState(0);
+  const imgRef = useRef(null);
+  const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA'; 
+  const [mapLink, setMapLink] = useState('');
+
   const currency = getCurrencyByCountry();
 
-  const { register, control } = useForm({
+  const { register, control, handleSubmit } = useForm({
     defaultValues: {
-      rows: [{ first: '', second: '' }],
+      rows: [],
     },
   });
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'rows',
+    name: 'properties',
   });
 
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    cover_image: null,
-    category: [], // İndi bu bir massiv olacaq
-    phone_number: "+994", // Default country code
-    product_type: "Shorts",
-    price: '',
-    original_video: null,
+    name: !editVideo ? '' : editVideo.name,
+    description: !editVideo ? '' : editVideo.description,
+    cover_image:  null ,
+    category: !editVideo ? [] : editVideo.category, 
+    phone_number: !editVideo ? "+994" : editVideo.phone_number , // Default country code
+    product_type: "Video",
+    price: !editVideo ? '' : editVideo.price.split('.')[0],
+    original_video:  null ,
+    properties : fields.length ? null : fields
   });
   const axiosInstance = useAxios();
+
+
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const categoryRes = await axios.get(
           "http://64.226.112.70/api/categories/"
         );
-        console.log("video upload", categoryRes.data.results);
         setCategory(categoryRes.data.results);
+        if(editVideo) {
+          const selectedCategory = categoryRes.data.results.find((cat) => cat.id == editVideo.category[0]);
+          setSubcategory(selectedCategory?.children || []);
+        }
       } catch (err) {
         console.log(err);
       }
     };
 
     fetchData();
+    return () => {
+      if(pathname.includes('upload')){
+        localStorage.removeItem('myEditVideo');
+        setEditVideo(false)
+        setFormData({
+          name: "",
+          description: "",
+          cover_image: null,
+          category: [],
+          phone_number: "+994",
+          product_type: "Shorts",
+          price: "",
+          original_video: null,
+        })
+      }
+    }
   }, []);
+
+  const handleGeocoderResult = useCallback((event) => {
+    const { result } = event;
+    const { center, place_name } = result;
+    const [longitude, latitude] = center;
+    
+    const link = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+    setMapLink({
+      url : link,
+      location: place_name
+    });
+  }, []);
+
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    console.log(e.target);
     if (name === "price" && isNaN(value)) {
       toast.warning("Please enter a valid numeric value for price.");
       return;
@@ -83,9 +136,16 @@ const UploadS = () => {
     }));
   };
 
+  const handleThumbnailSelect = (index) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      cover_image: thumbnail[index].coverImageFile,
+    }));
+   
+  };
+
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-
     const file = files[0];
     setFormData((prevData) => ({
       ...prevData,
@@ -107,7 +167,9 @@ const UploadS = () => {
 
       const video = document.createElement("video");
       video.src = URL.createObjectURL(file);
+      console.log(video);
 
+      
       const updateProgress = (percent) => {
         setLoadingProgress(percent);
         if (percent === 100) {
@@ -137,12 +199,13 @@ const UploadS = () => {
               const ctx = canvas.getContext("2d");
               ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
               const dataURL = canvas.toDataURL('image/png');
-              thumbnails.push(dataURL);
 
               canvas.toBlob((blob) => {
-                const coverImageFile = new File([blob], `thumbnail${captureIndex + 1}.jpg`, {
+                const coverImageFile = new File([blob], `thumbnail.jpg`, {
                   type: "image/jpeg",
                 });
+                thumbnails.push({dataURL,coverImageFile });
+
                 setFormData((prevData) => ({
                   ...prevData,
                   cover_image: coverImageFile,
@@ -155,6 +218,7 @@ const UploadS = () => {
             };
           } else {
             setThumbnail(thumbnails);
+            console.log(thumbnails);
           }
 
         };
@@ -174,13 +238,7 @@ const UploadS = () => {
     }
   };
 
-  const renderCategories = (categories) => {
-    return categories?.map((item) => (
-      <Option key={item.id} value={item.id}>
-        {item.name}
-      </Option>
-    ));
-  };
+ 
 
   const handleSelectChange = (name, value) => {
     if (name === "category") {
@@ -219,62 +277,134 @@ const UploadS = () => {
   };
 
   const validateForm = () => {
-    const { name, description, phone_number, category, price, original_video } =
+    const { name, description, phone_number, category, price } =
       formData;
     const isCategoryValid = category.length >= 1 && category[0];
+
+   
+
 
     if (
       !name.trim() ||
       !description.trim() ||
       !phone_number.trim() ||
       !isCategoryValid ||
-      !price.trim() ||
-      !original_video
+
+      !price.trim() 
     ) {
-      console.log({
-        name, description, phone_number, category, price, original_video
-      });
       return false;
     }
     return true;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      toast.error("Please fill out all required fields.");
-      return;
-    }
+  const onSubmit = async (data) => {
+    
 
+
+    // if (!validateForm()) {
+    //   toast.error("Please fill out all required fields.");
+    //   return;
+    // }
+    const { original_video, ...rest } = formData;
     const submitData = new FormData();
-    Object.keys(formData).forEach((key) => {
-      if (key === "category") {
-        // Ana və alt kateqoriyanın indekslərini birlikdə göndər
-        formData[key].forEach((categoryId) => {
-          submitData.append("category", categoryId);
-        });
-      } else if (key === "cover_image" && formData[key]) {
-        submitData.append(key, formData[key], formData[key].name);
-      } else {
-        submitData.append(key, formData[key]);
-      }
-    });
+    submitData.append('location_url', mapLink.url)
+    submitData.append('location', mapLink.location )
+    if(!data.properties.length ) {
+      submitData.append('properties', JSON.stringify(data.properties));
+    } else submitData.set('properties', JSON.stringify(data.properties));
+
+    
+    if(  formData.original_video == null) {
+      Object.keys(rest).forEach((key) => {
+        if(rest[key] == null ) return
+
+        if (key === "category") {
+          formData[key].forEach((categoryId) => {
+            submitData.append("category", categoryId);
+          });
+        }else {
+          submitData.append(key, formData[key]);
+        }
+      });
+    } else {
+      Object.keys(formData).forEach((key) => {
+        if (key === "category") {
+          // Ana və alt kateqoriyanın indekslərini birlikdə göndər
+          formData[key].forEach((categoryId) => {
+            submitData.append("category", categoryId);
+          });
+        } else if (key === "cover_image" && formData[key]) {
+          submitData.append(key, formData[key], formData[key].name);
+        } else {
+          submitData.append(key, formData[key]);
+        }
+      });
+    }
+    
 
     submitData.set("name", capitalizeFirstLetter(formData.name));
     submitData.set("description", capitalizeFirstLetter(formData.description));
+
+    
+
+    // [
+    //   {
+    //     "id":"b1e6badd-7164-4eaf-94d3-3d6458d8df2d",
+    //     "product_property":"color",
+    //     "property_value":"red"
+    //   }
+    // ]
+
+      // Создаем новый объект FormData, копируя все, кроме последнего ключа
+const newSubmitData = new FormData();
+
+// Преобразуем FormData в массив ключей и значений
+const entries = Array.from(submitData.entries());
+
+// Удаляем последний ключ
+entries.pop();
+
+// Копируем оставшиеся пары ключ-значение в новый объект FormData
+entries.forEach(([key, value]) => {
+  newSubmitData.append(key, value);
+});
+
+// Логирование значений новой FormData для проверки
+newSubmitData.forEach((value, key) => {
+  console.log(`${key}: ${value}`);
+}); 
+    
     try {
-      await toast.promise(
-        axiosInstance.post(`/upload_product/`, submitData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }),
-        {
-          loading: "Processing...",
-          success: "Upload successful!",
-          error: "Error uploading data",
-        }
-      );
+        await toast.promise(
+          !editVideo ?
+          axiosInstance.post(`/upload_product/`, submitData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          :
+          axiosInstance.patch(
+            `/update_product/${editVideo.id}/${editVideo.product_video_type[0].id}/`,
+            newSubmitData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          ).then(res => {
+            setTimeout(() => {
+              navigate('/your_profile/my_videos')
+            }, 200);
+          })
+          ,
+          {
+            loading: "Processing...",
+            success: !editVideo ? "Upload successful!" : 'Update successful!',
+            error: "Error uploading data",
+          }
+        );
+      
+     
 
       setFormData({
         name: "",
@@ -289,6 +419,8 @@ const UploadS = () => {
       setVideoPreview(false);
       setHaveVideo(false)
       setShowProgressBar(false)
+      setActiveCoverInd(0)
+      
 
     } catch (error) {
       console.error("Error uploading data", error);
@@ -297,13 +429,43 @@ const UploadS = () => {
   };
 
 
+  const thumbernailOnChangeHandler = (e) => {
+    let { files } = e.target;
+    if (files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const newImageSrc = e.target.result;
+        setThumbnail((prev) => {
+          const newThumbnails = [
+            ...prev,
+            {
+              dataURL: newImageSrc,
+              coverImageFile: files[0]
+            }
+          ];
+          setActiveCoverInd(newThumbnails.length - 1);
+          setFormData((prevData) => ({
+            ...prevData,
+            cover_image: files[0],
+          }));
+          return newThumbnails;
+        });
+      };
+      reader.readAsDataURL(files[0]);
+    }
+  };
+
+
+
 
   return (
     <div className="upload_video">
       <div className="container-fluid upload_video_content mt-4">
-        <form onSubmit={handleSubmit} className="row pt-1">
+        <form onSubmit={handleSubmit(onSubmit)} className="row pt-1">
           <div className="upload__video__form">
-            <div className="upload__steps">
+            {
+              !editVideo &&
+              <div className="upload__steps">
 
               <div className="steps">
                 <div className="line"></div>
@@ -328,58 +490,57 @@ const UploadS = () => {
                   </div>
                   <h3>Details</h3>
                 </div>
-
-
-
               </div>
 
             </div>
+            }
+
+          
 
 
             <div className="form__content">
-              <div className={`select_video ${videoPreview ? 'selected__video' : ''} `}>
-                <div className={` ${!haveVideo ? 'show__border' : ''}`} >
-                  {(!showProgressBar && !haveVideo) && <div className="upload__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 10.25L6.96421 10.25C6.05997 10.25 5.33069 10.25 4.7424 10.3033C4.13605 10.3583 3.60625 10.4746 3.125 10.7524C2.55493 11.0815 2.08154 11.5549 1.7524 12.125C1.47455 12.6063 1.35826 13.1361 1.3033 13.7424C1.24998 14.3307 1.24999 15.06 1.25 15.9642L1.25 15.9642L1.25 16L1.25 16.0358L1.25 16.0358C1.24999 16.94 1.24998 17.6693 1.3033 18.2576C1.35826 18.8639 1.47455 19.3937 1.7524 19.875C2.08154 20.4451 2.55493 20.9185 3.125 21.2476C3.60625 21.5254 4.13605 21.6417 4.7424 21.6967C5.33067 21.75 6.05992 21.75 6.96412 21.75L6.96418 21.75L7 21.75L17 21.75L17.0357 21.75C17.94 21.75 18.6693 21.75 19.2576 21.6967C19.8639 21.6417 20.3937 21.5254 20.875 21.2476C21.4451 20.9185 21.9185 20.4451 22.2476 19.875C22.5254 19.3937 22.6417 18.8639 22.6967 18.2576C22.75 17.6693 22.75 16.94 22.75 16.0358L22.75 16L22.75 15.9642C22.75 15.06 22.75 14.3307 22.6967 13.7424C22.6417 13.1361 22.5254 12.6063 22.2476 12.125C21.9185 11.5549 21.4451 11.0815 20.875 10.7524C20.3937 10.4746 19.8639 10.3583 19.2576 10.3033C18.6693 10.25 17.94 10.25 17.0358 10.25L17 10.25L16 10.25C15.5858 10.25 15.25 10.5858 15.25 11C15.25 11.4142 15.5858 11.75 16 11.75L17 11.75C17.9484 11.75 18.6096 11.7507 19.1222 11.7972C19.6245 11.8427 19.9101 11.9274 20.125 12.0514C20.467 12.2489 20.7511 12.533 20.9486 12.875C21.0726 13.0899 21.1573 13.3755 21.2028 13.8778C21.2493 14.3904 21.25 15.0516 21.25 16C21.25 16.9484 21.2493 17.6096 21.2028 18.1222C21.1573 18.6245 21.0726 18.9101 20.9486 19.125C20.7511 19.467 20.467 19.7511 20.125 19.9486C19.9101 20.0726 19.6245 20.1573 19.1222 20.2028C18.6096 20.2493 17.9484 20.25 17 20.25L7 20.25C6.05158 20.25 5.39041 20.2493 4.87779 20.2028C4.37549 20.1573 4.0899 20.0726 3.875 19.9486C3.53296 19.7511 3.24892 19.467 3.05144 19.125C2.92737 18.9101 2.8427 18.6245 2.79718 18.1222C2.75072 17.6096 2.75 16.9484 2.75 16C2.75 15.0516 2.75072 14.3904 2.79718 13.8778C2.84271 13.3755 2.92737 13.0899 3.05144 12.875C3.24892 12.533 3.53296 12.2489 3.875 12.0514C4.0899 11.9274 4.37549 11.8427 4.87779 11.7972C5.39041 11.7507 6.05158 11.75 7 11.75L8 11.75C8.41421 11.75 8.75 11.4142 8.75 11C8.75 10.5858 8.41421 10.25 8 10.25L7 10.25ZM16.5303 6.46967L12.5303 2.46967C12.2374 2.17678 11.7626 2.17678 11.4697 2.46967L7.46967 6.46967C7.17678 6.76256 7.17678 7.23744 7.46967 7.53033C7.76256 7.82322 8.23744 7.82322 8.53033 7.53033L11.25 4.81066L11.25 16C11.25 16.4142 11.5858 16.75 12 16.75C12.4142 16.75 12.75 16.4142 12.75 16L12.75 4.81066L15.4697 7.53033C15.7626 7.82322 16.2374 7.82322 16.5303 7.53033C16.8232 7.23744 16.8232 6.76256 16.5303 6.46967Z" fill="currentColor"></path></svg></div>}
+              {
+                
+                <div className={`select_video ${videoPreview || editVideo ? 'selected__video' : ''} `}>
+                <div className={` ${(!haveVideo && !editVideo) ? 'show__border' : ''}`} >
+                  {(!showProgressBar && !haveVideo && !editVideo ) && <div className="upload__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 10.25L6.96421 10.25C6.05997 10.25 5.33069 10.25 4.7424 10.3033C4.13605 10.3583 3.60625 10.4746 3.125 10.7524C2.55493 11.0815 2.08154 11.5549 1.7524 12.125C1.47455 12.6063 1.35826 13.1361 1.3033 13.7424C1.24998 14.3307 1.24999 15.06 1.25 15.9642L1.25 15.9642L1.25 16L1.25 16.0358L1.25 16.0358C1.24999 16.94 1.24998 17.6693 1.3033 18.2576C1.35826 18.8639 1.47455 19.3937 1.7524 19.875C2.08154 20.4451 2.55493 20.9185 3.125 21.2476C3.60625 21.5254 4.13605 21.6417 4.7424 21.6967C5.33067 21.75 6.05992 21.75 6.96412 21.75L6.96418 21.75L7 21.75L17 21.75L17.0357 21.75C17.94 21.75 18.6693 21.75 19.2576 21.6967C19.8639 21.6417 20.3937 21.5254 20.875 21.2476C21.4451 20.9185 21.9185 20.4451 22.2476 19.875C22.5254 19.3937 22.6417 18.8639 22.6967 18.2576C22.75 17.6693 22.75 16.94 22.75 16.0358L22.75 16L22.75 15.9642C22.75 15.06 22.75 14.3307 22.6967 13.7424C22.6417 13.1361 22.5254 12.6063 22.2476 12.125C21.9185 11.5549 21.4451 11.0815 20.875 10.7524C20.3937 10.4746 19.8639 10.3583 19.2576 10.3033C18.6693 10.25 17.94 10.25 17.0358 10.25L17 10.25L16 10.25C15.5858 10.25 15.25 10.5858 15.25 11C15.25 11.4142 15.5858 11.75 16 11.75L17 11.75C17.9484 11.75 18.6096 11.7507 19.1222 11.7972C19.6245 11.8427 19.9101 11.9274 20.125 12.0514C20.467 12.2489 20.7511 12.533 20.9486 12.875C21.0726 13.0899 21.1573 13.3755 21.2028 13.8778C21.2493 14.3904 21.25 15.0516 21.25 16C21.25 16.9484 21.2493 17.6096 21.2028 18.1222C21.1573 18.6245 21.0726 18.9101 20.9486 19.125C20.7511 19.467 20.467 19.7511 20.125 19.9486C19.9101 20.0726 19.6245 20.1573 19.1222 20.2028C18.6096 20.2493 17.9484 20.25 17 20.25L7 20.25C6.05158 20.25 5.39041 20.2493 4.87779 20.2028C4.37549 20.1573 4.0899 20.0726 3.875 19.9486C3.53296 19.7511 3.24892 19.467 3.05144 19.125C2.92737 18.9101 2.8427 18.6245 2.79718 18.1222C2.75072 17.6096 2.75 16.9484 2.75 16C2.75 15.0516 2.75072 14.3904 2.79718 13.8778C2.84271 13.3755 2.92737 13.0899 3.05144 12.875C3.24892 12.533 3.53296 12.2489 3.875 12.0514C4.0899 11.9274 4.37549 11.8427 4.87779 11.7972C5.39041 11.7507 6.05158 11.75 7 11.75L8 11.75C8.41421 11.75 8.75 11.4142 8.75 11C8.75 10.5858 8.41421 10.25 8 10.25L7 10.25ZM16.5303 6.46967L12.5303 2.46967C12.2374 2.17678 11.7626 2.17678 11.4697 2.46967L7.46967 6.46967C7.17678 6.76256 7.17678 7.23744 7.46967 7.53033C7.76256 7.82322 8.23744 7.82322 8.53033 7.53033L11.25 4.81066L11.25 16C11.25 16.4142 11.5858 16.75 12 16.75C12.4142 16.75 12.75 16.4142 12.75 16L12.75 4.81066L15.4697 7.53033C15.7626 7.82322 16.2374 7.82322 16.5303 7.53033C16.8232 7.23744 16.8232 6.76256 16.5303 6.46967Z" fill="currentColor"></path></svg></div>}
                   {showProgressBar && (
                     <div className="progress-container">
                       <Progress percent={loadingProgress} size={['100%', 20]} />
 
                     </div>
                   )}
-                  {videoPreview && (
-
+                  {
+                  (videoPreview  || editVideo) ?
                     <div className="video__preview">
-                      <img className="thumbnail" src={thumbnail[0]} alt="" />
+                      <img ref={imgRef} className="thumbnail" src={ thumbnail[activeCoverInd]?.dataURL} alt="" />
                       <h5>File Name</h5>
                       <h6>{videoName}</h6>
-                      <p>
+                      {
+                        !editVideo &&
+                        <p>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.29 16.29L5.7 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.59 7.59c-.38.39-1.02.39-1.41 0z"></path></svg>
                         <span>Video upload complete. No issues found.</span>
                       </p>
+                      }
                     </div>
-
-                    //   <ReactPlayer
-                    //   className="video_previev"
-                    //   controls
-                    //   url={videoPreview}
-                    //   style={{ width: "100%" }}
-                    // />
-
-                  )}
+                    :
+                    ''
+                  }
                   {
-                    (!showProgressBar && !haveVideo) &&
+                    (!showProgressBar && !haveVideo && !editVideo) &&
                     <>
                       <input
+                        name="original_video"
                         title=""
                         type="file"
-                        name="original_video"
                         id="original_video"
                         onChange={handleFileChange}
 
                       />
                       <div className="upload__desc">
                         <h4>Drag and drop video files to upload</h4>
-                        <p>Your short videos will be private until you publish them.</p>
+                        <p>Your videos will be private until you publish them.</p>
                       </div>
 
                       <button
@@ -392,19 +553,19 @@ const UploadS = () => {
                   }
                 </div>
               </div>
+              }
+             
 
 
               {
-                videoPreview &&
+                (videoPreview || editVideo) &&
                 <div className={` select_form `}>
-
-
-                  <div className={`${!videoPreview ? "disabled" : ""}`}>
+                  <div>
                     <div className="input_data">
                       <label htmlFor="title">Title</label>
                       <input
-                        type="text"
                         name="name"
+                        type="text"
                         value={formData.name}
                         onChange={handleInputChange}
                         placeholder="Video Title"
@@ -414,7 +575,8 @@ const UploadS = () => {
                     <div className="input_data">
                       <label htmlFor="description">Description</label>
                       <textarea
-                        name="description"
+                      name="description"
+
                         rows={4}
                         value={formData.description}
                         onChange={handleInputChange}
@@ -426,8 +588,9 @@ const UploadS = () => {
                       <label htmlFor="price" >Price</label>
                       <div className="file_price" >
                         <input
-                          type="number"
                           name="price"
+
+                          type="number"
                           value={formData.price}
                           onChange={handleInputChange}
                           placeholder={currency.currencyCode}
@@ -439,8 +602,8 @@ const UploadS = () => {
                     <div className="input_data">
                       <label htmlFor="phone_number">Phone Number</label>
                       <input
-                        type="text"
                         name="phone_number"
+                        type="text"
                         value={formData.phone_number}
                         onChange={handleInputChange}
                         placeholder="+994"
@@ -456,8 +619,16 @@ const UploadS = () => {
                           className="select"
                           popupClassName="custom-dropdown"
                           suffixIcon={<img src={down_arrow} alt="Dropdown Arrow" />}
+                          defaultValue={editVideo && editVideo?.category[0]}
                         >
-                          {renderCategories(category)}
+                          {
+                            category?.map((item) => {
+                            return <Option key={item.id} value={item.id} >
+                              {item.name}
+                            </Option>
+                            }
+                          )
+                          }
                         </Select>
                       </div>
 
@@ -509,7 +680,9 @@ const UploadS = () => {
                           popupClassName="custom-dropdown"
                           suffixIcon={<img src={down_arrow} alt="Dropdown Arrow" />}
                           notFoundContent="Empty Subcategory"
+                          defaultValue={editVideo && editVideo?.category[1]}
                         >
+                        
                           {renderSubcategories(subcategory)}
                         </Select>
                       </div>
@@ -522,27 +695,33 @@ const UploadS = () => {
                       </label>
                       <div className="manual__props">
 
-                        {fields.map((item, index) => (
-                          <div key={item.id} >
+                        { 
+                        fields.map((item, index) => {
+                         
+                           return  <div key={item.id} >
                             <input
-                              {...register(`rows.${index}.first`)}
-                              defaultValue={item.first}
+                              {...register(`properties.${index}.product_property`)}
                               placeholder="Property"
-                           
+                                       
                             />
                             <input
-                              {...register(`rows.${index}.second`)}
-                              defaultValue={item.second}
+                              {...register(`properties.${index}.property_value`)}
                               placeholder="Value"
                               
                             />
+                           
                             <button type="button" onClick={() => remove(index)} style={{ padding: '5px 10px' }}>
                               Remove
                             </button>
                           </div>
-                        ))}
+                          
+                          })}
 
-                      <button className="add__input" type="button" onClick={() => append({ first: '', second: '' })} >
+                      <button className="add__input" type="button" onClick={() => {
+                        append({ product_property: '', property_value: '' });
+                        
+                        
+                      }} >
                               Add
                             </button>
 
@@ -562,7 +741,8 @@ const UploadS = () => {
                         mapStyle="mapbox://styles/mapbox/streets-v9"
                         mapboxAccessToken={TOKEN}
                       >
-                        <GeocoderControl mapboxAccessToken={TOKEN} position="top-left" placeholder={' '} />
+                        <GeocoderControl mapboxAccessToken={TOKEN} position="top-left" placeholder={' '} onResult={handleGeocoderResult}
+ />
                       </Map>
                     </div>
 
@@ -572,7 +752,7 @@ const UploadS = () => {
 
                       <div className="thumbernails__wrapper">
                         <div className="upload__thumbernail">
-                          <input type="file" title=" " />
+                          <input name='thumbernail' type="file" title=" " onChange={e => thumbernailOnChangeHandler(e)} className="thumbernail__input" />
                           <svg xmlns="http://www.w3.org/2000/svg" width={28} viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 10.25L6.96421 10.25C6.05997 10.25 5.33069 10.25 4.7424 10.3033C4.13605 10.3583 3.60625 10.4746 3.125 10.7524C2.55493 11.0815 2.08154 11.5549 1.7524 12.125C1.47455 12.6063 1.35826 13.1361 1.3033 13.7424C1.24998 14.3307 1.24999 15.06 1.25 15.9642L1.25 15.9642L1.25 16L1.25 16.0358L1.25 16.0358C1.24999 16.94 1.24998 17.6693 1.3033 18.2576C1.35826 18.8639 1.47455 19.3937 1.7524 19.875C2.08154 20.4451 2.55493 20.9185 3.125 21.2476C3.60625 21.5254 4.13605 21.6417 4.7424 21.6967C5.33067 21.75 6.05992 21.75 6.96412 21.75L6.96418 21.75L7 21.75L17 21.75L17.0357 21.75C17.94 21.75 18.6693 21.75 19.2576 21.6967C19.8639 21.6417 20.3937 21.5254 20.875 21.2476C21.4451 20.9185 21.9185 20.4451 22.2476 19.875C22.5254 19.3937 22.6417 18.8639 22.6967 18.2576C22.75 17.6693 22.75 16.94 22.75 16.0358L22.75 16L22.75 15.9642C22.75 15.06 22.75 14.3307 22.6967 13.7424C22.6417 13.1361 22.5254 12.6063 22.2476 12.125C21.9185 11.5549 21.4451 11.0815 20.875 10.7524C20.3937 10.4746 19.8639 10.3583 19.2576 10.3033C18.6693 10.25 17.94 10.25 17.0358 10.25L17 10.25L16 10.25C15.5858 10.25 15.25 10.5858 15.25 11C15.25 11.4142 15.5858 11.75 16 11.75L17 11.75C17.9484 11.75 18.6096 11.7507 19.1222 11.7972C19.6245 11.8427 19.9101 11.9274 20.125 12.0514C20.467 12.2489 20.7511 12.533 20.9486 12.875C21.0726 13.0899 21.1573 13.3755 21.2028 13.8778C21.2493 14.3904 21.25 15.0516 21.25 16C21.25 16.9484 21.2493 17.6096 21.2028 18.1222C21.1573 18.6245 21.0726 18.9101 20.9486 19.125C20.7511 19.467 20.467 19.7511 20.125 19.9486C19.9101 20.0726 19.6245 20.1573 19.1222 20.2028C18.6096 20.2493 17.9484 20.25 17 20.25L7 20.25C6.05158 20.25 5.39041 20.2493 4.87779 20.2028C4.37549 20.1573 4.0899 20.0726 3.875 19.9486C3.53296 19.7511 3.24892 19.467 3.05144 19.125C2.92737 18.9101 2.8427 18.6245 2.79718 18.1222C2.75072 17.6096 2.75 16.9484 2.75 16C2.75 15.0516 2.75072 14.3904 2.79718 13.8778C2.84271 13.3755 2.92737 13.0899 3.05144 12.875C3.24892 12.533 3.53296 12.2489 3.875 12.0514C4.0899 11.9274 4.37549 11.8427 4.87779 11.7972C5.39041 11.7507 6.05158 11.75 7 11.75L8 11.75C8.41421 11.75 8.75 11.4142 8.75 11C8.75 10.5858 8.41421 10.25 8 10.25L7 10.25ZM16.5303 6.46967L12.5303 2.46967C12.2374 2.17678 11.7626 2.17678 11.4697 2.46967L7.46967 6.46967C7.17678 6.76256 7.17678 7.23744 7.46967 7.53033C7.76256 7.82322 8.23744 7.82322 8.53033 7.53033L11.25 4.81066L11.25 16C11.25 16.4142 11.5858 16.75 12 16.75C12.4142 16.75 12.75 16.4142 12.75 16L12.75 4.81066L15.4697 7.53033C15.7626 7.82322 16.2374 7.82322 16.5303 7.53033C16.8232 7.23744 16.8232 6.76256 16.5303 6.46967Z" fill="currentColor"></path></svg>
 
                           <p>
@@ -581,18 +761,23 @@ const UploadS = () => {
                           </p>
                         </div>
                         <ul className="thumbernail__items">
-                          <li><img src={thumbnail[1]} alt="" /></li>
-                          <li><img src={thumbnail[2]} alt="" /></li>
-                          <li><img src={thumbnail[3]} alt="" /></li>
-                          <li><img src={thumbnail[0]} alt="" /></li>
+
+                          {
+                            thumbnail?.map((item, ind) => {
+                              return <li className={`${activeCoverInd == ind ?  'active__cover' : ''}`}><img onClick={() => {
+                                handleThumbnailSelect(ind);
+                                setActiveCoverInd(ind)
+                              }} src={item.dataURL} alt="" /></li>
+                            }).reverse()
+                           
+                          }
+                          
                         </ul>
                       </div>
 
 
                     </div>
-
-
-                    <button type="submit">Publish</button>
+                    <button type="submit">{!editVideo ? 'Publish' : 'Save'}</button>
                   </div>
                 </div>
               }
@@ -605,4 +790,4 @@ const UploadS = () => {
   );
 };
 
-export default UploadS;
+export default UploadV;
