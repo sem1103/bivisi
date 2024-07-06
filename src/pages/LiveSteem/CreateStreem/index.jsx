@@ -38,8 +38,8 @@ export default function NewStream() {
           const reader = new FileReader();
           reader.onload = (e) => {
             const newImageSrc = e.target.result;
-
-            localStorage('streamThumb', JSON.stringify(files[0]))
+            console.log(files[0]);
+            localStorage.setItem('streamThumb', JSON.stringify(newImageSrc))
 
            
           };
