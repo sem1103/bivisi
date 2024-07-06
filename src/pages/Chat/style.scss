@@ -92,6 +92,7 @@
           font-size: 18px;
         }
       }
+      
     }
   }
 }
@@ -102,6 +103,11 @@
   height: auto;
   padding: 14px 0;
   transition: all 0.3s ease;
+  .active__user__info{
+    p{
+      text-align: left;
+    }
+  }
   input {
     display: flex;
     width: 100%;
@@ -706,7 +712,7 @@ button.back__top{
 
 @media only screen and (width < 990px) {
   
-  .back__top{
+  button.back__top{
     display: flex;
     justify-content: start;
     padding: 0;

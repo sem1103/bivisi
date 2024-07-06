@@ -24,6 +24,7 @@ import cameraOutline from "../../layout/Sidebar/icons/camera-outline.svg";
 import helpOutline from "../../layout/Sidebar/icons/help-outline.svg";
 import home from "../../layout/Sidebar/icons/home.svg";
 import starOutline from "../../layout/Sidebar/icons/star-outline.svg";
+import liveStreemIcon from "../../layout/Sidebar/icons/live-streem.svg";
 import trendOutline from "../../layout/Sidebar/icons/trend-outline.svg";
 import historyOutline from "../../layout/Sidebar/icons/history-outline.svg";
 import userOutline from "../../layout/Sidebar/icons/userOutline.svg";
@@ -171,6 +172,11 @@ const Header = ({ isOpen }) => {
       path: "/popular_channels",
       name: "Popular Channels",
       icon: starOutline,
+    },
+    {
+      path: "/live-streams",
+      name: "Live",
+      icon: liveStreemIcon,
     },
   ];
 
@@ -563,6 +569,13 @@ const Header = ({ isOpen }) => {
                       <button className="sm_ntf">
                         <img src={Notification} alt="" />
                       </button>
+                      <NavLink
+                    className="upload"
+                    to="/chat"
+                    activeclassname="active"
+                  >
+                    <img src={Chat} alt="" />
+                  </NavLink>
                       <ProfileMenu />
 
                     </div>
