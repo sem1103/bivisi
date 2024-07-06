@@ -17,7 +17,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 
 
-const UploadV = () => {
+const UploadS = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -790,4 +790,4 @@ newSubmitData.forEach((value, key) => {
   );
 };
 
-export default UploadV;
+export default UploadS;
