@@ -14,7 +14,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { Pagination, A11y, Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import eye from "../../assets/icons/eye.svg";
-
+import cameraOutline from "../../layout/Sidebar/icons/camera-outline.svg"
 
 const History = () => {
   const { product } = useContext(ProductContext);
@@ -223,7 +223,8 @@ const History = () => {
               })}
             </Swiper>
 
-            <div className="col-lg-12 pt-5 pb-2">
+            <div className="col-lg-12 pt-5 pb-2 d-flex gap-2">
+              <img width={27} src={cameraOutline} alt="" />
               <h4>Videos</h4>
             </div>
 

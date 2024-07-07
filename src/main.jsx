@@ -14,7 +14,7 @@ import { MantineProvider } from "@mantine/core";
 import { ProductProvider } from "./context/ProductContext";
 import { CartProvider } from "react-use-cart";
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  
     <CartProvider>
       <ProductProvider>
         <MantineProvider withGlobalClasses withNormalizeCSS>
@@ -22,5 +22,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </MantineProvider>
       </ProductProvider>
     </CartProvider>
-  </React.StrictMode>
+  
 );

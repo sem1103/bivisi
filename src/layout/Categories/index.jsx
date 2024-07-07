@@ -61,7 +61,9 @@ const Categories = () => {
       "/channels_detail",
       "/channels_detail/channels_videos",
       "/channels_detail/channels_shorts",
-      "/your_profile/edit_video/"
+      "/your_profile/edit_video/",
+      "/live-streams",
+      "/new-stream"
       ];
 
       let flag = excludedPaths.some(item => {

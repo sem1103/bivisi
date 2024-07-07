@@ -4,7 +4,7 @@ import sort from '../../assets/icons/Sort.svg'
 import LastVideoCard from '../../components/VideoCard';
 import { ProductContext } from '../../context/ProductContext';
 import useAxios from '../../utils/useAxios';
-
+import videoOutline from "../../layout/Sidebar/icons/video-outline.svg";
 import { Modal } from 'antd';
 import getCurrencyByCountry from '../../utils/getCurrencyService';
 import axios from 'axios';
@@ -34,7 +34,7 @@ const TopVideos = () => {
 
     useEffect(() => {
         getData();
-  
+
     }, [])
 
 
@@ -77,14 +77,17 @@ const TopVideos = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-lg-12 d-flex align-items-center py-4 flex-wrap page__top">
-                        <h4>Top videos</h4>
+                        <div className='d-flex align-items-center gap-2'>
+                            <img width={27} src={videoOutline} alt="" />
+                            <h4 className='mt-1'>Top videos</h4>
+                        </div>
 
                         <div className="right_tools">
                             <button
                                 className='add__video'
                                 onClick={() => {
                                     let array = viewMyVideos.map(item => item.user.name == JSON.parse(localStorage.authTokens).username && !item.is_premium);
-                                    if(array.some(item => item == true)) setIsOpen(!isOpen)
+                                    if (array.some(item => item == true)) setIsOpen(!isOpen)
                                     else toast.error('All your videos are premium, please upload a new video..')
 
                                 }}
@@ -130,9 +133,9 @@ const TopVideos = () => {
                                             </div>
 
                                             <div id="my__videos">
-                                               
+
                                                 {
-                                                    viewMyVideos.length?
+                                                    viewMyVideos.length ?
 
                                                         viewMyVideos.map(item => {
                                                             if (item.user.name == JSON.parse(localStorage.authTokens).username && !item.is_premium) {
@@ -276,7 +279,7 @@ const TopVideos = () => {
                                         }
 
                                         {
-                                            (step == 2 && isPay == undefined)  ?
+                                            (step == 2 && isPay == undefined) ?
                                                 <button className='next__btn' onClick={() => addPremiumVideoHandler(selectedVideos)}>
                                                     Pay
                                                 </button>
@@ -287,26 +290,26 @@ const TopVideos = () => {
                                                     </button>
                                                     :
                                                     isPay ?
-                                                    <button className='finish__btn next__btn' onClick={() => {
-                                                        setIsOpen(!isOpen);
-                                                        setIsPay(undefined);
-                                                        setSelectedVideos([]);
-                                                        setStep(0);
-                                                        getData();
-                                                    }}>
-                                                        Done
-                                                    </button>
-                                                    :
-                                                    <button className='try__btn next__btn' onClick={() => {
-                                                        setStep(step - 1)
-                                                        setIsPay(undefined);
-                                                    }}>
-                                                        Try again
-                                                    </button>
-                                                    
+                                                        <button className='finish__btn next__btn' onClick={() => {
+                                                            setIsOpen(!isOpen);
+                                                            setIsPay(undefined);
+                                                            setSelectedVideos([]);
+                                                            setStep(0);
+                                                            getData();
+                                                        }}>
+                                                            Done
+                                                        </button>
+                                                        :
+                                                        <button className='try__btn next__btn' onClick={() => {
+                                                            setStep(step - 1)
+                                                            setIsPay(undefined);
+                                                        }}>
+                                                            Try again
+                                                        </button>
+
 
                                         }
-                                       
+
 
                                     </div>
                                 </div>

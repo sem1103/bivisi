@@ -11,6 +11,8 @@ import shortsOutline from "./icons/shorts-outline.svg";
 import starOutline from "./icons/star-outline.svg";
 import trendOutline from "./icons/trend-outline.svg";
 import videoOutline from "./icons/video-outline.svg";
+import liveStreemIcon from "./icons/live-streem.svg";
+
 import historyOutline from "./icons/history-outline.svg";
 import userOutline from "./icons/userOutline.svg";
 import subscribeOutline from "./icons/subscribeOutline.svg";
@@ -62,6 +64,11 @@ const Sidebar = ({ children, isOpen, setIsOpen }) => {
       path: "/popular_channels",
       name: "Popular Channels",
       icon: starOutline,
+    },
+    {
+      path: "/live-streams",
+      name: "Live",
+      icon: liveStreemIcon,
     },
   ];
 

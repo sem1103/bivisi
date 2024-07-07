@@ -6,11 +6,13 @@ import { ProductContext } from '../../context/ProductContext';
 import { Select } from 'antd';
 import axios from 'axios';
 import { BASE_URL } from '../../api/baseUrl';
+import trendOutline from "../../layout/Sidebar/icons/trend-outline.svg";
+
 const Trending = () => {
     const [trendVideo, setTrendVideo] = useState([]);
 
-    useEffect(()=>{
-        const fetchData = async ()=>{
+    useEffect(() => {
+        const fetchData = async () => {
             try {
                 const response = await axios.get(`${BASE_URL}/web_trending_videos/`);
                 setTrendVideo(response.data.results)
@@ -19,7 +21,7 @@ const Trending = () => {
             }
         }
         fetchData();
-    },[])
+    }, [])
 
     const videoProducts = trendVideo.filter(
         (item) => item.product_video_type[0]?.product_type === "Video"
@@ -51,7 +53,10 @@ const Trending = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-lg-12 d-flex justify-content-between align-items-center py-4">
-                        <h4 className='heading_trend text-white' style={{fontSize:"21px", fontWeight:"400"}}>Trending</h4>
+                        <div className='d-flex align-items-center gap-2'>
+                            <img width={27} src={trendOutline} alt="" />
+                            <h4 className='heading_trend text-white mt-1' style={{ fontSize: "21px", fontWeight: "400" }}>Trending</h4>
+                        </div>
                         {/* <button className='sort_btn'>
                             <img src={sort} alt="plus.svg" />
                             Sort by
@@ -78,7 +83,7 @@ const Trending = () => {
                     </div>
                     {
                         sortedProducts?.map((item) => (
-                            <LastVideoCard ProductItemVideoCard={item} key={item.id} page="trendvideo"/>
+                            <LastVideoCard ProductItemVideoCard={item} key={item.id} page="trendvideo" />
                         ))
                     }
                 </div>

@@ -11,7 +11,7 @@
 
         a {
             color: #FFF;
-            font-size: 28px;
+            font-size: 23px;
             font-style: normal;
             font-weight: 400;
             line-height: 36px;
@@ -100,9 +100,9 @@
             overflow: hidden;
             color: var(--Text-1, #F3F4F6);
             text-overflow: ellipsis;
-            font-size: 24px;
+            font-size: 22px;
             font-style: normal;
-            font-weight: 600;
+            font-weight: 400;
             line-height: 32px;
             /* 133.333% */
         }
@@ -127,8 +127,8 @@
         }
 
         hr {
-            height: 1px;
             background-color: #23272E;
+            color: #23272E;
         }
 
         .total_basket {
@@ -136,16 +136,16 @@
                 overflow: hidden;
                 color: var(--Text-3, #C5C9D3);
                 text-overflow: ellipsis;
-                font-size: 20px;
+                font-size: 18px;
                 font-style: normal;
-                font-weight: 600;
+                font-weight: 400;
                 line-height: 28px;
                 /* 140% */
             }
 
             span {
-                color: var(--Neutral-White, #FFF);
-                font-size: 24px;
+                color: #C5C9D3;
+                font-size: 19px;
                 font-style: normal;
                 font-weight: 400;
                 line-height: 32px;
@@ -157,12 +157,12 @@
         a {
             padding: 14px;
             border: none;
-            border-radius: 16px;
+            border-radius: 10px;
             background: var(--blue-blue-500, #0385CA);
             color: #F6F3F4;
-            font-size: 16px;
+            font-size: 15px;
             font-style: normal;
-            font-weight: 600;
+            font-weight: 400;
             line-height: 24px;
             /* 150% */
             width: 100%;
@@ -179,10 +179,10 @@
         background-color: var(--Text-14, #16181D);
 
         h4 {
-            color: var(--Neutral-White, #FFF);
-            font-size: 16px;
+            color: #C5C9D3;
+            font-size: 15px;
             font-style: normal;
-            font-weight: 600;
+            font-weight: 400;
             line-height: 24px;
             /* 150% */
         }
@@ -202,13 +202,13 @@
 
         button {
             padding: 12px 14px;
-            border-radius: 16px;
+            border-radius: 10px;
             background: var(--blue-blue-500, #0385CA);
             border: none;
             color: #F6F3F4;
-            font-size: 16px;
+            font-size: 15px;
             font-style: normal;
-            font-weight: 600;
+            font-weight: 400;
             line-height: 24px;
             /* 150% */
         }

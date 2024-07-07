@@ -34,7 +34,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   const [openComment, setOpenComment] = useState(false);
   const [openDelComment, setOpenDComment] = useState(false);
   const { addItem } = useCart();
-
+console.log(product);
   const playerRef = useRef(null);
   const menuRef = useRef(null);
   useEffect(() => {
@@ -268,7 +268,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
               !isPlaying ? playerRef.current.getInternalPlayer().play() : playerRef.current.getInternalPlayer().pause();
               isPlaying = !isPlaying;
 
-              
+
             }}>
 
               <ReactPlayer
@@ -284,7 +284,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
               />
 
               <div className="sp_desc">
-                <p className="mb-5">{productItemShort.name.slice(0,20)}... <button>Read more</button></p>
+                <p className="mb-5">{productItemShort.name.slice(0, 20)}... <button>Read more</button></p>
                 <span>${productItemShort.price}</span>
               </div>
             </div>
@@ -309,6 +309,18 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                       }}
                     />
                   </div>
+                </div>
+                <div className=" pb-3">
+                  <div className="icons">
+                    <WishBtn ProductItemVideoCard={productItemShort} />
+                  </div>
+                  {/* <span>46 </span> */}
+                </div>
+                <div className=" pb-3">
+                  <div className="icons">
+                    <ShareModal item={productItemShort} />
+                  </div>
+                  {/* <span>14</span> */}
                 </div>
                 <div className=" pb-3">
                   <div
@@ -340,19 +352,9 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                   <span>23</span>
                 </div>
 
-                <div className=" pb-3">
-                  <div className="icons">
-                    <WishBtn ProductItemVideoCard={productItemShort} />
-                  </div>
-                  <span>46 </span>
-                </div>
+                
 
-                <div className=" pb-3">
-                  <div className="icons">
-                    <ShareModal item={productItemShort} />
-                  </div>
-                  <span>14</span>
-                </div>
+
 
                 <div className=" pb-3">
                   <div className="icons">
