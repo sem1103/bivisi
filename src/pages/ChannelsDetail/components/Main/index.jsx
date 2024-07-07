@@ -1,3 +1,5 @@
+
+
 import React, { useContext, useEffect } from "react";
 import "./style.scss";
 import { useParams, useLocation } from "react-router-dom";
@@ -19,18 +21,17 @@ const MainChannels = () => {
       avatar: location.state?.avatar || prevData.avatar,
     }));
   }, [location]);
-  console.log(channelData);
   return (
     <div className="main_section">
       <div
         className="chanels_bg_image"
-        style={{ backgroundImage: `url(${channelData?.cover_image})` }}
+        style={{ backgroundImage: `url(${channelData?.cover_image||default_coverimg})` }}
       ></div>
       <div className="channels_info">
         <div className="channels_text_content">
           <div
             className="chanells_img_content"
-            style={{ backgroundImage: `url(${channelData?.avatar})` }}
+            style={{ backgroundImage: `url(${channelData?.avatar||user_emptyavatar})` }}
           ></div>
           <div>
             <h4>{username}</h4>
