@@ -79,47 +79,7 @@ const Subscription = () => {
                 page="subscription"
               />
 
-//               <div className="channelCard">
-//                 <img src={item.cover_image || default_coverimg} className="img-top" alt="" />
-//                 <div className="opacity-img">
-//                   <img src={item.avatar || user_emptyavatar} alt="" />
-//                 </div>
-//                 <div className="channelCard-context">
-//                   {/* <h2>{item.username}</h2> */}
-//                   <div
-//                     className="username"
-//                     onClick={() => navigate(
-//                       `/channels_detail/channels_videos/${item.username}`,
-//                       {
-//                         state: {
-//                           followersCount: item.follower_count,
-//                           cover_image: item.cover_image,
-//                           avatar: item.avatar
-//                         }
-//                       }
-//                     )}
-//                   >
-//                     {item?.username}
-//                   </div>
-//                   <span>{item.first_name} {item.last_name}</span>
-//                   <p>{item.bio}</p>
-//                   <div className="d-flex align-items-center justify-content-between">
-//                     <div className="d-flex align-items-center avatar-group">
-//                       <div className="avatar">
-//                         <img src={item.avatar || user_emptyavatar} alt="" />
-//                       </div>
-//                       <div className="hidden-avatars">
-//                         <span>{item.follower_count} subscribes</span>
-//                       </div>
-//                     </div>
-//                     <div>
-//                       <button className="unsubs-button" onClick={() => toggleUnSubs(item.id)}>
-//                         Unsubscribe
-//                       </button>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
+
             </div>
           ))}
         </div>
