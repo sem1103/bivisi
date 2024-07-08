@@ -3,7 +3,6 @@ import io from 'socket.io-client';
 import axios from "axios";
 import { AuthContext } from "./authContext";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
 
 
 
@@ -29,6 +28,15 @@ export default function ChatProvider({ children }) {
     const [newChat, setNewChat] = useState(false);
     const [newMessages, setNewMessages] = useState([])
     const [onlineChat, setOnlineChat] = useState(false);
+    const [isCall, setIsCall] = useState('');
+    const [isModalCallOpen, setIsModalCallOpen] = useState(false);
+    const [callModalText, setCallModalText] = useState('');
+    const [iCall, setICall] = useState(false);
+    const [isAccept, setIsAccept] = useState();
+
+  
+
+
 
     const getChats = async () => {
         const res = await axios.get(`${CHAT_API}getChats`, {
@@ -45,6 +53,7 @@ export default function ChatProvider({ children }) {
             }
         }))
         setNewMessage('')
+
         return res.data.response;
 
     };
@@ -121,15 +130,11 @@ export default function ChatProvider({ children }) {
                 }
             }
         }))
-
-      
     }
 
 
     useEffect(() => {
         getChats();
-
-
     }, [newChatUser])
    
 
@@ -151,11 +156,44 @@ export default function ChatProvider({ children }) {
     },[])
 
 
-    
+    const callHandler = (flag) => {
+        setIsCall(flag);
 
+    }
+
+    const acceptACall = () => {
+        socket.emit('sendMessage', { target: newChatUser ? newChatUser.id : localStorage.fromCallUserId, message: {
+            action: `accept ${ newChatUser ? newChatUser.id : localStorage.fromCallUserId}`,
+            userInfo: newChatUser,
+            fromUserName: JSON.parse(localStorage.authTokens).first_name,
+            myId: user.user_id
+          } });
+    }
+   
+    
+    const declineCall = () =>{
+        socket.emit('sendMessage', { target: newChatUser ? newChatUser.id : localStorage.fromCallUserId, message: {
+            action: `decline ${ newChatUser ? newChatUser.id : localStorage.fromCallUserId}`,
+            userInfo: newChatUser,
+            fromUserName: JSON.parse(localStorage.authTokens).first_name
+          } });
+    }
+
+
+    const randomID = (len) => {
+        let result = '';
+        var chars = '12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP',
+            maxPos = chars.length,
+            i;
+        len = len || 5;
+        for (i = 0; i < len; i++) {
+            result += chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        return result;
+      }
 
     useEffect(() => {
-        
+        let userss = [];
 
         if (user?.user_id && USER_TOKKEN) {
             socketInstance = io(SOCKET_URL, {
@@ -167,8 +205,8 @@ export default function ChatProvider({ children }) {
             });
            
             socketInstance.on('online-users', (users) => {
-                setOnlineUsers(users);
-               
+                userss = users;
+                setOnlineUsers(prev => users);               
             })
 
           
@@ -181,7 +219,44 @@ export default function ChatProvider({ children }) {
             socketInstance.on("newMessage", (data) => {
                 let { message, target } = data;
                 let isRead = +message.target == +user.user_id;
-                console.log(message);
+             
+                message?.action && setIsModalCallOpen(true)
+
+                
+                if(!userss.includes(target) && message.action == `call to ${target}` ){
+                    console.log('User is offline');
+                    callHandler(false)
+                    setICall(true)
+
+                    setCallModalText(`A call to ${message.userInfo.first_name.split('')[0].toUpperCase()}${message.userInfo.first_name.split('').slice(1).join('')}, but user is offline`)
+                    return
+                } else  if(userss.includes(target) && message.action == `call to ${target}` ){
+                    console.log('Calling to ' + target);
+                    callHandler(true)
+                    localStorage.setItem('fromCallUserId' , message.fromUserId)
+                    if(+message.userInfo.id == +user?.user_id) {
+                        setCallModalText(`${message.fromUserName.split('')[0].toUpperCase()}${message.fromUserName.split('').slice(1).join('')}  is calling`)
+                        setICall(false)
+                    }
+                    else {
+                        setCallModalText(`A call to ${message.userInfo.first_name.split('')[0].toUpperCase()}${message.userInfo.first_name.split('').slice(1).join('')}`)
+                        setICall(true)
+
+                    }
+                    return
+                }  else if( message.action == `decline ${target}`){
+                    setIsModalCallOpen(false);  
+                    return
+                } else if( message.action == `accept ${target}`) {
+                    localStorage.setItem('videoCallRoomId' , +message.myId + +target * 690 )
+                    setIsModalCallOpen(false); 
+                    setIsAccept(true);
+                    return
+                }
+               
+
+
+
                 if(!message.chatId ||message.chatId == +localStorage.chatId || (+target != user?.user_id && (+message.target == +user?.user_id))) {
                     setMessages((prevMessages) => {
                         return [
@@ -260,8 +335,6 @@ export default function ChatProvider({ children }) {
 
 
             });
-
-   
 
             socketInstance.on('disconnect', () => {
             });
@@ -343,17 +416,26 @@ export default function ChatProvider({ children }) {
             socket,
             newMessage,
             lastMessages,
+            isCall,
             newChatUser,
+            callModalText,
             newConnect,
+            isModalCallOpen,
             setMessages,
             onlineUsers,
+            iCall,
+            isAccept,
+            setIsAccept,
+            acceptACall,
+            declineCall,
             setNewMessage,
             sendMessage,
             getMessage,
             getChats,
             setNewChatUser,
             addChat,
-            deleteChat
+            deleteChat,
+            setIsModalCallOpen
         }}>
             {children}
         </ChatContext.Provider>

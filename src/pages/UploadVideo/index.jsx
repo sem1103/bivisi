@@ -66,9 +66,8 @@ const UploadV = () => {
     phone_number: !editVideo ? "+994" : editVideo.phone_number , // Default country code
     product_type: "Video",
     price: !editVideo ? '' : editVideo.price.split('.')[0],
-    original_video:  null ,
-    properties : fields.length ? null : fields
-  });
+    original_video:  null 
+    });
   const axiosInstance = useAxios();
 
 

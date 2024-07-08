@@ -97,6 +97,22 @@
   }
 }
 
+.emoji__container{
+  position: relative;
+  &.hide__emoji .EmojiPickerReact{
+    display: none !important;
+  }
+  .EmojiPickerReact {
+    position: absolute;
+    right: 0;
+    bottom: 110%;
+    overflow-y: auto;
+    button{
+      border: none !important;
+    }
+  }
+}
+
 
 .chat_section {
   width: 100%;
@@ -752,6 +768,24 @@ button.back__top{
     width: 100%;
     }
   }
+  }
+}
+
+@media only screen and (width < 500px) {
+  .chat_messages_footer{
+    position: relative;
+  }
+  .emoji__container{
+    position: static;
+    aside.EmojiPickerReact {
+     width: 90% !important;
+     right: 10px;
+     .epr-category-nav{
+      overflow: auto;
+      gap: 15px;
+      justify-content: start;
+     }
+    }
   }
 }
 

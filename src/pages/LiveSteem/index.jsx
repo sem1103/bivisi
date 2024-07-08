@@ -3,10 +3,7 @@ import './style.scss';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import axios from 'axios';
-import liveStreemIcon from "../../layout/Sidebar/icons/live-streem.svg";
-
-
-
+import emptyAvatar from './../../assets/images/user-empty-avatar.png'
 export default function LiveStreams() {
     let roomName = '';
     const navigate = useNavigate();
@@ -35,7 +32,7 @@ export default function LiveStreams() {
                 serverSecret,
                 roomId,
                 userId,
-                'sem2'
+                JSON.parse(localStorage.authTokens).username
             );
 
             zp.current = ZegoUIKitPrebuilt.create(kitToken);
@@ -48,6 +45,16 @@ export default function LiveStreams() {
                     config: {
                         role: ZegoUIKitPrebuilt.Audience
                     }
+                }
+                ,
+
+                onUserAvatarSetter:(userList) => {
+                    if(localStorage.avatar != 'null'){
+                        userList.forEach(user => {
+                            user.setUserAvatar(localStorage.avatar)
+                        })
+                    }
+                   
                 }
             });
 
@@ -128,7 +135,7 @@ export default function LiveStreams() {
                     </div>
 
                     <div className="stream__host">
-                        <img src={allStreams[randomIndex]?.cover_image} alt="" className="user__img" />
+                        <img src={localStorage.avatar != null ? localStorage.avatar : emptyAvatar} alt="" className="user__img" />
                         <h4>
                             {allStreams[randomIndex]?.user_name}
                         </h4>

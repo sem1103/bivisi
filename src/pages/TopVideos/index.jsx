@@ -10,9 +10,11 @@ import getCurrencyByCountry from '../../utils/getCurrencyService';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import InputMask from 'react-input-mask';
+import { ChatContext } from '../../context/ChatContext';
 
 
 const TopVideos = () => {
+    const {USER_TOKKEN} = useContext(ChatContext)
     const [videoProducts, setVideoProducts] = useState([]);
     const [viewMyVideos, setViewMyVideos] = useState([]);
     const [selectedVideos, setSelectedVideos] = useState([])
@@ -28,8 +30,17 @@ const TopVideos = () => {
 
     const getData = async () => {
         let res = await axios.get('http://64.226.112.70/api/product/');
+        console.log(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
+
+        let res2 = await axios.get('http://64.226.112.70/api/user_web_products', {
+            headers: {
+              Authorization: `Bearer ${USER_TOKKEN}`
+            }
+          });
         setVideoProducts(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"));
         setViewMyVideos(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
+
+        console.log(res2.data);
     }
 
     useEffect(() => {
