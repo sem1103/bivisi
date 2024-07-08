@@ -67,7 +67,6 @@ const UploadS = () => {
     product_type: "Shorts",
     price: !editVideo ? '' : editVideo.price.split('.')[0],
     original_video:  null ,
-    properties : fields.length ? null : fields
   });
   const axiosInstance = useAxios();
 

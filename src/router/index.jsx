@@ -108,7 +108,7 @@ const AppRouter = () => {
               <Route element={<About />} path="/your_profile/about" />
               <Route element={<Basket />} path="/basket" />
               <Route element={<Payment />} path="/payment" />
-              <Route element={<Call />} path="/call" />
+              <Route element={<Call />} path="/call/:roomId" />
               <Route element={<UploadV />} path="/your_profile/upload_video" />
               <Route element={<UploadS />} path="/your_profile/upload_shorts" />
               <Route

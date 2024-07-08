@@ -14,11 +14,14 @@ import axios from "axios";
 import empyAvatar from './../../assets/images/user-empty-avatar.png'
 import { ChatContext } from "../../context/ChatContext";
 import { Modal } from 'antd';
+import EmojiPicker from "emoji-picker-react";
+
+
 
 
 const Chat = () => {
   const axiosInstance = useAxios();
-  const { USER_TOKKEN, myId, CHAT_API, allChats, chatId, messages, setMessages, newMessage,  lastMessages, setNewMessage, socket, newChatUser, onlineUsers, sendMessage, getMessage, addChat, getChats, deleteChat, setNewChatUser } = useContext(ChatContext)
+  const { USER_TOKKEN, myId, CHAT_API, isCall, allChats, chatId, messages, setMessages, newMessage,  lastMessages, setNewMessage, socket, newChatUser, isModalCallOpen, onlineUsers, sendMessage, getMessage, addChat, getChats, deleteChat, setNewChatUser, setIsModalCallOpen } = useContext(ChatContext)
 
   const [findUser, setFindUser] = useState([]);
   const [openSearchList, setopenSearchList] = useState(false);
@@ -27,10 +30,9 @@ const Chat = () => {
   const [newChatState, setActiveChat] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userName, setUserName] = useState('');
+  const [isOpenEmoji, setIsOpenEmoji] = useState(false)
 
-  const [isConnect, setIsConnect] = useState('Disconnect');
-
-
+  const pickerRef = useRef(null)
 
 
   const debounce = (func, wait) => {
@@ -78,9 +80,31 @@ const Chat = () => {
 
 
 
+
+
   useEffect(() => {
-    getChats()
-  }, [])
+    getChats();
+
+   return () => {
+    localStorage.setItem('newUserChatId', 0);
+    localStorage.setItem('chatId', 0);
+
+   }
+   }, [])
+
+
+   const handleClickOutside = (event) => {
+    if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+      setIsOpenEmoji(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  }, []);
 
   return (
     <>
@@ -239,12 +263,28 @@ const Chat = () => {
                       </div>
                     </div>
                     <div className="nick_icons">
-                      <Link>
+                      <div className="voice__call">
+                        <button>
                         <img src={telephone} alt="" />
-                      </Link>
-                      <Link to='/call'>
-                        <img src={camera} alt="" />
-                      </Link>
+                        </button>
+                      </div>
+                     
+                      <div className="video__call">
+                      <button onClick={() => {
+                        socket.emit('sendMessage', { target: newChatUser.id, message: {
+                          action: `call to ${newChatUser.id}`,
+                          userInfo: newChatUser,
+                          fromUserName: JSON.parse(localStorage.authTokens).first_name,
+                          fromUserId: myId
+                        } });
+
+                       }
+                      }>
+                      <img src={camera} alt="" />
+                      </button>
+                      </div>
+                     
+                     
                       <ul className="chat__options">
                         <li>
                           <button >
@@ -538,9 +578,28 @@ const Chat = () => {
                           }
                         }}
                         style={{ height: '50px', minHeight: 'unset', resize: 'none' }} />
-                      <button>
-                        <img src={smile} alt="" className="smile" />
-                      </button>
+                      <div className={`emoji__container ${!isOpenEmoji ? 'hide__emoji' : ''}`} ref={pickerRef}>
+                        {
+                          
+                          <EmojiPicker 
+                          
+                          height={270}
+                          searchDisabled={true}
+                          theme='dark'
+                          lazyLoadEmojis={true}
+                          onEmojiClick={(e) => {
+                            setNewMessage(prev => prev+e.emoji)
+                          }}
+                          />
+                        }
+                      
+                        <button type="button" onClick={() => {
+                          setIsOpenEmoji(!isOpenEmoji)
+                        }}>
+                        <img src={smile} alt="" className="smile"  />
+
+                        </button>
+                      </div>
                       <button type="submit">
                         <img src={send} alt="" className="send" />
                       </button>
