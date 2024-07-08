@@ -26,7 +26,7 @@
       background-size: cover;
     }
     .profile_text_content {
-      h1 {
+      .profile_name {
         color: var(--Neutral-White, #fff);
 
         /* Poppins/24/SemiBold */
@@ -75,11 +75,24 @@
 @media only screen and (width < 480px) {
   .profile_section{
     .profile_info{
-      padding: 0 0 0 25px;
+      padding: 0 0 0 5px;
+      .profile_text_content {
+        .profile_name {
+          font-size: 18px;
+        }
+      h6{
+        font-size: 16px;
+        line-height: 20px;
+      }
+      p{
+        font-size: 14px;
+      }
+      }
     }
     .profile_info .profile_img_content{
-      width: 150px;
-      height: 150px;
+      width: 130px;
+      height: 130px;
+      
     }
   }
 }

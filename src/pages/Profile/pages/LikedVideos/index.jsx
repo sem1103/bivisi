@@ -105,20 +105,20 @@ const LikedVideos = ({item}) => {
 
   const navigate = useNavigate();
 
-  const handleNavigation = (e) => {
+  const handleNavigation = (e,id) => {
+  
     if (window.location.pathname.includes("/product_detail")) {
       e.preventDefault();
       setLoading(true);
 
       setTimeout(() => {
-        navigate(`/product_detail/${item?.id}`);
+        navigate(`/product_detail/${id}`);
         setLoading(false);
       }, 2000);
     } else {
-      navigate(`/product_detail/${item?.id}`);
+      navigate(`/product_detail/${id}`);
     }
   };
-
   const handleDuration = (duration) => {
     const minutes = Math.floor(duration / 60);
     const seconds = Math.floor(duration % 60);
@@ -148,7 +148,7 @@ const LikedVideos = ({item}) => {
   } else if (selectedOption === "option4") {
     sortedProducts.sort((a, b) => b.product.price - a.product.price);
   }
- 
+ console.log(sortedProducts)
 
   return (
     <>
@@ -240,7 +240,7 @@ const LikedVideos = ({item}) => {
                       </div>
                       <div
                         className="heading w-100 flex-column justify-content-start align-items-start"
-                        onClick={handleNavigation}
+                        onClick={(e) => handleNavigation(e, item.id)}
                       >
                         <div className="d-flex w-100 justify-content-between align-items-center">
                           <h1>{item.product.user.name}</h1>
