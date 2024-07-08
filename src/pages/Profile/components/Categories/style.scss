@@ -38,5 +38,12 @@
   }
 }
 
-
+@media only screen and (width < 480px) {
+  .profile_categories{
+    a{
+      font-size: 14px;
+      padding: 9px 18px;
+    }
+  }
+}
 

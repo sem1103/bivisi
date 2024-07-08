@@ -13,7 +13,6 @@ const PopularChannelCard = ({ popularChannels, page }) => {
   const { user } = useContext(AuthContext);
   const [followersCount, setFollowersCount] = useState(popularChannels?.follower_count || 0);
   const navigate = useNavigate();
-
   const isSubscribed = subscriptions.some(sub => sub.id === popularChannels.id);
 
   const handleSubscription = () => {
@@ -26,6 +25,7 @@ const PopularChannelCard = ({ popularChannels, page }) => {
   };
 
   const colClass = ['channelcard'].includes(page) ? 'col-lg-6 col-md-6 col-sm-12 col-12' : '';
+  const subscriberText = followersCount <= 1 ? 'subscriber' : 'subscribers';
   return (
     <div className={`${colClass} p-2`}>
       <div className="channelCard">
@@ -38,16 +38,16 @@ const PopularChannelCard = ({ popularChannels, page }) => {
           <img src={popularChannels?.avatar || user_emptyavatar} alt="Avatar" />
         </div>
         <div className="channelCard-context">
-          <div 
-            className="username" 
+          <div
+            className="username"
             onClick={() => navigate(
-              `/channels_detail/channels_videos/${popularChannels.username}`, 
-              { 
-                state: { 
-                  followersCount, 
-                  cover_image: popularChannels.cover_image, 
-                  avatar: popularChannels.avatar 
-                } 
+              `/channels_detail/channels_videos/${popularChannels.username}`,
+              {
+                state: {
+                  followersCount,
+                  cover_image: popularChannels.cover_image,
+                  avatar: popularChannels.avatar
+                }
               }
             )}
           >
@@ -61,7 +61,7 @@ const PopularChannelCard = ({ popularChannels, page }) => {
                 <img src={popularChannels?.avatar || user_emptyavatar} alt="Avatar" />
               </div>
               <div className="hidden-avatars">
-                <span>{followersCount} subscribes</span>
+                <span>{followersCount} {subscriberText}</span>
               </div>
             </div>
             <div>

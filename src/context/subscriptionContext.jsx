@@ -9,17 +9,15 @@ export const SubscriptionProvider = ({ children }) => {
   const [subscriptions, setSubscriptions] = useState([]);
   const axiosInstance = useAxios();
 
-  useEffect(() => {
-    const fetchSubs = async () => {
-      try {
-        const response = await axiosInstance.get('/user/your_subscribers/');
-        setSubscriptions(response.data.results);
-      } catch (error) {
-        console.error('Failed to fetch subscriptions:', error);
-      }
+  const fetchSubs = async () => {
+    try {
+      const response = await axiosInstance.get('/user/your_subscribers/');
+      setSubscriptions(response.data.results);
+    } catch (error) {
+      console.error('Failed to fetch subscriptions:', error);
     }
-    fetchSubs();
-  }, [axiosInstance]);
+  }
+  
 
   const toggleSubscription = async (id) => {
     try {
@@ -32,6 +30,7 @@ export const SubscriptionProvider = ({ children }) => {
         const response = await axiosInstance.post(`/user/toggle_subscribe/${id}/`);
         setSubscriptions([...subscriptions, response.data]);
         toast.success("Subscribed successfully");
+        fetchSubs();
       }
     } catch (error) {
       console.error('Failed to toggle subscription:', error);
