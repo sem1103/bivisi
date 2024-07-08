@@ -8,7 +8,7 @@ const Categories = ({ username }) => {
         to={`/channels_detail/channels_videos/${username}`}
         activeclassname="active"
       >
-        My video
+      Videos
       </NavLink>
       <NavLink
         activeclassname="active"

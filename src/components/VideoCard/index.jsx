@@ -23,7 +23,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   const [videoDuration, setVideoDuration] = useState(null);
   const { addItem } = useCart();
   const [loading, setLoading] = useState(false);
-
+console.log(ProductItemVideoCard)
 
   const playerRef = useRef(null);
 
@@ -131,7 +131,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
 
           <img className="card_logo" src={logo} alt="" />
           <span className="card_price">$ {ProductItemVideoCard?.price}</span>
-          
+
           <img
             className={`coverImage `}
             src={ProductItemVideoCard?.product_video_type[0]?.cover_image}
@@ -151,7 +151,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
             }}
             options={{ muted: true, controls: ["play", "pause", "progress"] }}
             onReady={onPlayerReady}
-            // onDuration={handleDuration}
+          // onDuration={handleDuration}
 
           />
           {/* <span className="video_count">{videoDuration}</span> */}
@@ -161,40 +161,42 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
             </div>
           )}
         </div>
-        <div
-          className="heading w-100 flex-column justify-content-start align-items-start"
-          onClick={handleNavigation}
-        >
-          <div className="d-flex w-100 justify-content-between align-items-center">
-            <h1>{ProductItemVideoCard.user.name}</h1>
-            <h6>
-              <img src={blueHeart} alt="" />
-              {ProductItemVideoCard.like_count}
-            </h6>
+        <div className="w-100" onClick={handleNavigation}>
+          <div
+            className="heading w-100 flex-column justify-content-start align-items-start"
+
+          >
+            <div className="d-flex w-100 justify-content-between align-items-center">
+              <h1>{ProductItemVideoCard.user.name}</h1>
+              <h6>
+                <img src={blueHeart} alt="" />
+                {ProductItemVideoCard.like_count}
+              </h6>
+            </div>
+            <p>{ProductItemVideoCard.name}</p>
           </div>
-          <p>{ProductItemVideoCard.name.slice(0,25)}</p>
-        </div>
-        <div className="cardBottom">
-          <div className="card_viev_count">
-            <img src={eye} alt="eye.svg" />
-            <span>{formatViewCount(ProductItemVideoCard?.view_count)}</span>
-          </div>
-          <div className="icons">
-            <WishBtn ProductItemVideoCard={ProductItemVideoCard} />
-            <img
-              src={bag}
-              alt=""
-              onClick={() => {
-                if (user.user_id === ProductItemVideoCard.user.id) {
-                  toast.warning(
-                    "You cannot add your own product to the basket"
-                  );
-                } else {
-                  handleAddToBasket(ProductItemVideoCard, user, axiosInstance);
-                  addItem(ProductItemVideoCard);
-                }
-              }}
-            />
+          <div className="cardBottom">
+            <div className="card_viev_count">
+              <img src={eye} alt="eye.svg" />
+              <span>{formatViewCount(ProductItemVideoCard?.view_count)}</span>
+            </div>
+            <div className="icons" onClick={(e) => e.stopPropagation()}>
+              <WishBtn ProductItemVideoCard={ProductItemVideoCard} />
+              <img
+                src={bag}
+                alt=""
+                onClick={() => {
+                  if (user.user_id === ProductItemVideoCard.user.id) {
+                    toast.warning(
+                      "You cannot add your own product to the basket"
+                    );
+                  } else {
+                    handleAddToBasket(ProductItemVideoCard, user, axiosInstance);
+                    addItem(ProductItemVideoCard);
+                  }
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

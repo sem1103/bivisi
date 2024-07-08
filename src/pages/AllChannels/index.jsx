@@ -5,6 +5,7 @@ import PopularChannelCard from '../../components/PChannel';
 import axios from 'axios';
 import { BASE_URL } from '../../api/baseUrl';
 import { AuthContext } from '../../context/authContext';
+import boardOutline from "../../layout/Sidebar/icons/board_outline.svg";
 
 const AllChannels = () => {
     const { Option } = Select;
@@ -18,7 +19,7 @@ const AllChannels = () => {
                 const response = await axios.get(`${BASE_URL}/user/subscriptions/`);
                 const filteredChannels = response.data.results.filter(channel => channel.username !== user?.username);
                 setPopularAllC(filteredChannels);
-                setSortedChannels(filteredChannels); 
+                setSortedChannels(filteredChannels);
             } catch (error) {
                 console.error('Failed to fetch popular channels:', error);
             }
@@ -42,14 +43,17 @@ const AllChannels = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className='col-lg-12 d-flex justify-content-between align-items-start pt-4'>
-                        <h4>All channels</h4>
+                        <div className='d-flex align-items-center gap-2'>
+                            <img width={27} src={boardOutline} alt="" />
+                            <h4 className='mt-1'>All channels</h4>
+                        </div>
                         <div className="custom-select">
                             <Select
                                 defaultValue=""
                                 suffixIcon={null}
                                 className="select"
                                 popupClassName="custom-dropdown"
-                                onChange={handleSortChange} 
+                                onChange={handleSortChange}
                             >
                                 <Option value="">All</Option>
                                 <Option value="option1">A to Z</Option>
@@ -59,7 +63,7 @@ const AllChannels = () => {
                     </div>
 
                     {sortedChannels.map((item) => {
-                    return <PopularChannelCard key={item.id} popularChannels={item} page="channelcard"/>
+                        return <PopularChannelCard key={item.id} popularChannels={item} page="channelcard" />
 
                     }
                     )}
