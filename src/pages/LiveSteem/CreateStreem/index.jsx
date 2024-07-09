@@ -1,8 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import './../style.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { ChatContext } from '../../../context/ChatContext';
+import { Select } from 'antd';
+import getCurrencyByCountry from '../../../utils/getCurrencyService';
+
 
 function randomID(len) {
     let result = '';
@@ -17,9 +21,12 @@ function randomID(len) {
 }
 
 export default function NewStream() {
+    const {USER_TOKKEN} = useContext(ChatContext)
     const [roomName, setRoomName] = useState('');
     const navigate = useNavigate();
     const [thumberSrc, setthumberSrc] = useState('');
+    const [myVideos, setMyVideos] = useState([]);
+    const {countryCurrencySymbol} = getCurrencyByCountry();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -62,7 +69,21 @@ export default function NewStream() {
 
 
 
+    useEffect(() => {
+        const getMyVideos = async () =>{
+            let res = await axios.get('http://64.226.112.70/api/user_web_products', {
+                headers: {
+                  Authorization: `Bearer ${USER_TOKKEN}`
+                }
+              });
 
+            console.log(res.data.results);
+            setMyVideos(res.data.results.filter(item => item.product_type == 'Video'));
+        }
+
+        getMyVideos();
+       
+    }, []);
 
 
 
@@ -83,6 +104,32 @@ export default function NewStream() {
                         onChange={(e) => setRoomName(e.target.value)}
                     />
                 </label>
+
+                <label >
+                <p>Select your video</p>
+                <Select 
+                    placeholder='Select your video'
+                    className='select__video'
+                    onChange={(value) => localStorage.setItem('streamSelectProductId', value)}
+
+                >
+                {myVideos.map(item => {
+                    return <Option key={item.id} value={item.id}>
+                        <div className='select__video__item'>
+                        <img src={item.cover_image} alt="" />
+                        <div className="select__video__desc">
+                            <h5>{item.product.name}</h5>
+                            <h6>{item.product.price} {countryCurrencySymbol}</h6>
+                        </div>
+                        </div>
+                    </Option>
+                })}
+
+                        
+                 </Select>
+
+                </label>
+
                 <div className="stream_thumbernail">
                     <input name='thumbernail' type="file" title=" " onChange={e => thumbernailOnChangeHandler(e)} className="thumbernail__input" />
 

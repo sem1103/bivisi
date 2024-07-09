@@ -37,11 +37,12 @@ const ProductDetail = () => {
   const serviceId = Number(id);
 
   const [viewed, setViewed] = useState(false);
-  const [productDetail, setProductDetail] = useState(null);
+  const [productDetail, setProductDetail] = useState(false);
   const [liked, setLiked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [loading, setLoading] = useState(false);
   const playerRef = useRef(null);
+  const [isShowMap, setIsShowMap] = useState(false)
   const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA';
   const [initialViewState, setInitialViewState] = useState({
     longitude: 0,
@@ -49,11 +50,7 @@ const ProductDetail = () => {
     zoom: 13,
   });
 
-  const viewStateRef = useRef({
-    longitude: 0,
-    latitude: 0,
-    zoom: 13,
-  });
+
 
   const [markerPosition, setMarkerPosition] = useState({
     longitude: 0,
@@ -61,6 +58,40 @@ const ProductDetail = () => {
   });
 
   const { addItem } = useCart();
+
+  const fetchCoordinates = async (ADDRESS) => {
+    setIsShowMap(false)
+
+    try {
+      const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(ADDRESS)}.json`, {
+        params: {
+          access_token: TOKEN
+        }
+      });
+
+      const { features } = response.data;
+      if (features && features.length > 0) {
+        const [longitude, latitude] = features[0].center;
+       
+      
+        setInitialViewState({
+          longitude,
+          latitude,
+          zoom: 13,
+        });
+
+        setMarkerPosition({
+          longitude,
+          latitude,
+          zoom: 13,
+        });
+
+        setIsShowMap(true)
+      }
+    } catch (error) {
+      console.error('Ошибка при геокодировании:', error);
+    }
+  };
 
   const handleAddToHistory = async (productDetail) => {
     try {
@@ -133,7 +164,6 @@ const ProductDetail = () => {
 
       let updatedViewCount = productData.view_count;
       console.log(productData);
-      fetchCoordinates(productData.location);
 
       if (!viewed) {
         updatedViewCount += 1;
@@ -146,6 +176,7 @@ const ProductDetail = () => {
       setProductDetail({ ...productData, view_count: updatedViewCount });
       setLiked(productData.is_liked);
       handleAddToHistory(response.data);
+      fetchCoordinates(productData.location);
     } catch (error) {
       console.error("Error fetching product details:", error);
     }
@@ -196,48 +227,22 @@ const ProductDetail = () => {
 
 
 
-  const fetchCoordinates = async (ADDRESS) => {
-    try {
-      const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(ADDRESS)}.json`, {
-        params: {
-          access_token: TOKEN
-        }
-      });
 
-      const { features } = response.data;
-      if (features && features.length > 0) {
-        const [longitude, latitude] = features[0].center;
-       
-        // viewStateRef.current = {
-        //   longitude,
-        //   latitude,
-        //   zoom: 13,
-        // };
-        setInitialViewState({
-          longitude,
-          latitude,
-          zoom: 13,
-        });
-      }
-    } catch (error) {
-      console.error('Ошибка при геокодировании:', error);
-    }
+
+useEffect(() => {
+  
+  return () => {
+    setIsShowMap(false)
+
   };
+}, []);
+ 
+
 
 
  
 
-  const handleMove = (evt) => {
-    viewStateRef.current = evt.viewState;
-  };
-
-
  
-
-  useEffect(() => {
-    setMarkerPosition(initialViewState);
-    
-  }, [initialViewState]);
     
 
   return (
@@ -378,19 +383,22 @@ const ProductDetail = () => {
 
 
                 <div className="address__map">
-                <Map
-                    initialViewState={initialViewState}
-                    // onMove={handleMove}
-                    mapStyle="mapbox://styles/mapbox/streets-v9"
-                    mapboxAccessToken={TOKEN}
-                    width="100%"
-                    height="250px"
+                  {isShowMap &&
+                   <Map
+                   initialViewState={initialViewState}
+                   mapStyle="mapbox://styles/mapbox/streets-v9"
+                   mapboxAccessToken={TOKEN}
+                   width="100%"
+                   height="250px"
 
-                  >
-                  <Marker longitude={markerPosition.longitude} latitude={markerPosition.latitude} >
-                  <svg width={30} viewBox="0 0 24 24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1028.4)"> <path d="m12 0c-4.4183 2.3685e-15 -8 3.5817-8 8 0 1.421 0.3816 2.75 1.0312 3.906 0.1079 0.192 0.221 0.381 0.3438 0.563l6.625 11.531 6.625-11.531c0.102-0.151 0.19-0.311 0.281-0.469l0.063-0.094c0.649-1.156 1.031-2.485 1.031-3.906 0-4.4183-3.582-8-8-8zm0 4c2.209 0 4 1.7909 4 4 0 2.209-1.791 4-4 4-2.2091 0-4-1.791-4-4 0-2.2091 1.7909-4 4-4z" transform="translate(0 1028.4)" fill="#e74c3c"></path> <path d="m12 3c-2.7614 0-5 2.2386-5 5 0 2.761 2.2386 5 5 5 2.761 0 5-2.239 5-5 0-2.7614-2.239-5-5-5zm0 2c1.657 0 3 1.3431 3 3s-1.343 3-3 3-3-1.3431-3-3 1.343-3 3-3z" transform="translate(0 1028.4)" fill="#c0392b"></path> </g> </g></svg>
-                  </Marker>
-                  </Map>
+                 >
+                 <Marker longitude={markerPosition.longitude} latitude={markerPosition.latitude} >
+                 <svg width={30} viewBox="0 0 24 24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1028.4)"> <path d="m12 0c-4.4183 2.3685e-15 -8 3.5817-8 8 0 1.421 0.3816 2.75 1.0312 3.906 0.1079 0.192 0.221 0.381 0.3438 0.563l6.625 11.531 6.625-11.531c0.102-0.151 0.19-0.311 0.281-0.469l0.063-0.094c0.649-1.156 1.031-2.485 1.031-3.906 0-4.4183-3.582-8-8-8zm0 4c2.209 0 4 1.7909 4 4 0 2.209-1.791 4-4 4-2.2091 0-4-1.791-4-4 0-2.2091 1.7909-4 4-4z" transform="translate(0 1028.4)" fill="#e74c3c"></path> <path d="m12 3c-2.7614 0-5 2.2386-5 5 0 2.761 2.2386 5 5 5 2.761 0 5-2.239 5-5 0-2.7614-2.239-5-5-5zm0 2c1.657 0 3 1.3431 3 3s-1.343 3-3 3-3-1.3431-3-3 1.343-3 3-3z" transform="translate(0 1028.4)" fill="#c0392b"></path> </g> </g></svg>
+                 </Marker>
+                 </Map>
+                  
+                  }
+               
                 </div>
 
                   
