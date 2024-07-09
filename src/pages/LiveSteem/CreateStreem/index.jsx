@@ -113,7 +113,8 @@ export default function NewStream() {
                     onChange={(value) => localStorage.setItem('streamSelectProductId', value)}
 
                 >
-                {myVideos.map(item => {
+                    <Select.OptGroup>
+                    {myVideos.map(item => {
                     return <Option key={item.id} value={item.id}>
                         <div className='select__video__item'>
                         <img src={item.cover_image} alt="" />
@@ -125,6 +126,8 @@ export default function NewStream() {
                     </Option>
                 })}
 
+                    </Select.OptGroup>
+               
                         
                  </Select>
 
