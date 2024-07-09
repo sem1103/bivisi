@@ -224,11 +224,10 @@ const Header = ({ isOpen }) => {
         <Modal open={isModalCallOpen}
           onCancel={() => {
             declineCall()
-
             setIsModalCallOpen(false);
 
           }}
-          className={'modal__body chat__modal'}
+          className={'modal__body chat__modal call__modal'}
           styles={{
             mask: {
               backdropFilter: 'blur(10px)',

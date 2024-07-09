@@ -428,10 +428,7 @@
     }
   }
   
-    .ant-modal-wrap{
-      z-index: 99999 !important;
-      backdrop-filter: blur(10px) !important;
-    }
+    
   
 
   .chat_messages_header {
@@ -725,6 +722,9 @@ button.back__top{
   display: none;
 }
 
+.ant-modal-wrap{
+  z-index: 9999999999 !important;
+}
 
 @media only screen and (width < 990px) {
   

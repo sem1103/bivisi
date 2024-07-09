@@ -51,7 +51,7 @@ const Chat = () => {
           Authorization: `Bearer ${USER_TOKKEN}`
         }
       });
-      setFindUser(res.data)
+      setFindUser(res.data.filter(item => item.id != myId))
     } else {
       setFindUser([])
     }

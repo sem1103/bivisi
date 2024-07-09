@@ -111,7 +111,7 @@ const ProductDetail = () => {
       const productData = response.data;
 
       let updatedViewCount = productData.view_count;
-
+      console.log(productData);
       if (!viewed) {
         updatedViewCount += 1;
         await axios.patch(`${BASE_URL}/product/${productId}/`, {
@@ -202,8 +202,8 @@ const ProductDetail = () => {
                           },
                         ],
                       }}
-                      // onReady={onPlayerReady}
-                      // onDuration={handleDuration}
+                    // onReady={onPlayerReady}
+                    // onDuration={handleDuration}
                     />
                   </div>
                   <div className={`video_top ${isPlaying ? "" : "paused"}`}>
@@ -222,10 +222,14 @@ const ProductDetail = () => {
                   <div className="viev_part gap-1">
                     <div className="eye_btn">
                       <img src={eye} alt="eye.svg" />
-                    <span>{formatViewCount(productDetail?.view_count)}</span>
+                      <span>{formatViewCount(productDetail?.view_count)}</span>
                     </div>
                   </div>
                 </div>
+
+
+
+
                 <div className="video_content_bottom">
                   <div className="d-flex video_bottom_right">
                     <div className="d-flex align-items-center gap-2">
@@ -277,6 +281,33 @@ const ProductDetail = () => {
                     </div>
                   </div>
                 </div>
+
+
+
+                <div className="video__properties">
+                  <h4>Properties</h4>
+                  <table style={{ borderCollapse: 'collapse', width: '100%' , background: '#252525', margin: ' 0 0 20px 0'}}>
+                    <tbody>
+                      {
+                        productDetail.properties.map((item) => (
+                          <tr key={item.id}>
+                            <td style={{fontWeight: '600'}}>{item.product_property}</td>
+                            <td >{item.property_value}</td>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="video__address">
+                  <h4>Address</h4>
+                  <p><a href={productDetail.location_url}>
+                    {productDetail.location}
+                    </a></p>
+                </div>
+
+
 
                 <CommentsComponent productDetail={productDetail} />
               </div>
