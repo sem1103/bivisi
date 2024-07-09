@@ -4,6 +4,8 @@ import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import axios from 'axios';
 import emptyAvatar from './../../assets/images/user-empty-avatar.png'
+import liveStreemIcon from './../../layout/Sidebar/icons/live-streem.svg'
+
 export default function LiveStreams() {
     let roomName = '';
     const navigate = useNavigate();

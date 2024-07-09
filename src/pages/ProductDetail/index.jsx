@@ -1,5 +1,7 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState, useRef, useMemo } from "react";
 import "./style.scss";
+import "./map.scss";
+
 import eye from "../../assets/icons/eye.svg";
 import like from "../../assets/icons/like.svg";
 import download_img from "../../assets/icons/Download.svg";
@@ -24,6 +26,8 @@ import Plyr from "plyr-react";
 import WhatsAppButton from "../../components/WhatsAppButton";
 import ShareModal from "../../components/ShareModal";
 import { useCart } from "react-use-cart";
+import Map, { Marker } from 'react-map-gl';
+
 
 const ProductDetail = () => {
   const axiosInstance = useAxios();
@@ -33,13 +37,61 @@ const ProductDetail = () => {
   const serviceId = Number(id);
 
   const [viewed, setViewed] = useState(false);
-  const [productDetail, setProductDetail] = useState(null);
+  const [productDetail, setProductDetail] = useState(false);
   const [liked, setLiked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [loading, setLoading] = useState(false);
   const playerRef = useRef(null);
+  const [isShowMap, setIsShowMap] = useState(false)
+  const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA';
+  const [initialViewState, setInitialViewState] = useState({
+    longitude: 0,
+    latitude: 0,
+    zoom: 13,
+  });
+
+
+
+  const [markerPosition, setMarkerPosition] = useState({
+    longitude: 0,
+    latitude: 0,
+  });
 
   const { addItem } = useCart();
+
+  const fetchCoordinates = async (ADDRESS) => {
+    setIsShowMap(false)
+
+    try {
+      const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(ADDRESS)}.json`, {
+        params: {
+          access_token: TOKEN
+        }
+      });
+
+      const { features } = response.data;
+      if (features && features.length > 0) {
+        const [longitude, latitude] = features[0].center;
+       
+      
+        setInitialViewState({
+          longitude,
+          latitude,
+          zoom: 13,
+        });
+
+        setMarkerPosition({
+          longitude,
+          latitude,
+          zoom: 13,
+        });
+
+        setIsShowMap(true)
+      }
+    } catch (error) {
+      console.error('Ошибка при геокодировании:', error);
+    }
+  };
 
   const handleAddToHistory = async (productDetail) => {
     try {
@@ -111,6 +163,7 @@ const ProductDetail = () => {
       const productData = response.data;
 
       let updatedViewCount = productData.view_count;
+      console.log(productData);
 
       if (!viewed) {
         updatedViewCount += 1;
@@ -123,6 +176,7 @@ const ProductDetail = () => {
       setProductDetail({ ...productData, view_count: updatedViewCount });
       setLiked(productData.is_liked);
       handleAddToHistory(response.data);
+      fetchCoordinates(productData.location);
     } catch (error) {
       console.error("Error fetching product details:", error);
     }
@@ -170,6 +224,27 @@ const ProductDetail = () => {
     return num;
   }
 
+
+
+
+
+
+useEffect(() => {
+  
+  return () => {
+    setIsShowMap(false)
+
+  };
+}, []);
+ 
+
+
+
+ 
+
+ 
+    
+
   return (
     <div className="product_detail">
       <div className="container-fluid">
@@ -202,8 +277,8 @@ const ProductDetail = () => {
                           },
                         ],
                       }}
-                      // onReady={onPlayerReady}
-                      // onDuration={handleDuration}
+                    // onReady={onPlayerReady}
+                    // onDuration={handleDuration}
                     />
                   </div>
                   <div className={`video_top ${isPlaying ? "" : "paused"}`}>
@@ -222,10 +297,14 @@ const ProductDetail = () => {
                   <div className="viev_part gap-1">
                     <div className="eye_btn">
                       <img src={eye} alt="eye.svg" />
-                    <span>{formatViewCount(productDetail?.view_count)}</span>
+                      <span>{formatViewCount(productDetail?.view_count)}</span>
                     </div>
                   </div>
                 </div>
+
+
+
+
                 <div className="video_content_bottom">
                   <div className="d-flex video_bottom_right">
                     <div className="d-flex align-items-center gap-2">
@@ -277,6 +356,55 @@ const ProductDetail = () => {
                     </div>
                   </div>
                 </div>
+
+
+
+                <div className="video__properties">
+                  <h4>Properties</h4>
+                  <table style={{ borderCollapse: 'collapse', width: '100%', background: '#252525', margin: ' 0 0 20px 0' }}>
+                    <tbody>
+                      {
+                        productDetail.properties.map((item) => (
+                          <tr key={item.id}>
+                            <td style={{ fontWeight: '600' }}>{item.product_property}</td>
+                            <td >{item.property_value}</td>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="video__address">
+                  <h4>Address</h4>
+                  <p><a href={productDetail.location_url} target="_blank">
+                    {productDetail.location}
+                  </a></p>
+
+
+                <div className="address__map">
+                  {isShowMap &&
+                   <Map
+                   initialViewState={initialViewState}
+                   mapStyle="mapbox://styles/mapbox/streets-v9"
+                   mapboxAccessToken={TOKEN}
+                   width="100%"
+                   height="250px"
+
+                 >
+                 <Marker longitude={markerPosition.longitude} latitude={markerPosition.latitude} >
+                 <svg width={30} viewBox="0 0 24 24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1028.4)"> <path d="m12 0c-4.4183 2.3685e-15 -8 3.5817-8 8 0 1.421 0.3816 2.75 1.0312 3.906 0.1079 0.192 0.221 0.381 0.3438 0.563l6.625 11.531 6.625-11.531c0.102-0.151 0.19-0.311 0.281-0.469l0.063-0.094c0.649-1.156 1.031-2.485 1.031-3.906 0-4.4183-3.582-8-8-8zm0 4c2.209 0 4 1.7909 4 4 0 2.209-1.791 4-4 4-2.2091 0-4-1.791-4-4 0-2.2091 1.7909-4 4-4z" transform="translate(0 1028.4)" fill="#e74c3c"></path> <path d="m12 3c-2.7614 0-5 2.2386-5 5 0 2.761 2.2386 5 5 5 2.761 0 5-2.239 5-5 0-2.7614-2.239-5-5-5zm0 2c1.657 0 3 1.3431 3 3s-1.343 3-3 3-3-1.3431-3-3 1.343-3 3-3z" transform="translate(0 1028.4)" fill="#c0392b"></path> </g> </g></svg>
+                 </Marker>
+                 </Map>
+                  
+                  }
+               
+                </div>
+
+                  
+                </div>
+
+
 
                 <CommentsComponent productDetail={productDetail} />
               </div>

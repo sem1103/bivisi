@@ -588,14 +588,13 @@ header {
 
  
 }
-.chat__modal{
+.call__modal{
   .ant-modal-content{
     animation-name: boxShadowAnimate;
     animation-duration: 2s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
   }
-  
 }
 
 @keyframes boxShadowAnimate {

@@ -32,7 +32,7 @@ export default function ShowMyStream() {
 
     const myMeeting = async (element) => {
         try {
-            if (localStorage.isJoined == 'true') {
+           
                 const appId = 1364666946;
                 const serverSecret = '00e187d256dc675f3a9bedb57d81238f';
                 const userId = Date.now().toString();
@@ -58,7 +58,7 @@ export default function ShowMyStream() {
                     onUserAvatarSetter:(userList) => {
                         if(localStorage.avatar != 'null'){
                             userList.forEach(user => {
-                                user.setUserAvatar(localStorage.avatar)
+                                user.setUserAvatar("localStorage.avatar")
                             })
                         }
                        
@@ -86,7 +86,7 @@ export default function ShowMyStream() {
                         let res = await axios.delete('http://64.226.112.70/api/core/stream/delete/' + zp.current.getRoomID())
                     },
                     onLeaveRoom: async () => {
-                        let res = await axios.delete('http://64.226.112.70/api/core/stream/delete/' + zp.current.getRoomID())
+                        let res = await axios.delete('http://64.226.112.70/api/core/stream/delete/' + roomId)
                         console.log(res.data);
                     },
                     showPreJoinView: false,
@@ -98,7 +98,7 @@ export default function ShowMyStream() {
                         }
                     }
                 });
-            }
+      
             console.log('Successfully joined the room');
         } catch (error) {
             console.error('Error joining the room:', error);
