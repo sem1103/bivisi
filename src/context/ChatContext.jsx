@@ -372,6 +372,7 @@ export default function ChatProvider({ children }) {
         
         setMessages([])
         setNewChatUser(newChatUser);
+        localStorage.setItem('chatId',0)
         setChatId(false);
         localStorage.setItem('newUserChatId', newChatUser.id)
     }
