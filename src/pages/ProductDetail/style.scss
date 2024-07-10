@@ -628,6 +628,51 @@
   }
 }
 
+
+.video__properties, .video__address{
+  color: #fff;
+  background: #121216;
+  padding: 10px;
+  margin: 24px 0 20px 0;
+  border-radius: 16px;
+  h4{
+    font-size: 20px;
+  }
+  td{
+    border: 1px solid #373737;
+    padding: 8px;
+    text-transform: capitalize;
+    width: 50%;
+  }
+
+  p a{
+    font-size: 16px;
+    color: #fff;
+  }
+  .mapboxgl-map{
+    
+    .mapboxgl-canvas-container{
+      overflow: hidden;
+
+     canvas{
+      height: 100% !important;
+      border-radius: 16px;
+      overflow: hidden;
+     }
+    }
+   
+    .mapboxgl-ctrl{
+      display: none;
+    }
+  }
+}
+
+.address__map{
+  display: flex;
+  height: 250px;
+}
+
+
 @media (max-width: 485px) {
   .product_detail {
     .video_content_bottom {

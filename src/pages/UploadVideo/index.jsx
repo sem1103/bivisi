@@ -21,10 +21,7 @@ const UploadV = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const [firstProp, setFirstProp] = useState('');
-  const [secondProp, setSecondProp] = useState('');
-
-  const [editVideo, setEditVideo] = useState(localStorage.myEditVideo != undefined ? JSON.parse(localStorage.myEditVideo) : false)
+  const [editVideo, setEditVideo] = useState(localStorage.myEditVideo != undefined ? JSON.parse(localStorage.myEditVideo) : false);
   const { product, setProduct } = useContext(ProductContext);
   const { Option } = Select;
   const [category, setCategory] = useState([]);
@@ -50,13 +47,18 @@ const UploadV = () => {
 
   const { register, control, handleSubmit } = useForm({
     defaultValues: {
-      rows: [],
+      properties: editVideo ? editVideo.properties : [],
     },
   });
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'properties',
+    
   });
+
+
+
+  
 
   const [formData, setFormData] = useState({
     name: !editVideo ? '' : editVideo.name,
@@ -66,14 +68,15 @@ const UploadV = () => {
     phone_number: !editVideo ? "+994" : editVideo.phone_number , // Default country code
     product_type: "Video",
     price: !editVideo ? '' : editVideo.price.split('.')[0],
-    original_video:  null ,
-    properties : fields.length ? null : fields
-  });
+    original_video:  null 
+    });
   const axiosInstance = useAxios();
 
 
   
   useEffect(() => {
+    
+
     const fetchData = async () => {
       try {
         const categoryRes = await axios.get(
@@ -90,7 +93,7 @@ const UploadV = () => {
     };
 
     fetchData();
-    return () => {
+  
       if(pathname.includes('upload')){
         localStorage.removeItem('myEditVideo');
         setEditVideo(false)
@@ -105,7 +108,8 @@ const UploadV = () => {
           original_video: null,
         })
       }
-    }
+ 
+
   }, []);
 
   const handleGeocoderResult = useCallback((event) => {
@@ -307,12 +311,13 @@ const UploadV = () => {
     // }
     const { original_video, ...rest } = formData;
     const submitData = new FormData();
-    submitData.append('location_url', mapLink.url)
-    submitData.append('location', mapLink.location )
+    submitData.append('location_url', editVideo && !mapLink.url ? editVideo.location_url : mapLink.url)
+    submitData.append('location', editVideo && !mapLink.location ? editVideo.location : mapLink.location )
     if(!data.properties.length ) {
       submitData.append('properties', JSON.stringify(data.properties));
     } else submitData.set('properties', JSON.stringify(data.properties));
 
+    console.log(data);
     
     if(  formData.original_video == null) {
       Object.keys(rest).forEach((key) => {
@@ -347,32 +352,6 @@ const UploadV = () => {
 
     
 
-    // [
-    //   {
-    //     "id":"b1e6badd-7164-4eaf-94d3-3d6458d8df2d",
-    //     "product_property":"color",
-    //     "property_value":"red"
-    //   }
-    // ]
-
-      // Создаем новый объект FormData, копируя все, кроме последнего ключа
-const newSubmitData = new FormData();
-
-// Преобразуем FormData в массив ключей и значений
-const entries = Array.from(submitData.entries());
-
-// Удаляем последний ключ
-entries.pop();
-
-// Копируем оставшиеся пары ключ-значение в новый объект FormData
-entries.forEach(([key, value]) => {
-  newSubmitData.append(key, value);
-});
-
-// Логирование значений новой FormData для проверки
-newSubmitData.forEach((value, key) => {
-  console.log(`${key}: ${value}`);
-}); 
     
     try {
         await toast.promise(
@@ -385,7 +364,7 @@ newSubmitData.forEach((value, key) => {
           :
           axiosInstance.patch(
             `/update_product/${editVideo.id}/${editVideo.product_video_type[0].id}/`,
-            newSubmitData,
+            submitData,
             {
               headers: {
                 "Content-Type": "multipart/form-data",
@@ -741,7 +720,7 @@ newSubmitData.forEach((value, key) => {
                         mapStyle="mapbox://styles/mapbox/streets-v9"
                         mapboxAccessToken={TOKEN}
                       >
-                        <GeocoderControl mapboxAccessToken={TOKEN} position="top-left" placeholder={' '} onResult={handleGeocoderResult}
+                        <GeocoderControl mapboxAccessToken={TOKEN} position="top-left" placeholder={editVideo ? editVideo.location : ' '} onResult={handleGeocoderResult}
  />
                       </Map>
                     </div>

@@ -8,17 +8,20 @@ import telephone from "../../assets/icons/telephone.svg";
 import smile from "../../assets/icons/Smile.svg";
 import send from "../../assets/icons/Send.svg";
 import attachment from "../../assets/icons/Attachment.svg";
-import { Link } from "react-router-dom";
 import useAxios from "../../utils/useAxios";
 import axios from "axios";
 import empyAvatar from './../../assets/images/user-empty-avatar.png'
 import { ChatContext } from "../../context/ChatContext";
 import { Modal } from 'antd';
+import EmojiPicker from "emoji-picker-react";
+
+
 
 
 const Chat = () => {
   const axiosInstance = useAxios();
-  const { USER_TOKKEN, myId, CHAT_API, allChats, chatId, messages, setMessages, newMessage,  lastMessages, setNewMessage, socket, newChatUser, onlineUsers, sendMessage, getMessage, addChat, getChats, deleteChat, setNewChatUser } = useContext(ChatContext)
+  const { USER_TOKKEN, myId, CHAT_API, isCall, allChats, chatId, messages, setMessages, newMessage,  lastMessages, setNewMessage, socket, newChatUser, isModalCallOpen, onlineUsers, sendMessage, getMessage, addChat, getChats, deleteChat, setNewChatUser, setIsModalCallOpen } = useContext(ChatContext)
+  
 
   const [findUser, setFindUser] = useState([]);
   const [openSearchList, setopenSearchList] = useState(false);
@@ -27,10 +30,9 @@ const Chat = () => {
   const [newChatState, setActiveChat] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userName, setUserName] = useState('');
+  const [isOpenEmoji, setIsOpenEmoji] = useState(false);
 
-  const [isConnect, setIsConnect] = useState('Disconnect');
-
-
+  const pickerRef = useRef(null)
 
 
   const debounce = (func, wait) => {
@@ -49,7 +51,7 @@ const Chat = () => {
           Authorization: `Bearer ${USER_TOKKEN}`
         }
       });
-      setFindUser(res.data)
+      setFindUser(res.data.filter(item => item.id != myId))
     } else {
       setFindUser([])
     }
@@ -78,9 +80,33 @@ const Chat = () => {
 
 
 
+
+
   useEffect(() => {
-    getChats()
-  }, [])
+    getChats();
+
+   return () => {
+    localStorage.setItem('newUserChatId', 0);
+    localStorage.setItem('chatId', false);
+    setMessages([])
+    setNewMessage([])
+    setNewChatUser(false)
+   }
+   }, [])
+
+
+   const handleClickOutside = (event) => {
+    if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+      setIsOpenEmoji(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  }, []);
 
   return (
     <>
@@ -92,11 +118,17 @@ const Chat = () => {
                 <div className="chat__title">
                   <h1> Chat</h1>
 
-                  <button onClick={() => setIsModalOpen(true)} className="create__new__chat">
+                  {
+                    allChats.length ?
+
+                    <button onClick={() => setIsModalOpen(true)} className="create__new__chat">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                       <path d="M10 5V15M15 10L5 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                   </button>
+                  :
+                  ''
+                  }
 
                   <Modal open={isModalOpen}
                     onCancel={() => setIsModalOpen(false)}
@@ -178,6 +210,7 @@ const Chat = () => {
                 </div>
                 <div className={`chats `}>
                   {
+                    allChats.length ?
                     allChats.map((chat, ind) => {
                       if (chat?.target.firstName.toLowerCase().includes(userName.toLowerCase())) {
                         return <div
@@ -212,7 +245,17 @@ const Chat = () => {
                         </div>
                       }
 
-                    })
+                    }) 
+                    : 
+                    <div className="empty__chats">
+                      <div>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96" fill="none">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M14.1213 9.87868C12.9497 8.70711 11.0503 8.70711 9.87868 9.87868C8.70711 11.0503 8.70711 12.9497 9.87868 14.1213L18.4232 22.6659C11.9796 29.1708 8 38.1207 8 48.0002V68.0002C8 76.8368 15.1634 84.0002 24 84.0002H52C59.8374 84.0002 67.0899 81.4957 73.0007 77.2434L81.8787 86.1213C83.0503 87.2929 84.9497 87.2929 86.1213 86.1213C87.2929 84.9497 87.2929 83.0503 86.1213 81.8787L63.2426 59H28C26.3431 59 25 57.6569 25 56C25 54.3431 26.3431 53 28 53H57.2426L47.2426 43H28C26.3431 43 25 41.6569 25 40C25 38.3431 26.3431 37 28 37H41.2426L14.1213 9.87868ZM43.9998 12H51.9998C71.882 12 87.9998 28.1178 87.9998 48C87.9998 54.866 86.0776 61.283 82.7422 66.7424L30.583 14.5833C34.7293 12.917 39.2575 12 43.9998 12Z" fill="#6B738A"/>
+                    </svg>
+                      </div>
+                      <h4>There is no chat here</h4>
+                      <button onClick={() => setIsModalOpen(true)} class="create__new__chat"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 5V15M15 10L5 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> <span>New chat</span></button>
+                    </div>
                   }
                 </div>
               </div>
@@ -239,12 +282,28 @@ const Chat = () => {
                       </div>
                     </div>
                     <div className="nick_icons">
-                      <Link>
+                      <div className="voice__call">
+                        <button>
                         <img src={telephone} alt="" />
-                      </Link>
-                      <Link to='/call'>
-                        <img src={camera} alt="" />
-                      </Link>
+                        </button>
+                      </div>
+                     
+                      <div className="video__call">
+                      <button onClick={() => {
+                        socket.emit('sendMessage', { target: newChatUser.id, message: {
+                          action: `call to ${newChatUser.id}`,
+                          userInfo: newChatUser,
+                          fromUserName: JSON.parse(localStorage.authTokens).first_name,
+                          fromUserId: myId
+                        } });
+
+                       }
+                      }>
+                      <img src={camera} alt="" />
+                      </button>
+                      </div>
+                     
+                     
                       <ul className="chat__options">
                         <li>
                           <button >
@@ -538,9 +597,28 @@ const Chat = () => {
                           }
                         }}
                         style={{ height: '50px', minHeight: 'unset', resize: 'none' }} />
-                      <button>
-                        <img src={smile} alt="" className="smile" />
-                      </button>
+                      <div className={`emoji__container ${!isOpenEmoji ? 'hide__emoji' : ''}`} ref={pickerRef}>
+                        {
+                          
+                          <EmojiPicker 
+                          
+                          height={270}
+                          searchDisabled={true}
+                          theme='dark'
+                          lazyLoadEmojis={true}
+                          onEmojiClick={(e) => {
+                            setNewMessage(prev => prev+e.emoji)
+                          }}
+                          />
+                        }
+                      
+                        <button type="button" onClick={() => {
+                          setIsOpenEmoji(!isOpenEmoji)
+                        }}>
+                        <img src={smile} alt="" className="smile"  />
+
+                        </button>
+                      </div>
                       <button type="submit">
                         <img src={send} alt="" className="send" />
                       </button>

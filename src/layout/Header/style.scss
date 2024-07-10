@@ -558,6 +558,56 @@ header {
   cursor: pointer;
 }
 
+.call__modal{
+  
+  text-align: center;
+  h3{
+    font-size: clamp(20px, 3vw, 26px);
+  }
+
+  .call__btns{
+    display: flex;
+    justify-content: center;
+    gap: 10px 20px;
+    margin: 35px 0 0 0;
+
+    button{
+      background-color: transparent;
+      border: 0;
+      outline: 0;
+      border-radius: 50%;
+      transition:  all .4s ease-in-out;
+      &.decline__call:hover{
+        box-shadow: 0 0 5px 3px #ce4646;
+      }
+      &.accept__call:hover{
+        box-shadow: 0 0 5px 3px #51fb5c;
+      }
+    }
+  }
+
+ 
+}
+.call__modal{
+  .ant-modal-content{
+    animation-name: boxShadowAnimate;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+}
+
+@keyframes boxShadowAnimate {
+  0%{
+    box-shadow: 0 0 8px 4px transparent;
+  }
+  50%{
+    box-shadow: 0 0 8px 4px #e6e5e5;
+  }
+  100%{
+    box-shadow: 0 0 8px 4px transparent;
+  }
+}
 
 
 
