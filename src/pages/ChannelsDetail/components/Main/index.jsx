@@ -1,62 +1,53 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
-import { useParams, useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import default_coverimg from "../../../../assets/images/default-coverimg.jpg";
 import user_emptyavatar from "../../../../assets/images/user-empty-avatar.png";
-import { ProductContext } from "../../../../context/ProductContext";
-import { SubscriptionContext } from "../../../../context/subscriptionContext";
-import axios from "axios";
+import useSubscription from "../../../../hooks/useSubscription";
 import { BASE_URL } from "../../../../api/baseUrl";
+import axios from "axios";
 
 const MainChannels = () => {
-  const [currentChannelId, setCurrentChannelId] = useState(null);
-  const { username } = useParams();
   const location = useLocation();
-  const { channelData, setChannelData } = useContext(ProductContext);
-  const { toggleSubscription, subscriptions } = useContext(SubscriptionContext);
-  const isSubscribed = subscriptions?.some(sub => sub.username === username);
+  const [channelData, setChannelData] = useState({});
+  const params = useParams();
+  const [channelId, setChannelId] = useState(null);
+  const { isSubscribed, handleSubscribe, handleUnsubscribe, followersCount, setFollowersCount, loading } = useSubscription(channelId, channelData.follower_count);
+  const [showFollowersCount, setShowFollowersCount] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
 
   useEffect(() => {
-    const fetchPChannels = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/user/popular-channels/`);
-        const current = response?.data.results.filter(item => item.username === username);
-        setCurrentChannelId(current[0]?.id || null);
-        setChannelData({
-          username: current[0]?.username || '',
-          followersCount: current[0]?.follower_count || 0,
-          cover_image: current[0]?.cover_image || default_coverimg,
-          avatar: current[0]?.avatar || user_emptyavatar
-        });
-      } catch (error) {
-        console.error('Failed to fetch popular channels:', error);
-      }
+    const refresh = async () => {
+      const responseChannel = await axios.get(`${BASE_URL}/user/popular-channels/`);
+      const channel = responseChannel?.data.results.find((item) => item.id === channelData?.id);
+      setFollowersCount(channel?.follower_count);
     };
-    fetchPChannels();
-  }, [username, setChannelData]);
+    refresh();
+  }, [followersCount, setFollowersCount, channelData?.id]);
 
   useEffect(() => {
     if (location.state) {
-      setChannelData(prevData => ({
-        ...prevData,
-        followersCount: location.state.followersCount || prevData.followersCount,
-        cover_image: location.state.cover_image || prevData.cover_image,
-        avatar: location.state.avatar || prevData.avatar,
-      }));
+      const channelData = {
+        username: params?.username,
+        id: location.state.channelDetailData?.id,
+        cover_image: location.state.channelDetailData?.cover_image,
+        avatar: location.state.channelDetailData?.avatar,
+        follower_count: location.state?.channelDetailData?.follower_count,
+      };
+      setChannelData(channelData);
+      setChannelId(channelData.id);
     }
-  }, [location, setChannelData]);
+  }, [location.state, params]);
 
-  const handleSubscriptionToggle = () => {
-    toggleSubscription(currentChannelId);
-    setChannelData(prevData => ({
-      ...prevData,
-      followersCount: isSubscribed 
-        ? prevData.followersCount - 1 
-        : prevData.followersCount + 1
-    }));
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowFollowersCount(true);
+      setShowButtons(true);
+    }, 700);
+    return () => clearTimeout(timer);
+  }, []);
 
-  const subscriberText = channelData?.followersCount === 1 ? 'subscriber' : 'subscribers';
+  const subscriberText = channelData?.follower_count <= 1 ? ' subscriber' : ' subscribers';
 
   return (
     <div className="main_section">
@@ -71,20 +62,22 @@ const MainChannels = () => {
             style={{ backgroundImage: `url(${channelData?.avatar || user_emptyavatar})` }}
           ></div>
           <div>
-            <h4>{username}</h4>
+            <h4>{channelData?.username}</h4>
             <p>
-              <span className="me-2">{channelData?.followersCount}</span>
-              {subscriberText}
+              { showFollowersCount && (
+                <span className="me-2">{followersCount}{subscriberText}</span>
+              )}
             </p>
           </div>
         </div>
         <div className="subs_btn">
-          <button
-            className={`subs-button${isSubscribed ? " unsubs-button" : ""}`}
-            onClick={handleSubscriptionToggle}
-          >
-            {isSubscribed ? "Unsubscribe" : "Subscribe"}
-          </button>
+          {showButtons && (
+            isSubscribed ? (
+              <button className="subs-button unsubs-button" onClick={handleUnsubscribe}>Unsubscribe</button>
+            ) : (
+              <button className="subs-button" onClick={handleSubscribe}>Subscribe</button>
+            )
+          )}
         </div>
       </div>
     </div>

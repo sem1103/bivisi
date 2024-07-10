@@ -1,31 +1,31 @@
-import React, { useContext, useState } from "react";
-import { toast } from "react-toastify";
+import React from "react";
 import "./style.scss";
-import { AuthContext } from "../../context/authContext";
-import { useNavigate } from "react-router-dom";
 import default_coverimg from "../../assets/images/default-coverimg.jpg";
 import user_emptyavatar from "../../assets/images/user-empty-avatar.png";
-import { SubscriptionContext } from "../../context/subscriptionContext";
-
+import useSubscription from "../../hooks/useSubscription";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../../api/baseUrl";
 
 const PopularChannelCard = ({ popularChannels, page }) => {
-  const { subscriptions, toggleSubscription } = useContext(SubscriptionContext);
-  const { user } = useContext(AuthContext);
-  const [followersCount, setFollowersCount] = useState(popularChannels?.follower_count || 0);
+  const {
+    isSubscribed,
+    followersCount,
+    handleSubscribe,
+    handleUnsubscribe,
+    loading
+  } = useSubscription(popularChannels.id, popularChannels.follower_count);
+  
   const navigate = useNavigate();
-  const isSubscribed = subscriptions.some(sub => sub.id === popularChannels.id);
 
-  const handleSubscription = () => {
-    if (!user) {
-      toast.warning('Please sign in');
-      return;
-    }
-    toggleSubscription(popularChannels.id);
-    setFollowersCount(prev => isSubscribed ? prev - 1 : prev + 1);
+  const getChannelDetail =async (popularChannels) => {
+    const responseChannel = await axios.get(`${BASE_URL}/user/popular-channels/`);
+    const channel = responseChannel?.data.results.find((item) => item.id == popularChannels?.id);
+    navigate(`/channels_detail/channels_videos/${popularChannels.username}`, { state: { channelDetailData: channel } });
   };
 
   const colClass = ['channelcard'].includes(page) ? 'col-lg-6 col-md-6 col-sm-12 col-12' : '';
-  const subscriberText = followersCount <= 1 ? 'subscriber' : 'subscribers';
+
   return (
     <div className={`${colClass} p-2`}>
       <div className="channelCard">
@@ -38,40 +38,29 @@ const PopularChannelCard = ({ popularChannels, page }) => {
           <img src={popularChannels?.avatar || user_emptyavatar} alt="Avatar" />
         </div>
         <div className="channelCard-context">
-          <div
-            className="username"
-            onClick={() => navigate(
-              `/channels_detail/channels_videos/${popularChannels.username}`,
-              {
-                state: {
-                  followersCount,
-                  cover_image: popularChannels.cover_image,
-                  avatar: popularChannels.avatar
-                }
-              }
-            )}
-          >
+          <div className="username" onClick={() => getChannelDetail(popularChannels)}>
             {popularChannels?.username}
           </div>
-          <span>{popularChannels.first_name} {popularChannels.last_name}</span>
-          <p>{popularChannels.bio}</p>
+          <span>
+            {popularChannels.first_name} {popularChannels.last_name}
+          </span>
+          <p>
+            {popularChannels.bio}
+          </p>
           <div className="d-flex align-items-center justify-content-between">
             <div className="d-flex align-items-center avatar-group">
               <div className="avatar">
                 <img src={popularChannels?.avatar || user_emptyavatar} alt="Avatar" />
               </div>
               <div className="hidden-avatars">
-                <span>{followersCount} {subscriberText}</span>
+                <span>{followersCount} subscribes</span>
               </div>
             </div>
-            <div>
-              <button
-                className={`subs-button${isSubscribed ? " unsubs-button" : ""}`}
-                onClick={handleSubscription}
-              >
-                {isSubscribed ? "Unsubscribe" : "Subscribe"}
-              </button>
-            </div>
+            {isSubscribed ? (
+              <button className="subs-button unsubs-button" onClick={handleUnsubscribe} disabled={loading}>Unsubscribe</button>
+            ) : (
+              <button className="subs-button" onClick={handleSubscribe} disabled={loading}>Subscribe</button>
+            )}
           </div>
         </div>
       </div>
