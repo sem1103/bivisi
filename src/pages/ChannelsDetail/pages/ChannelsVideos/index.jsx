@@ -28,7 +28,7 @@ const ChannelsVideos = () => {
 
   return (
     <>
-      <MainChannels />
+      <MainChannels  />
       <Categories username={username} />
 
       <div className="channels_videos">
