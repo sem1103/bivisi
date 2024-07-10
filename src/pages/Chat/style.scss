@@ -1,6 +1,36 @@
+
 .chat__modal{
   .ant-modal-content{
     padding: 34px;
+  }
+}
+.empty__chats{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: start;
+  h4{
+    color: #6B738A;
+    font-size: 14px;
+    margin: 12px 0 24px;
+  }
+  button.create__new__chat{
+    background: #0385CA;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    transition: all .4s ease-in-out;
+    border: 0;
+    margin: 0 0 10px 0;
+    span{
+      font-family: Poppins;
+      font-size: 16px;
+      height: 22px;
+    }
+    &:hover{
+      box-shadow: 0 0 5px 2px #0385CA;
+    }
   }
 }
 .search__user {
@@ -366,6 +396,15 @@
         border-radius: 12px;
         cursor: pointer;
 
+        .chat__user__info{
+          p{
+            font-family: 'Poppins', 'Noto Color Emoji' !important;     
+            font-weight: 400;
+            font-style: normal;
+            font-feature-settings: 'tnum';
+          }
+        }
+
         h2 {
           color: #fff;
 
@@ -383,7 +422,7 @@
           color: var(--Text-4, #a2a8b7);
           text-overflow: ellipsis;
           white-space: nowrap;
-
+          
           /* Poppins/14/Regular */
           font-family: Poppins;
           font-size: 14px;
@@ -558,6 +597,10 @@
     }
 
     #new__message {
+      font-family: 'Poppins' , 'Noto Color Emoji'!important;     
+      font-weight: 400;
+  font-style: normal;
+  font-feature-settings: 'tnum';
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -611,12 +654,17 @@
     height: 100%;
 
     .message-item {
+      
       width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
 
       .message-text {
+        font-family:'Poppins', 'Noto Color Emoji' !important;     
+        font-weight: 400;
+        font-style: normal;
+        font-feature-settings: 'tnum';
         height: auto;
         display: flex;
         padding: 16px 24px;
