@@ -247,7 +247,7 @@ export default function ChatProvider({ children }) {
 
 
 
-                if(!message.chatId ||message.chatId == +localStorage.chatId || (+target != user?.user_id && (+message.target == +user?.user_id))) {
+                if(!message.chatId || message.chatId == +localStorage.chatId || (+target != user?.user_id && (+message.target == +user?.user_id))) {
                     setMessages((prevMessages) => {
                         return [
                                 {
@@ -313,7 +313,7 @@ export default function ChatProvider({ children }) {
                 })
            
 
-                if(+localStorage.chatId == 0)  {
+                if(!localStorage.chatId && newChatUser.length)  {
                     getChats().then(res => localStorage.setItem('chatId', res[0].chatId))
                 }
 
@@ -372,7 +372,7 @@ export default function ChatProvider({ children }) {
         
         setMessages([])
         setNewChatUser(newChatUser);
-        localStorage.setItem('chatId',0)
+        localStorage.setItem('chatId', false)
         setChatId(false);
         localStorage.setItem('newUserChatId', newChatUser.id)
     }
@@ -389,7 +389,7 @@ export default function ChatProvider({ children }) {
         getChats();
         setMessages([]);
         setNewChatUser(false);
-        localStorage.setItem('chatId', 0)
+        localStorage.setItem('chatId', false)
 
     }
 
