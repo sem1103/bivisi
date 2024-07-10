@@ -87,7 +87,7 @@ const Chat = () => {
 
    return () => {
     localStorage.setItem('newUserChatId', 0);
-    localStorage.setItem('chatId', 0);
+    localStorage.setItem('chatId', false);
     setMessages([])
     setNewMessage([])
     setNewChatUser(false)
