@@ -9,7 +9,7 @@ import { ChatContext } from '../../context/ChatContext';
 
 
 const Call = () => {
-  const {setIsAccept } = useContext(ChatContext)
+  const {setIsAccept , isVideoCall} = useContext(ChatContext)
   const callContainer = useRef(null)
   const navigate = useNavigate();
   let zp = '';
@@ -42,9 +42,14 @@ const Call = () => {
       zp.joinRoom({
         container: element,
         showPreJoinView: false,
+        showLeaveRoomConfirmDialog: false,
+        turnOnCameraWhenJoining: isVideoCall,
+        showMyCameraToggleButton: isVideoCall,
+        showScreenSharingButton: isVideoCall,
+        maxUsers: 2,
         scenario: {
           mode: ZegoUIKitPrebuilt.GroupCall, // To implement 1-on-1 calls, modify the parameter here to [ZegoUIKitPrebuilt.OneONoneCall].
- 
+        
         },
         onLeaveRoom:  () => {
           zp?.destroy();

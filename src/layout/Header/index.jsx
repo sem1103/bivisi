@@ -44,7 +44,7 @@ import { Modal } from 'antd';
 const Header = ({ isOpen }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const {isCall,isModalCallOpen, setIsModalCallOpen, socket, newChatUser, callModalText, declineCall, iCall, acceptACall, isAccept, setIsAccept} = useContext(ChatContext);
+  const {isModalCallOpen, setIsModalCallOpen, socket, newChatUser, callModalText, declineCall, iCall, acceptACall, isAccept, setIsAccept} = useContext(ChatContext);
   const { user } = useContext(AuthContext);
   const [product, setProduct] = useState([]);
   const { product: allProducts } = useContext(ProductContext);
@@ -225,12 +225,13 @@ const Header = ({ isOpen }) => {
           onCancel={() => {
             declineCall()
             setIsModalCallOpen(false);
-
           }}
+
           className={'modal__body chat__modal call__modal'}
           styles={{
             mask: {
               backdropFilter: 'blur(10px)',
+              zIindex: 999999999999,
             }
           }}
         >
