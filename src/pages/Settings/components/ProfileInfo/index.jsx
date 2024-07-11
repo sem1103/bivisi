@@ -142,6 +142,13 @@ const ProfileInformation = () => {
           }
         );
         console.log("Profile updated successfully:", response.data);
+        let authTokens = JSON.parse(localStorage.authTokens);
+        localStorage.setItem('authTokens', JSON.stringify({
+          ...authTokens,
+          first_name:  response.data.first_name,
+          last_name : response.data.last_name
+        }))
+
         fetchUserDetails(authTokens.access);
         return response.data;
       } catch (error) {
