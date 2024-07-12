@@ -136,6 +136,7 @@ const Chat = () => {
                     styles={{
                       mask: {
                         backdropFilter: 'blur(10px)',
+                        zIndex: 999999999999,
                       }
                     }}
                   >

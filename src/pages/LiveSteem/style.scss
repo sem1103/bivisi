@@ -271,8 +271,8 @@
     overflow: hidden;
 
     .product__detail {
-        top: 24px;
-        right: 24px;
+        bottom: 24px;
+        left: 24px;
         z-index: 9999;
         position: absolute;
         border: 1px solid #828282;
@@ -313,7 +313,7 @@
 //     backdrop-filter: blur(10px) !important;
 // }
 .stream__modal{
-    width: 90% !important;
+    width: 80% !important;
     .ant-modal-content{
         border: 0 !important;
     }
@@ -460,11 +460,18 @@ svg[data-icon="close"]{
             max-height: 200px;
         }
     }
+    .active__stream  .product__detail{
+        scale: .8;
+        left: 10px;
+        bottom: 10px;
+    }
 
     .active__stream {
         height: 60vh;
     }
     .stream__modal{
+        width: 95% !important;
+
         .ant-modal-content{
             padding: 45px 20px 10px 20px;
         }

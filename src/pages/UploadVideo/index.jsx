@@ -372,6 +372,7 @@ const UploadV = () => {
             }
           ).then(res => {
             setTimeout(() => {
+              localStorage.removeItem('myEditVideo')
               navigate('/your_profile/my_videos')
             }, 200);
           })

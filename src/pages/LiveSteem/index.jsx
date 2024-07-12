@@ -126,7 +126,7 @@ export default function LiveStreams() {
             styles={{
               mask: {
                 backdropFilter: 'blur(10px)',
-                zIindex: 999999999999,
+                zIndex: 999999999999,
 
               }
             }}
