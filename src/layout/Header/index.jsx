@@ -35,6 +35,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import sm_user from '../../assets/icons/sm-user.svg'
 import { ChatContext } from "../../context/ChatContext";
 import { Modal } from 'antd';
+import callRingtone from './../../assets/images/call.mp3'
 
 
 
@@ -44,7 +45,7 @@ import { Modal } from 'antd';
 const Header = ({ isOpen }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const {isModalCallOpen, setIsModalCallOpen, socket, newChatUser, callModalText, declineCall, iCall, acceptACall, isAccept, setIsAccept} = useContext(ChatContext);
+  const {isModalCallOpen, setIsModalCallOpen,  callModalText, declineCall, iCall, acceptACall, isAccept, setIsAccept} = useContext(ChatContext);
   const { user } = useContext(AuthContext);
   const [product, setProduct] = useState([]);
   const { product: allProducts } = useContext(ProductContext);
@@ -57,6 +58,7 @@ const Header = ({ isOpen }) => {
   const [inputValue, setInputValue] = useState("");
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(false);
+  const ringtoneRef = useRef(new Audio(callRingtone)); // Создание рефа для аудиоэлемента
 
   const { totalUniqueItems, totalItems } = useCart();
   const toggleMenu = () => {
@@ -209,8 +211,25 @@ const Header = ({ isOpen }) => {
 
   useEffect(() => {
     isAccept && navigate(`/call/${localStorage.videoCallRoomId}`)
+    
     setIsAccept(false)
   },[isAccept])
+
+  useEffect(() => {
+    if(isModalCallOpen && sessionStorage.iCall == 'false'){
+       
+      ringtoneRef.current.loop = true;
+      ringtoneRef.current.play();
+    } else{
+      ringtoneRef.current.pause();
+      ringtoneRef.current.currentTime = 0; // Сброс времени воспроизведения
+
+    }
+
+  
+  }, [isModalCallOpen]);
+
+  
 
   if (
     location.pathname !== "/login" &&
@@ -221,29 +240,33 @@ const Header = ({ isOpen }) => {
   ) {
     return (
       <div>
-        <Modal open={isModalCallOpen}
+        <Modal 
+          open={isModalCallOpen}
           onCancel={() => {
+            ringtoneRef.current.currentTime = 0; // Сброс времени воспроизведения
+            ringtoneRef.current.pause();
             declineCall()
             setIsModalCallOpen(false);
           }}
-
           className={'modal__body chat__modal call__modal'}
           styles={{
             mask: {
               backdropFilter: 'blur(10px)',
-              zIindex: 999999999999,
+              zIndex: '999999999999' ,
             }
           }}
         >
           <div className="call__modal">
+
             <h3>
             {callModalText}
             </h3>
-
             {
              <div className="call__btns">
                <button className="decline__call"
                 onClick={() => {
+                  ringtoneRef.current.currentTime = 0; // Сброс времени воспроизведения
+                  ringtoneRef.current.pause();
                   declineCall();
                   setIsModalCallOpen(false);
       
@@ -268,24 +291,33 @@ const Header = ({ isOpen }) => {
               </button>
 
               {
-                !iCall &&
+                sessionStorage.iCall == 'false' &&
                 <button
                 className="accept__call"
                 onClick={() => {
+                  
                  acceptACall();
                 }}
                 >
-                <svg width="50px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xmlSpace="preserve" fill="#000000">
-    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-    <g id="SVGRepo_iconCarrier">
-      <path style={{ fill: '#51fb5c' }} d="M0,256.006C0,397.402,114.606,512.004,255.996,512C397.394,512.004,512,397.402,512,256.006 C512.009,114.61,397.394,0,255.996,0C114.606,0,0,114.614,0,256.006z"></path>
-      <path style={{ fill: '#3fe961' }} d="M512,256.005c0-4.151-0.117-8.273-0.313-12.378c-0.477-0.48-120.329-120.335-120.862-120.863 C356.415,87.948,308.701,66.313,256,66.313c-104.592,0-189.687,85.087-189.687,189.68c0,53.653,22.491,102.073,58.413,136.612 c0.395,0.396,118.509,118.478,119.043,119.005c0.029,0.029,0.055,0.055,0.083,0.083c4.026,0.189,8.071,0.307,12.144,0.307 C397.394,512.004,512,397.401,512,256.005z"></path>
-      <path style={{ fill: '#F6F6F6' }} d="M256,66.313c-104.592,0-189.687,85.088-189.687,189.68S151.408,445.68,255.935,445.68 c0.702,0.007,1.389,0.007,2.084,0.007c75.564,0,101.775-34.687,108.043-45.407c7.067-12.087,8.205-24.676,3.045-33.676 c-2.945-5.123-7.777-8.604-13.68-10.202l3.314-3.321c5.472-5.481,8.34-13.068,7.861-20.809c-0.479-7.742-4.26-14.912-10.37-19.682 L324.317,287.7c-9.849-7.703-23.58-7.642-33.375,0.116l-7.101,5.619c-4.458,3.527-10.852,3.165-14.877-0.873l-57.086-57.209 c-4.033-4.045-4.411-10.482-0.876-14.966l5.607-7.108c7.733-9.803,7.785-23.534,0.124-33.397l-24.842-31.985 c-4.763-6.128-11.933-9.918-19.675-10.397c-7.773-0.532-15.306,2.393-20.782,7.881l-20.388,20.431 c-11.813,11.84-29.187,49.49,64.345,143.215c60.559,60.69,97.811,73.433,118.397,73.433c12.928,0,20.496-4.863,24.568-8.946 l4.425-4.434c1.404,1.276,3.23,2.103,5.278,2.103c3.616,0,6.082,1.111,7.337,3.296c1.702,2.964,1.941,9.409-2.979,17.829 c-10.798,18.454-41.618,38.137-96.415,37.566c-95.878,0-173.881-78.002-173.881-173.881c0-95.871,78.002-173.873,173.881-173.873 s173.881,78.002,173.881,173.873c0,31.985-8.761,63.252-25.332,90.414c-2.273,3.721-1.095,8.591,2.628,10.86 c3.721,2.277,8.591,1.104,10.864-2.631c18.089-29.638,27.647-63.754,27.647-98.641C445.688,151.401,360.592,66.313,256,66.313z M327.164,362.352c-2.767,2.771-7.518,4.299-13.376,4.299c-14.406,0-47.484-8.938-107.205-68.786 c-89.897-90.082-67.228-118.006-64.345-120.894l20.388-20.431c2.13-2.138,4.913-3.289,7.892-3.289c0.239,0,0.482,0.007,0.722,0.023 c3.261,0.201,6.163,1.737,8.17,4.315l24.837,31.985c3.191,4.107,3.172,9.834-0.05,13.917l-5.612,7.108 c-8.482,10.774-7.58,26.212,2.099,35.914l57.086,57.209c9.698,9.725,25.123,10.621,35.883,2.107l7.098-5.619 c4.067-3.227,9.756-3.234,13.839-0.054l31.916,24.892c2.581,2.015,4.114,4.932,4.315,8.205c0.205,3.273-0.957,6.345-3.273,8.668 L327.164,362.352z"></path>
-    </g>
-  </svg>
+                {
+                  sessionStorage.isVideoCall == 'video' ?
+<svg className="video__svg" viewBox="0 0 48 48" width={50} version="1" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 48 48" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#4CAF50" d="M8,12h22c2.2,0,4,1.8,4,4v16c0,2.2-1.8,4-4,4H8c-2.2,0-4-1.8-4-4V16C4,13.8,5.8,12,8,12z"></path> <polygon fill="#388E3C" points="44,35 34,29 34,19 44,13"></polygon> </g></svg>
+                  :
+                  <svg width="50px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xmlSpace="preserve" fill="#000000">
+                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                  <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path style={{ fill: '#51fb5c' }} d="M0,256.006C0,397.402,114.606,512.004,255.996,512C397.394,512.004,512,397.402,512,256.006 C512.009,114.61,397.394,0,255.996,0C114.606,0,0,114.614,0,256.006z"></path>
+                    <path style={{ fill: '#3fe961' }} d="M512,256.005c0-4.151-0.117-8.273-0.313-12.378c-0.477-0.48-120.329-120.335-120.862-120.863 C356.415,87.948,308.701,66.313,256,66.313c-104.592,0-189.687,85.087-189.687,189.68c0,53.653,22.491,102.073,58.413,136.612 c0.395,0.396,118.509,118.478,119.043,119.005c0.029,0.029,0.055,0.055,0.083,0.083c4.026,0.189,8.071,0.307,12.144,0.307 C397.394,512.004,512,397.401,512,256.005z"></path>
+                    <path style={{ fill: '#F6F6F6' }} d="M256,66.313c-104.592,0-189.687,85.088-189.687,189.68S151.408,445.68,255.935,445.68 c0.702,0.007,1.389,0.007,2.084,0.007c75.564,0,101.775-34.687,108.043-45.407c7.067-12.087,8.205-24.676,3.045-33.676 c-2.945-5.123-7.777-8.604-13.68-10.202l3.314-3.321c5.472-5.481,8.34-13.068,7.861-20.809c-0.479-7.742-4.26-14.912-10.37-19.682 L324.317,287.7c-9.849-7.703-23.58-7.642-33.375,0.116l-7.101,5.619c-4.458,3.527-10.852,3.165-14.877-0.873l-57.086-57.209 c-4.033-4.045-4.411-10.482-0.876-14.966l5.607-7.108c7.733-9.803,7.785-23.534,0.124-33.397l-24.842-31.985 c-4.763-6.128-11.933-9.918-19.675-10.397c-7.773-0.532-15.306,2.393-20.782,7.881l-20.388,20.431 c-11.813,11.84-29.187,49.49,64.345,143.215c60.559,60.69,97.811,73.433,118.397,73.433c12.928,0,20.496-4.863,24.568-8.946 l4.425-4.434c1.404,1.276,3.23,2.103,5.278,2.103c3.616,0,6.082,1.111,7.337,3.296c1.702,2.964,1.941,9.409-2.979,17.829 c-10.798,18.454-41.618,38.137-96.415,37.566c-95.878,0-173.881-78.002-173.881-173.881c0-95.871,78.002-173.873,173.881-173.873 s173.881,78.002,173.881,173.873c0,31.985-8.761,63.252-25.332,90.414c-2.273,3.721-1.095,8.591,2.628,10.86 c3.721,2.277,8.591,1.104,10.864-2.631c18.089-29.638,27.647-63.754,27.647-98.641C445.688,151.401,360.592,66.313,256,66.313z M327.164,362.352c-2.767,2.771-7.518,4.299-13.376,4.299c-14.406,0-47.484-8.938-107.205-68.786 c-89.897-90.082-67.228-118.006-64.345-120.894l20.388-20.431c2.13-2.138,4.913-3.289,7.892-3.289c0.239,0,0.482,0.007,0.722,0.023 c3.261,0.201,6.163,1.737,8.17,4.315l24.837,31.985c3.191,4.107,3.172,9.834-0.05,13.917l-5.612,7.108 c-8.482,10.774-7.58,26.212,2.099,35.914l57.086,57.209c9.698,9.725,25.123,10.621,35.883,2.107l7.098-5.619 c4.067-3.227,9.756-3.234,13.839-0.054l31.916,24.892c2.581,2.015,4.114,4.932,4.315,8.205c0.205,3.273-0.957,6.345-3.273,8.668 L327.164,362.352z"></path>
+                  </g>
+                </svg>
+                }
+                  
+               
   
                 </button>
+               
               }
              </div>
             }

@@ -224,12 +224,15 @@ export default function ChatProvider({ children }) {
                         localStorage.setItem('fromCallUserId' , message.fromUserId) // localda bunu saxlayirig, cunku zengi accept edende lazimdi
 
                         setCallModalText(`${message.fromUserName.split('')[0].toUpperCase()}${message.fromUserName.split('').slice(1).join('')}  is calling`)
-                        setICall(false) // zeng mennen getmeyib
+                        sessionStorage.setItem('iCall', 'false')
+                        sessionStorage.setItem('isVideoCall', message.callMode == 'video' ? 'video' : 'voice')
                         return
                     }
                     else {
                         setCallModalText(`A call to ${message.userInfo.first_name.split('')[0].toUpperCase()}${message.userInfo.first_name.split('').slice(1).join('')}`)
                         setICall(true) // zeng mennen gedib
+                        sessionStorage.setItem('iCall', 'true')
+
                         setIsVideoCall(message.callMode == 'video');
                         return  
                     }
