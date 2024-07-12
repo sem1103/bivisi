@@ -2,27 +2,25 @@ import React, { useContext, useEffect, useState } from "react";
 import "./style.scss";
 import Main from "../../components/Main";
 import Categories from "../../components/Categories";
-import sort from "../../../../assets/icons/arrow-sort.svg";
 import filter from "../../../../assets/icons/filter.svg";
-import LastVideoCard from "../../../../components/VideoCard";
 import useAxios from "../../../../utils/useAxios";
 import ReactPlayer from "react-player";
-import { Select } from "antd";
-import ShortCard from "../../../../components/ShortCard";
 import { NavLink } from "react-router-dom";
-import { handleAddToBasket } from "../../../../helpers";
-import WishBtn from "../../../../components/WishlistBtn";
+import { handleAddToBasket, handleToggleWishlist } from "../../../../helpers";
+import heartFull from "../../../../assets/icons/Subtract.svg";
 import bag from "../../../../assets/icons/Bag-3.svg";
 import blueHeart from "../../../../assets/icons/blueHeart.svg";
 import eye from "../../../../assets/icons/eye.svg";
-import { ProductContext } from "../../../../context/ProductContext";
+import { AuthContext } from "../../../../context/authContext";
+import SortProduct from "../../../../components/SortProduct";
 
 const Favorites = () => {
-  const { Option } = Select;
-  const [selectedOption, setSelectedOption] = useState("");
   const [favorites, setFavorites] = useState([]);
-  const {user} = useContext(ProductContext)
+  const { user } = useContext(AuthContext)
   const axiosInstance = useAxios();
+  const [in_wishlist, set_in_wishlist] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchWishlistItems = async () => {
       try {
@@ -45,33 +43,40 @@ const Favorites = () => {
         );
       }
     };
-
     window.addEventListener("wishlistUpdate", handleWishlistUpdate);
     fetchWishlistItems();
 
     return () => {
       window.removeEventListener("wishlistUpdate", handleWishlistUpdate);
     };
+
+
   }, []);
+  const handleWishlistToggle = async (product) => {
+   
+    if (!user) {
+      toast.warning("Please sign in");
+    } else if (user.user_id === product.product.user.id) {
+      toast.warning("You cannot add your own product to the wishlist");
+    }
 
-  const handleSelect = (value) => {
-    setSelectedOption(value);
+    if (loading) return;
+    setLoading(true);
+    const newStatus = await handleToggleWishlist(product.id, axiosInstance);
+    setLoading(false);
+    if (newStatus !== null) {
+      set_in_wishlist(newStatus);
+      const wishlistState = JSON.parse(localStorage.getItem("wishlist")) || {};
+      if (newStatus) {
+        wishlistState[product.id] = newStatus;
+      } else {
+        delete wishlistState[product.id];
+      }
+      localStorage.setItem("wishlist", JSON.stringify(wishlistState));
+    } else {
+      console.log("Failed to update wishlist status");
+    }
   };
-
-  const handleAllClick = () => {
-    setSelectedOption("");
-  };
-
-  const sortedProducts = [...favorites];
-  if (selectedOption === "option1") {
-    sortedProducts.sort((a, b) => (a.name > b.name ? 1 : -1));
-  } else if (selectedOption === "option2") {
-    sortedProducts.sort((a, b) => (a.name < b.name ? 1 : -1));
-  } else if (selectedOption === "option3") {
-    sortedProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-  } else if (selectedOption === "option4") {
-    sortedProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-  }
 
   function formatViewCount(num) {
     if (num >= 1000000000) {
@@ -85,8 +90,6 @@ const Favorites = () => {
     }
     return num;
   }
-
-
 
   return (
     <>
@@ -107,82 +110,71 @@ const Favorites = () => {
                   Sort by
                 </div> */}
                 <div className="custom-select">
-                  <Select
-                    defaultValue=""
-                    value={selectedOption}
-                    onChange={handleSelect}
-                    suffixIcon={null}
-                    className="select"
-                    popupClassName="custom-dropdown"
-                    prefixicon={<img src={sort} alt="plus.svg" width={20} />}
-                  >
-                    <Option value="" onClick={handleAllClick}>
-                      All
-                    </Option>
-                    <Option value="option1">A to Z</Option>
-                    <Option value="option2">Z to A</Option>
-                    <Option value="option3">From cheap to expensive</Option>
-                    <Option value="option4">From expensive to cheap</Option>
-                  </Select>
+               <SortProduct sortedProducts={favorites} setSortedProducts={setFavorites}/>
                 </div>
               </div>
             </div>
-            {sortedProducts?.map((item, index) => {
+            {favorites?.map((item, index) => {
               return (
-                  <div className="col-lg-4 p-3" key={index}>
-                    <div className="videoCard" >
-                      <div className="main">
-                        <span className="card_price">
-                          $ {item?.product.price}
-                        </span>
-                        <img
-                          className={`coverImage`}
-                          src={item?.cover_image}
-                          alt="cover"
-                        />
-                        <ReactPlayer
-                          className={`video`}
-                          controls={true}
-                          url={item?.original_video}
-                        />
+                <div className="col-lg-4 p-3" key={index}>
+                  <div className="videoCard" >
+                    <div className="main">
+                      <span className="card_price">
+                        $ {item?.product.price}
+                      </span>
+                      <img
+                        className={`coverImage`}
+                        src={item?.cover_image}
+                        alt="cover"
+                      />
+                      <ReactPlayer
+                        className={`video`}
+                        controls={true}
+                        url={item?.original_video}
+                      />
+                    </div>
+                    <NavLink
+                      className="heading w-100 flex-column justify-content-start align-items-start"
+                      to={`/product_detail/${item.id}`}
+                    >
+                      <div className="d-flex w-100 justify-content-between align-items-center">
+                        <h1>{item.product?.user?.name}</h1>
+                        <h6>
+                          <img src={blueHeart} alt="" />
+                          {item.product?.like_count}
+                        </h6>
                       </div>
-                      <NavLink
-                        className="heading w-100 flex-column justify-content-start align-items-start"
-                        to={`/product_detail/${item.id}`}
-                      >
-                        <div className="d-flex w-100 justify-content-between align-items-center">
-                          <h1>{item.product?.user?.name}</h1>
-                          <h6>
-                            <img src={blueHeart} alt="" />
-                            {item.product?.like_count}
-                          </h6>
-                        </div>
-                        <p>{item.product?.name}</p>
-                      </NavLink>
-                      <div className="cardBottom">
-                        <div className="card_viev_count">
-                          <img src={eye} alt="eye.svg" />
-                          <span>
-                            {formatViewCount(item?.product?.view_count)}
-                          </span>
-                        </div>
-                        <div className="icons">
-                          <WishBtn item={item} />
-                          <img
-                            src={bag}
-                            alt=""
-                            onClick={() =>
-                              handleAddToBasket(
-                                item?.product,
-                                user,
-                                axiosInstance
-                              )
-                            }
-                          />
-                        </div>
+                      <p>{item.product?.name}</p>
+                    </NavLink>
+                    <div className="cardBottom">
+                      <div className="card_viev_count">
+                        <img src={eye} alt="eye.svg" />
+                        <span>
+                          {formatViewCount(item?.product?.view_count)}
+                        </span>
+                      </div>
+                      <div className="icons">
+                        <img
+                          src={heartFull}
+                          alt="wishlist"
+                          onClick={() => handleWishlistToggle(item)}
+                          style={{ cursor: loading ? "not-allowed" : "pointer" }}
+                        />
+                        <img
+                          src={bag}
+                          alt="basket"
+                          onClick={() =>
+                            handleAddToBasket(
+                              item?.product,
+                              user,
+                              axiosInstance
+                            )
+                          }
+                        />
                       </div>
                     </div>
                   </div>
+                </div>
               );
             })}
           </div>

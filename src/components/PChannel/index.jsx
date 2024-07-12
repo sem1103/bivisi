@@ -13,7 +13,7 @@ const PopularChannelCard = ({ popularChannels, page }) => {
     followersCount,
     handleSubscribe,
     handleUnsubscribe,
-    loading
+    loading,
   } = useSubscription(popularChannels.id, popularChannels.follower_count);
   
   const navigate = useNavigate();

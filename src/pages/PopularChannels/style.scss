@@ -32,38 +32,7 @@
         line-height: 24px;
         /* 150% */
     }
-
-    .custom-select {
-        .ant-select {
-          width: 250px;
-          background-color: #0F0F0F !important;
-          height: 50px;
-          text-align: center;
-      
-          .ant-select-selector {
-            background-color: transparent !important;
-            color: white;
-            padding: 16px 20px;
-            border-radius: 16px;
-            border: 1px solid #23272E;
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-          }
-      
-      
-          .ant-select-selection-item {
-            color: white;
-          }
-        }
-      
-    
-    
-      }
 }
-
-
-
 @media (max-width:540px) {
   .popular_channels_page {
     h4{
@@ -76,8 +45,6 @@
     }
   }
 }
-
-
 @media (max-width:370px) {
   .popular_channels_page {
     h4{

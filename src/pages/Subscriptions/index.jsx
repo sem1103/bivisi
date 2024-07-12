@@ -1,22 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style.scss";
-import sort from "../../assets/icons/Sort.svg";
 import useAxios from "../../utils/useAxios";
 import { AuthContext } from "../../context/authContext";
 import { toast } from "react-toastify";
-import { Select } from 'antd';
 import default_coverimg from "../../assets/images/default-coverimg.jpg"
 import user_emptyavatar from "../../assets/images/user-empty-avatar.png"
 import { useNavigate } from "react-router-dom";
-import useSubscription from "../../hooks/useSubscription";
-
+import subscribeOutline from "../../layout/Sidebar/icons/subscribeOutline.svg";
+import SortChannel from "../../components/SortChannel";
 const Subscription = () => {
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
-  const { Option } = Select;
   const [subscriptions, setSubscriptions] = useState([]);
   const [sortedSubscriptions, setSortedSubscriptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState('');
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -52,44 +48,18 @@ const Subscription = () => {
     }
   }
 
-  const handleSortChange = (value) => {
-    setSelectedOption(value);
-    let sorted = [...subscriptions];
-
-    switch (value) {
-      case 'option1': 
-        sorted.sort((a, b) => a.follows.username.localeCompare(b.follows.username));
-        break;
-      case 'option2': 
-        sorted.sort((a, b) => b.follows.username.localeCompare(a.follows.username));
-        break;
-      default:
-        sorted = [...subscriptions]; 
-        break;
-    }
-
-    setSortedSubscriptions(sorted);
-  }
 
   return (
     <div className="subscription">
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-12 d-flex justify-content-between align-items-center py-4">
-            <h4>Your subscriptions</h4>
+            <div className="d-flex align-items-center gap-2">
+              <img width={27} src={subscribeOutline} alt="subscribeOutline" />
+              <h4 className="mt-1">Your subscriptions</h4>
+            </div>
             <div className="custom-select">
-              <Select
-                value={selectedOption}
-                suffixIcon={null}
-                className="select"
-                popupClassName="custom-dropdown"
-                prefixicon={<img src={sort} alt="sort icon" width={20} />}
-                onChange={handleSortChange}
-              >
-                <Option value="">All</Option>
-                <Option value="option1">A to Z</Option>
-                <Option value="option2">Z to A</Option>
-              </Select>
+            <SortChannel sortedChannels={sortedSubscriptions} setSortedChannels={setSortedSubscriptions} />
             </div>
           </div>
           {sortedSubscriptions.map((item) => (
@@ -101,19 +71,19 @@ const Subscription = () => {
                 </div>
                 <div className="channelCard-context">
                   {/* <h2>{item.username}</h2> */}
-                  <div 
-            className="username" 
-            onClick={() => navigate(
-              `/channels_detail/channels_videos/${item.username}`, 
-              { 
-                state: { 
-                  channelDetailData:item,
-                } 
-              }
-            )}
-          >
-            {item?.username}
-          </div>
+                  <div
+                    className="username"
+                    onClick={() => navigate(
+                      `/channels_detail/channels_videos/${item.username}`,
+                      {
+                        state: {
+                          channelDetailData: item,
+                        }
+                      }
+                    )}
+                  >
+                    {item?.username}
+                  </div>
                   <span>{item.first_name} {item.last_name}</span>
                   <p>{item.bio}</p>
                   <div className="d-flex align-items-center justify-content-between">

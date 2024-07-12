@@ -17,7 +17,6 @@ const ChannelsVideos = () => {
           `${BASE_URL}/channel_web_products/${username}/?product_type=Video`
         );
 
-        console.log(response.data.results);
         setChannels(response.data.results);
       } catch (error) {
         console.error("Failed to fetch popular channels:", error);
@@ -38,7 +37,7 @@ const ChannelsVideos = () => {
               <h6>Videos</h6>
             </div>
             {channels.map((item) => {
-              return <ChannelsVideo item={item} />;
+              return <ChannelsVideo key={item?.id} item={item} />;
             })}
           </div>
         </div>

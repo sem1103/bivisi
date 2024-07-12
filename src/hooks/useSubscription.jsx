@@ -41,7 +41,6 @@ const useSubscription = (channelId, initialFollowersCount) => {
         setIsSubscribed(true);
         const responseChannel = await axios.get(`${BASE_URL}/user/popular-channels/`);
         const channel = responseChannel?.data.results.find((item) => item.id === channelId);
-        console.log(channel?.follower_count)
         setFollowersCount(channel?.follower_count);
         toast.success("Subscribed successfully");
       }

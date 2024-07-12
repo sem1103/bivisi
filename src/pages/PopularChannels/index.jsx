@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import './style.scss';
-import sort from '../../assets/icons/Sort.svg';
 import PopularChannelCard from '../../components/PChannel';
 import axios from 'axios';
 import { BASE_URL } from '../../api/baseUrl';
 import { Select } from 'antd';
 import { AuthContext } from '../../context/authContext';
 import starOutline from "../../layout/Sidebar/icons/star-outline.svg";
+import SortChannel from '../../components/SortChannel';
 
 
 const PopularChannels = () => {
@@ -31,17 +31,7 @@ const PopularChannels = () => {
 
 
 
-    const handleSortChange = (value) => {
-        let sorted = [...popularC];
-        if (value === "option1") {
-            sorted?.sort((a, b) => a.username.localeCompare(b.username));
-        } else if (value === "option2") {
-            sorted?.sort((a, b) => b.username.localeCompare(a.username));
-        } else {
-            sorted = [...popularC];
-        }
-        setSortedChannels(sorted);
-    };
+  
 
     return (
         <div className='popular_channels_page'>
@@ -53,18 +43,8 @@ const PopularChannels = () => {
                             <h4 className='mt-2'>Popular channels</h4>
                         </div>
                         <div className="custom-select">
-                            <Select
-                                defaultValue=""
-                                suffixIcon={null}
-                                className="select"
-                                popupClassName="custom-dropdown"
-                                prefixicon={<img src={sort} alt="sort icon" width={20} />}
-                                onChange={handleSortChange} // Sort funksiyasını tetikleyen metod
-                            >
-                                <Option value="">All</Option>
-                                <Option value="option1">A to Z</Option>
-                                <Option value="option2">Z to A</Option>
-                            </Select>
+                      <SortChannel sortedChannels={sortedChannels} setSortedChannels={setSortedChannels} />
+                      
                         </div>
                     </div>
                     {sortedChannels?.map((item) => (
