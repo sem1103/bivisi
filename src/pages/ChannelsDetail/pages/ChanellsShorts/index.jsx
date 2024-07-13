@@ -17,8 +17,6 @@ const ChannelsShorts = () => {
         const response = await axios.get(
           `${BASE_URL}/channel_web_products/${username}/?product_type=Shorts`
         );
-
-        console.log(response.data.results);
         setChannels(response.data.results);
       } catch (error) {
         console.error("Failed to fetch popular channels:", error);
@@ -39,7 +37,7 @@ const ChannelsShorts = () => {
               <h6>Shorts</h6>
             </div>
             {channels.map((item) => {
-              return <ChannelsShort item={item} />;
+              return <ChannelsShort key={item?.id} item={item} />;
             })}
           </div>
         </div>

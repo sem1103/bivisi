@@ -46,7 +46,6 @@ const MainChannels = () => {
     }, 700);
     return () => clearTimeout(timer);
   }, []);
-
   const subscriberText = channelData?.follower_count <= 1 ? ' subscriber' : ' subscribers';
 
   return (
@@ -64,7 +63,7 @@ const MainChannels = () => {
           <div>
             <h4>{channelData?.username}</h4>
             <p>
-              { showFollowersCount && (
+              {showFollowersCount && (
                 <span className="me-2">{followersCount}{subscriberText}</span>
               )}
             </p>

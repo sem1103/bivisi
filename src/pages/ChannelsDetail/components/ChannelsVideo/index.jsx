@@ -109,6 +109,7 @@ const ChannelsVideo = ({ item }) => {
     }
     return num;
   }
+console.log("channels video",user)
   return (
     <>
       <div className="col-lg-4 pb-3">
@@ -198,7 +199,7 @@ const ChannelsVideo = ({ item }) => {
                 src={bag}
                 alt=""
                 onClick={() => {
-                  if (user.user_id === item.id) {
+                  if (user.id === item.id) {
                     toast.warning(
                       "You cannot add your own product to the basket"
                     );

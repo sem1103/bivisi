@@ -6,6 +6,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../api/baseUrl';
 import { AuthContext } from '../../context/authContext';
 import boardOutline from "../../layout/Sidebar/icons/board_outline.svg";
+import SortChannel from '../../components/SortChannel';
 
 const AllChannels = () => {
     const { Option } = Select;
@@ -47,19 +48,7 @@ const AllChannels = () => {
                             <img width={27} src={boardOutline} alt="" />
                             <h4 className='mt-1'>All channels</h4>
                         </div>
-                        <div className="custom-select">
-                            <Select
-                                defaultValue=""
-                                suffixIcon={null}
-                                className="select"
-                                popupClassName="custom-dropdown"
-                                onChange={handleSortChange}
-                            >
-                                <Option value="">All</Option>
-                                <Option value="option1">A to Z</Option>
-                                <Option value="option2">Z to A</Option>
-                            </Select>
-                        </div>
+                        <SortChannel sortedChannels={sortedChannels} setSortedChannels={setSortedChannels} />
                     </div>
 
                     {sortedChannels.map((item) => {
