@@ -207,7 +207,8 @@ export default function ChatProvider({ children }) {
 
             socketInstance.on("newMessage", (data) => {
                 let { message, target } = data;
-                
+                console.log(message);
+                console.log(user?.user_id);
              
                 message?.action && setIsModalCallOpen(true) // Eyer action varsa o zaman call modal pencereni activ edir 
                 
@@ -215,6 +216,8 @@ export default function ChatProvider({ children }) {
                 if(!userss.some(item => +item == +target) && message.action == `call to ${target}`){ // Userin offline/online olmasini yoxlayir
                     console.log('User is offline');
 
+                    setICall(true) // zeng mennen gedib
+                    sessionStorage.setItem('iCall', 'true')
                     setCallModalText(`A call to ${message.userInfo.first_name.split('')[0].toUpperCase()}${message.userInfo.first_name.split('').slice(1).join('')}, but user is offline`)
                     return
                 } else if(userss.some(item => +item == +target) && message.action == `call to ${target}` ){ // user online
@@ -225,15 +228,16 @@ export default function ChatProvider({ children }) {
 
                         setCallModalText(`${message.fromUserName.split('')[0].toUpperCase()}${message.fromUserName.split('').slice(1).join('')}  is calling`)
                         sessionStorage.setItem('iCall', 'false')
-                        sessionStorage.setItem('isVideoCall', message.callMode == 'video' ? 'video' : 'voice')
+                        sessionStorage.setItem('isVideoCall', message.callType == 'video' ? 'video' : 'voice')
                         return
                     }
                     else {
                         setCallModalText(`A call to ${message.userInfo.first_name.split('')[0].toUpperCase()}${message.userInfo.first_name.split('').slice(1).join('')}`)
                         setICall(true) // zeng mennen gedib
                         sessionStorage.setItem('iCall', 'true')
+                        sessionStorage.setItem('isVideoCall', message.callType == 'video' ? 'video' : 'voice')
 
-                        setIsVideoCall(message.callMode == 'video');
+                        setIsVideoCall(message.callType == 'video');
                         return  
                     }
 
@@ -242,7 +246,7 @@ export default function ChatProvider({ children }) {
                     */
                 }  else if( message.action == `accept ${target}`) {
 
-                    localStorage.setItem('videoCallRoomId' , +message.myId + +target * 690 ) // unikal room id yaradirig, bunun unikalligi o cur olur ki, bizim butun userlerini id`leri tekrar olunmur, 690 vurdum ki, reqem cox gorsensin sadece olarag
+                    localStorage.setItem('videoCallRoomId' , ((+message.myId + +target) * 690) ) // unikal room id yaradirig, bunun unikalligi o cur olur ki, bizim butun userlerini id`leri tekrar olunmur, 690 vurdum ki, reqem cox gorsensin sadece olarag
                     setIsModalCallOpen(false); // modal pencereni baglayirig
                     setIsAccept(true); // bu mene lazimdir ki, zengi goturende bashqa sehifeye redirect etsin
                     return
