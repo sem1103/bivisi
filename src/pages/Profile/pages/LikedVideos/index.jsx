@@ -219,8 +219,8 @@ const LikedVideos = () => {
                                   "You cannot add your own product to the basket"
                                 );
                               } else {
-                                handleAddToBasket(item, user, axiosInstance);
-                                addItem(item);
+                                handleAddToBasket(item?.product, user, axiosInstance);
+                                addItem(item?.product);
                               }
                             }}
                           />

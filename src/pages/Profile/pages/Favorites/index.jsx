@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./style.scss";
 import Main from "../../components/Main";
 import Categories from "../../components/Categories";
 import filter from "../../../../assets/icons/filter.svg";
 import useAxios from "../../../../utils/useAxios";
-import ReactPlayer from "react-player";
 import { NavLink } from "react-router-dom";
 import { handleAddToBasket, handleToggleWishlist } from "../../../../helpers";
 import heartFull from "../../../../assets/icons/Subtract.svg";
@@ -13,14 +12,18 @@ import blueHeart from "../../../../assets/icons/blueHeart.svg";
 import eye from "../../../../assets/icons/eye.svg";
 import { AuthContext } from "../../../../context/authContext";
 import SortProduct from "../../../../components/SortProduct";
-
+import Plyr from "plyr-react";
+import { useCart } from "react-use-cart";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
   const { user } = useContext(AuthContext)
   const axiosInstance = useAxios();
   const [in_wishlist, set_in_wishlist] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const playerRef = useRef(null);
+  const { addItem } = useCart();
   useEffect(() => {
     const fetchWishlistItems = async () => {
       try {
@@ -90,7 +93,9 @@ const Favorites = () => {
     }
     return num;
   }
-
+  const onPlayerReady = () => {
+    setIsLoading(false);
+  };
   return (
     <>
       <Main />
@@ -127,11 +132,26 @@ const Favorites = () => {
                         src={item?.cover_image}
                         alt="cover"
                       />
-                      <ReactPlayer
-                        className={`video`}
-                        controls={true}
-                        url={item?.original_video}
-                      />
+                     <Plyr
+                          ref={playerRef}
+                          source={{
+                            type: "video",
+                            sources: [
+                              {
+                                src: item?.original_video,
+                                type: "video/mp4",
+                              },
+                            ],
+                          }}
+                          options={{ muted: true, controls: ["play", "pause", "progress"] }}
+                          onReady={onPlayerReady}
+                        // onDuration={handleDuration}
+                        />
+                        {loading && (
+                          <div className="loading-overlay">
+                            <AiOutlineLoading3Quarters color="#fff" />
+                          </div>
+                        )}
                     </div>
                     <NavLink
                       className="heading w-100 flex-column justify-content-start align-items-start"
@@ -163,12 +183,14 @@ const Favorites = () => {
                         <img
                           src={bag}
                           alt="basket"
-                          onClick={() =>
+                          onClick={() =>{
                             handleAddToBasket(
                               item?.product,
                               user,
                               axiosInstance
-                            )
+                            );
+                            addItem(item?.product);
+                          }
                           }
                         />
                       </div>
