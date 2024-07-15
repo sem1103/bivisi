@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-
+import bag from "../../assets/icons/Bag-3.svg";
 import "./style.scss";
 import { ProductContext } from "../../context/ProductContext";
 import useAxios from "../../utils/useAxios";
@@ -11,13 +11,14 @@ import { AuthContext } from "../../context/authContext";
 import trash from "../../assets/icons/trash.svg";
 import { toast } from "react-toastify";
 import { VideoContext } from "../../context/VideoContext";
-import { AiOutlineDelete, AiOutlineLoading3Quarters } from "react-icons/ai";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Pagination, A11y, Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import eye from "../../assets/icons/eye.svg";
 import cameraOutline from "../../layout/Sidebar/icons/camera-outline.svg"
 import Plyr from "plyr-react";
+import { useCart } from "react-use-cart";
 const History = () => {
+  const { addItem } = useCart();
   const { product } = useContext(ProductContext);
   if (
     !product ||
@@ -119,7 +120,6 @@ const History = () => {
     return num;
   }
 
-  console.log(videoProducts)
   return (
     <>
       <section className="history_cards">
@@ -267,9 +267,17 @@ const History = () => {
                         {formatViewCount(item.product_video_type?.product?.view_count)}
                       </span> */}
                     {/* </div> */}
-                    <div className="icons">
-                      <WishBtn ProductItemVideoCard={item} />
-                      <button onClick={() => handleDeleteFromHistory(item.id)}>
+                    <div className="icons ">
+                      {/* <WishBtn ProductItemVideoCard={item} /> */}
+                      <img
+                        src={bag}
+                        alt=""
+                        onClick={() => {
+                          console.log(item,user)
+                            handleAddToBasket(item?.product_video_type?.product, user, axiosInstance);
+                            addItem(item?.product_video_type?.product);
+                        }} />
+                      <button onClick={() => handleDeleteFromHistory(item?.id)}>
                         <img src={trash} alt="" />
                       </button>
                     </div>

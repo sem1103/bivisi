@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../context/authContext";
 
 const WishBtn = ({ ProductItemVideoCard }) => {
-  console.log(ProductItemVideoCard,'history')
+  console.log(ProductItemVideoCard)
   const { user } = useContext(AuthContext);
   const axiosInstance = useAxios();
   const [in_wishlist, set_in_wishlist] = useState(false);
