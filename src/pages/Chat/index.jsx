@@ -290,7 +290,7 @@ const Chat = () => {
                           userInfo: newChatUser,
                           fromUserName: JSON.parse(localStorage.authTokens).first_name,
                           fromUserId: myId,
-                          callMode: 'voice'
+                          callType: 'voice'
                         } });
 
                        }
@@ -308,7 +308,7 @@ const Chat = () => {
                           userInfo: newChatUser,
                           fromUserName: JSON.parse(localStorage.authTokens).first_name,
                           fromUserId: myId,
-                          callMode: 'video'
+                          callType: 'video'
                         } });
 
                        }

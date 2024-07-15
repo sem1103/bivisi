@@ -9,9 +9,10 @@ import { ChatContext } from '../../context/ChatContext';
 
 
 const Call = () => {
-  const {setIsAccept , isVideoCall} = useContext(ChatContext)
+  const {setIsAccept} = useContext(ChatContext)
   const callContainer = useRef(null)
   const navigate = useNavigate();
+  const isVideoCall = sessionStorage.isVideoCall == 'video';
   let zp = '';
 
   let myMeeting = async (element) => {
