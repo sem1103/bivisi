@@ -235,6 +235,7 @@ export default function ChatProvider({ children }) {
                         setCallModalText(`A call to ${message.userInfo.first_name.split('')[0].toUpperCase()}${message.userInfo.first_name.split('').slice(1).join('')}`)
                         setICall(true) // zeng mennen gedib
                         sessionStorage.setItem('iCall', 'true')
+                        sessionStorage.setItem('isVideoCall', message.callType == 'video' ? 'video' : 'voice')
 
                         setIsVideoCall(message.callType == 'video');
                         return  
@@ -245,7 +246,7 @@ export default function ChatProvider({ children }) {
                     */
                 }  else if( message.action == `accept ${target}`) {
 
-                    localStorage.setItem('videoCallRoomId' , +message.myId + +target * 690 ) // unikal room id yaradirig, bunun unikalligi o cur olur ki, bizim butun userlerini id`leri tekrar olunmur, 690 vurdum ki, reqem cox gorsensin sadece olarag
+                    localStorage.setItem('videoCallRoomId' , ((+message.myId + +target) * 690) ) // unikal room id yaradirig, bunun unikalligi o cur olur ki, bizim butun userlerini id`leri tekrar olunmur, 690 vurdum ki, reqem cox gorsensin sadece olarag
                     setIsModalCallOpen(false); // modal pencereni baglayirig
                     setIsAccept(true); // bu mene lazimdir ki, zengi goturende bashqa sehifeye redirect etsin
                     return
