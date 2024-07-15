@@ -5,6 +5,9 @@ import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import axios from 'axios';
 import emptyAvatar from './../../assets/images/user-empty-avatar.png'
 import liveStreemIcon from './../../layout/Sidebar/icons/live-streem.svg'
+import getCurrencyByCountry from '../../utils/getCurrencyService';
+import { Modal } from 'antd';
+
 
 export default function LiveStreams() {
     let roomName = '';
@@ -14,80 +17,76 @@ export default function LiveStreams() {
     const [isJoined, setIsJoined] = useState(false); // State to track if joined
     const [allStreams, setAllStreams] = useState([]);
     const [randomIndex, setRandomIndex] = useState(0);
+    const {countryCurrencySymbol} = getCurrencyByCountry(); 
+    const [showStream, setShowStream] = useState(roomId ? true : false) 
     let zp = useRef(null);
+    
+
+
     const handleSubmit = (id) => {
+        setShowStream(true)
+        setIsJoined(false); // Set the state to true after joining        
         navigate('/live-streams/' + id);
     };
 
+    const joinStreamAsViewer = async (element) => {
+        const appId = 1364666946;
+        const serverSecret = '00e187d256dc675f3a9bedb57d81238f';
+        const userId = Date.now().toString(); // Generate a unique user ID
+        const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+            appId,
+            serverSecret,
+            roomId,
+            userId,
+            JSON.parse(localStorage.authTokens).username
+        );
 
+        zp.current = ZegoUIKitPrebuilt.create(kitToken);
+        
+        zp.current.joinRoom({
+            showPreJoinView: false,
+            container: element,
+            scenario: {
+                mode: ZegoUIKitPrebuilt.LiveStreaming,
+                config: {
+                    role: ZegoUIKitPrebuilt.Audience,
+
+                }
+            },
+            showLeaveRoomConfirmDialog: false,
+            onLeaveRoom: () => {
+                
+                setShowStream(false)
+                zp.current.destroy();
+                navigate('/live-streams')
+            }
+            ,
+            onUserAvatarSetter:(userList) => {
+                if(localStorage.avatar != 'null'){
+                    userList.forEach(user => {
+                        user.setUserAvatar(localStorage.avatar)
+                    })
+                }
+               
+            }
+        });
+
+    };
 
 
     useEffect(() => {
-
-        const joinStreamAsViewer = async (element, roomId) => {
-            console.log('joined');
-            const appId = 1364666946;
-            const serverSecret = '00e187d256dc675f3a9bedb57d81238f';
-            const userId = Date.now().toString(); // Generate a unique user ID
-            const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
-                appId,
-                serverSecret,
-                roomId,
-                userId,
-                JSON.parse(localStorage.authTokens).username
-            );
-
-            zp.current = ZegoUIKitPrebuilt.create(kitToken);
-
-            zp.current.joinRoom({
-                showPreJoinView: false,
-                container: element,
-                scenario: {
-                    mode: ZegoUIKitPrebuilt.LiveStreaming,
-                    config: {
-                        role: ZegoUIKitPrebuilt.Audience
-                    }
-                }
-                ,
-
-                onUserAvatarSetter:(userList) => {
-                    if(localStorage.avatar != 'null'){
-                        userList.forEach(user => {
-                            user.setUserAvatar(localStorage.avatar)
-                        })
-                    }
-                   
-                }
-            });
-
-        };
-
         if (roomId != undefined && !isJoined) {
-            joinStreamAsViewer(streamContainer.current, roomId);
+            joinStreamAsViewer(streamContainer.current);
             setIsJoined(true); // Set the state to true after joining
         }
-
-
-        return () => {
-            // const checkSteamState = async () {
-            //     let res = axios.get('https://rtc-api.zego.im/?ction=DescribeRTCStreamState&StreamId=rtc01&Sequence=1617249600001')
-            // }
-
-
-            if (isJoined && zp.current) {
-                zp.current.destroy()
-                setIsJoined(false); // Reset the state
-            }
-        };
-
-    }, [roomId, isJoined]);
+        console.log(zp);
+    }, [roomId]);
 
 
     useEffect(() => {
         const getStreams = async () => {
             try {
                 let res = await axios.get('http://64.226.112.70/api/core/stream/');
-                console.log(res.data);
                 setAllStreams(res.data)
                 setRandomIndex(roomId == undefined ? Math.floor(Math.random() * res.data.length) : res.data.findIndex(item => item.room_id == roomId))
             } catch (error) {
@@ -96,7 +95,12 @@ export default function LiveStreams() {
         }
         getStreams()
 
-
+        return () => {
+            if (isJoined && zp.current) {
+                zp.current?.destroy();
+                setIsJoined(false); // Reset the state
+            }
+        };
     }, [])
 
 
@@ -112,8 +116,37 @@ export default function LiveStreams() {
                 <NavLink to={'/new-stream'}>Create New Stream</NavLink>
             </div>
 
+            <Modal
+            onCancel={() => {
+                zp.current.destroy();
+                navigate('/live-streams')
+                setShowStream(false)
+            }}
+            className={'modal__body chat__modal stream__modal'}
+            styles={{
+              mask: {
+                backdropFilter: 'blur(10px)',
+                zIndex: 999999999999,
+
+              }
+            }}
+            open={showStream}
+            >
             <div className="active__stream" >
                 <div className="stream" ref={streamContainer} />
+
+                <div className="product__detail">
+                    <div className="product__content">
+                        <NavLink to={'/product_detail/'+allStreams[randomIndex]?.product_detail.id} className={'product__link'} />
+                        <div className="product__img">
+                            <img src={allStreams[randomIndex]?.product_detail.cover_image} alt="" />
+                        </div>
+                        <h4>{allStreams[randomIndex]?.product_detail.name}</h4>
+                        <h6>{allStreams[randomIndex]?.product_detail.price} {countryCurrencySymbol}</h6>
+                    </div>
+                </div>
+
+              
                 {
                     !roomId &&
                     <img src={allStreams[randomIndex]?.cover_image} alt="" className='cover__img' />
@@ -142,7 +175,11 @@ export default function LiveStreams() {
                             {allStreams[randomIndex]?.user_name}
                         </h4>
                     </div>
+
+                   
                 </div>
+
+                
 
                 <div className={`stream__tools ${roomId ? 'hide__tools' : ''}`}>
                     <button className='play__stream' onClick={() => handleSubmit(allStreams[randomIndex]?.room_id)}>
@@ -163,14 +200,16 @@ export default function LiveStreams() {
                     </button>
                 </div>
             </div>
+            </Modal>
 
             <div className="other__streams">
                 {
+                    allStreams.length ?
                     allStreams.map((item, ind) => {
-                        if (ind != randomIndex) {
+                      
                             return <div
                                 onClick={() => {
-                                    setRandomIndex(roomId == undefined ? Math.floor(Math.random() * allStreams.length) : allStreams.findIndex(item => item.room_id == roomId))
+                                    setRandomIndex(ind)
                                     handleSubmit(item.room_id)
                                 }}
                                 className="other__stream">
@@ -201,26 +240,15 @@ export default function LiveStreams() {
                                     </div>
                                 </div>
                             </div>
-                        }
+                    
 
                     })
+                    :
+                    <div className='empty__stream'>
+                        <h4>there are no active streams</h4>
+                    </div>
                 }
             </div>
-
-
-
-            {/* {!roomId ? (
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Stream Name"
-                        onChange={(e) => roomName = e.target.value}
-                    />
-                    <button type="submit" onClick={handleSubmit}>Watch</button>
-                </div>
-            ) : (
-                <div className="stream-container" ref={streamContainer} />
-            )} */}
         </div>
     );
 }

@@ -24,12 +24,6 @@ export default function ShowMyStream() {
         return file;
     };
 
-
-
-
-
-
-
     const myMeeting = async (element) => {
         try {
            
@@ -72,7 +66,8 @@ export default function ShowMyStream() {
                             room_id: roomId,
                             user_name: JSON.parse(localStorage.authTokens).username,
                             room_name: localStorage.roomName,
-                            cover_image: base64ToFile(localStorage.streamThumb, 'image.png')
+                            cover_image: base64ToFile(localStorage.streamThumb, 'image.png'),
+                            product: localStorage.streamSelectProductId
                         }, {
                             headers: {
                                 'Content-Type': 'multipart/form-data',

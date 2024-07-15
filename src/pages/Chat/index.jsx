@@ -20,7 +20,7 @@ import EmojiPicker from "emoji-picker-react";
 
 const Chat = () => {
   const axiosInstance = useAxios();
-  const { USER_TOKKEN, myId, CHAT_API, isCall, allChats, chatId, messages, setMessages, newMessage,  lastMessages, setNewMessage, socket, newChatUser, isModalCallOpen, onlineUsers, sendMessage, getMessage, addChat, getChats, deleteChat, setNewChatUser, setIsModalCallOpen } = useContext(ChatContext)
+  const { USER_TOKKEN, myId, CHAT_API,  allChats, chatId, messages, setMessages, newMessage,  lastMessages, setNewMessage, socket, newChatUser, isModalCallOpen, onlineUsers, sendMessage, getMessage, addChat, getChats, deleteChat, setNewChatUser, setIsModalCallOpen } = useContext(ChatContext)
   
 
   const [findUser, setFindUser] = useState([]);
@@ -136,6 +136,7 @@ const Chat = () => {
                     styles={{
                       mask: {
                         backdropFilter: 'blur(10px)',
+                        zIndex: 999999999999,
                       }
                     }}
                   >
@@ -282,7 +283,19 @@ const Chat = () => {
                       </div>
                     </div>
                     <div className="nick_icons">
-                      <div className="voice__call">
+                      <div
+                      onClick={() => {
+                        socket.emit('sendMessage', { target: newChatUser.id, message: {
+                          action: `call to ${newChatUser.id}`,
+                          userInfo: newChatUser,
+                          fromUserName: JSON.parse(localStorage.authTokens).first_name,
+                          fromUserId: myId,
+                          callType: 'voice'
+                        } });
+
+                       }
+                      }
+                      className="voice__call">
                         <button>
                         <img src={telephone} alt="" />
                         </button>
@@ -294,7 +307,8 @@ const Chat = () => {
                           action: `call to ${newChatUser.id}`,
                           userInfo: newChatUser,
                           fromUserName: JSON.parse(localStorage.authTokens).first_name,
-                          fromUserId: myId
+                          fromUserId: myId,
+                          callType: 'video'
                         } });
 
                        }

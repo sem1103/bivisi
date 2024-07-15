@@ -34,7 +34,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   const [openComment, setOpenComment] = useState(false);
   const [openDelComment, setOpenDComment] = useState(false);
   const { addItem } = useCart();
-console.log(product);
+  console.log(product);
   const playerRef = useRef(null);
   const menuRef = useRef(null);
   useEffect(() => {
@@ -46,7 +46,7 @@ console.log(product);
   }, [user, productItemShort.is_liked]);
 
 
-
+  console.log(productItemShort);
   useEffect(() => {
     if (
       !isPlaying &&
@@ -74,6 +74,7 @@ console.log(product);
   const [deleteCommentId, setDeleteCommentId] = useState(null);
   const [deleteIsSubComment, setDeleteIsSubComment] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [detailModal, setDetailModal] = useState(false);
 
   const fetchParentComments = async () => {
     try {
@@ -260,31 +261,80 @@ console.log(product);
       >
         <p>Are you sure you want to delete this comment?</p>
       </Modal>
+
+      
       <div className="col-lg-12 col-md-12 col-sm-12 col-12 pb-3 mb-4 d-flex justify-content-center align-items-center">
         <div className="shorts_page_card">
           <div className={`wrapper ${openComment ? "comment-open" : ""}`}>
 
-            <div className={`main ${openComment ? "comment-open" : ""}`} onClick={() => {
-              !isPlaying ? playerRef.current.getInternalPlayer().play() : playerRef.current.getInternalPlayer().pause();
-              isPlaying = !isPlaying;
+            <div className={`main ${openComment ? "comment-open" : ""}`} >
+
+              <div
+                onClick={() => {
+                  !isPlaying ? playerRef.current.getInternalPlayer().play() : playerRef.current.getInternalPlayer().pause();
+                  isPlaying = !isPlaying;
 
 
-            }}>
+                }}
+              >
+                <ReactPlayer
 
-              <ReactPlayer
-                ref={playerRef}
-                className="video"
-                controls={false}
-                url={productItemShort?.product_video_type[0]?.original_video}
+                  ref={playerRef}
+                  className="video"
+                  controls={false}
+                  url={productItemShort?.product_video_type[0]?.original_video}
 
-                style={{ objectFit: "cover" }}
-                playing={isPlaying}
-                onPlay={handlePlay}
-                loop={true}
-              />
+                  style={{ objectFit: "cover" }}
+                  playing={isPlaying}
+                  onPlay={handlePlay}
+                  loop={true}
+                />
+              </div>
+
 
               <div className="sp_desc">
-                <p className="mb-5">{productItemShort.name.slice(0, 20)}... <button>Read more</button></p>
+              <Modal
+              className={'modal__body chat__modal'}
+
+                open={detailModal}
+                onCancel={() => setDetailModal(false)}
+                styles={{
+                  mask: {
+                    backdropFilter: 'blur(10px)',
+                    zIndex: 999999999999,
+                  }
+                }}
+              >
+                <div className="short__info">
+                  <h3>{productItemShort.name}</h3>
+                  <h4>{productItemShort.description}</h4>
+
+                  <div className="video__properties">
+                    <h5>Properties</h5>
+                    <table style={{ borderCollapse: 'collapse', width: '100%', background: '#252525', margin: ' 0 0 20px 0' }}>
+                    <tbody>
+                      {
+                        productItemShort.properties.map((item) => (
+                          <tr key={item.id}>
+                            <td style={{ fontWeight: '600' }}>{item.product_property}</td>
+                            <td >{item.property_value}</td>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                  </table>
+                  </div>
+
+                  <div className="video__address">
+                  <h4>Address</h4>
+                  <p><a href={productItemShort.location_url} target="_blank">
+                    {productItemShort.location}
+                  </a></p>
+                  </div>
+                </div>
+
+              </Modal>
+                <p >{productItemShort.name.slice(0, 20)}... <button onClick={() => setDetailModal(true)}>Read more</button></p>
                 <span>${productItemShort.price}</span>
               </div>
             </div>
@@ -352,7 +402,7 @@ console.log(product);
                   <span>23</span>
                 </div>
 
-                
+
 
 
 
