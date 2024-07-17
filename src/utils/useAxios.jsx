@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 
-export const baseURL = "http://64.226.112.70/api";
+export const baseURL = "https://neymanacademy.shop/api";
 
 const useAxios = () => {
   const { authTokens, setUser, setAuthTokens } = useContext(AuthContext);

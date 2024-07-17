@@ -29,7 +29,7 @@ const TopVideos = () => {
 
 
     const getData = async () => {
-        let res = await axios.get('http://64.226.112.70/api/product/');
+        let res = await axios.get('https://neymanacademy.shop/api/product/');
         console.log(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
 
        
