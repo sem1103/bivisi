@@ -9,6 +9,7 @@ import like from "../../assets/icons/like-light.svg";
 import chat from "../../assets/icons/chat-ligth.svg";
 import heart from "../../assets/icons/heart-light.svg";
 import share from "../../assets/icons/share-light.svg";
+import { FaChevronDown } from "react-icons/fa6";
 import ReactPlayer from "react-player";
 import useAxios from "../../utils/useAxios";
 import { ProductContext } from "../../context/ProductContext";
@@ -34,7 +35,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   const [openComment, setOpenComment] = useState(false);
   const [openDelComment, setOpenDComment] = useState(false);
   const { addItem } = useCart();
-  console.log(product);
+  const [showSubCommentId, setShowSubCommentId] = useState(null);
   const playerRef = useRef(null);
   const menuRef = useRef(null);
   useEffect(() => {
@@ -242,7 +243,9 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
     setDeleteIsSubComment(false);
   };
 
-
+  const toggleSubComment = (commentId) => {
+    setShowSubCommentId((prevId) => (prevId === commentId ? null : commentId));
+  };
 
   const avatarImage =
     userDetails?.avatar ||
@@ -262,7 +265,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
         <p>Are you sure you want to delete this comment?</p>
       </Modal>
 
-      
+
       <div className="col-lg-12 col-md-12 col-sm-12 col-12 pb-3 mb-4 d-flex justify-content-center align-items-center">
         <div className="shorts_page_card">
           <div className={`wrapper ${openComment ? "comment-open" : ""}`}>
@@ -293,47 +296,47 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
 
 
               <div className="sp_desc">
-              <Modal
-              className={'modal__body chat__modal'}
+                <Modal
+                  className={'modal__body chat__modal'}
 
-                open={detailModal}
-                onCancel={() => setDetailModal(false)}
-                styles={{
-                  mask: {
-                    backdropFilter: 'blur(10px)',
-                    zIndex: 999999999999,
-                  }
-                }}
-              >
-                <div className="short__info">
-                  <h3>{productItemShort.name}</h3>
-                  <h4>{productItemShort.description}</h4>
+                  open={detailModal}
+                  onCancel={() => setDetailModal(false)}
+                  styles={{
+                    mask: {
+                      backdropFilter: 'blur(10px)',
+                      zIndex: 999999999999,
+                    }
+                  }}
+                >
+                  <div className="short__info">
+                    <h3>{productItemShort.name}</h3>
+                    <h4>{productItemShort.description}</h4>
 
-                  <div className="video__properties">
-                    <h5>Properties</h5>
-                    <table style={{ borderCollapse: 'collapse', width: '100%', background: '#252525', margin: ' 0 0 20px 0' }}>
-                    <tbody>
-                      {
-                        productItemShort.properties.map((item) => (
-                          <tr key={item.id}>
-                            <td style={{ fontWeight: '600' }}>{item.product_property}</td>
-                            <td >{item.property_value}</td>
-                          </tr>
-                        ))
-                      }
-                    </tbody>
-                  </table>
+                    <div className="video__properties">
+                      <h5>Properties</h5>
+                      <table style={{ borderCollapse: 'collapse', width: '100%', background: '#252525', margin: ' 0 0 20px 0' }}>
+                        <tbody>
+                          {
+                            productItemShort.properties.map((item) => (
+                              <tr key={item.id}>
+                                <td style={{ fontWeight: '600' }}>{item.product_property}</td>
+                                <td >{item.property_value}</td>
+                              </tr>
+                            ))
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="video__address">
+                      <h4>Address</h4>
+                      <p><a href={productItemShort.location_url} target="_blank">
+                        {productItemShort.location}
+                      </a></p>
+                    </div>
                   </div>
 
-                  <div className="video__address">
-                  <h4>Address</h4>
-                  <p><a href={productItemShort.location_url} target="_blank">
-                    {productItemShort.location}
-                  </a></p>
-                  </div>
-                </div>
-
-              </Modal>
+                </Modal>
                 <p >{productItemShort.name.slice(0, 20)}... <button onClick={() => setDetailModal(true)}>Read more</button></p>
                 <span>${productItemShort.price}</span>
               </div>
@@ -401,11 +404,6 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                   </div>
                   <span>23</span>
                 </div>
-
-
-
-
-
                 <div className=" pb-3">
                   <div className="icons">
                     <img src={eye} alt="" />
@@ -413,13 +411,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                   <span>{productItemShort.view_count
                   }</span>
                 </div>
-
-
-
-
-
               </div>
-
               <div onTouchStart={handleEnter} onTouchEnd={handleLeave} onMouseEnter={handleEnter} onMouseLeave={handleLeave} className={`shorts_comment ${openComment ? "open" : ""}`}>
                 {openComment && (
                   <div className="comment_content">
@@ -441,10 +433,11 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
 
                       <div className="comments_heading  mt-3">
                         {comments?.map((comment) => {
+                          console.log(comment)
                           return (
-                            <div className="d-flex gap-3 mt-3">
+                            <div className="d-flex gap-3 comments_list mt-3">
                               <div className="comment_avatar">
-                                <img src={comment?.user?.avatar} alt="" />
+                                <img src={comment?.user?.avatar ?? avatarImage} alt="" />
                               </div>
                               <div className="comment_content_right">
                                 <h6 className="comment_user">
@@ -514,7 +507,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                   }}
                                 >
                                   <div className="avatar ">
-                                    <img src={avatarImage} alt="" />
+                                    <img src={comment?.user?.avatar ?? avatarImage} alt="" />
                                   </div>
                                   <div className="d-flex flex-column align-items-start justify-content-cneter">
                                     <h1>{user.username}</h1>
@@ -531,7 +524,12 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
 
                                   <button type="submit">Publish</button>
                                 </form>
-                                {comment.sub_comments &&
+                                {comment.sub_comments.length > 0 && (
+                                  <button className={`reply-btn ${showSubCommentId === comment.id &&"active"} `} onClick={() => toggleSubComment(comment.id)}>
+                                    <FaChevronDown  /> {comment.sub_comments.length} reply
+                                  </button>
+                                )}
+                                {comment.sub_comments &&  showSubCommentId === comment.id &&
                                   comment.sub_comments.length > 0 && (
                                     <div className="sub-comments">
                                       {comment.sub_comments.map(
@@ -540,7 +538,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                             key={subComment.id}
                                             className="sub-comment"
                                           >
-                                            <div className="d-flex align-items-center gap-3 mt-1">
+                                            <div className="d-flex gap-3 mt-1">
                                               <div className="comment_avatar">
                                                 <p className="mb-0">
                                                   <img
