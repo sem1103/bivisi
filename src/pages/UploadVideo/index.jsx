@@ -80,7 +80,7 @@ const UploadV = () => {
     const fetchData = async () => {
       try {
         const categoryRes = await axios.get(
-          "http://64.226.112.70/api/categories/"
+          "https://neymanacademy.shop/api/categories/"
         );
         setCategory(categoryRes.data.results);
         if(editVideo) {

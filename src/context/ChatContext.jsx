@@ -11,7 +11,7 @@ export const ChatContext = createContext();
 
 export default function ChatProvider({ children }) {
     const {user} = useContext(AuthContext)
-    const CHAT_API = 'http://46.101.153.252:8000/api/chat/';
+    const CHAT_API = 'https://neymantech.online:8000/api/chat/';
     const SOCKET_URL = 'http://31.210.51.68:8300';
 
     let socketInstance = '';
@@ -246,7 +246,7 @@ export default function ChatProvider({ children }) {
                     */
                 }  else if( message.action == `accept ${target}`) {
 
-                    localStorage.setItem('videoCallRoomId' , ((+message.myId + +target) * 690) ) // unikal room id yaradirig, bunun unikalligi o cur olur ki, bizim butun userlerini id`leri tekrar olunmur, 690 vurdum ki, reqem cox gorsensin sadece olarag
+                    localStorage.setItem('videoCallRoomId' , message.myId + '_' + target ) // unikal room id yaradirig, bunun unikalligi o cur olur ki, bizim butun userlerini id`leri tekrar olunmur, 690 vurdum ki, reqem cox gorsensin sadece olarag
                     setIsModalCallOpen(false); // modal pencereni baglayirig
                     setIsAccept(true); // bu mene lazimdir ki, zengi goturende bashqa sehifeye redirect etsin
                     return

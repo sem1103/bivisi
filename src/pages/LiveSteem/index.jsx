@@ -86,7 +86,7 @@ export default function LiveStreams() {
     useEffect(() => {
         const getStreams = async () => {
             try {
-                let res = await axios.get('http://64.226.112.70/api/core/stream/');
+                let res = await axios.get('https://neymanacademy.shop/api/core/stream/');
                 setAllStreams(res.data)
                 setRandomIndex(roomId == undefined ? Math.floor(Math.random() * res.data.length) : res.data.findIndex(item => item.room_id == roomId))
             } catch (error) {
