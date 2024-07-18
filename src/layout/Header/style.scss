@@ -7,7 +7,7 @@ header {
   justify-content: space-between;
   align-items: center;
   position: relative;
-  
+
   .active {
     background: var(--Text-11, #23272e) !important;
   }
@@ -129,20 +129,7 @@ header {
       background-color: transparent;
       position: relative;
 
-      .basket_items_count {
-        position: absolute;
-        left: 27px;
-        bottom: 30px;
-        color: white !important;
-        background-color: #525252;
-        width: 26px;
-        height: 26px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        font-size: 14px;
-      }
+
 
       &:hover {
         border-radius: 16px;
@@ -239,6 +226,21 @@ header {
       height: auto !important;
     }
   }
+}
+
+.basket_items_count {
+  position: absolute;
+  left: 27px;
+  bottom: 30px;
+  color: white !important;
+  background-color: #525252;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 14px;
 }
 
 .search_result {
@@ -352,7 +354,7 @@ header {
     width: 25px;
   }
 
-  .upload-options{
+  .upload-options {
     left: -40px;
     z-index: 99999999;
     width: 160px;
@@ -373,6 +375,7 @@ header {
       justify-content: center;
       align-items: center;
       gap: 8px;
+      position: relative;
       border-radius: 16px;
       border: 1px solid var(--Text-11, #23272E);
       background-color: transparent;
@@ -396,7 +399,7 @@ header {
       align-items: center;
       gap: 8px;
       border-radius: 15px;
-     
+
       background: var(--blue-blue-500, #0385CA);
       border: none;
 
@@ -426,8 +429,8 @@ header {
       /* 150% */
     }
 
-    .profile_menu_dropdown{
-      .upload{
+    .profile_menu_dropdown {
+      .upload {
         background: var(--blue-blue-500, #0385CA);
         border: none;
       }
@@ -437,7 +440,7 @@ header {
   .search-wrapper {
     position: relative;
     z-index: 55555;
-    width: 450px;
+    width: 100%;
 
     .search {
       border-radius: 16px;
@@ -558,42 +561,47 @@ header {
   cursor: pointer;
 }
 
-.call__modal{
-  
+.call__modal {
+
   text-align: center;
-  h3{
+
+  h3 {
     font-size: clamp(20px, 3vw, 26px);
   }
 
-  .call__btns{
+  .call__btns {
     display: flex;
     justify-content: center;
     gap: 10px 20px;
     margin: 35px 0 0 0;
 
-    button{
+    button {
       background-color: transparent;
       border: 0;
       outline: 0;
       border-radius: 50%;
-      transition:  all .4s ease-in-out;
-      &.decline__call:hover{
+      transition: all .4s ease-in-out;
+
+      &.decline__call:hover {
         box-shadow: 0 0 5px 3px #ce4646;
       }
-      &.accept__call:hover{
+
+      &.accept__call:hover {
         box-shadow: 0 0 5px 3px #51fb5c;
       }
-      .video__svg{
+
+      .video__svg {
         background-color: #51fb5c;
         border-radius: 50%;
       }
     }
   }
 
- 
+
 }
-.call__modal{
-  .ant-modal-content{
+
+.call__modal {
+  .ant-modal-content {
     animation-name: boxShadowAnimate;
     animation-duration: 2s;
     animation-iteration-count: infinite;
@@ -602,70 +610,154 @@ header {
 }
 
 @keyframes boxShadowAnimate {
-  0%{
+  0% {
     box-shadow: 0 0 8px 4px transparent;
   }
-  50%{
+
+  50% {
     box-shadow: 0 0 8px 4px #e6e5e5;
   }
-  100%{
+
+  100% {
     box-shadow: 0 0 8px 4px transparent;
   }
 }
+.fixed-menu {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  z-index: 99;
+ border-radius: 10px;
+  background-color: #0f0f0f;
+  padding: 10px;
+display: none;
+  .basket,
+  .upload {
+    width: 45px;
+    height: 45px;
+    padding: 10px 0;
+    position: relative;
+    border: 1px solid #23272E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+  }
 
-
-
+  .sm_ntf {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    width: 45px;
+    height: 40px;
+    padding: 10px 0;
+    position: relative;
+    border: 1px solid #23272E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+  }
+}
 @media (max-width:540px) {
+  .search-wrapper {
+    position: relative;
+  }
+
   .sm_header {
     .offcanvas-menu {
       width: 75%;
     }
 
     .logo {
-      width: 110px;
+      width: 124px;
+    }
+
+    .microphone {
+      position: absolute;
+      z-index: 9999;
+      right: 73px;
+      border-right: none;
+      border-top: none;
+      border-bottom: none;
     }
   }
 }
 
 
 @media (max-width:1270px) {
-  .xl_header{
-    .search-wrapper{
+  .xl_header {
+    .search-wrapper {
       width: 300px !important;
     }
   }
 }
 
-@media (max-width:1260px) {
-  .xl_header{
-    .search-wrapper{
-      width: 250px !important;
+@media (max-width:576px) {
+.fixed-menu{
+  display: block;
+}
+  .sm_header .upload-container,
+  .sm_header .sm_ntf ,.sm_header .basket{
+    display: none !important;
+  }
+
+
+
+  .profile_menu_dropdown .upload {
+    display: block !important;
+    padding: 8px !important;
+    // border-radius: 10px !important;
+    width: 42px;
+    height: 42px;
+  }
+
+  .basket_items_count {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+  }
+
+  .sm_header {
+    .search-wrapper {
+      .search {
+        padding: 8px 15px;
+        border-radius: 13px;
+
+        input {
+          &::placeholder {
+            font-size: 14px !important;
+          }
+        }
+      }
     }
   }
 }
 
-@media (max-width:1090px) {
-  .xl_header{
-    .search-wrapper{
-      width: 190px !important;
-    }
-  }
-}
+// @media (max-width:1090px) {
+//   .xl_header{
+//     .search-wrapper{
+//       width: 190px !important;
+//     }
+//   }
+// }
 
-@media (max-width:1050px) {
-  .xl_header{
-    .search-wrapper{
-      width: 170px !important;
-    }
-  }
-}
+// @media (max-width:1050px) {
+//   .xl_header{
+//     .search-wrapper{
+//       width: 170px !important;
+//     }
+//   }
+// }
 
-@media (max-width:1030px) {
-  .xl_header{
-    .search-wrapper{
-      width: 140px !important;
-    }
-  }
-}
+// @media (max-width:1030px) {
+//   .xl_header{
+//     .search-wrapper{
+//       width: 140px !important;
+//     }
+//   }
+// }
 
 
