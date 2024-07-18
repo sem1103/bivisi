@@ -63,7 +63,7 @@ const ProfileMenu = () => {
                 <Avatar src={userDetails?.avatar} alt="it's me" />
               </div>
               <div className="user-name">
-                <h1>{userDetails?.username}</h1>
+                <div className="name">{userDetails?.username}</div>
                 <p>{userDetails?.email}</p>
               </div>
             </div>

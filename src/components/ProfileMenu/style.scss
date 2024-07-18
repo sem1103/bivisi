@@ -16,6 +16,7 @@
   background: var(--Background-Color, #0f0f0f) !important;
   z-index: 1000111 !important;
   overflow: hidden;
+
   // position: absolute;
   // left:  1180px !important;
   .profile_sidebar {
@@ -23,20 +24,24 @@
     height: 100%;
     padding: 8px 15px !important;
     border-radius: 24px !important;
+
     .profile-card {
       width: 100%;
       height: auto;
       display: flex;
       justify-content: space-between;
+
       .profile-image {
         width: 20%;
         height: auto;
+
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
       }
+
       .user-name {
         width: 80%;
         height: auto;
@@ -44,7 +49,8 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
-        h1 {
+
+        .name {
           color: var(--Neutral-White, #fff);
 
           /* Poppins/20/SemiBold */
@@ -52,9 +58,11 @@
           font-size: 20px;
           font-style: normal;
           font-weight: 600;
-          line-height: 28px; /* 140% */
+          line-height: 28px;
+          /* 140% */
           margin: 0;
         }
+
         p {
           color: var(--Text-5, #979eaf);
 
@@ -63,10 +71,12 @@
           font-size: 16px;
           font-style: normal;
           font-weight: 400;
-          line-height: 20px; /* 150% */
+          line-height: 20px;
+          /* 150% */
         }
       }
     }
+
     .user-points {
       width: 100%;
       display: flex;
@@ -76,6 +86,7 @@
       align-self: stretch;
       border-radius: 12px;
       background: var(--Text-12, #1b1d23);
+
       .profile-point-content {
         span {
           color: var(--Neutral-White, #fff);
@@ -85,8 +96,10 @@
           font-size: 16px;
           font-style: normal;
           font-weight: 600;
-          line-height: 24px; /* 150% */
+          line-height: 24px;
+          /* 150% */
         }
+
         h2 {
           color: var(--Text-5, #979eaf);
 
@@ -95,10 +108,12 @@
           font-size: 14px;
           font-style: normal;
           font-weight: 400;
-          line-height: 22px; /* 157.143% */
+          line-height: 22px;
+          /* 157.143% */
         }
       }
     }
+
     .profile-menu-item {
       display: flex;
       padding: 10px 0 13px 14px;
@@ -109,12 +124,15 @@
       transition: all 0.3s ease;
       border-radius: 12px;
       text-decoration: none;
+
       &:hover {
         background: var(--Gray-400, #292929);
+
         span {
           color: #fff !important;
         }
       }
+
       h6 {
         color: var(--Text-4, #a2a8b7);
 
@@ -123,9 +141,11 @@
         font-size: 16px;
         font-style: normal;
         font-weight: 600;
-        line-height: 24px; /* 150% */
+        line-height: 24px;
+        /* 150% */
         margin: 0;
       }
+
       span {
         color: var(--blue-blue-500, #0385ca);
 
@@ -134,7 +154,8 @@
         font-size: 16px;
         font-style: normal;
         font-weight: 600;
-        line-height: 24px; /* 150% */
+        line-height: 24px;
+        /* 150% */
       }
     }
   }
@@ -154,9 +175,11 @@
 .dark-mode-switch {
   cursor: pointer;
 }
+
 .dark-mode-switch input[type="checkbox"] {
   display: none;
 }
+
 .dark-mode-switch label {
   position: relative;
   display: inline-block;
@@ -165,6 +188,7 @@
   background-color: #23272e;
   border-radius: 34px;
 }
+
 .dark-mode-switch label::after {
   content: "";
   position: absolute;
@@ -176,7 +200,64 @@
   border-radius: 50%;
   transition: 0.3s;
 }
-.dark-mode-switch input[type="checkbox"]:checked + label::after {
+
+.dark-mode-switch input[type="checkbox"]:checked+label::after {
   transform: translateX(26px);
   background-color: #666;
+}
+
+@media(max-width:576px) {
+  .dark-mode-switch label{
+    width: 46px;
+    height: 23px;
+  }
+  .dark-mode-switch label::after{
+   
+    top: 2px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+  }
+  .mantine-Menu-dropdown {
+    .profile_sidebar {
+   .profile-menu-item {
+    padding: 7px 0 13px 4px;
+    img{
+      width: 24px;
+    }
+    h6{
+      font-size: 14px;
+    }
+   }
+      .user-points {
+        .profile-point {
+          img{
+            width: 35px;
+          }
+        }
+        .profile-point-content {
+          span {
+            font-size: 14px;
+          }
+          h2{
+            font-size: 12px;
+          }
+        }
+      }
+      .profile-card {
+      
+
+        .user-name {
+          .name {
+            font-size: 18px;
+          }
+
+          p {
+            font-size: 14px;
+            line-height: 16px;
+          }
+        }
+      }
+    }
+  }
 }
