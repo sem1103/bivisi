@@ -12,7 +12,7 @@ export const ChatContext = createContext();
 export default function ChatProvider({ children }) {
     const {user} = useContext(AuthContext)
     const CHAT_API = 'http://46.101.153.252:8000/api/chat/';
-    const SOCKET_URL = 'http://31.210.51.68:8300';
+    const SOCKET_URL = 'https://neymantech.site:8300';
 
     let socketInstance = '';
     const USER_TOKKEN = localStorage.authTokens != undefined ? JSON.parse(localStorage.authTokens).access : false;
