@@ -166,7 +166,7 @@ export default function ChatProvider({ children }) {
         o zaman localdan kimnen zeng gelirdise onun id gondeririy
         */
         socket.emit('sendMessage', { target: newChatUser ? newChatUser.userId : localStorage.fromCallUserId, message: {
-            action: `call from ${ newChatUser ? newChatUser.userId : localStorage.fromCallUserId} accepted`, // buda oxshar meqamdi
+            action: `call from ${ newChatUser ? newChatUser.userId : localStorage.fromCallUserId} accepted`,
             callType: sessionStorage.isVideoCall,
             userInfo: newChatUser,
             fromUserId: String(user.user_id) // ve oz id`mizi gondeririy 
@@ -227,7 +227,7 @@ export default function ChatProvider({ children }) {
                     const isIncomingCall = +message.fromUserId != +user.user_id;
 
                     // Сохранение идентификатора комнаты видеозвонка
-                    localStorage.setItem('videoCallRoomId', `${message.fromUserId}_${target}`);
+                    localStorage.setItem('videoCallRoomId', [+message.fromUserId, +target].sort((a, b) => a - b).join('_'));
                     
                     if (isIncomingCall) { // Входящий вызов
                         localStorage.setItem('fromCallUserId', message.fromUserId); // Сохранение ID вызывающего пользователя
