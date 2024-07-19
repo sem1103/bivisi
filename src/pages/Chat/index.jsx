@@ -75,8 +75,9 @@ const Chat = () => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [messages]);
 
-  const containerHeight = messages.length && newChatUser?.userId || newChatUser ? "48vh" : "75vh";
-  const containerPadding = messages.length && newChatUser?.userId || newChatUser ? "48px" : "";
+
+  const containerHeight = messages.length && newChatUser.userId || newChatUser ? "48vh" : "75vh";
+  const containerPadding = messages.length && newChatUser.userId || newChatUser ? "48px" : "";
 
 
 
@@ -310,12 +311,13 @@ const Chat = () => {
                      
                       <div className="video__call">
                       <button onClick={() => {
-                       socket.emit('sendMessage', { target: newChatUser.userId, message: {
-                        action: `call to ${newChatUser.userId}`,
-                        userInfo: newChatUser,
-                        fromUserName: JSON.parse(localStorage.authTokens).first_name,
-                        fromUserId: String(myId),
-                        callType: 'video'
+
+                        socket.emit('sendMessage', { target: newChatUser.userId, message: {
+                          action: `call to ${newChatUser.userId}`,
+                          userInfo: newChatUser,
+                          fromUserName: JSON.parse(localStorage.authTokens).first_name,
+                          fromUserId: String(myId),
+                          callType: 'video'
                         } });
 
                        }

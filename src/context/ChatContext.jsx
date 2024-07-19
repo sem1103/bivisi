@@ -13,6 +13,8 @@ export default function ChatProvider({ children }) {
     const {user} = useContext(AuthContext)
     const CHAT_API = 'https://neymantech.online/api/chat/';
     const SOCKET_URL = 'https://neymantech.site';
+
+    
     let socketInstance = '';
     const USER_TOKKEN = localStorage.authTokens != undefined ? JSON.parse(localStorage.authTokens).access : false;
     const [socket, setSocket] = useState(null);
