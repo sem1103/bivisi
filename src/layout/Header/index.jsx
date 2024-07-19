@@ -33,8 +33,7 @@ import Search from "./components/Search/Search";
 
 
 const Header = ({ isOpen }) => {
-  const navigate = useNavigate()
-  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { isModalCallOpen, setIsModalCallOpen, callModalText, declineCall, iCall, acceptACall, isAccept, setIsAccept } = useContext(ChatContext);
   const { user } = useContext(AuthContext);
   const [isUploadOptionsVisible, setIsUploadOptionsVisible] = useState(false);
@@ -48,98 +47,6 @@ const Header = ({ isOpen }) => {
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
   };
-
-  const searchBar = useRef(null);
-  const menuLogo = useRef(null);
-
-
-  const handleFilter = (value) => {
-    setInputValue(value);
-    if (allProducts.results) {
-      if (value) {
-        setIsSearching(true);
-        const res = allProducts.results.filter((f) =>
-          f.name.toLowerCase().startsWith(value.toLowerCase())
-        );
-        setProduct(res);
-        if (res.length === 0) {
-          setProduct([]);
-        }
-      } else {
-        setProduct([]);
-        setIsSearching(false);
-      }
-    }
-  };
-
-  const handleBlur = () => {
-    if (!inputValue) {
-      setProduct([]);
-      setIsSearching(false);
-    }
-  };
-
-  const handleProductClick = () => {
-    setProduct([]);
-    setIsSearching(false);
-    setInputValue("");
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target) &&
-        !event.target.closest(".search_data")
-      ) {
-        setProduct([]);
-        setIsSearching(false);
-      }
-      if (
-        event.target.closest(".upload-options") === null &&
-        event.target.closest(".upload") === null
-      ) {
-        setIsUploadOptionsVisible(false);
-      }
-      if (
-        event.target.closest(".notification-options") === null &&
-        event.target.closest(".notification") === null
-      ) {
-        setIsNotificationOptionsVisible(false);
-      }
-    };
-
-    const onScrollReached = () => {
-      
-      if(window.innerWidth < 576){
-        console.log();
-        if(window.scrollY > 50){
-          searchBar.current.style.maxHeight = 0;
-          searchBar.current.style.marginTop = ' 0 !important';
-          menuLogo.current.style.width = 0
-          document.querySelector('.back__top').style.margin = '84px 0 12px 0'
-
-        }else if(window.scrollY < 144) {
-          searchBar.current.style.maxHeight = '100px';
-          searchBar.current.style.margin = '8px 0 ';
-          menuLogo.current.style.width = '148px';
-          document.querySelector('.back__top').style.margin = '24px 0 12px 0'
-        }
-      }
-      
-    }
-  
-    // Обработчик события прокрутки
-    window.addEventListener('scroll', onScrollReached);
-
-    document.addEventListener("mousedown", handleClickOutside);
-   
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("scroll", onScrollReached);
-
-    };
-  }, []);
   const logoOpacity = isOpen ? 0 : 1;
 
   const toggleUploadOptions = () => {
@@ -236,6 +143,7 @@ const Header = ({ isOpen }) => {
       ringtoneRef.current.currentTime = 0; // Сброс времени воспроизведения
 
     }
+
   }, [isModalCallOpen]);
   if (
     location.pathname !== "/login" &&
@@ -246,8 +154,8 @@ const Header = ({ isOpen }) => {
   ) {
     return (
       <>
-        <div className="header__block">
 
+        <div>
           <Modal
             open={isModalCallOpen}
             onCancel={() => {
@@ -332,63 +240,13 @@ const Header = ({ isOpen }) => {
               <Link className="logoLeft " to="/" style={{ opacity: logoOpacity, display: "none" }}>
                 <img src={logo} alt="" />
               </Link>
-
               <div className="d-flex align-items-center justify-content-end w-100 gap-2">
                 <div className="d-flex justify-content-center align-items-center gap-3">
-                  <div className="search-wrapper" ref={searchRef}>
-                    <div className="search">
-                      <div className="d-flex align-items-center gap-3 search_content">
-                        <img src={search} className="search_img" alt="" />
-                        <input
-                          type="text"
-                          placeholder="Search for videos"
-                          value={inputValue}
-                          onChange={(e) => handleFilter(e.target.value)}
-                          onBlur={handleBlur}
-                        />
-                      </div>
-                      {inputValue && (
-                        <img
-                          src={close}
-                          alt=""
-                          className="close_btn"
-                          onClick={() => setInputValue("")}
-                        />
-                      )}
-                    </div>
-                    {isSearching && inputValue && (
-                      <div className="search_result mt-2">
-                        <div className="search_result_content p-3">
-                          {product.length === 0 ? (
-                            <div className="p-3 not_found_result">
-                              Product not found!
-                            </div>
-                          ) : (
-                            product.map((d, i) => (
-                              <div className="mb-1" key={i}>
-                                <NavLink
-                                  to={`/product_detail/${d.id}`}
-                                  className="mb-0 search_data"
-                                  activeclassname="active"
-                                  onClick={handleProductClick}
-                                >
-                                  {d.name}
-                                </NavLink>
-                              </div>
-                            ))
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                  <div className="microphone">
-                    <img src={microphone} alt="" />
-                  </div>
-                  </div>
-                  
+                <Search setIsUploadOptionsVisible={setIsUploadOptionsVisible} setIsNotificationOptionsVisible={setIsNotificationOptionsVisible} />
                 </div>
                 {user ? (
                   <div className="content_left d-flex align-items-center justify-content-end gap-3">
+
                     <div className="content_left_icons">
                       <div className="upload-container">
                         <div className="upload " onClick={toggleUploadOptions}>
@@ -461,7 +319,7 @@ const Header = ({ isOpen }) => {
 
           <div className="d-block d-xl-none d-xxl-none d-lg-none pt-2">
             <div className="sm_header container-fluid">
-              <div className="d-flex align-items-start mb-3 justify-content-between ">
+              <div className="d-flex align-items-center mb-3 justify-content-between ">
                 <div className={`top_section  ${openMenu ? "open" : ""}`}>
                   <div className="d-flex align-items-center gap-3">
                     <button onClick={toggleMenu} className="toggle-button">
@@ -472,7 +330,7 @@ const Header = ({ isOpen }) => {
                       )}
                     </button>
                     <Link to="/">
-                      <img src={logo} alt="" className="logo" ref={menuLogo} />
+                      <img src={logo} alt="" className="logo" />
                     </Link>
                   </div>
                   <div className="offcanvas-menu">
@@ -662,7 +520,7 @@ const Header = ({ isOpen }) => {
                 <div className="burger_menu d-flex align-content-center gap-2">
                   {
                     user ? (
-                      <div className="d-flex align-items-center gap-2 header__tools">
+                      <div className="d-flex align-items-center gap-2">
                         <NavLink
                           className="upload basket"
                           to="/basket"
@@ -698,7 +556,7 @@ const Header = ({ isOpen }) => {
                         <button className="sm_ntf">
                           <img src={Notification} alt="" />
                         </button>
-                        <NavLink 
+                        <NavLink
                           className="upload msg"
                           to="/chat"
                           activeclassname="active"
@@ -717,8 +575,9 @@ const Header = ({ isOpen }) => {
                   }
                 </div>
               </div>
-              <div ref={searchBar} className="d-flex justify-content-between align-items-center gap-3  search__bar">
-                <div className="search-wrapper" ref={searchRef}>
+
+              <div className="d-flex justify-content-between align-items-center gap-3 my-2 search__bar">
+                {/* <div className="search-wrapper" ref={searchRef}>
                   <div className="search">
                     <div className="d-flex align-items-center gap-2 search_content">
                       <img src={search} alt="" />
@@ -732,7 +591,6 @@ const Header = ({ isOpen }) => {
                       <div className="microphone">
                         <img src={microphone} alt="" />
                       </div>
-
                     </div>
                     {inputValue && (
                       // <IoMdClose className="close_btn" onClick={() => setInputValue('')} />
@@ -769,13 +627,9 @@ const Header = ({ isOpen }) => {
                       </div>
                     </div>
                   )}
-                   <div className="microphone">
-                    <img src={microphone} alt="" />
-                  </div>
-                </div>
+                </div> */}
+                <Search setIsUploadOptionsVisible={setIsUploadOptionsVisible} setIsNotificationOptionsVisible={setIsNotificationOptionsVisible} />
                 <div className="d-flex gap-2">
-                 
-
                   <div className="filter">
                     <img src={filter} alt="" />
                   </div>
@@ -785,7 +639,53 @@ const Header = ({ isOpen }) => {
           </div>
 
         </div>
-        
+        <div className="fixed-menu">
+          {
+            user ? (
+              <div className="d-flex flex-column gap-4">
+                <div className="upload-container">
+                  <div className="upload " onClick={toggleUploadOptions}>
+                    <img src={upload} alt="" />
+                  </div>
+                  {isUploadOptionsVisible && (
+                    <div className="upload-options mt-2">
+                      <Link
+                        to="/your_profile/upload_video"
+                        onClick={handleOptionClick}
+                      >
+                        <img src={videoOutline} alt="" className="me-2" />
+                        Video
+                      </Link>
+                      <Link
+                        to="/your_profile/upload_shorts"
+                        onClick={handleOptionClick}
+                      >
+                        <img src={shortsOutline} alt="" className="me-2" />
+                        Shorts
+                      </Link>
+                    </div>
+                  )}
+                </div>
+                <NavLink
+                  className="upload basket"
+                  to="/basket"
+                  activeclassname="active"
+                >
+                  <img src={Bag2} alt="" />
+
+                  <span className="basket_items_count">{totalUniqueItems}</span>
+                </NavLink>
+                <button className="sm_ntf">
+                  <img src={Notification} alt="" />
+                </button>
+
+
+              </div>
+            ) : (
+              null
+            )
+          }
+        </div>
       </>
     );
   } else {
