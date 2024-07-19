@@ -4,7 +4,6 @@ import sort from "../../assets/icons/arrow-sort.svg";
 import './style.scss'
 const SortProduct = ({ sortedProducts, setSortedProducts }) => {
     const [selectedOption, setSelectedOption] = useState("");
-console.log(sortedProducts, setSortedProducts )
     const handleSelect = (value) => {
         setSelectedOption(value);
     };
@@ -16,13 +15,13 @@ console.log(sortedProducts, setSortedProducts )
     useEffect(() => {
         let sortedArray = [...sortedProducts];
         if (selectedOption === "A to Z") {
-            sortedArray.sort((a, b) => a.product?.name.localeCompare(b.product?.name));
+            sortedArray.sort((a, b) => a.product.name.localeCompare(b.product.name));
         } else if (selectedOption === "Z to A") {
-            sortedArray.sort((a, b) => b.product?.name.localeCompare(a.product?.name));
+            sortedArray.sort((a, b) => b.product.name.localeCompare(a.product.name));
         } else if (selectedOption === "From cheap to expensive") {
-            sortedArray.sort((a, b) => a.product?.price - b.product?.price);
+            sortedArray.sort((a, b) => a.product.price - b.product.price);
         } else if (selectedOption === "From expensive to cheap") {
-            sortedArray.sort((a, b) => b.product?.price - a.product?.price);
+            sortedArray.sort((a, b) => b.product.price - a.product.price);
         }
         setSortedProducts(sortedArray);
     }, [selectedOption]);
