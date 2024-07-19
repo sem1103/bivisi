@@ -402,7 +402,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                   >
                     <img src={chat} alt="" />
                   </div>
-                  <span>23</span>
+                  <span>{comments?.length}</span>
                 </div>
                 <div className=" pb-3">
                   <div className="icons">

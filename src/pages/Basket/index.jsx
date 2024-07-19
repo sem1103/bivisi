@@ -92,11 +92,11 @@ const Basket = () => {
             </Link>
           </div>
 
-          <div className="col-lg-8">
+          <div className="col-xl-8 col-lg-7">
             {basketItems?.map((item) => {
               return (
                 <div className="d-flex basket_card mb-4" key={item.id}>
-                  <div>
+                  <div className="basket-img">
                     <img src={item.product.product_video_type[0].cover_image} />
                   </div>
                   <div className="basket_card_content d-flex p-2">
@@ -116,7 +116,7 @@ const Basket = () => {
                         >
                           <IconMinus stroke={2} />
                         </button>
-                        <span>{item?.quantity}</span>
+                        <span className="quantity">{item?.quantity}</span>
                         <button
                           onClick={() =>
                             handleUpdateBasketItem(
@@ -141,7 +141,7 @@ const Basket = () => {
             })}
           </div>
 
-          <div className="col-lg-4 ">
+          <div className="col-xl-4 col-lg-5">
             <div className="basket_summary">
               <div>
                 <h3 className="pb-3">Summary</h3>

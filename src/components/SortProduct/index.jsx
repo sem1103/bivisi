@@ -4,7 +4,6 @@ import sort from "../../assets/icons/arrow-sort.svg";
 import './style.scss'
 const SortProduct = ({ sortedProducts, setSortedProducts }) => {
     const [selectedOption, setSelectedOption] = useState("");
-
     const handleSelect = (value) => {
         setSelectedOption(value);
     };

@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import "./style.scss";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import search from "../../assets/icons/search.svg";
-import microphone from "../../assets/icons/microphone.svg";
 import upload from "../../assets/icons/upload.svg";
 import logo from "../../assets/images/logoLight.svg";
 import Notification from "../../assets/icons/On.svg";
@@ -12,14 +10,10 @@ import Ntf from "../../assets/icons/ntf.svg";
 import ProfileMenu from "../../components/ProfileMenu";
 import login from "../../assets/icons/login.svg";
 import { AuthContext } from "../../context/authContext";
-import { ProductContext } from "../../context/ProductContext";
 import shortsOutline from "../Sidebar/icons/shorts-outline.svg";
 import videoOutline from "../Sidebar/icons/video-outline.svg";
-import rightIcon from "../../assets/images/rightIcon.svg";
-import leftIcon from "../../assets/images/leftIcon.svg";
 import burgermenu from "../../assets/images/burger-menu.svg";
 import filter from "../../assets/images/Filter.svg";
-import close from "../../assets/icons/close.svg";
 import cameraOutline from "../../layout/Sidebar/icons/camera-outline.svg";
 import helpOutline from "../../layout/Sidebar/icons/help-outline.svg";
 import home from "../../layout/Sidebar/icons/home.svg";
@@ -32,30 +26,20 @@ import subscribeOutline from "../../layout/Sidebar/icons/subscribeOutline.svg";
 import boardOutline from "../../layout/Sidebar/icons/board_outline.svg";
 import { useCart } from "react-use-cart";
 import { AiOutlineClose } from "react-icons/ai";
-import sm_user from '../../assets/icons/sm-user.svg'
 import { ChatContext } from "../../context/ChatContext";
 import { Modal } from 'antd';
 import callRingtone from './../../assets/images/call.mp3'
-
-
-
-
+import Search from "./components/Search/Search";
 
 
 const Header = ({ isOpen }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const { pathname } = useLocation();
   const { isModalCallOpen, setIsModalCallOpen, callModalText, declineCall, iCall, acceptACall, isAccept, setIsAccept } = useContext(ChatContext);
   const { user } = useContext(AuthContext);
-  const [product, setProduct] = useState([]);
-  const { product: allProducts } = useContext(ProductContext);
-  const [isSearching, setIsSearching] = useState(false);
-  const searchRef = useRef(null);
   const [isUploadOptionsVisible, setIsUploadOptionsVisible] = useState(false);
   const [isNotificationOptionsVisible, setIsNotificationOptionsVisible] =
     useState(false);
-
-  const [inputValue, setInputValue] = useState("");
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(false);
   const ringtoneRef = useRef(new Audio(callRingtone)); // Создание рефа для аудиоэлемента
@@ -64,7 +48,6 @@ const Header = ({ isOpen }) => {
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
   };
-
 
   const searchBar = useRef(null);
   const menuLogo = useRef(null);
@@ -157,7 +140,6 @@ const Header = ({ isOpen }) => {
 
     };
   }, []);
-
   const logoOpacity = isOpen ? 0 : 1;
 
   const toggleUploadOptions = () => {
@@ -247,7 +229,6 @@ const Header = ({ isOpen }) => {
 
   useEffect(() => {
     if (isModalCallOpen && sessionStorage.iCall == 'false') {
-
       ringtoneRef.current.loop = true;
       ringtoneRef.current.play();
     } else {
@@ -255,14 +236,7 @@ const Header = ({ isOpen }) => {
       ringtoneRef.current.currentTime = 0; // Сброс времени воспроизведения
 
     }
-
-
   }, [isModalCallOpen]);
-
-
-
-
-
   if (
     location.pathname !== "/login" &&
     location.pathname !== "/register" &&
@@ -272,8 +246,8 @@ const Header = ({ isOpen }) => {
   ) {
     return (
       <>
-
         <div className="header__block">
+
           <Modal
             open={isModalCallOpen}
             onCancel={() => {
@@ -347,19 +321,12 @@ const Header = ({ isOpen }) => {
                             </g>
                           </svg>
                       }
-
-
-
                     </button>
-
                   }
                 </div>
               }
             </div>
-
           </Modal>
-
-
           <div className="d-none d-lg-block d-xl-block d-lg-block container-fluid xl_header top__header">
             <header className="sticky-top ">
               <Link className="logoLeft " to="/" style={{ opacity: logoOpacity, display: "none" }}>
@@ -422,7 +389,6 @@ const Header = ({ isOpen }) => {
                 </div>
                 {user ? (
                   <div className="content_left d-flex align-items-center justify-content-end gap-3">
-
                     <div className="content_left_icons">
                       <div className="upload-container">
                         <div className="upload " onClick={toggleUploadOptions}>
@@ -751,7 +717,6 @@ const Header = ({ isOpen }) => {
                   }
                 </div>
               </div>
-
               <div ref={searchBar} className="d-flex justify-content-between align-items-center gap-3  search__bar">
                 <div className="search-wrapper" ref={searchRef}>
                   <div className="search">
@@ -764,6 +729,10 @@ const Header = ({ isOpen }) => {
                         onChange={(e) => handleFilter(e.target.value)}
                         onBlur={handleBlur}
                       />
+                      <div className="microphone">
+                        <img src={microphone} alt="" />
+                      </div>
+
                     </div>
                     {inputValue && (
                       // <IoMdClose className="close_btn" onClick={() => setInputValue('')} />
@@ -818,10 +787,6 @@ const Header = ({ isOpen }) => {
         </div>
         
       </>
-
-
-
-
     );
   } else {
     return null;

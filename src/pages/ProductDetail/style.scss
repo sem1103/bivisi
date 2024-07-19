@@ -68,8 +68,10 @@
       height: 100px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       .viev_part {
+        margin-top: -24px;
+        padding-right: 10px;
         height: 100%;
         display: flex;
         justify-content: center;
