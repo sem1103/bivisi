@@ -19,6 +19,7 @@ const Call = () => {
      // generate Kit Token
       const appID = 404449518;
       const serverSecret = "f20de9d53af14b827bdd720d2a0f8410";
+      const appSing = '40fcae4dd39b5e1b65c8009641761119ac59a29ccdbeedbce3d635b3daf44f41'
       const roomID = window.location.pathname.split('/').reverse()[0];
       const userId = Date.now().toString();
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
