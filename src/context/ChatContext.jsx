@@ -11,17 +11,16 @@ export const ChatContext = createContext();
 
 export default function ChatProvider({ children }) {
     const {user} = useContext(AuthContext)
-    const CHAT_API = 'http://46.101.153.252:8000/api/chat/';
-    const SOCKET_URL = 'http://31.210.51.68:8300';
-
+    const CHAT_API = 'https://neymantech.online:8000/api/chat/';
+    const SOCKET_URL = 'https://neymantech.site';
+    
     let socketInstance = '';
     const USER_TOKKEN = localStorage.authTokens != undefined ? JSON.parse(localStorage.authTokens).access : false;
-
     const [socket, setSocket] = useState(null);
     const [allChats, setAllChats] = useState([]);
     const [chatId, setChatId] = useState(0);
     const [newMessage, setNewMessage] = useState('');
-    const [newChatUser, setNewChatUser] = useState(false);
+    const [newChatUser, setNewChatUser] = useState(null);
     const [messages, setMessages] = useState([]);
     const [lastMessages, setLastMessages] = useState([]);
     const [onlineUsers, setOnlineUsers] = useState([]);
@@ -33,7 +32,7 @@ export default function ChatProvider({ children }) {
     const [iCall, setICall] = useState(false);
     const [isAccept, setIsAccept] = useState();
     const [isVideoCall, setIsVideoCall] = useState(false)
-
+    let roomId = ''
   
 
 
@@ -102,10 +101,10 @@ export default function ChatProvider({ children }) {
         setMessages(res.data.response.response);
         let { firstName, lastName, picture, userId, username } = res.data.response.targetDetails;
         setNewChatUser({
-            avatar: picture,
-            first_name: firstName,
-            last_name: lastName,
-            id: userId,
+            picture,
+            firstName,
+            lastName,
+            userId,
             username
         });
 
@@ -155,7 +154,10 @@ export default function ChatProvider({ children }) {
         }
     },[])
 
-
+ // Функция для капитализации первой буквы строки
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
   
 
     const acceptACall = () => {
@@ -163,16 +165,18 @@ export default function ChatProvider({ children }) {
         newChatUser - bu mende secilmish userdi chatdan, ve eger secilmish varsa, o zaman onun id target kimi gonderirem, ve eger yoxdursa 
         o zaman localdan kimnen zeng gelirdise onun id gondeririy
         */
-        socket.emit('sendMessage', { target: newChatUser ? newChatUser.id : localStorage.fromCallUserId, message: {
-            action: `accept ${ newChatUser ? newChatUser.id : localStorage.fromCallUserId}`, // buda oxshar meqamdi
-            myId: user.user_id, // ve oz id`mizi gondeririy 
+        socket.emit('sendMessage', { target: newChatUser ? newChatUser.userId : localStorage.fromCallUserId, message: {
+            action: `call from ${ newChatUser ? newChatUser.userId : localStorage.fromCallUserId} accepted`, // buda oxshar meqamdi
+            callType: sessionStorage.isVideoCall,
+            userInfo: newChatUser,
+            fromUserId: String(user.user_id) // ve oz id`mizi gondeririy 
         } });
     }
    
     
     const declineCall = () =>{
-        socket.emit('sendMessage', { target: newChatUser ? newChatUser.id : localStorage.fromCallUserId, message: {
-            action: `decline ${ newChatUser ? newChatUser.id : localStorage.fromCallUserId}`,
+        socket.emit('sendMessage', { target: newChatUser ? newChatUser.userId : localStorage.fromCallUserId, message: {
+            action: `decline ${ newChatUser ? newChatUser.userId : localStorage.fromCallUserId}`,
             userInfo: newChatUser,
             fromUserName: JSON.parse(localStorage.authTokens).first_name
           } });
@@ -207,53 +211,85 @@ export default function ChatProvider({ children }) {
 
             socketInstance.on("newMessage", (data) => {
                 let { message, target } = data;
-                console.log(message);
-                console.log(user?.user_id);
              
                 message?.action && setIsModalCallOpen(true) // Eyer action varsa o zaman call modal pencereni activ edir 
                 
-                
-                if(!userss.some(item => +item == +target) && message.action == `call to ${target}`){ // Userin offline/online olmasini yoxlayir
+
+                if (!userss.some(item => +item == +target) && message.action == `call to ${target}`) { // Проверка, находится ли пользователь оффлайн
                     console.log('User is offline');
-
-                    setICall(true) // zeng mennen gedib
-                    sessionStorage.setItem('iCall', 'true')
-                    setCallModalText(`A call to ${message.userInfo.first_name.split('')[0].toUpperCase()}${message.userInfo.first_name.split('').slice(1).join('')}, but user is offline`)
-                    return
-                } else if(userss.some(item => +item == +target) && message.action == `call to ${target}` ){ // user online
+                
+                    setICall(true); // Вызов исходит от меня
+                    sessionStorage.setItem('iCall', 'true');
+                    setCallModalText(`A call to ${capitalizeFirstLetter(message.userInfo.firstName)}, but user is offline`);
+                    return;
+                } else if (userss.some(item => +item == +target) && message.action == `call to ${target}`) { // Проверка, находится ли пользователь онлайн
                     console.log('Calling to ' + target);
+                
+                    // Определение hashCode для строк
+                    String.prototype.hashCode = function() {
+                        let hash = 0, i, chr;
+                        if (this.length === 0) return hash;
+                        for (i = 0; i < this.length; i++) {
+                            chr = this.charCodeAt(i);
+                            hash = ((hash << 5) - hash) + chr;
+                            hash |= 0; // Преобразование в 32-битное целое число
+                        }
+                        return hash;
+                    };
+                    console.log(message.fromUserId.hashCode() < String(target).hashCode());
 
-                    if(+message.userInfo.id == +user?.user_id) { // target userin id si eger menim id bereberdir se, o zaman zeng zeng mennen deyil
-                        localStorage.setItem('fromCallUserId' , message.fromUserId) // localda bunu saxlayirig, cunku zengi accept edende lazimdi
+                    if(message.fromUserId.hashCode() < String(target).hashCode()){
+                      
+                        console.log(`${target} a`);
+                        console.log(`${message.fromUserId} a`);
+                        roomId = `${message.fromUserId}_${target}`
+                        localStorage.setItem('videoCallRoomId', roomId);
 
-                        setCallModalText(`${message.fromUserName.split('')[0].toUpperCase()}${message.fromUserName.split('').slice(1).join('')}  is calling`)
-                        sessionStorage.setItem('iCall', 'false')
-                        sessionStorage.setItem('isVideoCall', message.callType == 'video' ? 'video' : 'voice')
-                        return
+
                     }
                     else {
-                        setCallModalText(`A call to ${message.userInfo.first_name.split('')[0].toUpperCase()}${message.userInfo.first_name.split('').slice(1).join('')}`)
-                        setICall(true) // zeng mennen gedib
-                        sessionStorage.setItem('iCall', 'true')
-                        sessionStorage.setItem('isVideoCall', message.callType == 'video' ? 'video' : 'voice')
+                        console.log(`${target} b`);
+                        console.log(`${message.fromUserId} b`);
+                        roomId = `${target}_${message.fromUserId}`
+                        localStorage.setItem('videoCallRoomId', roomId);
 
-                        setIsVideoCall(message.callType == 'video');
-                        return  
+
                     }
-
-                    /*
-                    setICall(true) - lazimdir ki, call modal pencerede biz accept buttonu gorsedey ya yox, zeng mennen gedirse o zaman call modalda accept buttonu olmayacag
-                    */
-                }  else if( message.action == `accept ${target}`) {
-
-                    localStorage.setItem('videoCallRoomId' , message.myId + '_' + target ) // unikal room id yaradirig, bunun unikalligi o cur olur ki, bizim butun userlerini id`leri tekrar olunmur, 690 vurdum ki, reqem cox gorsensin sadece olarag
-                    setIsModalCallOpen(false); // modal pencereni baglayirig
-                    setIsAccept(true); // bu mene lazimdir ki, zengi goturende bashqa sehifeye redirect etsin
-                    return
-                } else if( message.action == `decline ${target}`){
-                    setIsModalCallOpen(false);  
-                    return
+                    // Сохранение идентификатора комнаты видеозвонка
+                
+               
+                
+                    if (+message.userInfo.userId == +user.user_id) { // Если ID целевого пользователя совпадает с текущим пользователем
+                        localStorage.setItem('fromCallUserId', message.fromUserId); // Сохранение ID вызывающего пользователя
+                
+                        setCallModalText(`${capitalizeFirstLetter(message.fromUserName)} is calling`);
+                        sessionStorage.setItem('iCall', 'false');
+                        sessionStorage.setItem('isVideoCall', message.callType == 'video' ? 'video' : 'voice');
+                        return;
+                    } else {
+                        setCallModalText(`A call to ${capitalizeFirstLetter(message.userInfo.firstName)}`);
+                        setICall(true); // Вызов исходит от меня
+                        sessionStorage.setItem('iCall', 'true');
+                        sessionStorage.setItem('isVideoCall', message.callType == 'video' ? 'video' : 'voice');
+                
+                        setIsVideoCall(message.callType == 'video');
+                        return;
+                    }
+                
+                    // Комментарий о необходимости setICall(true)
+                } else if (message.action == `call from ${target} accepted`) {
+                    console.log(data);
+                
+                    setIsModalCallOpen(false);
+                    setIsAccept(true);
+                    return;
+                } else if (message.action == `decline ${target}`) {
+                    setIsModalCallOpen(false);
+                    return;
                 }
+                
+               
+                
                
 
 
@@ -387,7 +423,7 @@ export default function ChatProvider({ children }) {
         setNewChatUser(newChatUser);
         localStorage.setItem('chatId', false)
         setChatId(false);
-        localStorage.setItem('newUserChatId', newChatUser.id)
+        localStorage.setItem('newUserChatId', newChatUser.userId)
     }
 
 
@@ -401,7 +437,7 @@ export default function ChatProvider({ children }) {
         );
         getChats();
         setMessages([]);
-        setNewChatUser(false);
+        setNewChatUser(null);
         localStorage.setItem('chatId', false)
 
     }

@@ -75,8 +75,8 @@ const Chat = () => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [messages]);
 
-  const containerHeight = messages.length && newChatUser.id || newChatUser ? "48vh" : "75vh";
-  const containerPadding = messages.length && newChatUser.id || newChatUser ? "48px" : "";
+  const containerHeight = messages.length && newChatUser.userId || newChatUser ? "48vh" : "75vh";
+  const containerPadding = messages.length && newChatUser.userId || newChatUser ? "48px" : "";
 
 
 
@@ -90,7 +90,7 @@ const Chat = () => {
     localStorage.setItem('chatId', false);
     setMessages([])
     setNewMessage([])
-    setNewChatUser(false)
+    setNewChatUser(null)
    }
    }, [])
 
@@ -160,6 +160,7 @@ const Chat = () => {
                               <ul>
                                 {
                                   findUser.map(item => {
+                                   
                                     return <li className="use__item" onClick={() => {
                                       setIsModalOpen(false)
 
@@ -173,7 +174,13 @@ const Chat = () => {
 
                                       } else {
                                         setIsShowMessages(true)
-                                        addChat(item)
+                                        addChat({
+                                          picture: item.avatar,
+                                          firstName: item.first_name,
+                                          lastName: item.last_name,
+                                          userId: item.id,
+                                          username: item.userName
+                                        })
                                         setTimeout(() => {
                                           window.innerWidth < 990 && window.scrollTo(0, document.body.scrollHeight);
                                         }, 100);
@@ -275,21 +282,21 @@ const Chat = () => {
                     <div className="d-flex align-items-center gap-3 message__user">
                       <div className="nickname">
                         <img src={empyAvatar} alt="" />
-                        {onlineUsers.some(item => +item == +newChatUser.id) && <hr className="is__online" />}
+                        {onlineUsers.some(item => +item == +newChatUser.userId) && <hr className="is__online" />}
                       </div>
                       <div className="d-flex flex-column active__user__info">
-                        <h2>{newChatUser.first_name} {newChatUser.last_name}</h2>
+                        <h2>{newChatUser.firstName} {newChatUser.lastName}</h2>
                         <p>{newChatUser?.username}</p>
                       </div>
                     </div>
                     <div className="nick_icons">
                       <div
                       onClick={() => {
-                        socket.emit('sendMessage', { target: newChatUser.id, message: {
-                          action: `call to ${newChatUser.id}`,
+                        socket.emit('sendMessage', { target: newChatUser.userId, message: {
+                          action: `call to ${newChatUser.userId}`,
                           userInfo: newChatUser,
                           fromUserName: JSON.parse(localStorage.authTokens).first_name,
-                          fromUserId: myId,
+                          fromUserId: String(myId),
                           callType: 'voice'
                         } });
 
@@ -303,11 +310,11 @@ const Chat = () => {
                      
                       <div className="video__call">
                       <button onClick={() => {
-                        socket.emit('sendMessage', { target: newChatUser.id, message: {
-                          action: `call to ${newChatUser.id}`,
+                        socket.emit('sendMessage', { target: newChatUser.userId, message: {
+                          action: `call to ${newChatUser.userId}`,
                           userInfo: newChatUser,
                           fromUserName: JSON.parse(localStorage.authTokens).first_name,
-                          fromUserId: myId,
+                          fromUserId: String(myId),
                           callType: 'video'
                         } });
 
@@ -331,7 +338,7 @@ const Chat = () => {
                                 else {
                                   getChats();
                                   setMessages([]);
-                                  setNewChatUser(false);
+                                  setNewChatUser(null);
                                   localStorage.setItem('chatId', 0)
                               }
 
