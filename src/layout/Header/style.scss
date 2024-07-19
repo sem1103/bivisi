@@ -7,11 +7,9 @@ header {
   justify-content: space-between;
   align-items: center;
   position: relative;
-
   .active {
     background: var(--Text-11, #23272e) !important;
   }
-
   .logoLeft {
     img {
       width: 184px;
@@ -19,80 +17,6 @@ header {
       flex-shrink: 0;
     }
   }
-
-  .search-wrapper {
-    position: relative;
-    width: 400px !important;
-  }
-
-  .search {
-    border-radius: 16px;
-    border: 1px solid var(--Gray-400, #292929);
-    display: flex;
-    justify-content: space-between;
-    padding: 9px 20px;
-    align-items: center;
-    gap: 10px;
-    align-self: stretch;
-
-    .search_content {
-      width: 100%;
-    }
-
-    img {
-      width: 15px;
-      height: 15px;
-    }
-
-    .close_btn {
-      color: #a2a8b7;
-      width: 20px;
-      height: 20px;
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
-    input {
-      background-color: transparent;
-      border: none;
-      outline: none;
-      color: white;
-      width: 100%;
-      font-weight: 400;
-      font-size: 15px;
-    }
-
-    input::placeholder {
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 24px;
-      color: var(--Gray-300, #525252);
-    }
-  }
-
-  .microphone {
-    border-radius: 16px;
-    border: 1px solid var(--Gray-400, #292929);
-    display: flex;
-    padding: 12px;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease;
-
-    &:hover {
-      border-radius: 16px;
-      background: var(--Gray-400, #292929);
-    }
-
-    img {
-      width: 20px;
-      height: 20px;
-    }
-  }
-
   .filter {
     display: flex;
     padding: 10px;
@@ -242,50 +166,6 @@ header {
   border-radius: 50%;
   font-size: 14px;
 }
-
-.search_result {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-  background: var(--Background-Color, #0f0f0f);
-  border-radius: 16px;
-  border: 1px solid var(--Text-14, #16181d);
-
-  .active {
-    background-color: #1b1d23;
-  }
-
-  .search_result_content {
-    width: 100%;
-    border-radius: 16px;
-    background: var(--Background-Color, #0f0f0f);
-
-    .not_found_result {
-      color: white;
-      font-size: 14px;
-      font-weight: 400;
-    }
-
-    .search_data {
-      display: block;
-      border-radius: 12px;
-      padding: 12px 24px;
-      color: var(--Text-2, #d1d4db);
-      font-family: Poppins;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 22px;
-
-      &:hover {
-        background-color: #23272e;
-      }
-    }
-  }
-}
-
 .upload-container {
   position: relative;
 
@@ -436,79 +316,6 @@ header {
       }
     }
   }
-
-  .search-wrapper {
-    position: relative;
-    z-index: 55555;
-    width: 100%;
-
-    .search {
-      border-radius: 16px;
-      border: 1px solid var(--Gray-400, #292929);
-      display: flex;
-      justify-content: space-between;
-      padding: 9px 20px;
-      align-items: center;
-      gap: 10px;
-
-      .search_content {
-        width: 100% !important;
-      }
-
-      img {
-        width: 15px;
-        height: 15px;
-      }
-
-      .close_btn {
-        color: #a2a8b7;
-        width: 20px;
-        height: 20px;
-        // justify-content: flex-end;
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-
-      input {
-        background-color: transparent;
-        border: none;
-        outline: none;
-        color: white;
-        width: 100% !important;
-      }
-
-      input::placeholder {
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 22px;
-        color: var(--Gray-300, #525252);
-      }
-    }
-  }
-
-  .microphone {
-    border-radius: 16px;
-    border: 1px solid var(--Gray-400, #292929);
-    display: flex;
-    padding: 11px;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease;
-
-    &:hover {
-      border-radius: 16px;
-      background: var(--Gray-400, #292929);
-    }
-
-    img {
-      width: 20px;
-      height: 20px;
-    }
-  }
-
   .filter {
     border-radius: 16px;
     border: 1px solid var(--Gray-400, #292929);
@@ -622,6 +429,7 @@ header {
     box-shadow: 0 0 8px 4px transparent;
   }
 }
+
 .fixed-menu {
   position: fixed;
   top: 50%;
@@ -629,10 +437,11 @@ header {
   right: 0;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
   z-index: 99;
- border-radius: 10px;
+  border-radius: 10px;
   background-color: #0f0f0f;
   padding: 10px;
-display: none;
+  display: none;
+
   .basket,
   .upload {
     width: 45px;
@@ -661,9 +470,17 @@ display: none;
     border-radius: 14px;
   }
 }
+
 @media (max-width:540px) {
-  .search-wrapper {
-    position: relative;
+  .sm_header {
+    .burger_menu {
+      .sm_login{
+        font-size: 14px;
+        padding: 9px 11px;
+        line-height: 20px;
+        gap: 2px;
+      }
+    }
   }
 
   .sm_header {
@@ -675,32 +492,18 @@ display: none;
       width: 124px;
     }
 
-    .microphone {
-      position: absolute;
-      z-index: 9999;
-      right: 73px;
-      border-right: none;
-      border-top: none;
-      border-bottom: none;
-    }
-  }
-}
 
-
-@media (max-width:1270px) {
-  .xl_header {
-    .search-wrapper {
-      width: 300px !important;
-    }
   }
 }
 
 @media (max-width:576px) {
-.fixed-menu{
-  display: block;
-}
+  .fixed-menu {
+    display: block;
+  }
+
   .sm_header .upload-container,
-  .sm_header .sm_ntf ,.sm_header .basket{
+  .sm_header .sm_ntf,
+  .sm_header .basket {
     display: none !important;
   }
 
@@ -720,44 +523,6 @@ display: none;
     font-size: 12px;
   }
 
-  .sm_header {
-    .search-wrapper {
-      .search {
-        padding: 8px 15px;
-        border-radius: 13px;
 
-        input {
-          &::placeholder {
-            font-size: 14px !important;
-          }
-        }
-      }
-    }
-  }
 }
-
-// @media (max-width:1090px) {
-//   .xl_header{
-//     .search-wrapper{
-//       width: 190px !important;
-//     }
-//   }
-// }
-
-// @media (max-width:1050px) {
-//   .xl_header{
-//     .search-wrapper{
-//       width: 170px !important;
-//     }
-//   }
-// }
-
-// @media (max-width:1030px) {
-//   .xl_header{
-//     .search-wrapper{
-//       width: 140px !important;
-//     }
-//   }
-// }
-
 
