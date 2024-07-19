@@ -402,7 +402,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                   >
                     <img src={chat} alt="" />
                   </div>
-                  <span>23</span>
+                  <span>{comments?.length}</span>
                 </div>
                 <div className=" pb-3">
                   <div className="icons">
@@ -433,7 +433,6 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
 
                       <div className="comments_heading  mt-3">
                         {comments?.map((comment) => {
-                          console.log(comment)
                           return (
                             <div className="d-flex gap-3 comments_list mt-3">
                               <div className="comment_avatar">

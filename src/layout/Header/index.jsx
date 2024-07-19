@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import "./style.scss";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import search from "../../assets/icons/search.svg";
-import microphone from "../../assets/icons/microphone.svg";
 import upload from "../../assets/icons/upload.svg";
 import logo from "../../assets/images/logoLight.svg";
 import Notification from "../../assets/icons/On.svg";
@@ -12,14 +10,10 @@ import Ntf from "../../assets/icons/ntf.svg";
 import ProfileMenu from "../../components/ProfileMenu";
 import login from "../../assets/icons/login.svg";
 import { AuthContext } from "../../context/authContext";
-import { ProductContext } from "../../context/ProductContext";
 import shortsOutline from "../Sidebar/icons/shorts-outline.svg";
 import videoOutline from "../Sidebar/icons/video-outline.svg";
-import rightIcon from "../../assets/images/rightIcon.svg";
-import leftIcon from "../../assets/images/leftIcon.svg";
 import burgermenu from "../../assets/images/burger-menu.svg";
 import filter from "../../assets/images/Filter.svg";
-import close from "../../assets/icons/close.svg";
 import cameraOutline from "../../layout/Sidebar/icons/camera-outline.svg";
 import helpOutline from "../../layout/Sidebar/icons/help-outline.svg";
 import home from "../../layout/Sidebar/icons/home.svg";
@@ -32,30 +26,19 @@ import subscribeOutline from "../../layout/Sidebar/icons/subscribeOutline.svg";
 import boardOutline from "../../layout/Sidebar/icons/board_outline.svg";
 import { useCart } from "react-use-cart";
 import { AiOutlineClose } from "react-icons/ai";
-import sm_user from '../../assets/icons/sm-user.svg'
 import { ChatContext } from "../../context/ChatContext";
 import { Modal } from 'antd';
 import callRingtone from './../../assets/images/call.mp3'
-
-
-
-
+import Search from "./components/Search/Search";
 
 
 const Header = ({ isOpen }) => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const { isModalCallOpen, setIsModalCallOpen, callModalText, declineCall, iCall, acceptACall, isAccept, setIsAccept } = useContext(ChatContext);
   const { user } = useContext(AuthContext);
-  const [product, setProduct] = useState([]);
-  const { product: allProducts } = useContext(ProductContext);
-  const [isSearching, setIsSearching] = useState(false);
-  const searchRef = useRef(null);
   const [isUploadOptionsVisible, setIsUploadOptionsVisible] = useState(false);
   const [isNotificationOptionsVisible, setIsNotificationOptionsVisible] =
     useState(false);
-
-  const [inputValue, setInputValue] = useState("");
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(false);
   const ringtoneRef = useRef(new Audio(callRingtone)); // Создание рефа для аудиоэлемента
@@ -64,70 +47,6 @@ const Header = ({ isOpen }) => {
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
   };
-
-
-  const handleFilter = (value) => {
-    setInputValue(value);
-    if (allProducts.results) {
-      if (value) {
-        setIsSearching(true);
-        const res = allProducts.results.filter((f) =>
-          f.name.toLowerCase().startsWith(value.toLowerCase())
-        );
-        setProduct(res);
-        if (res.length === 0) {
-          setProduct([]);
-        }
-      } else {
-        setProduct([]);
-        setIsSearching(false);
-      }
-    }
-  };
-
-  const handleBlur = () => {
-    if (!inputValue) {
-      setProduct([]);
-      setIsSearching(false);
-    }
-  };
-
-  const handleProductClick = () => {
-    setProduct([]);
-    setIsSearching(false);
-    setInputValue("");
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target) &&
-        !event.target.closest(".search_data")
-      ) {
-        setProduct([]);
-        setIsSearching(false);
-      }
-      if (
-        event.target.closest(".upload-options") === null &&
-        event.target.closest(".upload") === null
-      ) {
-        setIsUploadOptionsVisible(false);
-      }
-      if (
-        event.target.closest(".notification-options") === null &&
-        event.target.closest(".notification") === null
-      ) {
-        setIsNotificationOptionsVisible(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   const logoOpacity = isOpen ? 0 : 1;
 
   const toggleUploadOptions = () => {
@@ -217,7 +136,6 @@ const Header = ({ isOpen }) => {
 
   useEffect(() => {
     if (isModalCallOpen && sessionStorage.iCall == 'false') {
-
       ringtoneRef.current.loop = true;
       ringtoneRef.current.play();
     } else {
@@ -226,11 +144,7 @@ const Header = ({ isOpen }) => {
 
     }
 
-
   }, [isModalCallOpen]);
-
-
-
   if (
     location.pathname !== "/login" &&
     location.pathname !== "/register" &&
@@ -315,76 +229,20 @@ const Header = ({ isOpen }) => {
                             </g>
                           </svg>
                       }
-
-
-
                     </button>
-
                   }
                 </div>
               }
             </div>
-
           </Modal>
-
-
           <div className="d-none d-lg-block d-xl-block d-lg-block container-fluid xl_header top__header">
             <header className="sticky-top ">
               <Link className="logoLeft " to="/" style={{ opacity: logoOpacity, display: "none" }}>
                 <img src={logo} alt="" />
               </Link>
-
               <div className="d-flex align-items-center justify-content-end w-100 gap-2">
                 <div className="d-flex justify-content-center align-items-center gap-3">
-                  <div className="search-wrapper" ref={searchRef}>
-                    <div className="search">
-                      <div className="d-flex align-items-center gap-3 search_content">
-                        <img src={search} className="search_img" alt="" />
-                        <input
-                          type="text"
-                          placeholder="Search for videos"
-                          value={inputValue}
-                          onChange={(e) => handleFilter(e.target.value)}
-                          onBlur={handleBlur}
-                        />
-                      </div>
-                      {inputValue && (
-                        <img
-                          src={close}
-                          alt=""
-                          className="close_btn"
-                          onClick={() => setInputValue("")}
-                        />
-                      )}
-                    </div>
-                    {isSearching && inputValue && (
-                      <div className="search_result mt-2">
-                        <div className="search_result_content p-3">
-                          {product.length === 0 ? (
-                            <div className="p-3 not_found_result">
-                              Product not found!
-                            </div>
-                          ) : (
-                            product.map((d, i) => (
-                              <div className="mb-1" key={i}>
-                                <NavLink
-                                  to={`/product_detail/${d.id}`}
-                                  className="mb-0 search_data"
-                                  activeclassname="active"
-                                  onClick={handleProductClick}
-                                >
-                                  {d.name}
-                                </NavLink>
-                              </div>
-                            ))
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="microphone">
-                    <img src={microphone} alt="" />
-                  </div>
+                <Search setIsUploadOptionsVisible={setIsUploadOptionsVisible} setIsNotificationOptionsVisible={setIsNotificationOptionsVisible} />
                 </div>
                 {user ? (
                   <div className="content_left d-flex align-items-center justify-content-end gap-3">
@@ -698,7 +556,7 @@ const Header = ({ isOpen }) => {
                         <button className="sm_ntf">
                           <img src={Notification} alt="" />
                         </button>
-                        <NavLink 
+                        <NavLink
                           className="upload msg"
                           to="/chat"
                           activeclassname="active"
@@ -719,7 +577,7 @@ const Header = ({ isOpen }) => {
               </div>
 
               <div className="d-flex justify-content-between align-items-center gap-3 my-2 search__bar">
-                <div className="search-wrapper" ref={searchRef}>
+                {/* <div className="search-wrapper" ref={searchRef}>
                   <div className="search">
                     <div className="d-flex align-items-center gap-2 search_content">
                       <img src={search} alt="" />
@@ -730,6 +588,9 @@ const Header = ({ isOpen }) => {
                         onChange={(e) => handleFilter(e.target.value)}
                         onBlur={handleBlur}
                       />
+                      <div className="microphone">
+                        <img src={microphone} alt="" />
+                      </div>
                     </div>
                     {inputValue && (
                       // <IoMdClose className="close_btn" onClick={() => setInputValue('')} />
@@ -766,12 +627,9 @@ const Header = ({ isOpen }) => {
                       </div>
                     </div>
                   )}
-                </div>
+                </div> */}
+                <Search setIsUploadOptionsVisible={setIsUploadOptionsVisible} setIsNotificationOptionsVisible={setIsNotificationOptionsVisible} />
                 <div className="d-flex gap-2">
-                  <div className="microphone">
-                    <img src={microphone} alt="" />
-                  </div>
-
                   <div className="filter">
                     <img src={filter} alt="" />
                   </div>
@@ -785,15 +643,6 @@ const Header = ({ isOpen }) => {
           {
             user ? (
               <div className="d-flex flex-column gap-4">
-                <NavLink
-                  className="upload basket"
-                  to="/basket"
-                  activeclassname="active"
-                >
-                  <img src={Bag2} alt="" />
-
-                  <span className="basket_items_count">{totalUniqueItems}</span>
-                </NavLink>
                 <div className="upload-container">
                   <div className="upload " onClick={toggleUploadOptions}>
                     <img src={upload} alt="" />
@@ -817,25 +666,27 @@ const Header = ({ isOpen }) => {
                     </div>
                   )}
                 </div>
+                <NavLink
+                  className="upload basket"
+                  to="/basket"
+                  activeclassname="active"
+                >
+                  <img src={Bag2} alt="" />
+
+                  <span className="basket_items_count">{totalUniqueItems}</span>
+                </NavLink>
                 <button className="sm_ntf">
                   <img src={Notification} alt="" />
                 </button>
-                
+
 
               </div>
             ) : (
-              <NavLink to="/login" className=" sm_login ">
-                <img src={login} alt="" />
-                Login
-              </NavLink>
+              null
             )
           }
         </div>
       </>
-
-
-
-
     );
   } else {
     return null;

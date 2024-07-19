@@ -45,11 +45,19 @@
             /* 133.333% */
         }
 
-        img {
+        .basket-img {
             width: 372px;
             height: 184px;
             border-radius: 24px;
             background-color: #C2C2C2;
+
+            img {
+                width: 100%;
+                height: 100%;
+
+                border-radius: 24px;
+                object-fit: cover;
+            }
         }
 
         button {
@@ -62,6 +70,7 @@
             align-items: center;
 
             color: white;
+
             img {
                 width: 20px;
                 height: 20px;
@@ -211,6 +220,72 @@
             font-weight: 400;
             line-height: 24px;
             /* 150% */
+        }
+    }
+}
+
+@media(max-width:1200px) {
+    .basket {
+        .basket_card {
+            .basket-img {
+                width: 45%;
+                display: block;
+
+                height: auto;
+                height: 180px;
+            }
+
+            p {
+                margin-bottom: 10px;
+                line-height: 20px;
+                font-size: 18px;
+            }
+
+            span {
+                font-size: 20px;
+                line-height: 28px;
+            }
+
+            button {
+                padding: 10px;
+                width: 40px;
+                height: 40px;
+
+                svg {
+                    width: 16px;
+                }
+
+            }
+
+            .quantity {
+                font-size: 16px !important;
+            }
+        }
+    }
+}
+
+@media(max-width:576px) {
+    .basket_head.pb-4,.basket_head.pt-4{
+        padding: 15px  !important;
+        a{
+            font-size: 20px;
+        }
+    }
+    .basket {
+        .basket_card {
+            .close{
+                height: 35px;
+                width: 35px;
+                padding: 10px;
+                right: 0;
+                top: 0;
+                background-color: #16181D;
+            }
+            flex-direction: column;
+            .basket-img{
+                width: 100%;
+                height: 250px;
+            }
         }
     }
 }
