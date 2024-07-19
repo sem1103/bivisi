@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../context/authContext";
 
 const WishBtn = ({ ProductItemVideoCard }) => {
+  console.log(ProductItemVideoCard)
   const { user } = useContext(AuthContext);
   const axiosInstance = useAxios();
   const [in_wishlist, set_in_wishlist] = useState(false);
@@ -35,6 +36,7 @@ const WishBtn = ({ ProductItemVideoCard }) => {
   }, [ProductItemVideoCard?.id]);
 
   const handleWishlistToggle = async (product) => {
+   
     if (!user) {
       toast.warning("Please sign in");
     } else if (user.user_id === product.user.id) {
@@ -64,7 +66,7 @@ const WishBtn = ({ ProductItemVideoCard }) => {
   return (
     <img
       src={in_wishlist ? heartFull : heartOn}
-      alt=""
+      alt="wishlist"
       onClick={() => handleWishlistToggle(ProductItemVideoCard)}
       style={{ cursor: loading ? "not-allowed" : "pointer" }}
     />

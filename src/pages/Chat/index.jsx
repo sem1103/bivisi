@@ -75,8 +75,8 @@ const Chat = () => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [messages]);
 
-  const containerHeight = messages.length && newChatUser.userId || newChatUser ? "48vh" : "75vh";
-  const containerPadding = messages.length && newChatUser.userId || newChatUser ? "48px" : "";
+  const containerHeight = messages.length && newChatUser?.userId || newChatUser ? "48vh" : "75vh";
+  const containerPadding = messages.length && newChatUser?.userId || newChatUser ? "48px" : "";
 
 
 
@@ -113,8 +113,8 @@ const Chat = () => {
       <section className="chat_section">
         <div className="container-fluid h-100">
           <div className="row h-100">
-            <div className="col-lg-4 h-100">
-              <div className={`chats_list ${isShowMessages ? 'hide__chats' : ''}`}>
+            <div className={`col-lg-4 h-100 ${isShowMessages ? 'hide__chats' : ''}`}>
+              <div className={`chats_list `}>
                 <div className="chat__title">
                   <h1> Chat</h1>
 
@@ -175,7 +175,7 @@ const Chat = () => {
                                       } else {
                                         setIsShowMessages(true)
                                         addChat({
-                                          picture: item.avatar,
+                                          avatar: item.avatar,
                                           firstName: item.first_name,
                                           lastName: item.last_name,
                                           userId: item.id,
@@ -310,12 +310,12 @@ const Chat = () => {
                      
                       <div className="video__call">
                       <button onClick={() => {
-                        socket.emit('sendMessage', { target: newChatUser.userId, message: {
-                          action: `call to ${newChatUser.userId}`,
-                          userInfo: newChatUser,
-                          fromUserName: JSON.parse(localStorage.authTokens).first_name,
-                          fromUserId: String(myId),
-                          callType: 'video'
+                       socket.emit('sendMessage', { target: newChatUser.userId, message: {
+                        action: `call to ${newChatUser.userId}`,
+                        userInfo: newChatUser,
+                        fromUserName: JSON.parse(localStorage.authTokens).first_name,
+                        fromUserId: String(myId),
+                        callType: 'video'
                         } });
 
                        }
@@ -432,7 +432,7 @@ const Chat = () => {
                                   key={index}
                                   className={`message-text ${item.author ? "user" : "other"
                                     }`}
-                                  dangerouslySetInnerHTML={{ __html: item.message.split('\n').join('<br />') }}
+                                  dangerouslySetInnerHTML={{ __html: item?.message.split('\n').join('<br />') }}
                                 />
                                 <span
                                   style={{ alignSelf: item.author ? "end" : "start" }}

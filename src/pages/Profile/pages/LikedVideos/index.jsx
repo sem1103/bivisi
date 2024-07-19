@@ -1,34 +1,39 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./style.scss";
-import sort from "../../../../assets/icons/arrow-sort.svg";
-import filter from "../../../../assets/icons/filter.svg";
 import Main from "../../components/Main";
 import Categories from "../../components/Categories";
 import useAxios from "../../../../utils/useAxios";
 import VideoIcon from "../../../../assets/icons/VideoIcon.svg";
-import ReactPlayer from "react-player";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { handleAddToBasket } from "../../../../helpers";
-import { ProductContext } from "../../../../context/ProductContext";
 import WishBtn from "../../../../components/WishlistBtn";
 import bag from "../../../../assets/icons/Bag-3.svg";
 import blueHeart from "../../../../assets/icons/blueHeart.svg";
 import eye from "../../../../assets/icons/eye.svg";
-import { VideoContext } from "../../../../context/VideoContext";
 import { useCart } from "react-use-cart";
 import logo from "../../../../assets/images/logoLight.svg";
 import Plyr from "plyr-react";
-import { Select } from "antd";
-const { Option } = Select;
-const LikedVideos = ({item}) => {
-  const axiosInstance = useAxios();
+import { AuthContext } from "../../../../context/authContext";
+import { toast } from "react-toastify";
+import SortProduct from "../../../../components/SortProduct";
+const LikedVideos = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [videoDuration, setVideoDuration] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [likedProducts, setLikedProducts] = useState([]);
-  const { user } = useContext(ProductContext);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const playerRef = useRef(null);
+  const isPlayingRef = useRef(false);
+
+  const { addItem } = useCart();
+  const axiosInstance = useAxios();
+  const { user } = useContext(AuthContext);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axiosInstance.get(`/liked_products/`);
-        console.log(res.data.results);
         setLikedProducts(res.data.results);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -50,21 +55,6 @@ const LikedVideos = ({item}) => {
     return num;
   }
 
-
-  const { playingVideo, setPlaying } = useContext(VideoContext);
-  const [isHovered, setIsHovered] = useState(false);
-  const [videoDuration, setVideoDuration] = useState(null);
-  const { addItem } = useCart();
-  const [loading, setLoading] = useState(false);
-
-  const playerRef = useRef(null);
-
-  const [playerState, setPlayerState] = useState({
-    playing: false,
-  });
-
-  const [isLoading, setIsLoading] = useState(true);
-  const isPlayingRef = useRef(false);
 
   const playVideo = async () => {
     const player = playerRef.current?.plyr;
@@ -126,30 +116,6 @@ const LikedVideos = ({item}) => {
   };
 
 
-
-
-  const [selectedOption, setSelectedOption] = useState("");
-
-  const handleSelect = (value) => {
-    setSelectedOption(value);
-  };
-
-  const handleAllClick = () => {
-    setSelectedOption("");
-  };
-
-  const sortedProducts = [...likedProducts];
-  if (selectedOption === "option1") {
-    sortedProducts.sort((a, b) => a.product.name.localeCompare(b.product.name));
-  } else if (selectedOption === "option2") {
-    sortedProducts.sort((a, b) => b.product.name.localeCompare(a.product.name));
-  } else if (selectedOption === "option3") {
-    sortedProducts.sort((a, b) => a.product.price - b.product.price);
-  } else if (selectedOption === "option4") {
-    sortedProducts.sort((a, b) => b.product.price - a.product.price);
-  }
- console.log(sortedProducts)
-
   return (
     <>
       <Main />
@@ -169,29 +135,15 @@ const LikedVideos = ({item}) => {
                   Sort by
                 </div> */}
                 <div className="custom-select">
-                <Select
-                    defaultValue=""
-                    suffixIcon={null}
-                    className="select"
-                    popupClassName="custom-dropdown"
-                    prefixIcon={<img src={sort} alt="sort" width={20} />}
-                    value={selectedOption}
-                    onChange={handleSelect}
-                  >
-                    <Option value="">All</Option>
-                    <Option value="option1">A to Z</Option>
-                    <Option value="option2">Z to A</Option>
-                    <Option value="option3">From cheap to expensive</Option>
-                    <Option value="option4">From expensive to cheap</Option>
-                  </Select>
+              <SortProduct setSortedProducts={setLikedProducts} sortedProducts={likedProducts}/>
                 </div>
               </div>
             </div>
 
-            {sortedProducts && sortedProducts.length > 0 ? (
-              sortedProducts?.map((item) => {
+            {likedProducts && likedProducts.length > 0 ? (
+              likedProducts?.map((item) => {
                 return (
-                  <div className="col-lg-4 p-3">
+                  <div className="col-lg-4 p-3" key={item?.id}>
 
                     <div
                       className="videoCard"
@@ -262,13 +214,13 @@ const LikedVideos = ({item}) => {
                             src={bag}
                             alt=""
                             onClick={() => {
-                              if (user.user_id === item.id) {
+                              if (user.user_id === item.product.user.id) {
                                 toast.warning(
                                   "You cannot add your own product to the basket"
                                 );
                               } else {
-                                handleAddToBasket(item, user, axiosInstance);
-                                addItem(item);
+                                handleAddToBasket(item?.product, user, axiosInstance);
+                                addItem(item?.product);
                               }
                             }}
                           />

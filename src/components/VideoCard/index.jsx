@@ -23,15 +23,12 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   const [videoDuration, setVideoDuration] = useState(null);
   const { addItem } = useCart();
   const [loading, setLoading] = useState(false);
-console.log(ProductItemVideoCard)
-
-  const playerRef = useRef(null);
-
   const [playerState, setPlayerState] = useState({
     playing: false,
   });
-
   const [isLoading, setIsLoading] = useState(true);
+
+  const playerRef = useRef(null);
   const isPlayingRef = useRef(false);
 
   const playVideo = async () => {
@@ -110,7 +107,6 @@ console.log(ProductItemVideoCard)
     }
     return num;
   }
-
   return (
     <div className={`${colClass} p-2`}>
       <div

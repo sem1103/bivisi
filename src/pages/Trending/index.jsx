@@ -26,11 +26,7 @@ const Trending = () => {
     const videoProducts = trendVideo.filter(
         (item) => item.product_video_type[0]?.product_type === "Video"
     );
-
-
     const [selectedOption, setSelectedOption] = useState('');
-
-
     const handleSelect = (value) => {
         setSelectedOption(value);
     };

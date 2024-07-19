@@ -11,7 +11,7 @@ export const ChatContext = createContext();
 
 export default function ChatProvider({ children }) {
     const {user} = useContext(AuthContext)
-    const CHAT_API = 'https://neymantech.online:8000/api/chat/';
+    const CHAT_API = 'https://neymantech.online/api/chat/';
     const SOCKET_URL = 'https://neymantech.site';
     
     let socketInstance = '';
@@ -101,7 +101,7 @@ export default function ChatProvider({ children }) {
         setMessages(res.data.response.response);
         let { firstName, lastName, picture, userId, username } = res.data.response.targetDetails;
         setNewChatUser({
-            picture,
+            avatar: picture,
             firstName,
             lastName,
             userId,
@@ -213,70 +213,38 @@ export default function ChatProvider({ children }) {
                 let { message, target } = data;
              
                 message?.action && setIsModalCallOpen(true) // Eyer action varsa o zaman call modal pencereni activ edir 
-                
-
+                console.log(message);
                 if (!userss.some(item => +item == +target) && message.action == `call to ${target}`) { // Проверка, находится ли пользователь оффлайн
                     console.log('User is offline');
                 
                     setICall(true); // Вызов исходит от меня
                     sessionStorage.setItem('iCall', 'true');
                     setCallModalText(`A call to ${capitalizeFirstLetter(message.userInfo.firstName)}, but user is offline`);
+                    
                     return;
-                } else if (userss.some(item => +item == +target) && message.action == `call to ${target}`) { // Проверка, находится ли пользователь онлайн
+                } else if (message.action == `call to ${target}`) { // Проверка, находится ли пользователь онлайн
                     console.log('Calling to ' + target);
-                
-                    // Определение hashCode для строк
-                    String.prototype.hashCode = function() {
-                        let hash = 0, i, chr;
-                        if (this.length === 0) return hash;
-                        for (i = 0; i < this.length; i++) {
-                            chr = this.charCodeAt(i);
-                            hash = ((hash << 5) - hash) + chr;
-                            hash |= 0; // Преобразование в 32-битное целое число
-                        }
-                        return hash;
-                    };
-                    console.log(message.fromUserId.hashCode() < String(target).hashCode());
+                    const isIncomingCall = +message.fromUserId != +user.user_id;
 
-                    if(message.fromUserId.hashCode() < String(target).hashCode()){
-                      
-                        console.log(`${target} a`);
-                        console.log(`${message.fromUserId} a`);
-                        roomId = `${message.fromUserId}_${target}`
-                        localStorage.setItem('videoCallRoomId', roomId);
-
-
-                    }
-                    else {
-                        console.log(`${target} b`);
-                        console.log(`${message.fromUserId} b`);
-                        roomId = `${target}_${message.fromUserId}`
-                        localStorage.setItem('videoCallRoomId', roomId);
-
-
-                    }
                     // Сохранение идентификатора комнаты видеозвонка
-                
-               
-                
-                    if (+message.userInfo.userId == +user.user_id) { // Если ID целевого пользователя совпадает с текущим пользователем
+                    localStorage.setItem('videoCallRoomId', `${message.fromUserId}_${target}`);
+                    
+                    if (isIncomingCall) { // Входящий вызов
                         localStorage.setItem('fromCallUserId', message.fromUserId); // Сохранение ID вызывающего пользователя
-                
                         setCallModalText(`${capitalizeFirstLetter(message.fromUserName)} is calling`);
+                        setICall(false);
                         sessionStorage.setItem('iCall', 'false');
-                        sessionStorage.setItem('isVideoCall', message.callType == 'video' ? 'video' : 'voice');
-                        return;
-                    } else {
+                        sessionStorage.setItem('isVideoCall', message.callType === 'video' ? 'video' : 'voice');
+                        
+                    } else { // Исходящий вызов
                         setCallModalText(`A call to ${capitalizeFirstLetter(message.userInfo.firstName)}`);
-                        setICall(true); // Вызов исходит от меня
+                        setICall(true);
                         sessionStorage.setItem('iCall', 'true');
-                        sessionStorage.setItem('isVideoCall', message.callType == 'video' ? 'video' : 'voice');
-                
-                        setIsVideoCall(message.callType == 'video');
-                        return;
+                        sessionStorage.setItem('isVideoCall', message.callType === 'video' ? 'video' : 'voice');
+                        setIsVideoCall(message.callType === 'video');
+                        
                     }
-                
-                    // Комментарий о необходимости setICall(true)
+                    return
                 } else if (message.action == `call from ${target} accepted`) {
                     console.log(data);
                 

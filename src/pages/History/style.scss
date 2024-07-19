@@ -1,7 +1,10 @@
 .history_cards {
   width: 100%;
   padding: 10px;
-
+  .icons{
+    width: 100%;
+    justify-content: space-between !important ;
+  }
   h4 {
     color: #fff;
     /* Poppins/28/Medium */
