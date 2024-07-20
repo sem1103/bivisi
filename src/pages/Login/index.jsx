@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import "./style.scss";
 import logo from "../../assets/images/logoLight.svg";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import eyeoff from "../../assets/icons/eye-off.svg";
 import eye from "../../assets/icons/eye.svg";
@@ -69,12 +69,12 @@ const Login = () => {
         <div className="left"></div>
         <div className="right">
           <div className="logo mb-5">
-            <img src={logo} alt="" />
+          <Link to='/'><img src={logo} alt="" /></Link>
           </div>
           <div className="right-content">
             <h5>Welcome back!</h5>
             <p>
-              Already have an account?{" "}
+            Don’t you have an account?{" "}
               <span>
                 <NavLink to={"/register"}>Sign up</NavLink>
               </span>

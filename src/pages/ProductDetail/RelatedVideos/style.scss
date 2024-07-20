@@ -2,7 +2,7 @@
   width: 100%;
   height: auto;
   padding: 40px 0;
-  h1 {
+  .title {
     color: #fff;
 
     /* Poppins/28/Medium */
@@ -10,6 +10,14 @@
     font-size: 28px;
     font-style: normal;
     font-weight: 400;
+    margin-bottom: 10px;
     line-height: 36px; /* 128.571% */
+  }
+}
+@media(max-width:576px){
+  .related_videos{
+    .title{
+      font-size: 18px;
+    }
   }
 }

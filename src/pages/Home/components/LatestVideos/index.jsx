@@ -1,19 +1,10 @@
 import React, { useContext } from "react";
-import VideoCard from "../../../../components/VideoCard";
 import rightArrow from "../../../../assets/icons/right-arrow.svg";
 import camera_img from "../../../../layout/Sidebar/icons/camera-outline.svg"
-
 import "./style.scss";
 import { ProductContext } from "../../../../context/ProductContext";
 import { Link } from "react-router-dom";
-
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {
-  Pagination,
-  A11y,
-  Autoplay,
-} from "swiper/modules";
-
 import 'swiper/css';
 import LastVideoCard from "../../../../components/VideoCard";
 
@@ -59,11 +50,7 @@ const LatestVideos = () => {
             grabCursor={true}
             slidesPerView={3}
             spaceBetween={10}
-            modules={[Autoplay]}
-            autoplay={{ delay: 1000 }}
-            speed={2000}
             loop={true}
-
             breakpoints={{
               0: {
                 spaceBetween: 5,

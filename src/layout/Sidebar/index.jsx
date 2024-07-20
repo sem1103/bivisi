@@ -92,7 +92,7 @@ const Sidebar = ({ children, isOpen, setIsOpen }) => {
 
   return (
     <div className="d-flex">
-      <div className="d-none d-lg-block d-xl-block d-lg-block  b_container">
+      <div className="d-none d-xl-block  b_container">
         <div
           style={{ width: isOpen ? "300px" : "113px" }}
           className={

@@ -11,7 +11,6 @@ import Sidebar from "../layout/Sidebar";
 import Header from "../layout/Header";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
-import Categories from "../layout/Categories";
 import ResetPassword from "../pages/ResetPassword";
 import Lastest_Videos from "../pages/LatestVideos";
 import Profile from "../pages/Profile";
@@ -77,7 +76,7 @@ const AppRouter = () => {
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen}>
           <Header isOpen={isOpen} setIsOpen={setIsOpen} />
           <LoadingBarPreloader />
-          <Categories />
+        
           <Routes>
             <Route element={<Home />} path="/" />
             <Route element={<Register />} path="/register" />

@@ -130,13 +130,13 @@ const History = () => {
                 <img src={historyOutline} alt="history-icon" />
                 <h4>History</h4>
               </div>
+              
             </div>
+     
             <Swiper
               spaceBetween={20}
               slidesPerView={5}
-              modules={[Pagination, A11y, Autoplay, Navigation]}
-              autoplay={{ delay: 300 }}
-              speed={2000}
+              modules={[Pagination, A11y, Navigation]}
               loop={true}
               pagination={{ clickable: true }}
               breakpoints={{

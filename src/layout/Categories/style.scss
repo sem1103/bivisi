@@ -8,7 +8,7 @@
   // justify-content: space-between;
   gap: 15px;
   // padding: 20px 27px;
-  padding-top: 10px;
+  // padding-top: 10px;
   position: sticky;
   right: 0;
   // top: 13vh;
@@ -16,6 +16,9 @@
   overflow-x: auto; 
   white-space: nowrap; 
   position: relative;
+  .b_cat{
+    gap: 15px;
+  }
   button {
     display: flex;
     padding: 5px 24px;
@@ -34,6 +37,7 @@
     background-color: transparent;
     outline: none;
     transition: all .3s ease;
+    text-transform: capitalize;
     &:hover {
       border-radius: 16px;
       background: var(--Gray-400, #292929);

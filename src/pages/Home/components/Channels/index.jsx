@@ -8,11 +8,6 @@ import { BASE_URL } from "../../../../api/baseUrl";
 import { AuthContext } from "../../../../context/authContext";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import star_img from "../../../../layout/Sidebar/icons/star-outline.svg"
-import {
-  Pagination,
-  A11y,
-  Autoplay,
-} from "swiper/modules";
 
 import 'swiper/css';
 const PopularChannels = () => {
@@ -48,11 +43,7 @@ const PopularChannels = () => {
           grabCursor={true}
           slidesPerView={3}
           spaceBetween={10}
-          modules={[Autoplay]}
-          autoplay={{ delay: 1000 }}
-          speed={2000}
           loop={true}
-
           breakpoints={{
             0: {
               spaceBetween: 5,

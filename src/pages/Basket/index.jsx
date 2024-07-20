@@ -144,33 +144,33 @@ const Basket = () => {
           <div className="col-xl-4 col-lg-5">
             <div className="basket_summary">
               <div>
-                <h3 className="pb-3">Summary</h3>
-                <div className="d-flex justify-content-between ">
+                {/* <h3 className="pb-3">Summary</h3> */}
+                {/* <div className="d-flex justify-content-between ">
                   <p>Lorem ipsum dolor sit amet consectetur</p>
                   <span>$ 1000</span>
                 </div>
                 <div className="d-flex justify-content-between">
                   <p>Lorem ipsum dolor sit amet consectetur</p>
                   <span>$ 1000</span>
-                </div>
+                </div> */}
 
-                <hr />
+                {/* <hr /> */}
 
                 <div className="d-flex justify-content-between py-3">
-                  <p>Subtotal</p>
-                  <span>$ 10</span>
+                  <h3>Subtotal</h3>
+                  {/* <span>$ 10</span> */}
                 </div>
                 <div className="d-flex justify-content-between">
                   <p>Tax amount</p>
-                  <span>$ 10</span>
+                  <span>$ 0</span>
                 </div>
                 <div className="d-flex justify-content-between">
                   <p>Shipping cost</p>
-                  <span>$ 10</span>
+                  <span>$ 0</span>
                 </div>
                 <div className="d-flex justify-content-between">
-                  <p>Discount 10%</p>
-                  <span>- $ 10</span>
+                  <p>Discount </p>
+                  <span> $ 0</span>
                 </div>
 
                 <hr />
@@ -183,7 +183,7 @@ const Basket = () => {
               </div>
             </div>
 
-            <div className="promo_code mt-3">
+            {/* <div className="promo_code mt-3">
               <div>
                 <h4>Promo code</h4>
                 <div className="d-flex gap-3">
@@ -191,7 +191,7 @@ const Basket = () => {
                   <button>Apply</button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
