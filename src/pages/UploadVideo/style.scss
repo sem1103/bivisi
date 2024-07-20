@@ -10,6 +10,7 @@
     visibility: hidden;
 
   }
+ 
   .upload__icon {
     svg {
       max-width: 130px;
@@ -434,8 +435,14 @@
       }
 
       .react__map {
-
-        .mapboxgl-marker,
+      .address__map{
+        width: 100%;
+      }
+      div.mapboxgl-canvas-container.mapboxgl-interactive.mapboxgl-touch-drag-pan.mapboxgl-touch-zoom-rotate{
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+      }
         .mapboxgl-ctrl-bottom-right,
         .mapboxgl-ctrl-geocoder--pin-right,
         .mapboxgl-ctrl-geocoder--icon-search,
@@ -460,12 +467,17 @@
           border: 1px solid #0087cc8f !important;
           padding: 5px 15px !important;
           font: 14px Poppins !important;
+          background-color: #1b1c21 !important;
+          color: #e7e7e7 !important;
+          &::placeholder{
+            color: #e7e7e7;
+          }
         }
 
         .mapboxgl-canvas {
-          max-width: 250px;
+         
           border-radius: 14px;
-          max-height: 350px;
+         
         }
 
         .mapboxgl-ctrl-top-left {
@@ -743,9 +755,7 @@
       width: 100% !important;
     }
 
-    .mapboxgl-canvas {
-      max-height: 250px;
-    }
+   
   }
 }
 
@@ -769,6 +779,10 @@
   .upload_video .upload_video_content .select_form .react__map .mapboxgl-map {
     flex-direction: column-reverse;
     align-items: center;
+  }
+
+  .address__map .mapboxgl-ctrl-top-left .mapboxgl-ctrl{
+    margin: 10px 10px 0 10px !important;
   }
 
 
