@@ -6,12 +6,6 @@ import { ProductContext } from "../../../../context/ProductContext";
 import { Link } from "react-router-dom";
 import video_img from "../../../../layout/Sidebar/icons/video-outline.svg"
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {
-  Pagination,
-  A11y,
-  Autoplay,
-} from "swiper/modules";
-
 import 'swiper/css';
 const TopVideo = () => {
   const { product, setProduct, selectedCategory } = useContext(ProductContext);
@@ -57,11 +51,7 @@ const TopVideo = () => {
             grabCursor={true}
             slidesPerView={3}
             spaceBetween={10}
-            modules={[Autoplay]}
-            autoplay={{ delay: 1000 }}
-            speed={2000}
             loop={true}
-
             breakpoints={{
               0: {
                 spaceBetween: 5,

@@ -86,7 +86,7 @@ const Categories = () => {
 
   return (
     <section className="b_categories ">
-      <div className="container-fluid d-flex align-items-center gap-3 b_cat">
+      <div className="container-fluid d-flex align-items-center b_cat">
         <button
           onClick={() => setSelectedCategory(null)}
           className={selectedCategory === null ? "selected" : ""}

@@ -6,9 +6,9 @@ import like from "../../../assets/icons/like.svg";
 import replay from "../../../assets/icons/replay-rectangle.png";
 import "./style.scss";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import edit from "../../../assets/icons/edit.svg";
+import { FaChevronDown } from "react-icons/fa6";
 import delete_img from "../../../assets/icons/delete.svg";
-import { Modal, Button } from "antd";
+import { Modal } from "antd";
 
 const CommentsComponent = ({ productDetail }) => {
   const [comments, setComments] = useState([]);
@@ -19,6 +19,7 @@ const CommentsComponent = ({ productDetail }) => {
   const [deleteCommentId, setDeleteCommentId] = useState(null);
   const [deleteIsSubComment, setDeleteIsSubComment] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [showSubCommentId, setShowSubCommentId] = useState(null);
   const menuRef = useRef(null);
   const axiosInstance = useAxios();
   const { user, userDetails } = useContext(AuthContext);
@@ -228,6 +229,10 @@ const CommentsComponent = ({ productDetail }) => {
     userDetails?.avatar ||
     "https://as2.ftcdn.net/v2/jpg/05/49/98/39/1000_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg";
 
+    const toggleSubComment = (commentId) => {
+      setShowSubCommentId((prevId) => (prevId === commentId ? null : commentId));
+    };
+  
   return (
     <>
       <Modal
@@ -243,7 +248,7 @@ const CommentsComponent = ({ productDetail }) => {
       <div className="write_comment pt-5">
         <div className="user_comment_post_area">
           <div className="user_img">
-            <img src={avatarImage} alt="" />
+            <img src={avatarImage} alt="avatarImage" />
           </div>
           <form
             className="comment_form"
@@ -252,7 +257,7 @@ const CommentsComponent = ({ productDetail }) => {
               handlePostComment();
             }}
           >
-            <h1>{user?.username}</h1>
+            <div className="username">{user?.username}</div>
             <input
               type="text"
               value={user_comment}
@@ -276,10 +281,10 @@ const CommentsComponent = ({ productDetail }) => {
 
           {comments && comments.length > 0 ? (
             comments.map((comment) => (
-              <div key={comment.id} className="mb-5">
+              <div key={comment.id} className="mb-2">
                 <div className="d-flex align-items-start gap-3 ">
                   <div className="comment_avatar">
-                    <img src={comment?.user?.avatar} alt="" />
+                    <img src={comment?.user?.avatar||avatarImage} alt="avatarImage" />
                   </div>
                   <div className="w-100">
                     <h5 className="comment_user">{comment.user?.name}</h5>
@@ -327,15 +332,14 @@ const CommentsComponent = ({ productDetail }) => {
                       )}
                     </div>
                     <form
-                      className={`reply-form ${
-                        replyToCommentId === comment.id ? "active" : ""
-                      }`}
+                      className={`reply-form ${replyToCommentId === comment.id ? "active" : ""
+                        }`}
                       onSubmit={(e) => {
                         e.preventDefault();
                         handlePostSubComment();
                       }}
                     >
-                      <h1>{user.username}</h1>
+                      <div className="reply-username">{user.username}</div>
                       <input
                         type="text"
                         value={user_comment_sub}
@@ -347,8 +351,12 @@ const CommentsComponent = ({ productDetail }) => {
                       />
                       <button type="submit">Publish</button>
                     </form>
-                    {/* Render sub-comments */}
-                    {comment.sub_comments &&
+                    {comment.sub_comments.length > 0 && (
+                      <button className={`reply-btn ${showSubCommentId === comment.id && "active"} `} onClick={() => toggleSubComment(comment.id)}>
+                        <FaChevronDown /> {comment.sub_comments.length} reply
+                      </button>
+                    )}
+                    {comment.sub_comments &&showSubCommentId === comment.id&&
                       comment.sub_comments.length > 0 && (
                         <div className="sub-comments">
                           {comment.sub_comments.map((subComment) => (
@@ -357,7 +365,7 @@ const CommentsComponent = ({ productDetail }) => {
                                 <div className="comment_avatar">
                                   <p className="mb-0">
                                     <img
-                                      src={subComment?.user?.avatar}
+                                      src={subComment?.user?.avatar||avatarImage}
                                       alt=""
                                     />
                                   </p>

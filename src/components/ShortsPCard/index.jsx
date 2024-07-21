@@ -4,12 +4,9 @@ import bag from "../../assets/icons/Bag-3.svg";
 import { handleAddToBasket } from "../../helpers";
 import { useCart } from "react-use-cart";
 import Map, { Marker } from 'react-map-gl';
-
 import shortsp_img from "../../assets/images/shorts-page-card.png";
 import like from "../../assets/icons/like-light.svg";
 import chat from "../../assets/icons/chat-ligth.svg";
-import heart from "../../assets/icons/heart-light.svg";
-import share from "../../assets/icons/share-light.svg";
 import { FaChevronDown } from "react-icons/fa6";
 import ReactPlayer from "react-player";
 import useAxios from "../../utils/useAxios";
@@ -23,7 +20,6 @@ import edit from "../../assets/icons/edit.svg";
 import close from "../../assets/icons/close.svg";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import replay from "../../assets/icons/replay-rectangle.png";
-import Comments from "../../pages/ProductDetail/Comments";
 import { Modal } from "antd";
 import ShareModal from "../ShareModal";
 import eye from "../../assets/icons/eye.svg";
@@ -34,7 +30,6 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   const [liked, setLiked] = useState(false);
   const [animate, setAnimate] = useState(false);
   const [openComment, setOpenComment] = useState(false);
-  const [openDelComment, setOpenDComment] = useState(false);
   const { addItem } = useCart();
   const [showSubCommentId, setShowSubCommentId] = useState(null);
   const playerRef = useRef(null);
@@ -561,7 +556,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                     <img src={comment?.user?.avatar ?? avatarImage} alt="" />
                                   </div>
                                   <div className="d-flex flex-column align-items-start justify-content-cneter">
-                                    <h1>{user.username}</h1>
+                                    <div className="reply-username">{user.username}</div>
                                     <input
                                       type="text"
                                       value={user_reply}
@@ -593,7 +588,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                               <div className="comment_avatar">
                                                 <p className="mb-0">
                                                   <img
-                                                    src={avatarImage}
+                                                    src={subComment?.user?.avatar||avatarImage}
                                                     alt=""
                                                   />
                                                 </p>

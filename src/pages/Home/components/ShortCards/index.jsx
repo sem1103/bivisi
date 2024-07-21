@@ -5,12 +5,6 @@ import "./style.scss";
 import { ProductContext } from "../../../../context/ProductContext";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {
-  Pagination,
-  A11y,
-  Autoplay,
-} from "swiper/modules";
-
 import 'swiper/css';
 const ShortCards = () => {
   const { product, selectedCategory } = useContext(ProductContext);
@@ -80,9 +74,6 @@ const ShortCards = () => {
               grabCursor={true}
               slidesPerView={3}
               spaceBetween={10}
-              modules={[Autoplay]}
-              autoplay={{ delay: 1000 }}
-              speed={2000}
               loop={true}
 
               breakpoints={{
