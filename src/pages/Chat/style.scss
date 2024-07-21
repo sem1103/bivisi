@@ -775,7 +775,7 @@ button.back__top{
 }
 
 @media only screen and (width < 990px) {
-  
+
   button.back__top{
     display: flex;
     justify-content: start;
@@ -783,27 +783,29 @@ button.back__top{
     background: transparent;
     border: 0;
     outline: 0;
-    margin: 25px 0 24px 0;
+    margin: 24px 0 0 0 ;
   }
   .hide__chats{
     display: none;
   }
+ 
   div.messages__side{
     display: none;
     flex-direction: column;
-    height: 95vh !important;
+    height: 90vh !important;
     opacity: 0;
     &.show__messages{
       display: flex;
       animation: showMessages 2.5s ease-in-out forwards;
     }
+    
     .chat_messages{
       padding: 12px 28px !important;
     }
     .messages__display{
       display: flex;
       flex-direction: column;
-      height: 100%;
+      height: 80%;
     }
   }
   .chat_section .chat_messages_header .nick_icons{

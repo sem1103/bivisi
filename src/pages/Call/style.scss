@@ -1,9 +1,16 @@
 .call_section {
     width: 100%;
-    height: auto;
+    max-height: 100vh;
     padding: 14px 20px;
     transition: all 0.3s ease;
+    overflow: hidden;
+    .BYpXSnOHfrC2td4QRijO{
+        max-height: 90vh;
+        & > div{
+            max-height: 90vh;
 
+        }
+    }
     .call_box {
         height: 620px;
         border-radius: 24px;

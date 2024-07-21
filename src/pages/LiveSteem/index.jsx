@@ -137,7 +137,7 @@ export default function LiveStreams() {
 
                 <div className="product__detail">
                     <div className="product__content">
-                        <NavLink to={'/product_detail/'+allStreams[randomIndex]?.product_detail.id} className={'product__link'} />
+                        <NavLink to={'/product_detail/'+allStreams[randomIndex]?.product_detail.id} onClick={() => zp.current?.destroy()} className={'product__link'} />
                         <div className="product__img">
                             <img src={allStreams[randomIndex]?.product_detail.cover_image} alt="" />
                         </div>
