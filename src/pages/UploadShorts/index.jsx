@@ -132,7 +132,7 @@ const UploadV = () => {
           cover_image: null,
           category: [],
           phone_number: "+994",
-          product_type: "Video",
+          product_type: "Shorts",
           price: "",
           original_video: null,
         })
