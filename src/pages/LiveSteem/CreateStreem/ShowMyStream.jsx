@@ -62,7 +62,7 @@ export default function ShowMyStream() {
                         console.log('Go live');
 
 
-                        let res = await axios.post('https://neymanacademy.shop/api/core/stream/', {
+                        let res = await axios.post('https://bivisibackend.store/api/core/stream/', {
                             room_id: roomId,
                             user_name: JSON.parse(localStorage.authTokens).username,
                             room_name: localStorage.roomName,
@@ -78,10 +78,10 @@ export default function ShowMyStream() {
                     },
                     onLiveEnd: async () => {
                         console.log('live end');
-                        let res = await axios.delete('https://neymanacademy.shop/api/core/stream/delete/' + zp.current.getRoomID())
+                        let res = await axios.delete('https://bivisibackend.store/api/core/stream/delete/' + zp.current.getRoomID())
                     },
                     onLeaveRoom: async () => {
-                        let res = await axios.delete('https://neymanacademy.shop/api/core/stream/delete/' + roomId)
+                        let res = await axios.delete('https://bivisibackend.store/api/core/stream/delete/' + roomId)
                         console.log(res.data);
                     },
                     showPreJoinView: false,
@@ -110,7 +110,7 @@ export default function ShowMyStream() {
 
         }
         return () => {
-            axios.delete('https://neymanacademy.shop/api/core/stream/delete/' + roomId)
+            axios.delete('https://bivisibackend.store/api/core/stream/delete/' + roomId)
             if (zp.current) {
                 zp.current.destroy()
                 localStorage.setItem('isJoined', 'false')

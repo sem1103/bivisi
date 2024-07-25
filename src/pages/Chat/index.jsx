@@ -46,7 +46,7 @@ const Chat = () => {
 
   const searchUser = async (value) => {
     if (value) {
-      let res = await axios.get(`https://neymanacademy.shop/api/user/users/?search=${value}`, {
+      let res = await axios.get(`https://bivisibackend.store/api/user/users/?search=${value}`, {
         headers: {
           Authorization: `Bearer ${USER_TOKKEN}`
         }

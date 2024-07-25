@@ -29,7 +29,7 @@ const TopVideos = () => {
 
 
     const getData = async () => {
-        let res = await axios.get('https://neymanacademy.shop/api/product/');
+        let res = await axios.get('https://bivisibackend.store/api/product/');
         console.log(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
 
        

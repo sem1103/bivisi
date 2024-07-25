@@ -109,7 +109,7 @@ const UploadV = () => {
     const fetchData = async () => {
       try {
         const categoryRes = await axios.get(
-          "https://neymanacademy.shop/api/categories/"
+          "https://bivisibackend.store/api/categories/"
         );
         setCategory(categoryRes.data.results);
         if(editVideo) {
