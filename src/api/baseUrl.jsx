@@ -1,2 +1,2 @@
-export const BASE_URL = "https://neymanacademy.shop/api";
+export const BASE_URL = "https://bivisibackend.store/api";
 
