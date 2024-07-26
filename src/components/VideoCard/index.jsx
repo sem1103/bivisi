@@ -15,6 +15,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import logo from "../../assets/images/logoLight.svg";
 import Plyr from "plyr-react";
 import eye from "../../assets/icons/eye.svg";
+import getCurrencyByCountry from "../../utils/getCurrencyService";
 
 const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   const { user } = useContext(AuthContext);
@@ -27,6 +28,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
     playing: false,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const {countryCurrencySymbol} = getCurrencyByCountry()
 
   const playerRef = useRef(null);
   const isPlayingRef = useRef(false);
@@ -126,7 +128,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
         <div className="main">
 
           <img className="card_logo" src={logo} alt="" />
-          <span className="card_price">$ {ProductItemVideoCard?.price}</span>
+          <span className="card_price">{countryCurrencySymbol} {ProductItemVideoCard?.price}</span>
 
           <img
             className={`coverImage `}
