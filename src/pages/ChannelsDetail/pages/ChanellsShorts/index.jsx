@@ -33,7 +33,7 @@ const ChannelsShorts = () => {
       <div className="channels_shorts">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-12 mb-3">
+            <div className="col-lg-12">
               <h6>Shorts</h6>
             </div>
             {channels.map((item) => {

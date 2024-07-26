@@ -11,6 +11,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import InputMask from 'react-input-mask';
 import { ChatContext } from '../../context/ChatContext';
+import { BASE_URL } from '../../api/baseUrl';
 
 
 const TopVideos = () => {
@@ -29,7 +30,7 @@ const TopVideos = () => {
 
 
     const getData = async () => {
-        let res = await axios.get('https://neymanacademy.shop/api/product/');
+        let res = await axios.get(`${BASE_URL}/product/`);
         console.log(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
 
        
@@ -81,7 +82,7 @@ const TopVideos = () => {
         <div className='top_page_videos'>
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-lg-12 d-flex align-items-center py-4 flex-wrap page__top">
+                    <div className="section_title col-lg-12 d-flex align-items-center  flex-wrap page__top">
                         <div className='d-flex align-items-center gap-2'>
                             <img width={27} src={videoOutline} alt="" />
                             <h4 className='mt-1'>Top videos</h4>

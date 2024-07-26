@@ -6,7 +6,12 @@
   overflow-x: auto;
   gap: 9px;
   margin: 10px !important;
- 
+  padding-bottom: 10px;
+  &::-webkit-scrollbar {
+   
+    height: 3px;
+  }
+
   .active {
     border-radius: 16px !important;
     background: var(--Text-11, #23272e) !important;

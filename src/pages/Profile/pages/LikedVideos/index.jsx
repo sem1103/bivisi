@@ -123,7 +123,7 @@ const LikedVideos = () => {
       <div className="liked_videos_profile">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  flex-wrap liked__categories">
+            <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  liked__categories">
               <h1>Liked videos</h1>
               <div className="d-flex gap-3">
                 {/* <button className="liked_videos_filter">

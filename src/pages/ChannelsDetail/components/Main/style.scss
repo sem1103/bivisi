@@ -99,5 +99,62 @@
 
 }
 
+@media(max-width:768px){
+   
+    .main_section {
+        padding-top: 10px;
 
+        .channels_info {
 
+            .subs_btn {
+                button{
+                    font-size: 15px;
+                    padding: 10px 20px;
+                }
+            }
+            .chanells_img_content{
+                width: 150px;
+                height: 150px;
+            }
+        }
+    }
+}
+@media(max-width:576px){
+
+    .main_section {
+
+        .channels_info {
+            height: auto;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding-left: 10px;
+            flex-direction: column;
+            .channels_text_content{
+                width: 100%;
+                height: auto;
+                display: flex;
+                align-items: flex-start;
+                flex-direction: column;
+                h4{
+                    font-size: 15px;
+                    margin-bottom: 4px;
+                }
+                p{
+                    font-size: 13px;
+                }
+            }
+            .subs_btn {
+                button{
+                    font-size: 15px;
+                    padding: 10px 20px;
+                }
+            }
+            .chanells_img_content{
+                width: 120px;
+                height: 120px;
+                transform: translate(0);
+                margin: -80px 0 20px 0;
+            }
+        }
+    }
+}

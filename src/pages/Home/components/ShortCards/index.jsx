@@ -35,17 +35,17 @@ const ShortCards = () => {
       <section className="shortCards">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
+            <div className="col-lg-12 d-flex justify-content-between align-items-center">
               <div className="section__title">
                 <div className="shorts_logo">
                   <svg
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    xmlnxlink="http://www.w3.org/1999/xlink"
                     x="0px"
                     y="0px"
                     viewBox="0 0 168.071 168.071"
-                    xml:space="preserve">
+                    xmlSpace="preserve">
                     
                     <g>
                       <g>

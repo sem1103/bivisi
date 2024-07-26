@@ -53,7 +53,7 @@ const Subscription = () => {
     <div className="subscription">
       <div className="container-fluid">
         <div className="row">
-          <div className="col-lg-12 d-flex justify-content-between align-items-center py-4">
+          <div className="col-lg-12 d-flex justify-content-between align-items-center section_title">
             <div className="d-flex align-items-center gap-2">
               <img width={27} src={subscribeOutline} alt="subscribeOutline" />
               <h4 className="mt-1">Your subscriptions</h4>

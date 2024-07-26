@@ -163,7 +163,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
 
           >
             <div className="d-flex w-100 justify-content-between align-items-center">
-              <h1>{ProductItemVideoCard.user.name}</h1>
+              <div className="user_name">{ProductItemVideoCard.user.name}</div>
               <h6>
                 <img src={blueHeart} alt="" />
                 {ProductItemVideoCard.like_count}

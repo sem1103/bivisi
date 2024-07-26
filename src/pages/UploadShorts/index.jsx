@@ -15,6 +15,7 @@ import getCurrencyByCountry from "../../utils/getCurrencyService";
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useLocation, useNavigate } from "react-router-dom";
 import '../ProductDetail/map.scss'
+import { BASE_URL } from "../../api/baseUrl";
 
 
 const UploadV = () => {
@@ -109,7 +110,7 @@ const UploadV = () => {
     const fetchData = async () => {
       try {
         const categoryRes = await axios.get(
-          "https://neymanacademy.shop/api/categories/"
+          `${BASE_URL}/categories/`
         );
         setCategory(categoryRes.data.results);
         if(editVideo) {

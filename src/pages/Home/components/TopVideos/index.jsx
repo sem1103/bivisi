@@ -37,11 +37,10 @@ const TopVideo = () => {
     <section className="topVideos">
       <div className="container-fluid">
         <div className="row">
-          <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
+          <div className="col-lg-12 d-flex justify-content-between align-items-center">
             <div className="section__title">
               <img src={video_img} alt="" width={27} />
               <h4>Top videos</h4>
-
             </div>
             <Link to="/top_videos">
               See all <img src={rightArrow} alt="" />

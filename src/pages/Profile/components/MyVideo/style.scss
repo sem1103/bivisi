@@ -131,3 +131,17 @@
     }
   }
 }
+@media(max-width:576px){
+  .my_video_profile {
+ .custom-select .ant-select .ant-select-selector{
+  height: 45px;
+ }
+    .myvideo_upload{
+      width: 45px;
+      height: 45px;
+    }
+    h1{
+      font-size: 18px;
+    }
+  }
+}

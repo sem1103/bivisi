@@ -173,13 +173,13 @@ const Shorts = () => {
     <div className="shorts_page">
       <div className="container-fluid shorts_page_content">
         <div className="row ">
-          <div className="col-lg-12 d-flex justify-content-between align-items-start pt-4">
+          <div className="col-lg-12 d-flex justify-content-between align-items-start">
             <div className="page__title">
               <div className="shorts_logo">
                 <svg
                   version="1.1"
                   xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
                   x="0px"
                   y="0px"
                   viewBox="0 0 168.071 168.071"
@@ -208,7 +208,7 @@ const Shorts = () => {
               Create
             </button>
           </div>
-          <div className="text-center pt-5" style={{ overflow: "hidden" }}>
+          <div className="text-center pt-2" style={{ overflow: "hidden" }}>
 
             <div className="slider" ref={sliderRef}>
               <Swiper

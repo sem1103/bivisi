@@ -62,7 +62,7 @@ const MainChannels = () => {
           ></div>
           <div>
             <h4>{channelData?.username}</h4>
-            <p>   {channelData.bio}</p>
+           {channelData?.bio&& <p>{channelData?.bio}</p>}
             <p>
               {showFollowersCount && (
                 <span className="me-2">{followersCount}{subscriberText}</span>

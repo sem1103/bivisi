@@ -26,8 +26,8 @@ const About = () => {
             )}
           </div>
 
-          <div className="my_about_info pt-4">
-            <h5>Contact information</h5>
+          <div className="my_about_info">
+            <h1>Contact information</h1>
 
             <div className="mt-4">
               <div className="d-flex align-items-center gap-3">
@@ -35,15 +35,15 @@ const About = () => {
                 <span>{userDetails?.email}</span>
               </div>
 
-              <div className="d-flex align-items-center gap-3 mt-2">
+              {/* <div className="d-flex align-items-center gap-3 mt-2">
                 <img src={call} alt="" />
-                <span>+994 12 345 67 89</span>
+                <span>{userDetails?.phone}</span>
               </div>
 
               <div className="d-flex align-items-center gap-3 mt-2">
                 <img src={whatsapp} alt="" />
-                <span>+994 12 345 67 89</span>
-              </div>
+                <span>{userDetails?.phone}</span>
+              </div> */}
             </div>
           </div>
         </div>

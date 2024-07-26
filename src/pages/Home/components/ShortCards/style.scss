@@ -3,6 +3,8 @@
   height: auto;
   padding: 12px 0;
 
+  .section__title{
+    margin-bottom: 15px;
   h4 {
     color: #fff;
     /* Poppins/28/Medium */
@@ -13,7 +15,7 @@
     line-height: 36px;
     /* 128.571% */
   }
-
+  }
   a {
     color: #f6f3f4;
 
@@ -36,9 +38,32 @@
 
     svg {
       color: #fff;
-      width: 30px !important;
+      width: 30px;
       height: 30px;
       padding-left: 2px;
+    }
+  }
+}
+
+@media(max-width:576px) {
+  .shortCards {
+
+
+  .section__title{
+    margin-bottom: 5px;
+    h4 {
+      font-size: 16px;
+      line-height: 30px;
+    }
+  }
+
+
+    .shorts_logo {
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
     }
   }
 }

@@ -525,6 +525,7 @@ header {
       border-radius: 12px;
       border: 1px solid var(--Text-11, #23272E);
       background-color: transparent;
+
       img {
         width: 18px;
       }
@@ -547,6 +548,21 @@ header {
 
     .search-wrapper {
       display: none;
+    }
+  }
+}
+
+@media(max-width:576px) {
+
+  .upload-options {
+    border-radius: 16px;
+    padding: 5px;
+    a{
+      font-size: 15px;
+      padding: 8px;
+      img{
+        width: 22px;
+      }
     }
   }
 }
