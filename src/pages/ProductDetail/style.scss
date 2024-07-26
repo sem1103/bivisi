@@ -3,13 +3,14 @@
   height: auto;
   padding: 10px;
   transform: translateY(-25px);
-
+  margin: 15px 0 0 0;
   .video_content {
     // width: 668px;
     // height: 408px;
     position: relative;
 
     .video_detail_content {
+      position: relative;
       .video_logo {
         position: absolute;
         top: 10px;
@@ -19,51 +20,45 @@
         height: 32px;
         flex-shrink: 0;
       }
+     
 
       .video_top {
+        position: absolute;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        bottom: 55px;
+        padding: 0 25px;
+        transition: all .5s ease-in-out;
         .price {
           background-color: #0087cc;
           padding: 5px 25px;
-          position: absolute;
-          top: 410px;
-          left: 20px;
+
           border-radius: 25px;
           transition: all 0.7s ease;
           color: white;
-          font-size: 14px;
+          font-size: clamp(12px , 5vw , 14px);
           font-weight: 600;
         }
 
         .wp {
-          position: absolute;
-          right: 20px;
-          top: 410px;
-          transition: all 0.7s ease;
+     
 
           img {
             width: 48px;
             height: 48px;
           }
         }
-
-        &.paused {
-
-          .price,
-          .wp {
-            top: 380px;
-          }
-        }
+       
+     
       }
 
-      &:hover {
-        .price {
-          top: 380px;
-        }
-
-        .wp {
-          top: 380px;
-        }
+      &:hover .video_top{
+        bottom: 75px;
       }
+
+     
     }
 
     .video_content_name {
@@ -803,50 +798,8 @@
         flex-shrink: 0;
       }
 
-      .video_top {
-        .price {
-          background-color: #0087cc;
-          padding: 5px 25px;
-          position: absolute;
-          top: 300px !important;
-          left: 20px;
-          border-radius: 25px;
-          transition: all 0.7s ease;
-          color: white;
-          font-size: 14px;
-          font-weight: 600;
-        }
-
-        .wp {
-          position: absolute;
-          right: 20px;
-          top: 300px !important;
-          transition: all 0.7s ease;
-
-          img {
-            width: 48px;
-            height: 48px;
-          }
-        }
-
-        &.paused {
-
-          .price,
-          .wp {
-            top: 250px !important;
-          }
-        }
-      }
-
-      &:hover {
-        .price {
-          top: 250px !important;
-        }
-
-        .wp {
-          top: 250px !important;
-        }
-      }
+     
+    
     }
   }
 }
@@ -907,49 +860,8 @@
         flex-shrink: 0;
       }
 
-      .video_top {
-        .price {
-          background-color: #0087cc;
-          padding: 5px 25px;
-          position: absolute;
-          top: 270px !important;
-          left: 20px;
-          border-radius: 25px;
-          transition: all 0.7s ease;
-          color: white;
-          font-size: 14px;
-          font-weight: 600;
-        }
-
-        .wp {
-          position: absolute;
-          right: 20px;
-          top: 270px !important;
-          transition: all 0.7s ease;
-
-          img {
-            width: 48px;
-            height: 48px;
-          }
-        }
-
-        &.paused {
-
-          .price,
-          .wp {
-            top: 150px !important;
-          }
-        }
-      }
-
-      &:hover {
-        .price {
-          top: 150px !important;
-        }
-
-        .wp {
-          top: 150px !important;
-        }
+      .video_top{
+        padding: 0 15px;
       }
     }
   }

@@ -27,6 +27,7 @@ import WhatsAppButton from "../../components/WhatsAppButton";
 import ShareModal from "../../components/ShareModal";
 import { useCart } from "react-use-cart";
 import Map, { Marker } from 'react-map-gl';
+import getCurrencyByCountry from "../../utils/getCurrencyService";
 
 
 const ProductDetail = () => {
@@ -44,6 +45,7 @@ const ProductDetail = () => {
   const playerRef = useRef(null);
   const [isShowMap, setIsShowMap] = useState(false)
   const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA';
+  const {countryCurrencySymbol} = getCurrencyByCountry();
   const [initialViewState, setInitialViewState] = useState({
     longitude: 0,
     latitude: 0,
@@ -282,7 +284,7 @@ useEffect(() => {
                     />
                   </div>
                   <div className={`video_top ${isPlaying ? "" : "paused"}`}>
-                    <span className="price">$ {productDetail.price}</span>
+                    <span className="price">{countryCurrencySymbol} {productDetail.price}</span>
                     <WhatsAppButton
                       phoneNumber={productDetail?.phone_number}
                       productUrl={shareUrl}

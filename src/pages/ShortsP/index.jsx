@@ -8,10 +8,12 @@ import { AuthContext } from "../../context/authContext";
 import { toast } from "react-toastify";
 import { Swiper, SwiperSlide, } from 'swiper/react';
 import { Mousewheel, Pagination } from 'swiper/modules';
+import { useNavigate } from "react-router-dom";
 
 
 
 const Shorts = () => {
+  const navigate = useNavigate();
   const { product } = useContext(ProductContext);
   const copyProducts = product?.results?.filter((item) => {
     if (item.product_video_type[0]?.product_type === "Shorts") return item
@@ -130,7 +132,7 @@ const Shorts = () => {
     if (!user) {
       toast.warning("Please, sign in");
     } else {
-      window.location.href = "/your_profile/upload_shorts";
+      navigate('/your_profile/upload_shorts')
     }
   };
 

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./style.scss";
 import { VideoContext } from "../../context/VideoContext";
 import useAxios from "../../utils/useAxios";
+import getCurrencyByCountry from "../../utils/getCurrencyService";
 
 const ShortCard = ({ product }) => {
   const [localPlaying, setLocalPlaying] = useState(false);
@@ -11,7 +12,7 @@ const ShortCard = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [viewed, setViewed] = useState(false);
   const navigate = useNavigate();
-
+  const {countryCurrencySymbol} = getCurrencyByCountry();
   const handlePlay = () => {
     if (playingVideo !== product.id) {
       setGlobalPlaying(product.id);
@@ -63,7 +64,6 @@ const ShortCard = ({ product }) => {
         data
       );
       setViewed(true);
-      console.log(res.data);
     } catch (error) {
       console.error("Error adding product to history", error);
     }
@@ -86,7 +86,7 @@ const ShortCard = ({ product }) => {
             />
           </div>
           <div className="shortCard-content">
-              <p className="price">{product.price}$</p>
+              <p className="price">{product.price} {countryCurrencySymbol} </p>
             <div className="text">
               <p className="mb-0">{product.name.slice(0,10)}...</p>
               <span>{product.view_count} Views</span>
