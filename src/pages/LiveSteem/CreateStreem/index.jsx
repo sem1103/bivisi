@@ -42,7 +42,7 @@ export default function NewStream() {
         }
         
         if(roomName && thumberSrc){
-            let res = await axios.get('https://neymanacademy.shop/api/user/user_detail/', {
+            let res = await axios.get('https://bivisibackend.store/api/user/user_detail/', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + JSON.parse(localStorage.authTokens).access
@@ -76,7 +76,7 @@ export default function NewStream() {
 
     useEffect(() => {
         const getMyVideos = async () =>{
-            let res = await axios.get('https://neymanacademy.shop/api/user_web_products', {
+            let res = await axios.get('https://bivisibackend.store/api/user_web_products', {
                 headers: {
                   Authorization: `Bearer ${USER_TOKKEN}`
                 }
