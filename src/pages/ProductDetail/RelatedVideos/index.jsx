@@ -48,10 +48,9 @@ const Related_Videos = ({ onProductClick }) => {
             >
             {product?.results?.slice(0, 4)?.map((item) => {
               return (
-                <SwiperSlide>
+                <SwiperSlide key={item.id}>
                   <LastVideoCard
                   ProductItemVideoCard={item}
-                  key={item.id}
                 />
                 </SwiperSlide>
               );

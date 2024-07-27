@@ -106,7 +106,6 @@ const ChannelsVideo = ({ item }) => {
     }
     return num;
   }
-console.log("channels video",user)
   return (
     <>
       <div className="col-lg-4 col-sm-6 pb-3">

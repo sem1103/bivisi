@@ -216,7 +216,7 @@ const Header = ({ isOpen }) => {
                   >
                     {
                       sessionStorage.isVideoCall == 'video' ?
-                        <svg className="video__svg" viewBox="0 0 48 48" width={50} version="1" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 48 48" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#4CAF50" d="M8,12h22c2.2,0,4,1.8,4,4v16c0,2.2-1.8,4-4,4H8c-2.2,0-4-1.8-4-4V16C4,13.8,5.8,12,8,12z"></path> <polygon fill="#388E3C" points="44,35 34,29 34,19 44,13"></polygon> </g></svg>
+                        <svg className="video__svg" viewBox="0 0 48 48" width={50} version="1" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 48 48" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#4CAF50" d="M8,12h22c2.2,0,4,1.8,4,4v16c0,2.2-1.8,4-4,4H8c-2.2,0-4-1.8-4-4V16C4,13.8,5.8,12,8,12z"></path> <polygon fill="#388E3C" points="44,35 34,29 34,19 44,13"></polygon> </g></svg>
                         :
                         <svg width="50px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xmlSpace="preserve" fill="#000000">
                           <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>

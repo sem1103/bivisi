@@ -195,7 +195,7 @@ const LikedVideos = () => {
                         onClick={(e) => handleNavigation(e, item.id)}
                       >
                         <div className="d-flex w-100 justify-content-between align-items-center">
-                          <h1>{item.product.user.name}</h1>
+                          <div className="user_namechannels video">{item.product.user.name}</div>
                           <h6>
                             <img src={blueHeart} alt="" />
                             {item.product?.like_count}
