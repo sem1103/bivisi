@@ -71,7 +71,7 @@ const Header = ({ isOpen }) => {
     },
     {
       path: "/shorts",
-      name: "Shorts",
+      name: "BiviClips",
       icon: shortsOutline,
       iconActive: videoOutline,
     },
@@ -266,7 +266,7 @@ const Header = ({ isOpen }) => {
                             onClick={handleOptionClick}
                           >
                             <img src={shortsOutline} alt="" className="me-2" />
-                            Shorts
+                            BiviClips
                           </Link>
                         </div>
                       )}
@@ -549,7 +549,7 @@ const Header = ({ isOpen }) => {
                               onClick={handleOptionClick}
                             >
                               <img src={shortsOutline} alt="" className="me-2" />
-                              Shorts
+                              BiviClips
                             </Link>
                           </div>
                         )}
@@ -685,7 +685,7 @@ const Header = ({ isOpen }) => {
                         onClick={handleOptionClick}
                       >
                         <img src={shortsOutline} alt="" className="me-2" />
-                        Shorts
+                        BiviClips
                       </Link>
                     </div>
                   )}
