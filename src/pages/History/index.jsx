@@ -130,9 +130,9 @@ const History = () => {
                 <img src={historyOutline} alt="history-icon" />
                 <h4>History</h4>
               </div>
-              
+
             </div>
-     
+
             <Swiper
               spaceBetween={20}
               slidesPerView={5}
@@ -255,7 +255,7 @@ const History = () => {
                     to={`/product_detail/${item?.product_video_type?.product?.id}`}
                   >
                     <div className="d-flex w-100 justify-content-between align-items-center">
-                      <h1>{item.product_video_type?.product.name}</h1>
+                      <p>{item.product_video_type?.product.name}</p>
                       <h6>{item.product_video_type?.product.like_count}</h6>
                     </div>
                     <p>{item.product_video_type?.product.description}</p>
@@ -269,16 +269,18 @@ const History = () => {
                     {/* </div> */}
                     <div className="icons ">
                       {/* <WishBtn ProductItemVideoCard={item} /> */}
-                      <img
-                        src={bag}
-                        alt=""
-                        onClick={() => {
-                          console.log(item,user)
-                            handleAddToBasket(item?.product_video_type?.product, user, axiosInstance);
-                            addItem(item?.product_video_type?.product);
-                        }} />
-                      <button onClick={() => handleDeleteFromHistory(item?.id)}>
-                        <img src={trash} alt="" />
+
+                      <button className="history-btn" onClick={() => {
+                        handleAddToBasket(item?.product_video_type?.product, user, axiosInstance);
+                        addItem(item?.product_video_type?.product);
+                      }} >
+                        <img
+                          src={bag}
+                          alt="bag"
+                        />
+                      </button>
+                      <button className="history-btn" onClick={() => handleDeleteFromHistory(item?.id)}>
+                        <img src={trash} alt="delete" />
                       </button>
                     </div>
                   </div>

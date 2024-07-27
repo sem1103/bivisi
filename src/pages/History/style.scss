@@ -70,7 +70,7 @@
     }
   }
 
-  button {
+  .history-btn {
     display: flex;
     width: 45px;
     height: 43px;
@@ -84,6 +84,7 @@
     cursor: pointer;
     background: transparent;
     color: white;
+   
 
     &:hover {
       border-radius: 16px;

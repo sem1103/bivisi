@@ -14,7 +14,6 @@ const Categories = ({ username }) => {
       try {
         const res = await axios.get(`${BASE_URL}/user/popular-channels/`);
         setChannelDetailData(res?.data.results.find((item) => item.username === username));
-        console.log(channelDetailData)
       } catch (error) {
         console.error('Failed to fetch channel details:', error);
       }
