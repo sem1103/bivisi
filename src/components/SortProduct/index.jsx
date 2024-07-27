@@ -38,7 +38,7 @@ const SortProduct = ({ sortedProducts, setSortedProducts }) => {
             popupClassName="custom-dropdown"
         >
             <Option value="" onClick={handleAllClick}>
-            <img src={sort} alt="plus.svg" width={20} /> Sort by
+                 All
             </Option>
             <Option value="A to Z">A to Z</Option>
             <Option value="Z to A">Z to A</Option>

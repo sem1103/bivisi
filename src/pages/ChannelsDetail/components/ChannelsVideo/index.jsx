@@ -1,9 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import "./style.scss";
-import blueHeartd from "../../../../assets/icons/blue-heart.svg";
-import edit from "../../../../assets/icons/edit.svg";
-import trash from "../../../../assets/icons/trash.svg";
-import { NavLink, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../../context/authContext";
 import { VideoContext } from "../../../../context/VideoContext";
 import useAxios from "../../../../utils/useAxios";
@@ -112,7 +109,7 @@ const ChannelsVideo = ({ item }) => {
 console.log("channels video",user)
   return (
     <>
-      <div className="col-lg-4 pb-3">
+      <div className="col-lg-4 col-sm-6 pb-3">
         {/* <div className="channels_videocard">
           <img src={item?.cover_image} alt="" className="main" />
 

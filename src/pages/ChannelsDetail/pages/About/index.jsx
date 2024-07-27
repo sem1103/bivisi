@@ -15,7 +15,7 @@ const AboutChanell = () => {
       <div className="channels_videos">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-12 mb-3">
+            <div className="col-lg-12">
               <h6>About Chanell</h6>
             </div>
            

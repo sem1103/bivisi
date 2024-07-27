@@ -151,3 +151,16 @@
         display: block;
     }
 }
+@media only screen and ((width < 576px)) {
+.shorts_page {
+    h1{
+        font-size: 18px;
+        line-height: 28px;
+    }
+    .shorts_logo{
+        svg{
+            width: 20px !important;
+        }
+    }
+}
+}

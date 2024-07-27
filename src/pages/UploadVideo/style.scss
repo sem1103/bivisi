@@ -2,7 +2,8 @@
   width: 100%;
   height: auto;
   padding: 12px 0;
-  #preview_video{
+
+  #preview_video {
     position: absolute;
     top: 0;
     left: 0;
@@ -10,7 +11,7 @@
     visibility: hidden;
 
   }
- 
+
   .upload__icon {
     svg {
       max-width: 130px;
@@ -189,7 +190,8 @@
             max-width: 280px;
             border-radius: 15px;
             object-fit: cover;
-            &.thumbnail{
+
+            &.thumbnail {
               max-width: 280px;
 
             }
@@ -435,14 +437,16 @@
       }
 
       .react__map {
-      .address__map{
-        width: 100%;
-      }
-      div.mapboxgl-canvas-container.mapboxgl-interactive.mapboxgl-touch-drag-pan.mapboxgl-touch-zoom-rotate{
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-      }
+        .address__map {
+          width: 100%;
+        }
+
+        div.mapboxgl-canvas-container.mapboxgl-interactive.mapboxgl-touch-drag-pan.mapboxgl-touch-zoom-rotate {
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+        }
+
         .mapboxgl-ctrl-bottom-right,
         .mapboxgl-ctrl-geocoder--pin-right,
         .mapboxgl-ctrl-geocoder--icon-search,
@@ -469,15 +473,16 @@
           font: 14px Poppins !important;
           background-color: #1b1c21 !important;
           color: #e7e7e7 !important;
-          &::placeholder{
+
+          &::placeholder {
             color: #e7e7e7;
           }
         }
 
         .mapboxgl-canvas {
-         
+
           border-radius: 14px;
-         
+
         }
 
         .mapboxgl-ctrl-top-left {
@@ -653,6 +658,7 @@
     display: flex;
     width: 100%;
     gap: 15px;
+
     .upload__thumbernail {
       border: 1px dashed #6b738a;
       border-radius: 14px;
@@ -692,16 +698,17 @@
       width: 70%;
       list-style: none;
       padding: 10px;
-      
+
       li {
         cursor: pointer;
         border: 2px solid transparent;
         transition: all .3s ease-in-out;
         border-radius: 14px;
-      &.active__cover{
-        border-color: #0087cc;
-        box-shadow: 0 0 5px 3px #0385ca;
-      }
+
+        &.active__cover {
+          border-color: #0087cc;
+          box-shadow: 0 0 5px 3px #0385ca;
+        }
       }
 
       img {
@@ -716,23 +723,26 @@
   }
 
 }
-.manual__props{
+
+.manual__props {
   width: 100%;
-  button{
+
+  button {
     height: initial !important;
     font-size: 14px !important;
     width: max-content !important;
-    &.add__input{
+
+    &.add__input {
       width: 100% !important;
       margin: 15px 0 0 0;
     }
   }
-  
-  & > div{
+
+  &>div {
     display: flex;
     margin: 10px;
-    
-    input{
+
+    input {
       width: 100%;
       border: 1px solid rgba(0, 135, 204, 0.5607843137) !important;
       padding: 5px 15px !important;
@@ -755,14 +765,34 @@
       width: 100% !important;
     }
 
-   
+
   }
 }
 
 @media only screen and (width < 600px) {
-  .upload_video .upload_video_content .select_video  {
-    padding: 25px;
+
+  .upload_video {
+    .upload__icon {
+      svg {
+        width: 80px;
+        margin-bottom: 10px;
+      }
+    }
+
+    .upload_video_content {
+
+      .select_video {
+        padding: 25px;
+
+        .upload__desc {
+          h4 {
+            font-size: 18px;
+          }
+        }
+      }
+    }
   }
+
   .thumbernails .thumbernails__wrapper {
     flex-direction: column;
 
@@ -770,7 +800,7 @@
       width: 100%;
       padding: 25px 0;
     }
-    
+
     .thumbernail__items {
       width: 100%;
     }
@@ -781,7 +811,7 @@
     align-items: center;
   }
 
-  .address__map .mapboxgl-ctrl-top-left .mapboxgl-ctrl{
+  .address__map .mapboxgl-ctrl-top-left .mapboxgl-ctrl {
     margin: 10px 10px 0 10px !important;
   }
 

@@ -37,7 +37,7 @@ const LatestVideos = () => {
     <section className="latestVideos">
       <div className="container-fluid">
         <div className="row">
-          <div className="col-lg-12 d-flex justify-content-between align-items-center pb-3">
+          <div className="col-lg-12 d-flex justify-content-between align-items-center">
             <div className="section__title">
               <img src={camera_img} alt="" width={27} />
               <h4>Latest videos</h4>
@@ -57,11 +57,11 @@ const LatestVideos = () => {
                 slidesPerView: 1,
 
               },
-              480: {
+              500: {
                 spaceBetween: 1,
                 slidesPerView: 2,
               },
-              768: {
+              800: {
                 spaceBetween: 15,
                 slidesPerView: 3,
               },
@@ -70,7 +70,7 @@ const LatestVideos = () => {
                 spaceBetween: 15,
                 slidesPerView: 3,
               },
-              1280: {
+              1400: {
                 spaceBetween: 5,
                 slidesPerView: 4,
               },

@@ -2,9 +2,10 @@
     width: 100%;
     height: auto;
     padding: 12px 0;
+
     h6 {
         color: #FFF;
-
+        margin-bottom: 20px;
         /* Poppins/28/Medium */
         font-family: Poppins;
         font-size: 25px;
@@ -12,5 +13,24 @@
         font-weight: 400;
         line-height: 36px;
         /* 128.571% */
+    }
+}
+
+@media(max-width:768px) {
+
+    .channels_videos {
+        h6 {
+            font-size: 22px;
+        }
+    }
+}
+
+@media(max-width:576px) {
+
+    .channels_videos {
+        h6 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
     }
 }

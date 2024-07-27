@@ -48,10 +48,10 @@ const Trending = () => {
         <div className='trending_videos'>
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-lg-12 d-flex justify-content-between align-items-center py-4">
+                    <div className="col-lg-12 d-flex justify-content-between align-items-center section_title">
                         <div className='d-flex align-items-center gap-2'>
                             <img width={27} src={trendOutline} alt="" />
-                            <h4 className='heading_trend text-white mt-1' style={{ fontSize: "21px", fontWeight: "400" }}>Trending</h4>
+                            <h4 className='heading_trend text-white mt-1'>Trending</h4>
                         </div>
                         {/* <button className='sort_btn'>
                             <img src={sort} alt="plus.svg" />

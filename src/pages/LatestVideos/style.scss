@@ -3,6 +3,10 @@
   height: auto;
   padding: 10px;
 
+  .section_title {
+    padding: 15px 0;
+  }
+
   h4 {
     color: #fff;
     /* Poppins/28/Medium */
@@ -94,12 +98,22 @@
 
 
 @media (max-width:540px) {
+
   .latest_videos {
-    h1{
+    .section_title {
+      padding: 5px 0;
+    }
+
+    h4 {
+      font-size: 18px;
+    }
+
+    h1 {
       font-size: 20px;
     }
-    .custom-select{
-      .ant-select{
+
+    .custom-select {
+      .ant-select {
         width: 150px !important;
       }
     }
@@ -109,9 +123,9 @@
 
 @media (max-width:370px) {
   .latest_videos {
-    h1{
+    h1 {
       font-size: 15px;
     }
   }
-  
+
 }

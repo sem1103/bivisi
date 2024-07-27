@@ -106,10 +106,10 @@ const Favorites = () => {
             <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  flex-wrap favorites__categories">
               <h1>Favorites videos</h1>
               <div className="d-flex gap-3 flex-wrap">
-                <button className="favorites_videos_filter ">
+                {/* <button className="favorites_videos_filter ">
                   <img src={filter} alt="upload" />
                   Filter
-                </button>
+                </button> */}
                 {/* <div className="favorites_videos-sort">
                   <img src={sort} alt="sort" />
                   Sort by

@@ -145,3 +145,19 @@
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
   }
+@media(max-width:576px){
+  .channels_shortcard {
+    .shortCard-content {
+      .text {
+        p{
+          font-size: 14px;
+          line-height: 20px;
+          margin-bottom: 5px;
+        }
+        span{
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}

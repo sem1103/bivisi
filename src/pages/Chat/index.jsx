@@ -14,7 +14,7 @@ import empyAvatar from './../../assets/images/user-empty-avatar.png'
 import { ChatContext } from "../../context/ChatContext";
 import { Modal } from 'antd';
 import EmojiPicker from "emoji-picker-react";
-
+import { BASE_URL } from "../../api/baseUrl";
 
 
 
@@ -46,7 +46,7 @@ const Chat = () => {
 
   const searchUser = async (value) => {
     if (value) {
-      let res = await axios.get(`https://bivisibackend.store/api/user/users/?search=${value}`, {
+      let res = await axios.get(`${BASE_URL}/user/users/?search=${value}`, {
         headers: {
           Authorization: `Bearer ${USER_TOKKEN}`
         }

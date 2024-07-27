@@ -1,26 +1,50 @@
-.latestVideos{
-    width: 100%;
-    height: auto;
-    padding: 12px 0;
+.latestVideos {
+  width: 100%;
+  height: auto;
+  padding: 12px 0;
+
+  .section__title {
+    margin-bottom: 15px;
 
     h4 {
-        color: #fff;
-        /* Poppins/28/Medium */
-        font-family: Poppins;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 36px; /* 128.571% */
+      color: #fff;
+      /* Poppins/28/Medium */
+      font-family: Poppins;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 36px;
+      /* 128.571% */
+    }
+  }
+
+  a {
+    color: #f6f3f4;
+
+    /* Poppins/16/SemiBold */
+    font-family: Poppins;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    /* 150% */
+    text-decoration: none;
+  }
+}
+
+@media(max-width:576px) {
+  .latestVideos {
+
+
+    .section__title {
+      margin-bottom: 5px;
+
+      h4 {
+        font-size: 16px;
+        line-height: 30px;
+        /* 128.571% */
       }
-      a {
-        color: #f6f3f4;
-    
-        /* Poppins/16/SemiBold */
-        font-family: Poppins;
-        font-size: 13px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 24px; /* 150% */
-        text-decoration: none;
-      }
+
+    }
+  }
 }
