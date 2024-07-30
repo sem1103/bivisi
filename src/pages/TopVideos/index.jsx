@@ -109,6 +109,7 @@ const TopVideos = () => {
                                 styles={{
                                     mask: {
                                         backdropFilter: 'blur(10px)',
+                                        zIndex: 9999999999
                                     }
                                 }}>
                                 <div className="premium__modal">
