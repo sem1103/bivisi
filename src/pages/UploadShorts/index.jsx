@@ -363,13 +363,6 @@ const UploadV = () => {
   };
 
   const onSubmit = async (data) => {
-    
-
-
-    // if (!validateForm()) {
-    //   toast.error("Please fill out all required fields.");
-    //   return;
-    // }
     const { original_video, ...rest } = formData;
     const submitData = new FormData();
     submitData.append('location_url', editVideo && !mapLink.url ? editVideo.location_url : mapLink.url)
