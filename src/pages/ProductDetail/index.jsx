@@ -374,9 +374,7 @@ useEffect(() => {
                   </div>
                 </div>
 
-                {
-                  console.log(productDetail)
-                }
+           
                 <div className="video__properties">
                   <h4>Categories</h4>
                   <table style={{ borderCollapse: 'collapse', width: '100%', background: '#252525', margin: ' 0 0 20px 0' }}>
