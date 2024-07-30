@@ -51,9 +51,9 @@ export default function ChatProvider({ children }) {
             }
         }))
         setNewMessage('')
+        console.log(res.data.response);
 
         return res.data.response;
-
     };
 
 

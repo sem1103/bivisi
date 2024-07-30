@@ -36,6 +36,9 @@ const ProductDetail = () => {
   const { product, setProduct } = useContext(ProductContext);
   const { id } = useParams();
   const serviceId = Number(id);
+  const [category, setCategory] = useState([])
+  const [subcategory, setSubcategory] = useState([]);
+
 
   const [viewed, setViewed] = useState(false);
   const [productDetail, setProductDetail] = useState(false);
@@ -229,6 +232,21 @@ const ProductDetail = () => {
 
 
 useEffect(() => {
+
+  const fetchData = async () => {
+    try {
+      const categoryRes = await axios.get(
+        `${BASE_URL}/categories/`
+      );
+      setCategory(categoryRes.data.results);
+      
+      
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  fetchData();
   
   return () => {
     setIsShowMap(false)
@@ -356,7 +374,30 @@ useEffect(() => {
                   </div>
                 </div>
 
+                {
+                  console.log(productDetail)
+                }
+                <div className="video__properties">
+                  <h4>Categories</h4>
+                  <table style={{ borderCollapse: 'collapse', width: '100%', background: '#252525', margin: ' 0 0 20px 0' }}>
+                    <tbody>
+                      {
 
+                        category.map(item => {
+                          if(item.id == productDetail.category[0]){
+                            return  <tr >
+                              <td style={{ fontWeight: '600' }}>{item.name}</td>
+                              <td >{item.children.map(sub => sub.id == productDetail.category[1] && sub.name)}</td>
+                            </tr>
+                          }
+                        })
+                        
+                         
+                       
+                      }
+                    </tbody>
+                  </table>
+                </div>
 
                 <div className="video__properties">
                   <h4>Properties</h4>
