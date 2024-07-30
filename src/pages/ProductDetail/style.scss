@@ -883,9 +883,7 @@
         .price {
           background-color: #0087cc;
           padding: 5px 25px;
-          position: absolute;
-          top: 270px !important;
-          left: 20px;
+        
           border-radius: 25px;
           transition: all 0.7s ease;
           color: white;
@@ -894,36 +892,15 @@
         }
 
         .wp {
-          position: absolute;
-          right: 20px;
-          top: 270px !important;
-          transition: all 0.7s ease;
-
+         
           img {
             width: 48px;
             height: 48px;
           }
         }
 
-        &.paused {
-
-          .price,
-          .wp {
-            top: 150px !important;
-          }
-        }
       }
 
-      &:hover {
-        .price {
-          top: 250px !important;
-        }
-
-        .wp {
-          top: 250px !important;
-        }
-     
-      }
     }
   }
 }
