@@ -537,7 +537,7 @@ const UploadV = () => {
           
 
 
-            <div className="form__content">
+            <div className="form__content upload_shorts">
               {
                 
                 <div className={`select_video ${videoPreview || editVideo ? 'selected__video' : ''} `}>
@@ -578,7 +578,7 @@ const UploadV = () => {
 
                       />
                       <div className="upload__desc">
-                        <h4>Drag and drop video files to upload</h4>
+                        <h4>Drag and drop shorts video to upload</h4>
                         <p>Your videos will be private until you publish them.</p>
                       </div>
 
