@@ -37,7 +37,7 @@
   .custom-select {
     .ant-select {
       width: 250px;
-      background-color: #0F0F0F !important;
+      background-color: var(--backgroundColor) !important;
       height: 50px;
       text-align: center;
 
@@ -67,7 +67,7 @@
     }
 
     .ant-select-dropdown-menu {
-      background-color: #0F0F0F !important;
+      background-color: var(--backgroundColor) !important;
     }
   }
 }

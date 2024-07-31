@@ -57,6 +57,7 @@ import ShowMyStream from "../pages/LiveSteem/CreateStreem/ShowMyStream";
 const AppRouter = () => {
   const [isOpen, setIsOpen] = useState(true);
 
+ 
   return (
     <>
       <BrowserRouter>
@@ -76,7 +77,7 @@ const AppRouter = () => {
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen}>
           <Header isOpen={isOpen} setIsOpen={setIsOpen} />
           <LoadingBarPreloader />
-        
+
           <Routes>
             <Route element={<Home />} path="/" />
             <Route element={<Register />} path="/register" />
@@ -142,10 +143,10 @@ const AppRouter = () => {
             <Route element={<PopularChannels />} path="/popular_channels" />
             <Route element={<ProductDetail />} path="/product_detail/:id" />
 
-            <Route  element={<LiveStreem />} path="/live-streams"/>
-            <Route  element={<LiveStreem />} path="/live-streams/:roomId"/>
-            <Route  element={<NewStream />} path="/new-stream"/>
-            <Route  element={<ShowMyStream />} path="/new-stream/:roomId"/>
+            <Route element={<LiveStreem />} path="/live-streams" />
+            <Route element={<LiveStreem />} path="/live-streams/:roomId" />
+            <Route element={<NewStream />} path="/new-stream" />
+            <Route element={<ShowMyStream />} path="/new-stream/:roomId" />
           </Routes>
         </Sidebar>
       </BrowserRouter>

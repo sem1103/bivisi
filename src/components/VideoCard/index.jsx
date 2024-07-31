@@ -13,12 +13,15 @@ import { useCart } from "react-use-cart";
 import { toast } from "react-toastify";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import logo from "../../assets/images/logoLight.svg";
+import logoLightMode from "../../assets/images/logoLightMode.png";
 import Plyr from "plyr-react";
 import eye from "../../assets/icons/eye.svg";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   const { user } = useContext(AuthContext);
+  const {themeMode} = useContext(ThemeContext)
   const { playingVideo, setPlaying } = useContext(VideoContext);
   const [isHovered, setIsHovered] = useState(false);
   const [videoDuration, setVideoDuration] = useState(null);
@@ -28,7 +31,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
     playing: false,
   });
   const [isLoading, setIsLoading] = useState(true);
-  const {countryCurrencySymbol} = getCurrencyByCountry()
+  const { countryCurrencySymbol } = getCurrencyByCountry()
 
   const playerRef = useRef(null);
   const isPlayingRef = useRef(false);
@@ -127,7 +130,10 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
         }
         <div className="main">
 
-          <img className="card_logo" src={logo} alt="" />
+            {themeMode ? 
+             <img src={logoLightMode} alt="" className="card_logo" />
+             :
+             <img src={logo} alt="" className="card_logo"/> }
           <span className="card_price">{countryCurrencySymbol} {ProductItemVideoCard?.price}</span>
 
           <img
@@ -175,14 +181,19 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
           </div>
           <div className="cardBottom">
             <div className="card_viev_count">
-              <img src={eye} alt="eye.svg" />
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="Icon/Eye/Solid">
+                  <path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M17.6084 11.7892C18.5748 10.7724 18.5748 9.22772 17.6084 8.211C15.9786 6.49619 13.1794 4.16675 9.99984 4.16675C6.82024 4.16675 4.02108 6.49619 2.39126 8.211C1.42492 9.22772 1.42492 10.7724 2.39126 11.7892C4.02108 13.504 6.82024 15.8334 9.99984 15.8334C13.1794 15.8334 15.9786 13.504 17.6084 11.7892ZM9.99984 12.5001C11.3805 12.5001 12.4998 11.3808 12.4998 10.0001C12.4998 8.61937 11.3805 7.50008 9.99984 7.50008C8.61913 7.50008 7.49984 8.61937 7.49984 10.0001C7.49984 11.3808 8.61913 12.5001 9.99984 12.5001Z" fill="white" />
+                </g>
+              </svg>
+
               <span>{formatViewCount(ProductItemVideoCard?.view_count)}</span>
             </div>
             <div className="icons" onClick={(e) => e.stopPropagation()}>
               <WishBtn ProductItemVideoCard={ProductItemVideoCard} />
-              <img
-                src={bag}
-                alt=""
+              
+
+              <button
                 onClick={() => {
                   if (user.user_id === ProductItemVideoCard.user.id) {
                     toast.warning(
@@ -192,8 +203,17 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
                     handleAddToBasket(ProductItemVideoCard, user, axiosInstance);
                     addItem(ProductItemVideoCard);
                   }
-                }}
-              />
+                }}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g id="Icon/Bag 3">
+                    <path id="Rectangle 794" d="M13.3332 5.00008C13.3332 3.15913 11.8408 1.66675 9.99984 1.66675C8.15889 1.66675 6.6665 3.15913 6.6665 5.00008" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path id="Rectangle 788" d="M3.80146 7.91988C4.00997 6.25179 5.42797 5 7.10905 5H12.8905C14.5716 5 15.9896 6.25179 16.1981 7.91988L17.0314 14.5866C17.2801 16.5761 15.7288 18.3333 13.7238 18.3333H6.27572C4.27073 18.3333 2.71944 16.5761 2.96813 14.5866L3.80146 7.91988Z" stroke="var(--textColor)" stroke-width="1.5" stroke-linejoin="round" />
+                    <path id="Vector 1788" d="M7.5 13.3333C9.46345 14.4502 10.5396 14.4385 12.5 13.3333" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </g>
+                </svg>
+              </button>
+
+
             </div>
           </div>
         </div>

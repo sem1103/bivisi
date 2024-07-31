@@ -320,7 +320,7 @@
    
 }
 svg[data-icon="close"]{
-    fill: #fff;
+    fill: var(--textColor);
 }
 .empty__stream{
     margin: 0 auto;
