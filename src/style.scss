@@ -8,10 +8,12 @@
   padding: 0;
   box-sizing: border-box !important;
   font-family: "Poppins", sans-serif;
+  transition: all .4s ease-in-out;
+
 }
 
 body {
-  background-color: #0f0f0f !important;
+  background-color: var(--backgroundColor) !important;
   // transition: all .3s ease;
 }
 
@@ -61,11 +63,9 @@ input:-webkit-autofill:active {
 
 
 .ant-select-dropdown {
-  background-color: #0F0F0F !important;
+  background-color: var(--backgroundColor) !important;
   color: white !important;
   border: 1px solid #292929;
-
-
 }
 
 .ant-select-item-option-content {
@@ -80,7 +80,7 @@ input:-webkit-autofill:active {
 
 
 :where(.css-dev-only-do-not-override-1okl62o).ant-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-  color: rgba(0, 0, 0, 0.88);
+  color: #000000e0;
   font-weight: 600;
   background-color: black;
 }
@@ -191,4 +191,86 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
+}
+
+
+
+/*----Light Theme------*/
+
+.light__theme {
+  .menu-section .menu .menu-item span{
+    color: #000
+  }
+ .bars{
+  path{
+    fill: #A2A8B7 !important;
+  }
+ }
+  path#Subtract{
+    fill: #A2A8B7 !important;
+  }
+ .sidebar{
+  border-color: #eaeaea;
+ }
+ .b_categories{
+  button{
+    border: 0;
+  }
+ }
+ .search-wrapper{
+  .search_img{
+    path{
+      fill: #4b4b4b
+    }
+  }
+  .search{
+    border: 0;
+    input{
+      color: #000;
+    }
+    input::placeholder{
+      color: #6c6c6c;
+    }
+  }
+  .microphone{
+    *{
+      transition: all .4s ease-in-out;
+    }
+    path{
+      stroke: #4b4b4b;
+    }
+    &:hover{
+      background: #e1e1e1;
+    }
+  }
+
+ }
+ .content_left_icons, .tablet__menu, .filter{
+  svg,path, circle, ellipse{
+    stroke: #4b4b4b;
+  }
+  .upload-options{
+    svg,path, circle, ellipse{
+      stroke: none;
+    }
+  }
+ }
+ .videoCard, .channelCard{
+  background-color: #f2f2f2aa;
+ }
+ .upload__video__form{
+  .ant-progress-inner, .ant-progress-text {
+    background: #9c9c9c;
+    color: #fff !important;
+
+  }
+ }
+ .upload_video {
+  .select_form{
+    .input_data{
+      background-color: #dadada;
+     }
+   }
+ }
+
 }

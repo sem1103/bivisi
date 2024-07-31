@@ -1,7 +1,7 @@
 .b_home {
   width: 100%;
   height: auto;
-  background-color: #0F0F0F;
+  background-color: var(--backgroundColor);
   // #0F0F0F
   display: flex;
   justify-content: center;
@@ -10,13 +10,19 @@
   padding: 0px 10px 0 10px;
   position: relative;
 }
+.see__all{
+  color: var(--textColor) !important;
+
+}
 .section__title{
   display: flex;
   align-items: center;
   margin: 0 0 8px 0;
   h4{
     margin: 0 0 0 8px;
+    color: var(--textColor) !important;
   }
+  
 }
 @media(max-width:576px){
   .b_home{

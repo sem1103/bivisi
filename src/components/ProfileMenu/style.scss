@@ -13,7 +13,7 @@
   gap: 12px !important;
   border-radius: 24px !important;
   border: 1px solid var(--Gray-400, #292929) !important;
-  background: var(--Background-Color, #0f0f0f) !important;
+  background: var(--backgroundColor, #0f0f0f) !important;
   z-index: 1000111 !important;
   overflow: hidden;
 
@@ -51,7 +51,7 @@
         align-items: flex-start;
 
         .name {
-          color: var(--Neutral-White, #fff);
+          color: var(--textColor);
 
           /* Poppins/20/SemiBold */
           font-family: Poppins;
@@ -85,11 +85,11 @@
       gap: 16px;
       align-self: stretch;
       border-radius: 12px;
-      background: var(--Text-12, #1b1d23);
+      background: var(--primaryColor);
 
       .profile-point-content {
         span {
-          color: var(--Neutral-White, #fff);
+          color: var(--textColor);
 
           /* Poppins/16/SemiBold */
           font-family: Poppins;
@@ -126,15 +126,13 @@
       text-decoration: none;
 
       &:hover {
-        background: var(--Gray-400, #292929);
+        background: var(--primaryColor);
 
-        span {
-          color: #fff !important;
-        }
+       
       }
 
       h6 {
-        color: var(--Text-4, #a2a8b7);
+        color: #a2a8b7;
 
         /* Poppins/16/SemiBold */
         font-family: Poppins;
@@ -185,7 +183,7 @@
   display: inline-block;
   width: 60px;
   height: 32px;
-  background-color: #23272e;
+  background-color: var(--primaryColor);
   border-radius: 34px;
 }
 

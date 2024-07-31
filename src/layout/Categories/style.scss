@@ -2,7 +2,7 @@
   width: 100%;
   height: auto;
   display: flex;
-  background-color: #0f0f0f;
+  background-color: var(--backgroundColor);
   align-items: center;
   // justify-content: center;
   // justify-content: space-between;
@@ -40,7 +40,7 @@
     text-transform: capitalize;
     &:hover {
       border-radius: 16px;
-      background: var(--Gray-400, #292929);
+      background: var(--primaryColor);
     }
   }
 
@@ -79,7 +79,7 @@
 }
 
 .selected{
-  background-color: #292929 !important;
+  background-color: var(--primaryColor) !important;
 }
 
 
