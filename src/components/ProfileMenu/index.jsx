@@ -10,21 +10,27 @@ import nightmodeGray from "./icons/nightmode-gray.svg";
 import User from "../../assets/icons/User.svg";
 import { AuthContext } from "../../context/authContext";
 import { NavLink } from "react-router-dom";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const ProfileMenu = () => {
+  const {prefersDarkScheme, setTheme} = useContext(ThemeContext)
   const { userDetails, logoutUser } = useContext(AuthContext);
+  const [themeMode, setThemeMode] = useState(localStorage.themeMode ? JSON.parse(localStorage.themeMode) : prefersDarkScheme.matches)
   const [menuOpened, setMenuOpened] = useState(false);
   const menuRef = useRef(null);
-
+  const themeSwitcher = useRef(null)
   const handleMenuClose = () => {
     setMenuOpened(false);
   };
-
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       handleMenuClose();
     }
   };
+
+  useEffect(() => {
+    setTheme(themeMode, themeSwitcher.current);
+  }, []);
 
   useEffect(() => {
     if (menuOpened) {
@@ -52,7 +58,13 @@ const ProfileMenu = () => {
       >
         <Menu.Target>
           <button className="upload" onClick={() => setMenuOpened((o) => !o)}>
-            <img src={User} alt="" />
+            {/* <img src={User} alt="" /> */}
+
+            <svg width={18} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="9.99996" cy="14.5832" rx="5.83333" ry="2.91667" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="9.99996" cy="5.83333" r="3.33333" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+</svg>
+
           </button>
         </Menu.Target>
 
@@ -102,7 +114,10 @@ const ProfileMenu = () => {
                 <h6 className="m-0">Dark mode</h6>
               </div>
               <div className="dark-mode-switch">
-                <input type="checkbox" id="dark-mode-toggle" />
+                <input ref={themeSwitcher} type="checkbox" id="dark-mode-toggle" checked={themeMode} onClick={() => {
+                      setTheme(!themeMode, themeSwitcher.current)
+                      setThemeMode(!themeMode)
+                }} />
                 <label htmlFor="dark-mode-toggle" />
               </div>
             </div>

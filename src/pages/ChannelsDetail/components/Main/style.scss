@@ -1,10 +1,43 @@
+.chanel__chat{
+    .ant-modal-content{
+        overflow: auto; 
+    }
+    .chat_messages{
+        padding: 15px;
+        overflow: auto;
+        max-height: 300px;
+    }
+    .chat_messages_header{
+        padding: 15px 10px;
+        h2{
+            font-size: clamp(16px, 3vw, 18px);
+            text-align: left;
+        }
+    }
+}
 .main_section {
     width: 100%;
     height: auto;
 
     padding: 40px 10px 10px 10px;
 
-
+    .chanell__tools{
+        display: flex;
+        align-items: center;
+        .write__message{
+            background: none;
+            border: 0;
+            outline: 0;
+            margin: 0 20px 0 0;
+            border-radius: 50%;
+            padding: 8px;
+            transition: all .4s ease-in-out;
+            &:hover{
+                box-shadow: 0 0 8px 3px #0385CA;
+            }
+        }
+    }
+    
     .chanels_bg_image {
         background-image: url("https://bivisi-media.s3.amazonaws.com/Accounts/Cover-images/dYWElM4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIATCKAOUIJN6CUS7GS%2F20240615%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240615T095246Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=d0aa16860d9ddcb3326e543c5818c52ba91c4b6be7bcdeddbdde65319927c34d");
         width: 100%;

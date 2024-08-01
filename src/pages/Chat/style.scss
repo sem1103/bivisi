@@ -21,12 +21,15 @@
     display: flex;
     align-items: center;
     transition: all .4s ease-in-out;
-    border: 0;
+    border: none !important;
     margin: 0 0 10px 0;
     span{
       font-family: Poppins;
       font-size: 16px;
       height: 22px;
+    }
+    &::after{
+      display: none;
     }
     &:hover{
       box-shadow: 0 0 5px 2px #0385CA;
@@ -43,7 +46,7 @@
     top: 100%;
     width: 100%;
     left: 0;
-    background: #23272e;
+    background: var(--primaryColor);
     border-radius: 16px;
     max-height: 0;
     transition: all .3s ease-in-out;
@@ -58,14 +61,16 @@
       margin: 0;
       padding: 5px;
       font-size: 16px;
-      color: #fff;
+      color: var(--textColor);
     }
     .emptySearch{
       display: none;
     }
   }
   .ant-modal-close{
-    fill: #fff;
+    svg, path{
+      fill:  var(--textColor) !important;
+    }
   }
   input {
     display: flex;
@@ -108,7 +113,7 @@
       border-radius: 14px;
 
       &:hover {
-        background: #0f0f0f;
+        background: var(--backgroundColor);
       }
 
       img {
@@ -120,6 +125,7 @@
       .user__info {
         h4 {
           font-size: 18px;
+          color: var(--textColor);
         }
       }
       
@@ -183,8 +189,20 @@
     align-items: center;
     gap: 8px;
     border-radius: 16px;
-    border: 1px solid var(--Text-11, #23272e);
     background-color: transparent;
+    border: 0;
+    position: relative;
+      &::after{
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        border: 1px solid var(--textColor);
+        border-radius: 16px;
+        opacity: .4;
+      }
   }
 
   .empty__message{
@@ -194,7 +212,7 @@
     width: 100%;
     align-items: center;
     h3{
-      color: #fff;
+      color: var(--textColor);
       font-size: 20px;
       text-align: center;
       margin: 25px 0 0 0 ;
@@ -374,8 +392,21 @@
         align-items: center;
         gap: 8px;
         border-radius: 16px;
-        border: 1px solid var(--Text-11, #23272e);
+        border: 0;
         background-color: transparent;
+
+        position: relative;
+      &::after{
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        border: 1px solid var(--textColor);
+        border-radius: 16px;
+        opacity: .4;
+      }
       }
     }
 
@@ -406,7 +437,8 @@
         }
 
         h2 {
-          color: #fff;
+          color: var(--textColor);
+          opacity: .8;
 
           /* Poppins/16/SemiBold */
           font-family: Poppins;
@@ -435,7 +467,7 @@
       }
 
       .active {
-        background: var(--Text-12, #1b1d23);
+        background: var(--primaryColor);
       }
     }
     .chat__title{
@@ -456,7 +488,8 @@
     }
 
     h1 {
-      color: #fff;
+      color: var(--textColor);
+      opacity: .8;
       /* Poppins/28/SemiBold */
       font-family: Poppins;
       font-size: 28px;
@@ -478,15 +511,14 @@
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
-    border-bottom: 1px solid var(--Text-12, #1b1d23);
-    background-color: #1b1d23;
+    background: color-mix(in srgb, var(--primaryColor) 80%, black 20%);
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
     flex-shrink: 0;
 
     h2 {
-      color: #fff;
-
+      color: var(--textColor);
+      opacity: .7;
       /* Poppins/20/SemiBold */
       font-family: Poppins;
       font-size: clamp(16px, 3vw, 20px);
@@ -498,7 +530,8 @@
     }
 
     p {
-      color: var(--Text-4, #a2a8b7);
+      color: var(--textColor);
+      opacity: .6;
 
       /* Poppins/16/Regular */
       font-family: Poppins;
@@ -528,7 +561,7 @@
       .chat__options{
         & > button{
           border-radius: 16px;
-          color: #fff;
+          color: var(--textColor);
 
         }
         margin: 0;
@@ -537,7 +570,7 @@
           opacity: 1;
         }
         ul{
-          background: #0f0f0f;
+          background: var(--backgroundColor);
           padding: 15px 25px;
           position: absolute;
           top: 120%;
@@ -558,7 +591,6 @@
         align-items: center;
         gap: 8px;
         border-radius: 16px;
-        border: 1px solid var(--Text-11, #23272e);
         background-color: transparent;
         // transition: all 0.3s ease;
         // &:hover {
@@ -576,8 +608,7 @@
     justify-content: space-between;
     align-items: center;
     align-self: stretch;
-    border-bottom: 1px solid var(--Text-12, #1b1d23);
-    background-color: #1b1d23;
+    background: color-mix(in srgb, var(--primaryColor) 80%, black 20%);
     flex-shrink: 0;
     gap: 10px;
     position: relative;
@@ -591,23 +622,25 @@
       align-items: center;
       gap: 8px;
       border-radius: 16px;
-      border: 1px solid var(--Text-11, #23272e);
+
       background-color: transparent;
       cursor: pointer;
+
+      
     }
 
     #new__message {
       font-family: 'Poppins' , 'Noto Color Emoji'!important;     
       font-weight: 400;
-  font-style: normal;
-  font-feature-settings: 'tnum';
+      font-style: normal;
+      font-feature-settings: 'tnum';
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       gap: 8px;
       flex: 1 0 0;
       background-color: transparent;
-      color: #fff;
+      color: var(--textColor);
       padding: 12px clamp(12px, 3vw, 20px);
       outline: none;
       width: 100%;
@@ -619,8 +652,19 @@
       line-height: 24px;
       /* 150% */
       border-radius: 16px;
-      border: 1px solid var(--Gray-400, #292929);
       resize: none;
+      position: relative;
+      &::after{
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        border: 1px solid var(--textColor);
+        border-radius: 16px;
+        opacity: .4;
+      }
       &::placeholder{
         font-size: clamp(12px, 3vw, 16px);
         word-wrap: nowrap;
@@ -644,7 +688,7 @@
 
   .chat_messages {
     width: 100%;
-    background: var(--Text-11, #23272e);
+    background: var(--primaryColor);
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -706,7 +750,7 @@
 
     .other {
       border-radius: 16px 16px 16px 0px;
-      background: var(--Blue-blue-50, #e6f3fa);
+      background: var(--Blue-blue-50, #d1e8f5);
       color: var(--Text_Icons-Black, #1a1a1b);
 
       /* Poppins/14/Regular */
@@ -784,6 +828,9 @@ button.back__top{
     border: 0;
     outline: 0;
     margin: 24px 0 0 0 ;
+    &::after{
+      display: none;
+    }
   }
   .hide__chats{
     display: none;
@@ -854,11 +901,12 @@ button.back__top{
 /*NICK ICONS BTNS*/
 
 
-  ul .button {
+  ul button.button {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgb(20, 20, 20);
+  
+  background-color: var(--primaryColor);
   border: none;
   font-weight: 600;
   display: flex;
@@ -872,6 +920,9 @@ button.back__top{
   position: relative;
   gap: 2px;
   padding: 0 !important;
+  &::after{
+    display: none;
+  }
 }
 
 .svgIcon {
@@ -880,7 +931,8 @@ button.back__top{
 }
 
 .svgIcon path {
-  fill: white;
+  fill: var(--textColor);
+  opacity: .8;
 }
 
 .button:hover {

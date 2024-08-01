@@ -1,14 +1,15 @@
 header {
   width: 100%;
-  background-color: #0f0f0f;
+  background-color: var(--backgroundColor);
   display: flex;
   padding:  25px 10px 10px 10px;
   justify-content: space-between;
   align-items: center;
   position: relative;
+  transition: all .4s ease-in-out;
 
   .active {
-    background: var(--Text-11, #23272e) !important;
+    background: var(--primaryColor) !important;
   }
 
   .logoLeft {
@@ -26,7 +27,7 @@ header {
     align-items: center;
     gap: 8px;
     border-radius: 16px;
-    border: 1px solid var(--Gray-400, #292929);
+    border: 1px solid var(--textColor);
     color: var(--Neutral-White, #fff);
     transition: all 0.3s ease;
 
@@ -39,18 +40,15 @@ header {
 
     &:hover {
       border-radius: 16px;
-      background: var(--Gray-400, #292929);
+      background: var(--primaryColor);
     }
   }
 
   .content_left {
     .upload {
-      display: flex;
-      padding: 12px;
-      justify-content: center;
-      align-items: center;
+      padding: 10px;
       border-radius: 16px;
-      border: 1px solid var(--Gray-400, #292929);
+      border: 1px solid var(--primaryColor);
       transition: all 0.3s ease;
       background-color: transparent;
       position: relative;
@@ -59,13 +57,10 @@ header {
 
       &:hover {
         border-radius: 16px;
-        background: var(--Gray-400, #292929);
+        background: var(--primaryColor);
       }
 
-      img {
-        width: 20px;
-        height: 20px;
-      }
+      
     }
 
     .login-btn {
@@ -122,7 +117,7 @@ header {
     align-items: flex-start;
     border-radius: 20px;
     border: 1px solid var(--Text-14, #16181d);
-    background: var(--Background-Color, #0f0f0f);
+    background: var(--backgroundColor);
 
     .ntf_content {
       width: 100%;
@@ -135,7 +130,7 @@ header {
     }
 
     h1 {
-      color: var(--Neutral-White, #fff);
+      color: var(--textColor, #fff);
 
       /* Poppins/20/SemiBold */
       font-family: Poppins;
@@ -158,8 +153,8 @@ header {
   position: absolute;
   left: 27px;
   bottom: 30px;
-  color: white !important;
-  background-color: #525252;
+  color: var(--textColor) !important;
+  background-color: var(--primaryColor);
   width: 26px;
   height: 26px;
   display: flex;
@@ -182,14 +177,16 @@ header {
   top: 100%;
   left: 0;
   border-radius: 24px;
-  border: 1px solid var(--Text-14, #16181d);
-  background: var(--Background-Color, #0f0f0f);
+  border: 1px solid var(--primaryColor);
+  background: var(--backgroundColor);
   z-index: 1000;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 200px;
   margin-top: 10px;
   padding: 10px;
-
+  svg{
+    margin: 0 .5rem 0 0;
+  }
   a {
     display: block;
     margin: 0;
@@ -202,9 +199,9 @@ header {
     font-style: normal;
     font-weight: 600;
     line-height: 24px;
-
+    transition: all .4s ease-in-out;
     &:hover {
-      background-color: #23272e;
+      background-color: var(--primaryColor);
       border-radius: 10px;
     }
   }
@@ -216,8 +213,7 @@ header {
   padding: 12px 20px;
 
   .logo {
-    width: 148px;
-    height: 41px;
+    max-width: 148px;
   }
 
   .top_section {
@@ -238,6 +234,7 @@ header {
   }
 
   .upload-options {
+
     left: -40px;
     z-index: 99999999;
     width: 160px;
@@ -254,7 +251,7 @@ header {
   .burger_menu {
     .upload {
       display: flex;
-      padding: 11px;
+      padding: 10px;
       justify-content: center;
       align-items: center;
       gap: 8px;
@@ -270,13 +267,13 @@ header {
       }
     }
 
-    .sm_ntf {
+    .sm_ntf{
       display: flex;
-      padding: 11px;
+      padding: 10px;
       justify-content: center;
       align-items: center;
       gap: 8px;
-      border-radius: 16px;
+      border-radius: 13px;
       border: 1px solid var(--Text-11, #23272E);
       background-color: transparent;
     }
@@ -322,22 +319,25 @@ header {
       .upload {
         background: var(--blue-blue-500, #0385CA);
         border: none;
+        svg, circle, ellipse{
+          stroke: #fff;
+        }
       }
     }
   }
 
   .filter {
     border-radius: 16px;
-    border: 1px solid var(--Gray-400, #292929);
+    border: 1px solid var(--primaryColor);
     display: flex;
     padding: 11px;
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease;
-
+    margin: 0 5px 0 0;
     &:hover {
       border-radius: 16px;
-      background: var(--Gray-400, #292929);
+      background: var(--primaryColor);
     }
 
     img {
@@ -359,7 +359,7 @@ header {
     left: -100%;
     width: 50%;
     height: 100%;
-    background-color: #0f0f0f;
+    background-color: var(--backgroundColor);
     transition: left 0.3s ease;
     z-index: 5551545415435;
     overflow-y: scroll;
@@ -369,7 +369,6 @@ header {
 
 .open .offcanvas-menu {
   left: 0;
-  background-color: #0f0f0f;
 }
 
 .toggle-button {
@@ -384,6 +383,7 @@ header {
 
   h3 {
     font-size: clamp(20px, 3vw, 26px);
+    color: var(--textColor);
   }
 
   .call__btns {
@@ -432,7 +432,7 @@ header {
   }
 
   50% {
-    box-shadow: 0 0 8px 4px #e6e5e5;
+    box-shadow: 0 0 8px 4px var(--textColor);
   }
 
   100% {
@@ -454,8 +454,6 @@ header {
 
   .basket,
   .upload {
-    width: 45px;
-    height: 45px;
     padding: 10px 0;
     position: relative;
     border: 1px solid #23272E;
@@ -487,7 +485,12 @@ header {
   .sm_header .basket {
     display: none !important;
   }
-
+  .tablet__menu{
+   & > a{
+      width: 37px;
+      height: 37px;
+    }
+  }
   .mob-search {
     .upload {
       display: flex;
@@ -495,8 +498,6 @@ header {
       align-items: center;
 
       position: relative;
-      width: 37px;
-      height: 37px;
       border-radius: 12px;
       border: 1px solid var(--Text-11, #23272E);
       background-color: transparent;
@@ -519,7 +520,7 @@ header {
       align-items: center;
       gap: 8px;
       width: 37px;
-      margin: 0 5px;
+      margin: 0 0 0 5px;
       height: 37px;
       border-radius: 12px;
       border: 1px solid var(--Text-11, #23272E);
@@ -584,7 +585,7 @@ header {
     }
 
     .logo {
-      width: 120px;
+      max-width: 120px;
     }
 
 
@@ -603,8 +604,6 @@ header {
   }
 
   header .content_left .upload {
-    width: 37px;
-    height: 37px;
     border-radius: 12px;
 
     img {

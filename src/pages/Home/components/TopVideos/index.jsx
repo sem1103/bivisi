@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import "./style.scss";
-import rightArrow from "../../../../assets/icons/right-arrow.svg";
 import LastVideoCard from "../../../../components/VideoCard";
 import { ProductContext } from "../../../../context/ProductContext";
 import { Link } from "react-router-dom";
@@ -42,8 +41,13 @@ const TopVideo = () => {
               <img src={video_img} alt="" width={27} />
               <h4>Top videos</h4>
             </div>
-            <Link to="/top_videos">
-              See all <img src={rightArrow} alt="" />
+            <Link to="/top_videos" className="see__all">
+              See all
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="Icon/Right arrow">
+                  <path id="Vector 190" d="M11.6667 6.66687L15 10.0002M15 10.0002L11.6667 13.3335M15 10.0002L5 10.0002" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+              </svg>
             </Link>
           </div>
           <Swiper

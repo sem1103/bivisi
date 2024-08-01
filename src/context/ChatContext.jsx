@@ -53,7 +53,6 @@ export default function ChatProvider({ children }) {
         setNewMessage('')
 
         return res.data.response;
-
     };
 
 
