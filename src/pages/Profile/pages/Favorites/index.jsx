@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import "./style.scss";
 import Main from "../../components/Main";
 import Categories from "../../components/Categories";
-import filter from "../../../../assets/icons/filter.svg";
 import useAxios from "../../../../utils/useAxios";
 import { NavLink } from "react-router-dom";
 import { handleAddToBasket, handleToggleWishlist } from "../../../../helpers";
@@ -15,14 +14,19 @@ import SortProduct from "../../../../components/SortProduct";
 import Plyr from "plyr-react";
 import { useCart } from "react-use-cart";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import FilterModal from "../../../../components/FilterModal";
+import { ProductContext } from "../../../../context/ProductContext";
 const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
+  const [filteredFavorites, setFilteredFavorites] = useState([]);
   const { user } = useContext(AuthContext)
   const axiosInstance = useAxios();
   const [in_wishlist, set_in_wishlist] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef(null);
+
+
   const { addItem } = useCart();
   useEffect(() => {
     const fetchWishlistItems = async () => {
@@ -32,11 +36,13 @@ const Favorites = () => {
           (item) => item.product_type === "Video"
         );
         setFavorites(filteredData);
+        setFilteredFavorites(filteredData)
 
       } catch (error) {
         console.log(error);
       }
     };
+
 
     const handleWishlistUpdate = (event) => {
       const { productId, status } = event.detail;
@@ -55,8 +61,11 @@ const Favorites = () => {
 
 
   }, []);
+  useEffect(() => {
+    setFilteredFavorites(favorites);
+  }, [favorites]);
   const handleWishlistToggle = async (product) => {
-   
+
     if (!user) {
       toast.warning("Please sign in");
     } else if (user.user_id === product.product.user.id) {
@@ -96,6 +105,20 @@ const Favorites = () => {
   const onPlayerReady = () => {
     setIsLoading(false);
   };
+  const applyFilter = (selectedCategory, minPrice, maxPrice) => {
+    let filtered = favorites;
+
+    if (selectedCategory !== "All") {
+        filtered = filtered.filter(item => item.product.category.includes(Number(selectedCategory)));
+    }
+
+    if (minPrice !== 0 || maxPrice !== 0) {
+        filtered = filtered.filter(item => Number(item.product.price) >= minPrice && Number(item.product.price) <= maxPrice);
+    }
+
+    setFilteredFavorites(filtered);
+};
+
   return (
     <>
       <Main />
@@ -106,22 +129,16 @@ const Favorites = () => {
             <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  flex-wrap favorites__categories">
               <h1>Favorites videos</h1>
               <div className="d-flex gap-3 flex-wrap">
-                {/* <button className="favorites_videos_filter ">
-                  <img src={filter} alt="upload" />
-                  Filter
-                </button> */}
-                {/* <div className="favorites_videos-sort">
-                  <img src={sort} alt="sort" />
-                  Sort by
-                </div> */}
+
+                <FilterModal applyFilter={applyFilter} />
                 <div className="custom-select">
-               <SortProduct sortedProducts={favorites} setSortedProducts={setFavorites}/>
+                  <SortProduct sortedProducts={favorites} setSortedProducts={setFavorites} />
                 </div>
               </div>
             </div>
-            {favorites?.map((item, index) => {
+            {filteredFavorites?.map((item, index) => {
               return (
-                <div className="col-lg-4 p-3" key={index}>
+                <div className="col-lg-4 col-sm-6 p-3" key={index}>
                   <div className="videoCard" >
                     <div className="main">
                       <span className="card_price">
@@ -132,26 +149,26 @@ const Favorites = () => {
                         src={item?.cover_image}
                         alt="cover"
                       />
-                     <Plyr
-                          ref={playerRef}
-                          source={{
-                            type: "video",
-                            sources: [
-                              {
-                                src: item?.original_video,
-                                type: "video/mp4",
-                              },
-                            ],
-                          }}
-                          options={{ muted: true, controls: ["play", "pause", "progress"] }}
-                          onReady={onPlayerReady}
-                        // onDuration={handleDuration}
-                        />
-                        {loading && (
-                          <div className="loading-overlay">
-                            <AiOutlineLoading3Quarters color="#fff" />
-                          </div>
-                        )}
+                      <Plyr
+                        ref={playerRef}
+                        source={{
+                          type: "video",
+                          sources: [
+                            {
+                              src: item?.original_video,
+                              type: "video/mp4",
+                            },
+                          ],
+                        }}
+                        options={{ muted: true, controls: ["play", "pause", "progress"] }}
+                        onReady={onPlayerReady}
+                      // onDuration={handleDuration}
+                      />
+                      {loading && (
+                        <div className="loading-overlay">
+                          <AiOutlineLoading3Quarters color="#fff" />
+                        </div>
+                      )}
                     </div>
                     <NavLink
                       className="heading w-100 flex-column justify-content-start align-items-start"
@@ -183,7 +200,7 @@ const Favorites = () => {
                         <img
                           src={bag}
                           alt="basket"
-                          onClick={() =>{
+                          onClick={() => {
                             handleAddToBasket(
                               item?.product,
                               user,

@@ -83,7 +83,6 @@ const Categories = () => {
   if (isExcludedPath()) {
     return null;
   }
-
   return (
     <section className="b_categories ">
       <div className="container-fluid d-flex align-items-center b_cat">

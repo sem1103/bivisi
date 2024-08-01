@@ -13,6 +13,7 @@ import { AuthContext } from "../../context/authContext";
 import shortsOutline from "../Sidebar/icons/shorts-outline.svg";
 import videoOutline from "../Sidebar/icons/video-outline.svg";
 import burgermenu from "../../assets/images/burger-menu.svg";
+import bars from "../../assets/images/bars.svg";
 import filter from "../../assets/images/Filter.svg";
 import cameraOutline from "../../layout/Sidebar/icons/camera-outline.svg";
 import helpOutline from "../../layout/Sidebar/icons/help-outline.svg";
@@ -324,9 +325,9 @@ const Header = ({ isOpen }) => {
                 <div className="d-flex align-items-center gap-3">
                   <button onClick={toggleMenu} className="toggle-button">
                     {openMenu ? (
-                      <img src={burgermenu} alt="" className="bars" />
+                      <img src={bars} alt="" className="bars" />
                     ) : (
-                      <img src={burgermenu} alt="" className="bars" />
+                      <img src={bars} alt="" className="bars" />
                     )}
                   </button>
                   <Link to="/">
@@ -663,53 +664,6 @@ const Header = ({ isOpen }) => {
           
           </div>
         </div>
-        {/* <div className="fixed-menu">
-          {
-            user ? (
-              <div className="d-flex flex-column gap-4">
-                <div className="upload-container">
-                  <div className="upload " onClick={toggleUploadOptions}>
-                    <img src={upload} alt="" />
-                  </div>
-                  {isUploadOptionsVisible && (
-                    <div className="upload-options mt-2">
-                      <Link
-                        to="/your_profile/upload_video"
-                        onClick={handleOptionClick}
-                      >
-                        <img src={videoOutline} alt="" className="me-2" />
-                        Video
-                      </Link>
-                      <Link
-                        to="/your_profile/upload_shorts"
-                        onClick={handleOptionClick}
-                      >
-                        <img src={shortsOutline} alt="" className="me-2" />
-                        BiviClips
-                      </Link>
-                    </div>
-                  )}
-                </div>
-                <NavLink
-                  className="upload basket"
-                  to="/basket"
-                  activeclassname="active"
-                >
-                  <img src={Bag2} alt="" />
-
-                  <span className="basket_items_count">{totalUniqueItems}</span>
-                </NavLink>
-                <button className="sm_ntf">
-                  <img src={Notification} alt="" />
-                </button>
-
-
-              </div>
-            ) : (
-              null
-            )
-          }
-        </div> */}
       </>
     );
   } else {

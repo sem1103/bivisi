@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Select } from "antd";
-import sort from "../../assets/icons/arrow-sort.svg";
 import './style.scss'
 const SortProduct = ({ sortedProducts, setSortedProducts }) => {
     const [selectedOption, setSelectedOption] = useState("");

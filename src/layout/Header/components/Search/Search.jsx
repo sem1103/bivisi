@@ -115,8 +115,6 @@ const Search = ({ setIsUploadOptionsVisible, setIsNotificationOptionsVisible }) 
 
     recognition.start();
   };
-
-
   return (
 
     <>
