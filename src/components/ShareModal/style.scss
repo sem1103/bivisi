@@ -1,0 +1,12 @@
+.share__modal{
+    .share_icons{
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    h1{
+        color: var(--textColor);
+        font-size: 28px;
+    }
+}

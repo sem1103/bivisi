@@ -1,17 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import LastVideoCard from "../../components/VideoCard";
-import { Select } from "antd";
 import { ProductContext } from "../../context/ProductContext";
 import "./style.scss";
-import sort from "../../assets/icons/Sort.svg";
-import useAxios from "../../utils/useAxios";
+
 import cameraOutline from "../../layout/Sidebar/icons/camera-outline.svg";
+import Select from 'react-select';
+import CustomSingleValue from "../Profile/pages/CustomSymbol";
 
 const Lastest_Videos = () => {
-  const { Option } = Select;
-  const axiosInstance = useAxios();
   const { product } = useContext(ProductContext);
-  const [selectedOption, setSelectedOption] = useState("");
 
   if (
     !product ||
@@ -21,34 +18,119 @@ const Lastest_Videos = () => {
     return null;
   }
 
-  const sortedVideoProducts = [...product.results].sort(
-    (a, b) => new Date(b.created_at) - new Date(a.created_at)
-  );
 
-  const latestVideoProducts = sortedVideoProducts.filter(
+  const [selectedOption, setSelectedOption] = useState("");
+
+
+  const [sortedProducts, setSortedProducts] = useState(product?.results.sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  ).filter(
     (item) => item.product_video_type[0]?.product_type === "Video"
-  );
+  ))
 
   const handleSelect = (value) => {
-    setSelectedOption(value);
-  };
-
-  const handleAllClick = () => {
-    setSelectedOption("");
+    setSelectedOption(value.value);
   };
 
 
-  const sortedProducts = [...latestVideoProducts];
-  if (selectedOption === "option1") {
-    sortedProducts.sort((a, b) => (a.name > b.name ? 1 : -1));
-  } else if (selectedOption === "option2") {
-    sortedProducts.sort((a, b) => (a.name < b.name ? 1 : -1));
-  } else if (selectedOption === "option3") {
-    sortedProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-  } else if (selectedOption === "option4") {
-    sortedProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+
+
+  const selectStyles = {
+    control: (baseStyles) => ({
+      ...baseStyles,
+      cursor: 'pointer',
+      background: 'var(--primaryColor)',
+      borderRadius: '16px',
+      minWidth: '230px',
+      textAlign: 'center',
+      '@media (max-width: 600px)': {
+      minWidth: '100px',
+      maxWidth: '120px',
+    }
+    }),
+    option: (styles, { isFocused, isSelected }) => ({
+      ...styles,
+      backgroundColor: isSelected ? '#0087cc' : isFocused ? 'var(--backgroundColor)' : 'none',
+      color: 'var(--textColor)',
+      cursor: 'pointer',
+      margin: '0 0 5px 0',
+      borderRadius: '8px'
+    }),
+    menu: (styles) => (
+      {
+        ...styles, 
+        borderRadius: '12px',
+        background: 'var(--primaryColor)',
+        minWidth: '150px',
+        right: 0, // Смещение меню вправо
+        zIndex: 999
+      }
+    ),
+    menuList: (styles) => ({
+      ...styles,
+      opacity: 0.7,
+      padding: '5px 10px',
+
+    }),
+    singleValue: (styles) => ({
+      ...styles,
+      color: 'var(--textColor)',
+    }),
+    placeholder: (styles) => ({
+      ...styles,
+      color: 'var(--textColor)',
+      opacity: 0.8
+    })
   }
 
+  const filters = [
+    {
+      value: '',
+      label: 'All'
+    },
+    {
+      value: 'option1',
+      label: 'A to Z'
+    },
+    {
+      value: 'option2',
+      label: 'Z to A'
+    }
+    ,{
+      value: 'option3',
+      label: 'From cheap to expensive'
+    }
+    ,{
+      value: 'option4',
+      label: 'From expensive to cheap'
+    }
+  ]
+
+  useEffect(() => {
+    
+    let sortedArray = [...sortedProducts]; 
+    if (selectedOption === "option1") {
+      sortedArray.sort((a, b) => (a.name > b.name ? 1 : -1));
+    } else if (selectedOption === "option2") {
+      sortedArray.sort((a, b) => (a.name < b.name ? 1 : -1));
+    } else if (selectedOption === "option3") {
+      sortedArray.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+    } else if (selectedOption === "option4") {
+      sortedArray.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+    }else {
+      sortedArray = product?.results.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      ).filter(
+        (item) => item.product_video_type[0]?.product_type === "Video"
+      )
+    }
+  
+    setSortedProducts(sortedArray); 
+    
+  }, [selectedOption]);
+
+
+ 
   return (
     <>
       <section className="latest_videos">
@@ -61,23 +143,17 @@ const Lastest_Videos = () => {
               </div>
               <div className="d-flex align-items-center gap-4">
                 <div className="custom-select">
-                  <Select
-                    defaultValue=""
-                    value={selectedOption}
-                    onChange={handleSelect}
-                    suffixIcon={null}
-                    className="select"
-                    popupClassName="custom-dropdown"
-                    prefixicon={<img src={sort} alt="plus.svg" width={20} />}
-                  >
-                    <Option value="" onClick={handleAllClick}>
-                      All
-                    </Option>
-                    <Option value="option1">A to Z</Option>
-                    <Option value="option2">Z to A</Option>
-                    <Option value="option3">From cheap to expensive</Option>
-                    <Option value="option4">From expensive to cheap</Option>
-                  </Select>
+                <Select
+                defaultValue={filters[0]}
+                placeholder='All'
+                  styles={selectStyles}
+                  options={filters}
+                  onChange={handleSelect}
+                  menuPlacement="auto"
+                  isSearchable={false}
+                  components={{ SingleValue: CustomSingleValue }}
+
+                />
                 </div>
               </div>
             </div>

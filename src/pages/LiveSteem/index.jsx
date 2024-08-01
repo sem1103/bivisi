@@ -10,7 +10,6 @@ import { Modal } from 'antd';
 
 
 export default function LiveStreams() {
-    let roomName = '';
     const navigate = useNavigate();
     const { roomId } = useParams(); // Destructure roomId from useParams
     const streamContainer = useRef(null); // Create a ref for the stream container

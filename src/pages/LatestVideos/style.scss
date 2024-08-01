@@ -8,7 +8,7 @@
   }
 
   h4 {
-    color: #fff;
+    color: var(--textColor);
     /* Poppins/28/Medium */
     font-family: Poppins;
     font-size: 21px;
@@ -29,7 +29,7 @@
     gap: 8px;
     border-radius: 16px;
     border: 1px solid var(--Text-11, #23272e);
-    color: var(--Neutral-White, #fff);
+    color: var(--textColor);
     background-color: transparent;
     /* Poppins/16/SemiBold */
     font-family: Poppins;
@@ -66,7 +66,7 @@
 
       .ant-select-selector {
         background-color: transparent !important;
-        color: white;
+        color: var(--textColor);
         padding: 16px 20px;
         border-radius: 16px;
         border: 1px solid #23272e;
@@ -79,7 +79,7 @@
       }
 
       .ant-select-selection-item {
-        color: white;
+        color: var(--textColor);
       }
     }
   }

@@ -4,7 +4,7 @@
     padding: 12px 10px;
 
     h3 {
-        color: #FFF;
+        color: var(--textColor);
         /* Poppins/28/Medium */
         font-family: Poppins;
         font-size: 28px;
@@ -30,7 +30,7 @@
 
     .my_about_info {
         h1 {
-            color: #FFF;
+            color: var(--textColor);
             /* Poppins/28/Medium */
             font-family: Poppins;
             font-size: 28px;
@@ -41,7 +41,7 @@
         }
 
         span {
-            color: var(--Text-5, #979EAF);
+            color: var(--textColor);
             font-size: 16px;
             font-style: normal;
             font-weight: 400;

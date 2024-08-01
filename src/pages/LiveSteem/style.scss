@@ -1,6 +1,6 @@
 .streams {
     padding: 0 48px;
-    color: #fff;
+    color: var(--textColor);
 
     .stream__form {
         display: flex;
@@ -18,7 +18,7 @@
             outline: 0;
             border-radius: 16px;
             background-color: transparent;
-            color: #fff;
+            color: var(--textColor);
             font-size: 16px;
             z-index: 9;
 
