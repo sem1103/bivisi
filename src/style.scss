@@ -273,4 +273,32 @@ input[type="number"] {
    }
  }
 
+ 
+ .history-btn{
+  svg, path{
+    fill: transparent;
+    stroke: #4b4b4b;
+  }
+ }
+ .pb-3{
+
+  .stroke__change{
+    svg, path{
+      stroke: #626262;
+    }
+  }
+
+  .fill__change{
+    svg, path{
+      fill: #626262;
+    }
+  }
+
+ }
+ .replay_btn, .like_btn{
+  path{
+    fill: #7a7a7a;
+  }
+ }
+
 }

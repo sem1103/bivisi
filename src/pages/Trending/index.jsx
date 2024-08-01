@@ -3,47 +3,134 @@ import './style.scss';
 import sort from '../../assets/icons/Sort.svg'
 import LastVideoCard from "../../components/VideoCard";
 import { ProductContext } from '../../context/ProductContext';
-import { Select } from 'antd';
+import Select from 'react-select';
 import axios from 'axios';
 import { BASE_URL } from '../../api/baseUrl';
 import trendOutline from "../../layout/Sidebar/icons/trend-outline.svg";
+import CustomSingleValue from '../Profile/pages/CustomSymbol';
 
 const Trending = () => {
     const [trendVideo, setTrendVideo] = useState([]);
+    const [selectedOption, setSelectedOption] = useState('');
+    const [originalVideos, setOriginalVideos ] = useState([])
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`${BASE_URL}/web_trending_videos/`);
-                setTrendVideo(response.data.results)
-            } catch (error) {
-                console.error('Failed to fetch data:', error);
-            }
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}/web_trending_videos/`);
+            setTrendVideo(response.data.results.filter(
+                (item) => item.product_video_type[0]?.product_type === "Video"
+            ))
+            setOriginalVideos(response.data.results.filter(
+                (item) => item.product_video_type[0]?.product_type === "Video"
+            ))
+        } catch (error) {
+            console.error('Failed to fetch data:', error);
         }
+    }
+    useEffect(() => {
+        
         fetchData();
     }, [])
 
-    const videoProducts = trendVideo.filter(
-        (item) => item.product_video_type[0]?.product_type === "Video"
-    );
-    const [selectedOption, setSelectedOption] = useState('');
     const handleSelect = (value) => {
-        setSelectedOption(value);
+        setSelectedOption(value.value);
     };
 
     const handleAllClick = () => {
         setSelectedOption('');
     };
-    const sortedProducts = [...videoProducts];
-    if (selectedOption === 'option1') {
-        sortedProducts.sort((a, b) => (a.name > b.name ? 1 : -1));
-    } else if (selectedOption === 'option2') {
-        sortedProducts.sort((a, b) => (a.name < b.name ? 1 : -1));
-    } else if (selectedOption === 'option3') {
-        sortedProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-    } else if (selectedOption === 'option4') {
-        sortedProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-    }
+   
+    const selectStyles = {
+        control: (baseStyles) => ({
+          ...baseStyles,
+          background: 'var(--primaryColor)',
+          borderRadius: '16px',
+          minWidth: '230px',
+          textAlign: 'center',
+          '@media (max-width: 600px)': {
+          minWidth: '100px',
+          maxWidth: '120px',
+        }
+        }),
+        option: (styles, { isFocused, isSelected }) => ({
+          ...styles,
+          backgroundColor: isSelected ? '#0087cc' : isFocused ? 'var(--backgroundColor)' : 'none',
+          color: 'var(--textColor)',
+          cursor: 'pointer',
+          margin: '0 0 5px 0',
+          borderRadius: '8px'
+        }),
+        menu: (styles) => (
+          {
+            ...styles, 
+            borderRadius: '12px',
+            background: 'var(--primaryColor)',
+            minWidth: '150px',
+            right: 0, // Смещение меню вправо
+    
+          }
+        ),
+        menuList: (styles) => ({
+          ...styles,
+          opacity: 0.7,
+          padding: '5px 10px',
+    
+        }),
+        singleValue: (styles) => ({
+          ...styles,
+          color: 'var(--textColor)',
+        }),
+        placeholder: (styles) => ({
+          ...styles,
+          color: 'var(--textColor)',
+          opacity: 0.8
+        })
+      }
+
+      const filters = [
+        {
+          value: '',
+          label: 'All'
+        },
+        {
+          value: 'option1',
+          label: 'A to Z'
+        },
+        {
+          value: 'option2',
+          label: 'Z to A'
+        }
+        ,{
+          value: 'option3',
+          label: 'From cheap to expensive'
+        }
+        ,{
+          value: 'option4',
+          label: 'From expensive to cheap'
+        }
+      ]
+
+      useEffect(() => {
+        let sortedArray = [...trendVideo]; 
+      
+        if (selectedOption === "option1") {
+          sortedArray.sort((a, b) => (a.name > b.name ? 1 : -1));
+        } else if (selectedOption === "option2") {
+          sortedArray.sort((a, b) => (a.name < b.name ? 1 : -1));
+        } else if (selectedOption === "option3") {
+          sortedArray.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        } else if (selectedOption === "option4") {
+          sortedArray.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        } else{
+            setTrendVideo(originalVideos); 
+           return
+        }
+      
+        setTrendVideo(sortedArray); 
+      }, [selectedOption]);
+
+
     return (
         <div className='trending_videos'>
             <div className="container-fluid">
@@ -51,7 +138,7 @@ const Trending = () => {
                     <div className="col-lg-12 d-flex justify-content-between align-items-center section_title">
                         <div className='d-flex align-items-center gap-2'>
                             <img width={27} src={trendOutline} alt="" />
-                            <h4 className='heading_trend text-white mt-1'>Trending</h4>
+                            <h4 className='heading_trend  mt-1'>Trending</h4>
                         </div>
                         {/* <button className='sort_btn'>
                             <img src={sort} alt="plus.svg" />
@@ -60,25 +147,21 @@ const Trending = () => {
 
                         <div className="custom-select">
 
-                            <Select
-                                defaultValue=""
-                                value={selectedOption}
-                                onChange={handleSelect}
-                                suffixIcon={null}
-                                className="select"
-                                popupClassName="custom-dropdown"
-                                prefixicon={<img src={sort} alt="plus.svg" width={20} />}
-                            >
-                                <Option value="" onClick={handleAllClick}>All</Option>
-                                <Option value="option1">A to Z</Option>
-                                <Option value="option2">Z to A</Option>
-                                <Option value="option3">From cheap to expensive</Option>
-                                <Option value="option4">From expensive to cheap</Option>
-                            </Select>
+                        <Select
+        defaultValue={filters[0]}
+        placeholder='All'
+          styles={selectStyles}
+          options={filters}
+          onChange={handleSelect}
+          menuPlacement="auto"
+          isSearchable={false}
+          components={{ SingleValue: CustomSingleValue }}
+
+        />
                         </div>
                     </div>
                     {
-                        sortedProducts?.map((item) => (
+                        trendVideo?.map((item) => (
                             <LastVideoCard ProductItemVideoCard={item} key={item.id} page="trendvideo" />
                         ))
                     }

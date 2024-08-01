@@ -7,7 +7,7 @@
     margin-bottom: 15px;
 
     h4 {
-      color: #fff;
+      color: var(--textColor);
       /* Poppins/28/Medium */
       font-family: Poppins;
       font-size: 18px;
@@ -19,7 +19,8 @@
   }
 
   a {
-    color: #f6f3f4;
+    color: var(--textColor);
+    opacity: .7;
 
     /* Poppins/16/SemiBold */
     font-family: Poppins;

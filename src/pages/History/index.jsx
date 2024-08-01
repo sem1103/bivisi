@@ -193,9 +193,17 @@ const History = () => {
                           </div>{" "}
                           <button
                             className="delete_icon_history"
-                            onClick={() => handleDeleteFromHistory(item.id)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleDeleteFromHistory(item.id)
+                            }}
                           >
-                            <img src={trash} alt="" />
+                           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon/Trash/Outline">
+<path id="Vector" d="M15.8333 7.50008L15.2367 15.2557C15.1032 16.9924 13.655 18.3334 11.9132 18.3334H8.08677C6.34498 18.3334 4.89684 16.9924 4.76326 15.2557L4.16667 7.50008M17.5 5.83341C15.3351 4.7784 12.7614 4.16675 10 4.16675C7.23862 4.16675 4.66493 4.7784 2.5 5.83341M8.33333 4.16675V3.33341C8.33333 2.41294 9.07953 1.66675 10 1.66675C10.9205 1.66675 11.6667 2.41294 11.6667 3.33341V4.16675M8.33333 9.16675V14.1667M11.6667 9.16675V14.1667" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round"/>
+</g>
+</svg>
+
                           </button>
                         </div>
                       </div>
@@ -274,13 +282,18 @@ const History = () => {
                         handleAddToBasket(item?.product_video_type?.product, user, axiosInstance);
                         addItem(item?.product_video_type?.product);
                       }} >
-                        <img
-                          src={bag}
-                          alt="bag"
-                        />
+                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon/Bag 3">
+<path id="Rectangle 794" d="M13.3332 5.00008C13.3332 3.15913 11.8408 1.66675 9.99984 1.66675C8.15889 1.66675 6.6665 3.15913 6.6665 5.00008" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Rectangle 788" d="M3.80146 7.91988C4.00997 6.25179 5.42797 5 7.10905 5H12.8905C14.5716 5 15.9896 6.25179 16.1981 7.91988L17.0314 14.5866C17.2801 16.5761 15.7288 18.3333 13.7238 18.3333H6.27572C4.27073 18.3333 2.71944 16.5761 2.96813 14.5866L3.80146 7.91988Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+<path id="Vector 1788" d="M7.5 13.3333C9.46345 14.4502 10.5396 14.4385 12.5 13.3333" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>
+
                       </button>
-                      <button className="history-btn" onClick={() => handleDeleteFromHistory(item?.id)}>
-                        <img src={trash} alt="delete" />
+                      <button className="history-btn delete__history" onClick={() => handleDeleteFromHistory(item?.id)}>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="Icon/Trash/Outline"><path id="Vector" d="M15.8333 7.50008L15.2367 15.2557C15.1032 16.9924 13.655 18.3334 11.9132 18.3334H8.08677C6.34498 18.3334 4.89684 16.9924 4.76326 15.2557L4.16667 7.50008M17.5 5.83341C15.3351 4.7784 12.7614 4.16675 10 4.16675C7.23862 4.16675 4.66493 4.7784 2.5 5.83341M8.33333 4.16675V3.33341C8.33333 2.41294 9.07953 1.66675 10 1.66675C10.9205 1.66675 11.6667 2.41294 11.6667 3.33341V4.16675M8.33333 9.16675V14.1667M11.6667 9.16675V14.1667" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round"></path></g></svg>
+
                       </button>
                     </div>
                   </div>

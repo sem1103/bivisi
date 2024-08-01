@@ -55,7 +55,7 @@
     }
 
     h1 {
-        color: #fff;
+        color: var(--textColor);
         /* Poppins/28/Medium */
         font-family: Poppins;
         font-size: 21px;
@@ -74,7 +74,7 @@
         gap: 8px;
         border-radius: 16px;
         border: 1px solid var(--Text-11, #23272E);
-        color: var(--Neutral-White, #FFF);
+        color: var(--textColor);
         background-color: transparent;
         /* Poppins/16/SemiBold */
         font-family: Poppins;
@@ -87,6 +87,10 @@
 
         &:hover{
             background-color: #0385CA;
+            color: #fff;
+            path{
+                stroke: #fff;
+            }
         }
     }
 

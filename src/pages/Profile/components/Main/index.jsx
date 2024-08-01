@@ -50,7 +50,7 @@ const Main = () => {
           ></div>
 
           <div className="profile_text_content">
-            <div className="profile_name">{userDetails?.username}</div>
+            <div className="profile_name"><p>{userDetails?.username}</p></div>
             <h6>{userDetails?.email}</h6>
             <div className="d-flex gap-3">
               <p>

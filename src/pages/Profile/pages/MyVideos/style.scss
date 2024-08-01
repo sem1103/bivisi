@@ -1,3 +1,4 @@
+
 .my_video_profile {
   width: 100%;
   height: auto;
@@ -68,13 +69,13 @@
   .custom-select {
     .ant-select {
       width: 250px;
-      background-color: #0f0f0f !important;
+      background-color: var(--backgroundColor) !important;
       height: 50px;
       text-align: center;
 
       .ant-select-selector {
         background-color: transparent !important;
-        color: white;
+        color: var(--textColor);
         padding: 16px 20px;
         border-radius: 16px;
         border: 1px solid #23272e;
@@ -84,7 +85,7 @@
       }
 
       .ant-select-selection-item {
-        color: white;
+        color: var(--textColor);
       }
     }
   }

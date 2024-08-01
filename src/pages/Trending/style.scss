@@ -2,9 +2,11 @@
   width: 100%;
   height: auto;
   padding: 10px;z
-  
+  h4{
+    color: var(--textColor);
+  }
     .heading_trend {
-      color: white !important;
+      color: var(--textColor) !important;
       /* Poppins/28/Medium */
       font-family: Poppins;
       font-size: 21px;
@@ -12,6 +14,7 @@
       font-weight: 400 !important;
       line-height: 36px;
       /* 128.571% */
+      
     }
 
   .sort_btn {
@@ -22,7 +25,7 @@
     gap: 8px;
     border-radius: 16px;
     border: 1px solid var(--Text-11, #23272E);
-    color: var(--Neutral-White, #FFF);
+    color: var(--textColor);
     background-color: transparent;
     /* Poppins/16/SemiBold */
     font-family: Poppins;
@@ -43,7 +46,7 @@
 
       .ant-select-selector {
         background-color: transparent !important;
-        color: white;
+        color:var(--textColor);
         padding: 16px 20px;
         border-radius: 16px;
         border: 1px solid #23272E;
@@ -57,7 +60,7 @@
 
       &:focus {
         .ant-select-selector {
-          color: white;
+          color:var(--textColor);
         }
       }
 

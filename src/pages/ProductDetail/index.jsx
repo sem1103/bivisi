@@ -396,22 +396,26 @@ useEffect(() => {
                     </tbody>
                   </table>
                 </div>
-
-                <div className="video__properties">
-                  <h4>Properties</h4>
-                  <table style={{ borderCollapse: 'collapse', width: '100%', background: '#252525', margin: ' 0 0 20px 0' }}>
-                    <tbody>
                       {
-                        productDetail.properties.map((item) => (
-                          <tr key={item.id}>
-                            <td style={{ fontWeight: '600' }}>{item.product_property}</td>
-                            <td >{item.property_value}</td>
-                          </tr>
-                        ))
+                         productDetail.properties.length &&
+                         <div className="video__properties">
+                         <h4>Properties</h4>
+                         <table style={{ borderCollapse: 'collapse', width: '100%', background: '#252525', margin: ' 0 0 20px 0' }}>
+                           <tbody>
+                             {
+                              
+                               productDetail.properties.map((item) => (
+                                 <tr key={item.id}>
+                                   <td style={{ fontWeight: '600' }}>{item.product_property}</td>
+                                   <td >{item.property_value}</td>
+                                 </tr>
+                               ))
+                             }
+                           </tbody>
+                         </table>
+                       </div>
                       }
-                    </tbody>
-                  </table>
-                </div>
+              
 
                 <div className="video__address">
                   <h4>Address</h4>
