@@ -376,6 +376,7 @@
               width: 40px;
               height: 40px;
               border-radius: 50%;
+              object-fit: cover;
               /* 150% */
             }
           }
@@ -454,7 +455,7 @@
             border: 1px solid var(--Text-11, #23272e);
             padding: 16px;
             background-color: transparent;
-            color: white;
+            color: var(--textColor);
             text-align: center;
             font-size: 16px;
             transition: all 0.3s;
@@ -515,6 +516,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            object-fit: cover;
           }
         }
 

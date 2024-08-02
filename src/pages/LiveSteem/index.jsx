@@ -10,6 +10,7 @@ import { Modal } from 'antd';
 
 
 export default function LiveStreams() {
+    let roomName = '';
     const navigate = useNavigate();
     const { roomId } = useParams(); // Destructure roomId from useParams
     const streamContainer = useRef(null); // Create a ref for the stream container
@@ -18,6 +19,8 @@ export default function LiveStreams() {
     const [randomIndex, setRandomIndex] = useState(0);
     const { countryCurrencySymbol } = getCurrencyByCountry();
     const [showStream, setShowStream] = useState(roomId ? true : false)
+    const [isProductDetailVisible, setProductDetailVisible] = useState(true);
+
     let zp = useRef(null);
 
 
@@ -104,6 +107,44 @@ export default function LiveStreams() {
 
 
 
+
+
+    useEffect(() => {
+      // Функция для скрытия элемента с классом product__detail
+      const hideProductDetail = () => {
+        setProductDetailVisible(false);
+      };
+  
+      // Функция для показа элемента с классом product__detail
+      const showProductDetail = () => {
+        setProductDetailVisible(true);
+      };
+  
+      // Настройка наблюдателя за изменениями в DOM
+      const observer = new MutationObserver((mutationsList) => {
+        for (let mutation of mutationsList) {
+          if (mutation.type === 'childList') {
+            const specialElement = document.querySelector('.sKtK1LFA_jOcb1MuqFNo');
+            const specialElement2 = document.querySelector('.KCGyWARpb478IeXbAzpV');
+            if (specialElement || specialElement2) {
+              hideProductDetail();
+            } else {
+              showProductDetail();
+            }
+          }
+        }
+      });
+  
+      // Указываем, за каким элементом наблюдать и какие изменения отслеживать
+      observer.observe(document.body, { childList: true, subtree: true });
+  
+      // Очистка: отключение наблюдателя при размонтировании компонента
+      return () => {
+        observer.disconnect();
+      };
+    }, []);
+
+
     return (
         <div className="streams">
             <div className="stream__top__title">
@@ -134,7 +175,9 @@ export default function LiveStreams() {
                 <div className="active__stream" >
                     <div className="stream" ref={streamContainer} />
 
-                    <div className="product__detail">
+                    {
+                        isProductDetailVisible &&
+                        <div className="product__detail">
                         <div className="product__content">
                             <NavLink to={'/product_detail/' + allStreams[randomIndex]?.product_detail.id} onClick={() => zp.current?.destroy()} className={'product__link'} />
                             <div className="product__img">
@@ -145,6 +188,9 @@ export default function LiveStreams() {
                         </div>
                     </div>
 
+                    }
+
+                   
 
                     {
                         !roomId &&

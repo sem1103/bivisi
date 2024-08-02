@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style.scss";
-import { Select } from "antd";
+import Select from 'react-select';
 import useAxios from "../../../../utils/useAxios";
 import { AuthContext } from "../../../../context/authContext";
 import DatePicker from "react-datepicker";
@@ -20,6 +20,7 @@ const General = () => {
   });
 
   useEffect(() => {
+
     if (userDetails) {
       setFormData({
         username: userDetails.username || "",
@@ -50,7 +51,7 @@ const General = () => {
   const handleGenderChange = (value) => {
     setFormData({
       ...formData,
-      gender: value,
+      gender: value.value,
     });
   };
 
@@ -83,6 +84,60 @@ const General = () => {
       });
   };
 
+
+  const selectStyles = {
+    control: (baseStyles) => ({
+      ...baseStyles, 
+      background: 'var(--primaryColor)',
+      borderRadius: '16px',
+     
+      border: ' 1px solid #7e7e7e ',
+      margin: '8px 0 0 0 ', 
+      height: '50px', // Установить высоту
+    minHeight: '50px',
+    }),
+    valueContainer: (provided, state) => ({
+      ...provided,
+      height: '100%',
+      display: 'flex',
+    }),
+    option: (styles, { isFocused, isSelected }) => ({
+      ...styles,
+      backgroundColor: isSelected ? '#0087cc' : isFocused ? 'var(--backgroundColor)' : 'none',
+      color: 'var(--textColor)',
+      cursor: 'pointer',
+      margin: '0 0 5px 0',
+      borderRadius: '8px',
+
+    }),
+    menu: (styles) => (
+      {
+        ...styles,
+        borderRadius: '12px',
+        background: 'var(--primaryColor)',
+        right: 0, // Смещение меню вправо
+
+      }
+    ),
+    menuList: (styles) => ({
+      ...styles,
+      opacity: 0.7,
+      padding: '5px 10px',
+
+    }),
+    singleValue: (styles) => ({
+      ...styles,
+      color: 'var(--textColor)',
+      fontSize: '13px',
+  
+    }),
+    placeholder: (styles) => ({
+      ...styles,
+      color: 'var(--textColor)',
+      opacity: 0.8
+    })
+  }
+
   return (
     <>
       <form className="general_settings" onSubmit={handleSubmit}>
@@ -95,7 +150,7 @@ const General = () => {
           <div className="general_form">
             <div className="row ">
               <div className="col-lg-6">
-                <div className="d-flex flex-column input-data">
+                <div className="d-flex flex-column input-data ">
                   <label>Username</label>
                   <input
                     type="text"
@@ -130,18 +185,41 @@ const General = () => {
                 </div>
               </div>
               <div className="col-lg-6">
-                <div className="d-flex flex-column input-data">
+                <div className="d-flex flex-column input-data gender">
                   <label>Gender</label>
-                  <Select
-                    value={formData.gender}
-                    onChange={handleGenderChange}
-                    className="mt-2 form_select"
-                    options={[
-                      { value: "Female", label: "Female" },
-                      { value: "Male", label: "Male" },
-                      { value: "Other", label: "Other" },
-                    ]}
-                  />
+                  {
+                    formData?.gender &&
+                    <Select
+                      styles={selectStyles}
+                      placeholder=''
+                      isSearchable={false}
+                      defaultValue={{value: userDetails.gender , label: userDetails.gender}}
+                      onChange={handleGenderChange}
+                      options={[
+                        { value: "Female", label: "Female" },
+                        { value: "Male", label: "Male" },
+                        { value: "Other", label: "Other" },
+                      ]}
+                    />
+                    
+                    
+                  }
+                  {
+                    !formData?.gender &&
+                    <Select
+                      styles={selectStyles}
+                      placeholder=''
+                      isSearchable={false}
+                      onChange={handleGenderChange}
+                      options={[
+                        { value: "Female", label: "Female" },
+                        { value: "Male", label: "Male" },
+                        { value: "Other", label: "Other" },
+                      ]}
+                    />
+                    
+                    
+                  }
                 </div>
               </div>
             </div>

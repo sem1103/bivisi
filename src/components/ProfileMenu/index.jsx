@@ -13,9 +13,9 @@ import { NavLink } from "react-router-dom";
 import { ThemeContext } from "../../context/ThemeContext";
 
 const ProfileMenu = () => {
-  const {prefersDarkScheme, setTheme} = useContext(ThemeContext)
+  const { setTheme} = useContext(ThemeContext)
   const { userDetails, logoutUser } = useContext(AuthContext);
-  const [themeMode, setThemeMode] = useState(localStorage.themeMode ? JSON.parse(localStorage.themeMode) : prefersDarkScheme.matches)
+  const [themeMode, setThemeMode] = useState(localStorage.themeMode ? JSON.parse(localStorage.themeMode) : false)
   const [menuOpened, setMenuOpened] = useState(false);
   const menuRef = useRef(null);
   const themeSwitcher = useRef(null)
@@ -28,10 +28,7 @@ const ProfileMenu = () => {
     }
   };
 
-  useEffect(() => {
-    setTheme(themeMode, themeSwitcher.current);
-  }, []);
-
+ 
   useEffect(() => {
     if (menuOpened) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -121,7 +118,11 @@ const ProfileMenu = () => {
                 <label htmlFor="dark-mode-toggle" />
               </div>
             </div>
-            <div className="profile-menu-item mt-2 mb-2" onClick={logoutUser}>
+            <div className="profile-menu-item mt-2 mb-2" onClick={() => {
+              setTheme(!themeMode, themeSwitcher.current)
+              setThemeMode(!themeMode)
+              logoutUser()
+            }}>
               <img src={logout} alt="" />
               <span>Log out</span>
             </div>

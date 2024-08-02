@@ -10,7 +10,7 @@
         }
 
         a {
-            color: #FFF;
+            color: var(--textColor);
             font-size: 23px;
             font-style: normal;
             font-weight: 400;
@@ -19,16 +19,17 @@
         }
     }
 
+   
     .basket_card {
         border-radius: 24px;
-        background: var(--Text-14, #16181D);
+        background: var(--primaryColor);
         padding: 12px;
         // width: 784px;
         gap: 24px;
         position: relative;
 
         p {
-            color: var(--Text-1, #F3F4F6);
+            color: var(--textColor);
             font-size: 20px;
             font-style: normal;
             font-weight: 600;
@@ -37,7 +38,7 @@
         }
 
         span {
-            color: var(--Neutral-White, #FFF);
+            color: var(--textColor);
             font-size: 24px;
             font-style: normal;
             font-weight: 400;
@@ -62,7 +63,7 @@
 
         button {
             border-radius: 16px;
-            border: 1px solid var(--Text-11, #23272E);
+            border: 1px solid var(--Text-11, #8b8b8b);
             background-color: transparent;
             padding: 12px;
             display: flex;
@@ -79,7 +80,7 @@
 
         .close {
             border-radius: 16px;
-            border: 1px solid var(--Text-11, #23272E);
+            border: 1px solid var(--Text-11, #8b8b8b);
             padding: 12px;
             display: flex;
             justify-content: center;
@@ -101,13 +102,13 @@
 
     .basket_summary {
         border-radius: 24px;
-        background: var(--Text-14, #16181D);
+        background: var(--primaryColor);
         padding: 24px;
         // width: 392px;
 
         h3 {
             overflow: hidden;
-            color: var(--Text-1, #F3F4F6);
+            color: var(--textColor);
             text-overflow: ellipsis;
             font-size: 22px;
             font-style: normal;
@@ -117,7 +118,7 @@
         }
 
         p {
-            color: var(--Text-2, #D1D4DB);
+            color: var(--textColor);
             font-size: 16px;
             font-style: normal;
             font-weight: 400;
@@ -127,7 +128,7 @@
         }
 
         span {
-            color: var(--Text-2, #D1D4DB);
+            color: var(--textColor);
             font-size: 16px;
             font-style: normal;
             font-weight: 400;
@@ -136,14 +137,13 @@
         }
 
         hr {
-            background-color: #23272E;
-            color: #23272E;
+            color: #8a8a8a;
         }
 
         .total_basket {
             p {
                 overflow: hidden;
-                color: var(--Text-3, #C5C9D3);
+                color: var(--textColor);
                 text-overflow: ellipsis;
                 font-size: 18px;
                 font-style: normal;
@@ -153,7 +153,7 @@
             }
 
             span {
-                color: #C5C9D3;
+                color: var(--textColor);
                 font-size: 19px;
                 font-style: normal;
                 font-weight: 400;

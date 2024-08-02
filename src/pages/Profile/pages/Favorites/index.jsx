@@ -15,7 +15,9 @@ import SortProduct from "../../../../components/SortProduct";
 import Plyr from "plyr-react";
 import { useCart } from "react-use-cart";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 const Favorites = () => {
+  const {countryCurrencySymbol} = getCurrencyByCountry()
   const [favorites, setFavorites] = useState([]);
   const { user } = useContext(AuthContext)
   const axiosInstance = useAxios();
@@ -125,7 +127,7 @@ const Favorites = () => {
                   <div className="videoCard" >
                     <div className="main">
                       <span className="card_price">
-                        $ {item?.product.price}
+                         {item?.product.price} {countryCurrencySymbol}
                       </span>
                       <img
                         className={`coverImage`}

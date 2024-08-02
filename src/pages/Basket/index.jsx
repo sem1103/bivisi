@@ -87,7 +87,10 @@ const Basket = () => {
         <div className="row">
           <div className="col-lg-12 pt-4 basket_head pb-4">
             <Link to="/your_profile">
-              <img src={left} alt="left.icon" />
+            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.83333 13.3334L5.5 10M5.5 10L8.83333 6.66671M5.5 10L15.5 10" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
               Basket
             </Link>
           </div>
@@ -130,12 +133,13 @@ const Basket = () => {
                       </div>
                     </div>
                   </div>
-                  <div
-                    className="close"
-                    onClick={() => handleDeleteBasketItem(item.product.id)}
-                  >
+               
+                    <button
+                      className="close"
+                      onClick={() => handleDeleteBasketItem(item.product.id)}
+                    >
                     <IconX stroke={2} />
-                  </div>
+                    </button>
                 </div>
               );
             })}

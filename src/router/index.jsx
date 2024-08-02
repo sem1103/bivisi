@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -52,11 +52,16 @@ import LoadingBarPreloader from "../components/LoadingBarPreloader";
 import LiveStreem from "../pages/LiveSteem";
 import NewStream from "../pages/LiveSteem/CreateStreem";
 import ShowMyStream from "../pages/LiveSteem/CreateStreem/ShowMyStream";
+import { ThemeContext } from "../context/ThemeContext";
 
 
 const AppRouter = () => {
+  const { setTheme} = useContext(ThemeContext)
   const [isOpen, setIsOpen] = useState(true);
-
+  const [themeMode, setThemeMode] = useState(localStorage.themeMode ? JSON.parse(localStorage.themeMode) : false)
+  useEffect(() => {
+    setTheme(themeMode);
+  }, []);
  
   return (
     <>
