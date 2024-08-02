@@ -22,7 +22,8 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import replay from "../../assets/icons/replay-rectangle.png";
 import { Modal } from "antd";
 import ShareModal from "../ShareModal";
-import eye from "../../assets/icons/eye.svg";
+import getCurrencyByCountry from "../../utils/getCurrencyService";
+
 const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, setPlaying }) => {
   const axiosInstance = useAxios();
   const { product, setProduct } = useContext(ProductContext);
@@ -34,6 +35,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   const [showSubCommentId, setShowSubCommentId] = useState(null);
   const playerRef = useRef(null);
   const menuRef = useRef(null);
+  const {countryCurrencySymbol} = getCurrencyByCountry()
   useEffect(() => {
     if (user && productItemShort.is_liked) {
       setLiked(true);
@@ -41,7 +43,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
       setLiked(false);
     }
   }, [user, productItemShort.is_liked]);
-
+  
 
   console.log(productItemShort);
   useEffect(() => {
@@ -341,10 +343,10 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                     <h3>{productItemShort.name}</h3>
                     <h4>{productItemShort.description}</h4>
 
-                  {productItemShort.properties.length &&
+                  {productItemShort.properties.length > 0  &&
                     <div className="video__properties">
                     <h5>Properties</h5>
-                    <table style={{ borderCollapse: 'collapse', width: '100%', background: '#252525', margin: ' 0 0 20px 0' }}>
+                    <table style={{ borderCollapse: 'collapse', width: '100%', background: 'var(--backgroundColor)',  margin: ' 0 0 20px 0' }}>
                       <tbody>
                         {
                           
@@ -389,7 +391,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                 </Modal>
                 <div className="short__inform">
                 <p >{productItemShort.name.slice(0, 20)}... <button onClick={() => setDetailModal(true)}>Read more</button></p>
-                <span>${productItemShort.price}</span>
+                <span>{productItemShort.price + countryCurrencySymbol}</span>
                 </div>
               </div>
             </div>
@@ -417,7 +419,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                         }
                       }}
                     >
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg width="25" height="22" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="Icon/Bag 3">
                           <path id="Rectangle 794" d="M13.3332 5.00008C13.3332 3.15913 11.8408 1.66675 9.99984 1.66675C8.15889 1.66675 6.6665 3.15913 6.6665 5.00008" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                           <path id="Rectangle 788" d="M3.80146 7.91988C4.00997 6.25179 5.42797 5 7.10905 5H12.8905C14.5716 5 15.9896 6.25179 16.1981 7.91988L17.0314 14.5866C17.2801 16.5761 15.7288 18.3333 13.7238 18.3333H6.27572C4.27073 18.3333 2.71944 16.5761 2.96813 14.5866L3.80146 7.91988Z" stroke="var(--textColor)" stroke-width="1.5" stroke-linejoin="round" />
@@ -593,7 +595,11 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                               showModal(comment.id, false);
                                             }}
                                           >
-                                            <img src={delete_img} alt="" />
+<svg style={{opacity: 0.7}} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon/Trash/Outline">
+<path id="Vector" d="M15.8333 7.49935L15.2367 15.255C15.1032 16.9917 13.655 18.3327 11.9132 18.3327H8.08677C6.34498 18.3327 4.89684 16.9917 4.76326 15.255L4.16667 7.49935M17.5 5.83268C15.3351 4.77766 12.7614 4.16602 10 4.16602C7.23862 4.16602 4.66493 4.77766 2.5 5.83268M8.33333 4.16602V3.33268C8.33333 2.41221 9.07953 1.66602 10 1.66602C10.9205 1.66602 11.6667 2.41221 11.6667 3.33268V4.16602M8.33333 9.16602V14.166M11.6667 9.16602V14.166" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round"/>
+</g>
+</svg>
                                           </button>
                                         </div>
                                       )}
@@ -674,7 +680,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                                         alt="like.svg"
                                                       /> */}
 
-<svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg style={{opacity: 0.6}} width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="like">
 <path id="combo shape" fill-rule="evenodd" clip-rule="evenodd" d="M9.78888 18H6.12309C4.28761 18 2.68768 16.7508 2.24252 14.9701L0.621247 8.48507C0.305674 7.22278 1.26039 6 2.56153 6H7.99998L6.59115 3.88675C5.48355 2.22536 6.67453 0 8.67127 0H9.99998L13.8682 6.76943C13.9546 6.92052 14 7.09154 14 7.26556V15.4648C14 15.7992 13.8329 16.1114 13.5547 16.2969L12.0077 17.3282C11.3506 17.7662 10.5786 18 9.78888 18ZM18 5H17.5C16.3954 5 15.5 5.89543 15.5 7V16C15.5 17.1046 16.3954 18 17.5 18H18C19.1045 18 20 17.1046 20 16V7C20 5.89543 19.1045 5 18 5Z" fill="var(--textColor)"/>
 </g>
@@ -712,10 +718,12 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                                                   );
                                                                 }}
                                                               >
-                                                                <img
-                                                                  src={delete_img}
-                                                                  alt=""
-                                                                />
+                                                               <svg style={{opacity: 0.7}} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon/Trash/Outline">
+<path id="Vector" d="M15.8333 7.49935L15.2367 15.255C15.1032 16.9917 13.655 18.3327 11.9132 18.3327H8.08677C6.34498 18.3327 4.89684 16.9917 4.76326 15.255L4.16667 7.49935M17.5 5.83268C15.3351 4.77766 12.7614 4.16602 10 4.16602C7.23862 4.16602 4.66493 4.77766 2.5 5.83268M8.33333 4.16602V3.33268C8.33333 2.41221 9.07953 1.66602 10 1.66602C10.9205 1.66602 11.6667 2.41221 11.6667 3.33268V4.16602M8.33333 9.16602V14.166M11.6667 9.16602V14.166" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round"/>
+</g>
+</svg>
+
                                                               </button>
                                                             </div>
                                                           )}

@@ -50,12 +50,13 @@ export default function NewStream() {
             background: 'var(--primaryColor)',
             borderRadius: '16px',
             textAlign: 'center',
-            
+            cursor: 'pointer',
+
             
         }),
         option: (styles, { isFocused, isSelected }) => ({
             ...styles,
-            backgroundColor: isSelected ? '#0087cc' : isFocused ? 'var(--backgroundColor)' : 'none',
+            backgroundColor: isSelected ? '#0384ca67' : isFocused ? 'var(--backgroundColor)' : 'none',
             color: 'var(--textColor)',
             cursor: 'pointer',
             margin: '0 0 5px 0',
@@ -67,6 +68,7 @@ export default function NewStream() {
                 borderRadius: '12px',
                 background: 'var(--primaryColor)',
                 minWidth: '150px',
+                zIndex: 9999
             }
         ),
         menuList: (styles) => ({
@@ -182,9 +184,11 @@ export default function NewStream() {
                         styles={selectStyles}
                         options={myVideos}
                         placeholder='Select your video'
+                      
                         onChange={(value) => {
+                            
                             setSelectedProduct(true)
-                            localStorage.setItem('streamSelectProductId', value)
+                            localStorage.setItem('streamSelectProductId', value.value)
                         }}
                         components={{ Option: CustomOption }}
                     />

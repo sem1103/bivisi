@@ -17,6 +17,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import cameraOutline from "../../layout/Sidebar/icons/camera-outline.svg"
 import Plyr from "plyr-react";
 import { useCart } from "react-use-cart";
+import getCurrencyByCountry from "../../utils/getCurrencyService";
 const History = () => {
   const { addItem } = useCart();
   const { product } = useContext(ProductContext);
@@ -106,6 +107,7 @@ const History = () => {
       navigate("/shorts");
     }, 1000);
   };
+  const {countryCurrencySymbol} = getCurrencyByCountry();
 
   function formatViewCount(num) {
     if (num >= 1000000000) {
@@ -188,7 +190,7 @@ const History = () => {
                           <div className="text">
                             <p>{item.product_video_type?.product.name}</p>
                             <span>
-                              {item.product_video_type?.product.price}$
+                              {item.product_video_type?.product.price + countryCurrencySymbol}
                             </span>
                           </div>{" "}
                           <button
@@ -227,7 +229,7 @@ const History = () => {
                 >
                   <div className="main">
                     <span className="card_price">
-                      $ {item.product_video_type?.product?.price}
+                      {item.product_video_type?.product?.price + countryCurrencySymbol}
                     </span>
                     <img
                       className={`coverImage ${isHovered ? "hidden" : ""}`}

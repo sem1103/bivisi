@@ -13,7 +13,7 @@
   .settings_sidebar {
     width: 28%;
     height: 100%;
-    background: var(--Background-Color, #0f0f0f);
+    background: var(--backgroundColor);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -22,7 +22,7 @@
       padding: 0;
     }
     h1 {
-      color: #fff;
+      color: var(--textColor);
       padding-left: 24px;
       /* Poppins/28/SemiBold */
       font-family: Poppins;
@@ -52,20 +52,28 @@
       cursor: pointer;
       margin: 7px 0;
       &:hover {
-        background: var(--Text-13, #1b1d23);
+        background: var(--primaryColor);
       }
     }
     .active {
-        background: var(--Text-13, #1b1d23);
+        background: var(--primaryColor);
       }
   }
   .content {
     width: 70%;
     height: auto;
     border-radius: 24px;
-    background: var(--Text-15, #121317);
+    background: var(--primaryColor);
     padding: 30px 35px;
   }
+}
+
+.general_settings .heading_text, .profile_information .heading_text, .privacy .heading_text, .password_change .heading_text, .balance .heading_text, .delete_acc .heading_text{
+  h1{
+    color: var(--textColor) !important;
+
+  }
+ 
 }
 
 

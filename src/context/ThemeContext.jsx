@@ -6,7 +6,7 @@ export  const ThemeContext = createContext();
 
 export default function ThemeProvider ({children}) {
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: light)');
-    const [themeMode, setThemeMode] = useState()
+    const [themeMode, setThemeMode] = useState(false)
 
     const setTheme = (theme, switcher) => {
         if(theme){

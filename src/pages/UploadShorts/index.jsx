@@ -17,8 +17,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { useLocation, useNavigate } from "react-router-dom";
 import '../ProductDetail/map.scss'
 import { BASE_URL } from "../../api/baseUrl";
-import { ThemeContext } from "../../context/ThemeContext";
-import { others } from "@chakra-ui/react";
+
 
 
 export default function UploadS() {

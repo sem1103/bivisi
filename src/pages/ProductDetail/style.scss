@@ -81,7 +81,8 @@
         }
 
         span {
-          color: var(--Text-4, #a2a8b7);
+          color: var(--textColor);
+          opacity: .7;
           font-size: 16px;
           font-style: normal;
           font-weight: 400;
@@ -90,7 +91,7 @@
       }
 
       h4 {
-        color: var(--Text-1, #f3f4f6);
+        color: var(--textColor);
         text-overflow: ellipsis;
         white-space: nowrap;
         font-size: 20px;
@@ -100,7 +101,7 @@
       }
 
       p {
-        color: var(--Text-4, #a2a8b7);
+        color: var(--textColor);
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
@@ -142,7 +143,8 @@
         }
 
         span {
-          color: var(--Neutral-White, #fff);
+          color: var(--textColor);
+          opacity: .8;
           font-size: 16px;
           font-style: normal;
           font-weight: 600;
@@ -171,7 +173,10 @@
 
         .heart {
           cursor: pointer;
-
+          button{
+            border: 0;
+            background: none;
+          }
           img {
             width: 20px;
             height: 20px;
@@ -301,7 +306,7 @@
         width: 100%;
         height: 200px;
         border: none;
-        background: var(--Text-14, #16181d);
+        background: var(--primaryColor);
         border-radius: 16px;
         margin: 20px 0;
         padding: 35px;
@@ -333,7 +338,7 @@
           position: relative;
 
           h1 {
-            color: var(--Text-1, #f3f4f6);
+            color: var(--textColor);
             font-size: 24px;
             font-style: normal;
             font-weight: 400;
@@ -345,7 +350,7 @@
             border: none;
             border-bottom: 1px solid #525252;
             background-color: transparent;
-            color: white;
+            color: var(--textColor);
             width: 100%;
             padding: 11px 2px;
           }
@@ -383,7 +388,7 @@
       }
 
       h4 {
-        color: var(--Neutral-White, #fff);
+        color: var(--textColor);
         font-size: 18px;
         font-style: normal;
         font-weight: 400;
@@ -412,13 +417,13 @@
       }
 
       .comments {
-        background-color: #16181d;
+        background-color: var(--primaryColor);
         padding: 34px;
         border-radius: 16px;
 
         .comments_count {
-          color: white;
-        }
+    color: var(--textColor);
+  }
 
         .comment_avatar {
           border-radius: 50%;
@@ -430,7 +435,7 @@
         }
 
         .comment_user {
-          color: white;
+          color: var(--textColor);
         }
 
         .comment {
@@ -454,7 +459,8 @@
           }
 
           span {
-            color: white;
+            color: var(--textColor);
+            opacity: .7;
             font-weight: 700;
           }
 
@@ -481,7 +487,7 @@
             border: 1px solid var(--Text-11, #23272e);
             padding: 14px;
             background-color: transparent;
-            color: white;
+            color: var(--textColor);
             text-align: center;
             font-size: 16px;
           }
@@ -490,7 +496,7 @@
     }
 
     .no_comments {
-      color: #fff;
+      color: var(--textColor);
     }
   }
 
@@ -642,6 +648,7 @@
   padding: 10px;
   margin: 24px 0 20px 0;
   border-radius: 16px;
+  opacity: .8;
 
   h4 {
     font-size: 20px;
