@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './style.scss';
-import { Select } from 'antd';
 import PopularChannelCard from '../../components/PChannel';
 import axios from 'axios';
 import { BASE_URL } from '../../api/baseUrl';
@@ -9,7 +8,6 @@ import boardOutline from "../../layout/Sidebar/icons/board_outline.svg";
 import SortChannel from '../../components/SortChannel';
 
 const AllChannels = () => {
-    const { Option } = Select;
     const [popularAllC, setPopularAllC] = useState([]);
     const [sortedChannels, setSortedChannels] = useState([]);
     const { user } = useContext(AuthContext);

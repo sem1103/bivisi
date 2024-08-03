@@ -10,7 +10,7 @@
         }
 
         a {
-            color: #FFF;
+            color: var(--textColor);
             font-size: 22px;
             font-style: normal;
             font-weight: 400;
@@ -21,7 +21,7 @@
 
     .contact_info {
         h4 {
-            color: #FFF;
+            color: var(--textColor);
             font-size: 20px;
             font-style: normal;
             font-weight: 400;
@@ -35,7 +35,7 @@
     .payment-form {
         form {
             label {
-                color: var(--Neutral-White, #FFF);
+                color: var(--textColor);
                 font-size: 14px;
                 font-style: normal;
                 font-weight: 400;
@@ -48,7 +48,7 @@
                 border: 1px solid var(--Gray-400, #292929);
                 padding: 12px 20px;
                 background-color: transparent;
-                color: var(--Neutral-White, #FFF);
+                color: var(--textColor);
                 outline: none;
                 font-size: 16px;
                 font-style: normal;
@@ -61,7 +61,7 @@
 
     .payment_method {
         h4 {
-            color: #FFF;
+            color: var(--textColor);
             font-size: 20px;
             font-style: normal;
             font-weight: 400;
@@ -72,7 +72,7 @@
 
     .payment_info {
         label {
-            color: var(--Neutral-White, #FFF);
+            color: var(--textColor);
             font-size: 14px;
             font-style: normal;
             font-weight: 400;
@@ -85,7 +85,7 @@
             border: 1px solid var(--Gray-400, #292929);
             padding: 12px 20px;
             background-color: transparent;
-            color: var(--Neutral-White, #FFF);
+            color: var(--textColor);
             outline: none;
             font-size: 16px;
             font-style: normal;
@@ -98,7 +98,7 @@
     .payment-check {
         padding: 24px;
         border-radius: 24px;
-        background: var(--Text-14, #16181D);
+        background: var(--primaryColor);
 
         p {
             color: var(--Gray-200, #7A7A7A);
@@ -109,7 +109,7 @@
             /* 150% */
 
             span {
-                color: var(--Neutral-White, #FFF);
+                color: var(--textColor);
                 font-size: 15px;
                 font-style: normal;
                 font-weight: 400;
@@ -120,12 +120,12 @@
 
     .paymnet_summary{
         border-radius: 24px;
-        background: var(--Text-14, #16181D);
+        background: var(--primaryColor);
         padding: 24px;
 
         h3 {
             overflow: hidden;
-            color: var(--Text-1, #F3F4F6);
+            color: var(--textColor);
             text-overflow: ellipsis;
             font-size: 20px;
             font-style: normal;
@@ -135,7 +135,7 @@
         }
 
         p {
-            color: var(--Text-2, #D1D4DB);
+            color: var(--textColor);
             font-size: 16px;
             font-style: normal;
             font-weight: 400;
@@ -145,7 +145,7 @@
         }
 
         span {
-            color: var(--Text-2, #D1D4DB);
+            color: var(--textColor);
             font-size: 16px;
             font-style: normal;
             font-weight: 400;
@@ -161,7 +161,7 @@
         .total_payment {
             p {
                 overflow: hidden;
-                color: var(--Text-3, #C5C9D3);
+                color: var(--textColor);
                 text-overflow: ellipsis;
                 font-size: 18px;
                 font-style: normal;
@@ -171,7 +171,7 @@
             }
 
             span {
-                color: var(--Neutral-White, #FFF);
+                color: var(--textColor);
                 font-size: 17px;
                 font-style: normal;
                 font-weight: 400;

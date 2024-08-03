@@ -6,7 +6,7 @@
     justify-content: space-between !important ;
   }
   h4 {
-    color: #fff;
+    color: var(--textColor);
     /* Poppins/28/Medium */
     font-family: Poppins;
     font-size: 21px;
@@ -46,10 +46,17 @@
     .delete_icon_history {
       position: absolute;
       top: 20px;
-      right: 30px;
-      background-color: #292929;
-      color: white;
+      right: 20px;
+      background-color: var(--backgroundColor);
+      border: 0;
+      padding: 10px;
+      color: var(--textColor);
       font-size: 17px;
+      border-radius: 16px;
+      z-index: 999;
+      &:hover{
+        box-shadow: 0 0 5px #0b90d4;
+      }
     }
 
     .card_price {
@@ -79,11 +86,11 @@
     align-items: center;
     gap: 6px;
     border-radius: 16px;
-    border: 1px solid var(--Gray-400, #292929);
+    border: 1px solid var(--textColor);
     transition: all 0.3s ease;
     cursor: pointer;
     background: transparent;
-    color: white;
+    color: var(--textColor);
    
 
     &:hover {

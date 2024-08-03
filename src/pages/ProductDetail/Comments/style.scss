@@ -9,7 +9,7 @@
   margin-top: 10px;
 
   .reply-username {
-    color: var(--Text-1, #f3f4f6);
+    color: var(--textColor);
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
@@ -21,7 +21,7 @@
     border: none;
     border-bottom: 1px solid #525252;
     background-color: transparent;
-    color: white;
+    color: var(--textColor);
     width: 80%;
     padding: 11px 2px;
 
@@ -75,7 +75,7 @@
   }
 
   p {
-    color: white;
+    color: var(--textColor);
     font-size: 13px;
     padding-bottom: 2px;
 
@@ -130,7 +130,7 @@
       position: relative;
 
       .username {
-        color: var(--Text-1, #f3f4f6);
+        color: var(--textColor);
         font-size: 24px;
         font-style: normal;
         font-weight: 400;
@@ -142,7 +142,7 @@
         border: none;
         border-bottom: 1px solid #525252;
         background-color: transparent;
-        color: white;
+        color: var(--textColor);
         width: 100%;
         padding: 11px 2px;
       }
@@ -180,7 +180,7 @@
   }
 
   h4 {
-    color: var(--Neutral-White, #fff);
+    color: var(--textColor);
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -214,7 +214,7 @@
     border-radius: 16px;
 
     .comments_count {
-      color: white;
+      color: var(--textColor);
     }
 
     .comment_avatar {
@@ -231,7 +231,7 @@
     }
 
     .comment_user {
-      color: white;
+      color: var(--textColor);
     }
 
     .comment {
@@ -260,7 +260,7 @@
       }
 
       span {
-        color: white;
+        color: var(--textColor);
         font-weight: 700;
       }
 
@@ -293,7 +293,7 @@
         border: 1px solid var(--Text-11, #23272e);
         padding: 16px;
         background-color: transparent;
-        color: white;
+        color: var(--textColor);
         text-align: center;
         font-size: 16px;
         transition: all .3s;

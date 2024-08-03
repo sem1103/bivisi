@@ -10,8 +10,10 @@ import { ProductContext } from "../../../../context/ProductContext";
 import useAxios from "../../../../utils/useAxios";
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router-dom";
+import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 
 const MyShortCard = ({ productShortItem }) => {
+  const {countryCurrencySymbol} =  getCurrencyByCountry();
   const [localPlaying, setLocalPlaying] = useState(false);
   const { playingVideo, setPlaying: setGlobalPlaying } =
     useContext(VideoContext);
@@ -88,6 +90,7 @@ const MyShortCard = ({ productShortItem }) => {
     event.stopPropagation();
     if (action === "Edit") {
       navigate(`/your_profile/edit_short/${productShortItem.id}`);
+      localStorage.setItem('myEditVideo', JSON.stringify(productShortItem))
     } else if (action === "Delete") {
       deleteShortCard(productShortItem.id);
     }
@@ -125,7 +128,7 @@ const MyShortCard = ({ productShortItem }) => {
           <div className="shortCard-content">
             <div className="text">
               <p>{productShortItem?.name}</p>
-              <span>{productShortItem?.price}$</span>
+              <span>{productShortItem?.price}{countryCurrencySymbol}</span>
             </div>
           </div>
         </div>

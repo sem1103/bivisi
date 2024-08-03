@@ -324,15 +324,20 @@ useEffect(() => {
 
                 <div className="video_content_bottom">
                   <div className="d-flex video_bottom_right">
-                    <div className="d-flex align-items-center gap-2">
+                    <div className={`d-flex align-items-center gap-2 fill__change ${liked ? 'liked' : ''}`}>
                       <button
-                        className="like-btn"
+                        className="like-btn "
                         style={{
                           background: liked ? "#0385ca" : "none",
                         }}
                         onClick={() => toggleLike(productDetail.id)}
                       >
-                        <img src={like} alt="like.svg" />
+                        <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="like">
+<path id="combo shape" fill-rule="evenodd" clip-rule="evenodd" d="M7.62205 15.5H5.28959C3.45412 15.5 1.85419 14.2508 1.40902 12.4701L0.287751 7.98507C-0.0278224 6.72278 0.926894 5.5 2.22804 5.5H6.33315L5.59098 4.38675C4.48339 2.72536 5.67437 0.5 7.67111 0.5H7.99982L11.2014 6.10276C11.2877 6.25386 11.3331 6.42487 11.3331 6.5989V13.2981C11.3331 13.6325 11.166 13.9447 10.8879 14.1302L9.84085 14.8282C9.18378 15.2662 8.41175 15.5 7.62205 15.5ZM12.5832 6.54167V13.625C12.5832 14.6605 13.4226 15.5 14.4582 15.5C15.4937 15.5 16.3332 14.6605 16.3332 13.625V6.54166C16.3332 5.50613 15.4937 4.66667 14.4582 4.66667C13.4226 4.66667 12.5832 5.50613 12.5832 6.54167Z" fill="white"/>
+</g>
+</svg>
+
                       </button>
                       <span>{productDetail?.like_count}</span>
                     </div>
@@ -342,7 +347,7 @@ useEffect(() => {
                       <WishBtn ProductItemVideoCard={productDetail} />
                     </div>
                     <div
-                      className="add_basket"
+                      className="add_basket stroke__change"
                       onClick={() => {
                         if (user.user_id === productDetail.user.id) {
                           toast.warning(
@@ -354,18 +359,38 @@ useEffect(() => {
                         }
                       }}
                     >
-                      <img src={bag} alt="" />
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon/Bag 3">
+<path id="Rectangle 794" d="M13.3332 5.00008C13.3332 3.15913 11.8408 1.66675 9.99984 1.66675C8.15889 1.66675 6.6665 3.15913 6.6665 5.00008" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Rectangle 788" d="M3.80146 7.91988C4.00997 6.25179 5.42797 5 7.10905 5H12.8905C14.5716 5 15.9896 6.25179 16.1981 7.91988L17.0314 14.5866C17.2801 16.5761 15.7288 18.3333 13.7238 18.3333H6.27572C4.27073 18.3333 2.71944 16.5761 2.96813 14.5866L3.80146 7.91988Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+<path id="Vector 1788" d="M7.5 13.3333C9.46345 14.4502 10.5396 14.4385 12.5 13.3333" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>
                       <span></span>
                     </div>
                     <div className="d-flex align-items-center gap-2">
-                      <button className="download-btn" onClick={handleDownload}>
-                        <img src={download_img} alt="Download" />
+                      <button className="download-btn stroke__change" onClick={handleDownload}>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon/Download">
+<path id="Vector 347" d="M7.5 10L10 12.5M10 12.5L12.5 10M10 12.5L10 2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector 354" d="M6.25 7.5V7.5C4.17893 7.5 2.5 9.17893 2.5 11.25L2.5 13.5C2.5 15.7091 4.29086 17.5 6.5 17.5H13.5C15.7091 17.5 17.5 15.7091 17.5 13.5V11.25C17.5 9.17893 15.8211 7.5 13.75 7.5V7.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>
                       </button>
                     </div>
                     <div className="d-flex align-items-center gap-2">
-                      <button className="lr-btn">
-                        <img src={left} alt="" />
-                        <img src={right} alt="" />
+                      <button className="lr-btn fill__change">
+                      <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="direaction left">
+<path id="Vector 175 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M5.21849 0.164376C5.54194 0.423133 5.59438 0.895102 5.33562 1.21855L1.71044 5.75003L5.33562 10.2815C5.59438 10.605 5.54194 11.0769 5.21849 11.3357C4.89505 11.5944 4.42308 11.542 4.16432 11.2185L0.164321 6.21855C-0.0548108 5.94464 -0.0548108 5.55542 0.164321 5.28151L4.16432 0.281506C4.42308 -0.0419402 4.89505 -0.0943812 5.21849 0.164376Z" fill="white"/>
+</g>
+</svg>
+
+<svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="direaction right">
+<path id="Vector 175 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M0.781506 0.164376C0.45806 0.423133 0.405619 0.895102 0.664376 1.21855L4.28956 5.75003L0.664376 10.2815C0.405618 10.605 0.458059 11.0769 0.781506 11.3357C1.10495 11.5944 1.57692 11.542 1.83568 11.2185L5.83568 6.21855C6.05481 5.94464 6.05481 5.55542 5.83568 5.28151L1.83568 0.281506C1.57692 -0.0419401 1.10495 -0.0943811 0.781506 0.164376Z" fill="white"/>
+</g>
+</svg>
                       </button>
                     </div>
                     <div className="d-flex align-items-center gap-2">
@@ -377,7 +402,7 @@ useEffect(() => {
            
                 <div className="video__properties">
                   <h4>Categories</h4>
-                  <table style={{ borderCollapse: 'collapse', width: '100%', background: '#252525', margin: ' 0 0 20px 0' }}>
+                  <table style={{ borderCollapse: 'collapse', width: '100%', background: 'var(--backgroundColor)', margin: ' 0 0 20px 0' }}>
                     <tbody>
                       {
 
@@ -396,22 +421,26 @@ useEffect(() => {
                     </tbody>
                   </table>
                 </div>
-
-                <div className="video__properties">
-                  <h4>Properties</h4>
-                  <table style={{ borderCollapse: 'collapse', width: '100%', background: '#252525', margin: ' 0 0 20px 0' }}>
-                    <tbody>
                       {
-                        productDetail.properties.map((item) => (
-                          <tr key={item.id}>
-                            <td style={{ fontWeight: '600' }}>{item.product_property}</td>
-                            <td >{item.property_value}</td>
-                          </tr>
-                        ))
+                         productDetail.properties.length &&
+                         <div className="video__properties">
+                         <h4>Properties</h4>
+                         <table style={{ borderCollapse: 'collapse', width: '100%', background: 'var(--backgroundColor)', margin: ' 0 0 20px 0' }}>
+                           <tbody>
+                             {
+                              
+                               productDetail.properties.map((item) => (
+                                 <tr key={item.id}>
+                                   <td style={{ fontWeight: '600' }}>{item.product_property}</td>
+                                   <td >{item.property_value}</td>
+                                 </tr>
+                               ))
+                             }
+                           </tbody>
+                         </table>
+                       </div>
                       }
-                    </tbody>
-                  </table>
-                </div>
+              
 
                 <div className="video__address">
                   <h4>Address</h4>

@@ -1,47 +1,102 @@
 import React, { useEffect, useState } from 'react'
 import './style.scss'
-import { Select } from "antd";
-import sort from "../../assets/icons/arrow-sort.svg";
+import Select from 'react-select';
 
 const SortChannel = ({ sortedChannels, setSortedChannels }) => {
     const [selectedOption, setSelectedOption] = useState("");
 
+    const filters = [
+        {
+            value: '',
+            label: 'All'
+        },
+        {
+            value: 'option1',
+            label: 'A to Z'
+        },
+        {
+            value: 'option2',
+            label: 'Z to A'
+        }
+    ]
+
+    const selectStyles = {
+        control: (baseStyles) => ({
+            ...baseStyles,
+            background: 'var(--primaryColor)',
+            borderRadius: '16px',
+            minWidth: '230px',
+            textAlign: 'center',
+            '@media (max-width: 600px)': {
+                minWidth: '100px',
+                maxWidth: '120px',
+            }
+        }),
+        option: (styles, { isFocused, isSelected }) => ({
+            ...styles,
+            backgroundColor: isSelected ? '#0087cc' : isFocused ? 'var(--backgroundColor)' : 'none',
+            color: 'var(--textColor)',
+            cursor: 'pointer',
+            margin: '0 0 5px 0',
+            borderRadius: '8px'
+        }),
+        menu: (styles) => (
+            {
+                ...styles,
+                borderRadius: '12px',
+                background: 'var(--primaryColor)',
+                minWidth: '150px',
+                right: 0, // Смещение меню вправо
+
+            }
+        ),
+        menuList: (styles) => ({
+            ...styles,
+            opacity: 0.7,
+            padding: '5px 10px',
+
+        }),
+        singleValue: (styles) => ({
+            ...styles,
+            color: 'var(--textColor)',
+        }),
+        placeholder: (styles) => ({
+            ...styles,
+            color: 'var(--textColor)',
+            opacity: 0.8
+        })
+    }
+
     const handleSelect = (value) => {
-        setSelectedOption(value);
+        setSelectedOption(value.value);
     };
 
-    const handleAllClick = () => {
-        setSelectedOption("");
-    };
+
 
     useEffect(() => {
         let sortedArray = [...sortedChannels];
-        if (selectedOption === "A to Z") {
-            sortedArray.sort((a, b) => a.username.localeCompare(b.username));
-        } else if (selectedOption === "Z to A") {
-            sortedArray.sort((a, b) => b.username.localeCompare(a.username));
-        } 
+        if (selectedOption === "option1") {
+            sortedArray.sort((a, b) => (a.username > b.username ? 1 : -1));
+        } else if (selectedOption === "option2") {
+            sortedArray.sort((a, b) => (a.username < b.username ? 1 : -1));
+        }
+
         setSortedChannels(sortedArray);
     }, [selectedOption]);
 
-    const { Option } = Select;
 
     return (
         <div className="custom-select">
-        <Select
-            defaultValue=""
-            value={selectedOption}
-            onChange={handleSelect}
-            suffixIcon={null}
-            className="select"
-            popupClassName="custom-dropdown"
-        >
-            <Option value="" onClick={handleAllClick}>
-          All
-            </Option>
-            <Option value="A to Z">A to Z</Option>
-            <Option value="Z to A">Z to A</Option>
-        </Select>
+            <Select
+                defaultValue={filters[0]}
+                placeholder='All'
+                styles={selectStyles}
+                options={filters}
+                onChange={handleSelect}
+                menuPlacement="auto"
+                isSearchable={false}
+
+            />
         </div>
     )
 }

@@ -9,9 +9,12 @@ import MyVideo from "../../components/MyVideo";
 import { ProductContext } from "../../../../context/ProductContext";
 import { AuthContext } from "../../../../context/authContext";
 import { Link } from "react-router-dom";
-import { Select } from "antd";
+
+import SortProduct from "../../../../components/SortProduct";
+
+
+
 const MyVideos = () => {
-  const { Option } = Select;
   const [selectedOption, setSelectedOption] = useState("");
   const { user } = useContext(AuthContext);
   const { product } = useContext(ProductContext);
@@ -27,24 +30,7 @@ const MyVideos = () => {
     )
     : [];
 
-  const handleSelect = (value) => {
-    setSelectedOption(value);
-  };
-
-  const handleAllClick = () => {
-    setSelectedOption("");
-  };
-
-  const sortedProducts = [...activeUserProducts];
-  if (selectedOption === "option1") {
-    sortedProducts.sort((a, b) => (a.name > b.name ? 1 : -1));
-  } else if (selectedOption === "option2") {
-    sortedProducts.sort((a, b) => (a.name < b.name ? 1 : -1));
-  } else if (selectedOption === "option3") {
-    sortedProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-  } else if (selectedOption === "option4") {
-    sortedProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-  }
+  const [sortedProducts, setSortedProducts] = useState([...activeUserProducts])
 
 
 
@@ -58,7 +44,7 @@ const MyVideos = () => {
           <div className="row">
             <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  my__videos flex-wrap">
               <h1>My videos</h1>
-              <div className="d-flex gap-3 flex-wrap">
+              <div className="d-flex gap-3 flex-wrap align-items-center">
                 <Link
                   to="/your_profile/upload_video"
                   className="myvideo_upload"
@@ -67,24 +53,7 @@ const MyVideos = () => {
                   <span>Upload</span>
                 </Link>
                 <div className="custom-select">
-                  <Select
-                    defaultValue=""
-                    value={selectedOption}
-                    onChange={handleSelect}
-                    suffixIcon={null}
-                    className="select"
-                    popupClassName="custom-dropdown"
-                    prefixicon={<img src={sort} alt="plus.svg" width={20} />}
-                  >
-                    <Option value="" onClick={handleAllClick}>
-                      
-                     All
-                    </Option>
-                    <Option value="option1">A to Z</Option>
-                    <Option value="option2">Z to A</Option>
-                    <Option value="option3">From cheap to expensive</Option>
-                    <Option value="option4">From expensive to cheap</Option>
-                  </Select>
+                <SortProduct sortedProducts={sortedProducts} setSortedProducts={setSortedProducts}/>
                 </div>
               </div>
             </div>

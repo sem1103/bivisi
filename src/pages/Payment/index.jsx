@@ -9,7 +9,11 @@ const Payment = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className='col-lg-12 pt-4 payment_head pb-4'>
-                        <Link to="/basket" ><img src={left} alt="left.icon" />Payment</Link>
+                        <Link to="/basket" >
+                        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.83333 13.3334L5.5 10M5.5 10L8.83333 6.66671M5.5 10L15.5 10" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+                        Payment</Link>
                     </div>
 
                     <div className='col-lg-8 p-5'>

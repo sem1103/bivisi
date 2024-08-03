@@ -14,7 +14,7 @@
 
   .active {
     border-radius: 16px !important;
-    background: var(--Text-11, #23272e) !important;
+    background: var(--primaryColor) !important;
   }
   a {
     white-space: nowrap;
@@ -38,7 +38,7 @@
 
     &:hover {
       border-radius: 16px;
-      background: var(--Gray-400, #292929);
+      background: var(--primaryColor);
     }
   }
 }

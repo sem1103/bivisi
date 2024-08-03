@@ -10,12 +10,14 @@ import getCurrencyByCountry from '../../utils/getCurrencyService';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import InputMask from 'react-input-mask';
-import { ChatContext } from '../../context/ChatContext';
 import { BASE_URL } from '../../api/baseUrl';
+import Select from 'react-select';
+import CustomSingleValue from '../Profile/pages/CustomSymbol';
 
 
 const TopVideos = () => {
-    const {USER_TOKKEN} = useContext(ChatContext)
+    const [selectedOption, setSelectedOption] = useState('');
+    const [originalVideos, setOriginalVideos ] = useState([])
     const [videoProducts, setVideoProducts] = useState([]);
     const [viewMyVideos, setViewMyVideos] = useState([]);
     const [selectedVideos, setSelectedVideos] = useState([])
@@ -33,7 +35,7 @@ const TopVideos = () => {
         let res = await axios.get(`${BASE_URL}/product/`);
         console.log(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
 
-       
+        setOriginalVideos(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
         setVideoProducts(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"));
         setViewMyVideos(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
     }
@@ -78,6 +80,106 @@ const TopVideos = () => {
     };
 
 
+    const handleSelect = (value) => {
+        setSelectedOption(value.value);
+    };
+
+    const handleAllClick = () => {
+        setSelectedOption('');
+    };
+   
+    const selectStyles = {
+        control: (baseStyles) => ({
+          ...baseStyles,
+          background: 'var(--primaryColor)',
+          borderRadius: '16px',
+          minWidth: '230px',
+          textAlign: 'center',
+          '@media (max-width: 600px)': {
+          minWidth: '100px',
+          maxWidth: '120px',
+        }
+        }),
+        option: (styles, { isFocused, isSelected }) => ({
+          ...styles,
+          backgroundColor: isSelected ? '#0087cc' : isFocused ? 'var(--backgroundColor)' : 'none',
+          color: 'var(--textColor)',
+          cursor: 'pointer',
+          margin: '0 0 5px 0',
+          borderRadius: '8px'
+        }),
+        menu: (styles) => (
+          {
+            ...styles, 
+            borderRadius: '12px',
+            background: 'var(--primaryColor)',
+            minWidth: '150px',
+            right: 0, // Смещение меню вправо
+    
+          }
+        ),
+        menuList: (styles) => ({
+          ...styles,
+          opacity: 0.7,
+          padding: '5px 10px',
+    
+        }),
+        singleValue: (styles) => ({
+          ...styles,
+          color: 'var(--textColor)',
+        }),
+        placeholder: (styles) => ({
+          ...styles,
+          color: 'var(--textColor)',
+          opacity: 0.8
+        })
+      }
+
+      const filters = [
+        {
+          value: '',
+          label: 'All'
+        },
+        {
+          value: 'option1',
+          label: 'A to Z'
+        },
+        {
+          value: 'option2',
+          label: 'Z to A'
+        }
+        ,{
+          value: 'option3',
+          label: 'From cheap to expensive'
+        }
+        ,{
+          value: 'option4',
+          label: 'From expensive to cheap'
+        }
+      ]
+
+      useEffect(() => {
+        let sortedArray = [...videoProducts]; 
+      
+        if (selectedOption === "option1") {
+          sortedArray.sort((a, b) => (a.name > b.name ? 1 : -1));
+        } else if (selectedOption === "option2") {
+          sortedArray.sort((a, b) => (a.name < b.name ? 1 : -1));
+        } else if (selectedOption === "option3") {
+          sortedArray.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        } else if (selectedOption === "option4") {
+          sortedArray.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        } else{
+            setVideoProducts(originalVideos); 
+           return
+        }
+      
+        setVideoProducts(sortedArray); 
+      }, [selectedOption]);
+
+
+
+
     return (
         <div className='top_page_videos'>
             <div className="container-fluid">
@@ -88,7 +190,7 @@ const TopVideos = () => {
                             <h4 className='mt-1'>Top videos</h4>
                         </div>
 
-                        <div className="right_tools">
+                        <div className="right_tools align-items-center ">
                             <button
                                 className='add__video'
                                 onClick={() => {
@@ -100,10 +202,19 @@ const TopVideos = () => {
                             >
                                 + <span>Add premium video</span>
                             </button>
-                            <button className='sort_btn'>
-                                <img src={sort} alt="plus.svg" />
-                                <span> Sort by</span>
-                            </button>
+                           
+                            <Select
+                            defaultValue={filters[0]}
+                            placeholder='All'
+                            styles={selectStyles}
+                            options={filters}
+                            onChange={handleSelect}
+                            menuPlacement="auto"
+                            isSearchable={false}
+                            components={{ SingleValue: CustomSingleValue }}
+
+                            />
+                           
                             <Modal open={isOpen} onCancel={() => setIsOpen(!isOpen)} centered
                                 className={'modal__body'}
                                 styles={{
@@ -128,7 +239,7 @@ const TopVideos = () => {
                                             <div id="search__my__video">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                                     <g clipPath="url(#clip0_2547_16134)">
-                                                        <path d="M15.417 15.4167L18.3337 18.3334M17.5003 9.58342C17.5003 5.21116 13.9559 1.66675 9.58366 1.66675C5.2114 1.66675 1.66699 5.21116 1.66699 9.58342C1.66699 13.9557 5.2114 17.5001 9.58366 17.5001C13.9559 17.5001 17.5003 13.9557 17.5003 9.58342Z" stroke="#F3F4F6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                        <path d="M15.417 15.4167L18.3337 18.3334M17.5003 9.58342C17.5003 5.21116 13.9559 1.66675 9.58366 1.66675C5.2114 1.66675 1.66699 5.21116 1.66699 9.58342C1.66699 13.9557 5.2114 17.5001 9.58366 17.5001C13.9559 17.5001 17.5003 13.9557 17.5003 9.58342Z" stroke="var(--textColor)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                                     </g>
                                                     <defs>
                                                         <clipPath id="clip0_2547_16134">
@@ -143,12 +254,14 @@ const TopVideos = () => {
 
                                                 {
                                                     viewMyVideos.length ?
-
+                                                    
                                                         viewMyVideos.map(item => {
                                                             if (item.user.name == JSON.parse(localStorage.authTokens).username && !item.is_premium) {
                                                                 return <div key={item.id} className="video__item">
                                                                     <div className="cover__img">
+                                                                        <div>
                                                                         <img src={item.product_video_type[0].cover_image} alt="" />
+                                                                        </div>
                                                                     </div>
                                                                     <div>
                                                                         <div className="video__desc">
