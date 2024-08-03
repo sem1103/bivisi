@@ -143,7 +143,7 @@ const LikedVideos = () => {
             {likedProducts && likedProducts.length > 0 ? (
               likedProducts?.map((item) => {
                 return (
-                  <div className="col-lg-4 p-3" key={item?.id}>
+                  <div className="col-lg-4 col-md-6 p-3" key={item?.id}>
 
                     <div
                       className="videoCard"

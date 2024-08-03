@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Select } from "antd";
 import './style.scss'
 import CustomSingleValue from '../../pages/Profile/pages/CustomSymbol';
 import Select from 'react-select';

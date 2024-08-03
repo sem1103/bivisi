@@ -28,7 +28,7 @@ const ShortCards = () => {
       (item) => item.product_video_type[0]?.product_type === "Shorts"
     );
   }
-
+console.log(videoProducts,selectedCategory)
   return (
     <>
       <section className="shortCards">

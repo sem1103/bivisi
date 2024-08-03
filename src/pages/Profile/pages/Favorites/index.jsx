@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import "./style.scss";
 import Main from "../../components/Main";
 import Categories from "../../components/Categories";
-import filter from "../../../../assets/icons/filter.svg";
 import useAxios from "../../../../utils/useAxios";
 import { NavLink } from "react-router-dom";
 import { handleAddToBasket, handleToggleWishlist } from "../../../../helpers";
@@ -15,16 +14,21 @@ import SortProduct from "../../../../components/SortProduct";
 import Plyr from "plyr-react";
 import { useCart } from "react-use-cart";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import FilterModal from "../../../../components/FilterModal";
+import { ProductContext } from "../../../../context/ProductContext";
 import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 const Favorites = () => {
   const {countryCurrencySymbol} = getCurrencyByCountry()
   const [favorites, setFavorites] = useState([]);
+  const [filteredFavorites, setFilteredFavorites] = useState([]);
   const { user } = useContext(AuthContext)
   const axiosInstance = useAxios();
   const [in_wishlist, set_in_wishlist] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef(null);
+
+
   const { addItem } = useCart();
   useEffect(() => {
     const fetchWishlistItems = async () => {
@@ -34,11 +38,13 @@ const Favorites = () => {
           (item) => item.product_type === "Video"
         );
         setFavorites(filteredData);
+        setFilteredFavorites(filteredData)
 
       } catch (error) {
         console.log(error);
       }
     };
+
 
     const handleWishlistUpdate = (event) => {
       const { productId, status } = event.detail;
@@ -57,8 +63,11 @@ const Favorites = () => {
 
 
   }, []);
+  useEffect(() => {
+    setFilteredFavorites(favorites);
+  }, [favorites]);
   const handleWishlistToggle = async (product) => {
-   
+
     if (!user) {
       toast.warning("Please sign in");
     } else if (user.user_id === product.product.user.id) {
@@ -98,6 +107,20 @@ const Favorites = () => {
   const onPlayerReady = () => {
     setIsLoading(false);
   };
+  const applyFilter = (selectedCategory, minPrice, maxPrice) => {
+    let filtered = favorites;
+
+    if (selectedCategory !== "All") {
+        filtered = filtered.filter(item => item.product.category.includes(Number(selectedCategory)));
+    }
+
+    if (minPrice !== 0 || maxPrice !== 0) {
+        filtered = filtered.filter(item => Number(item.product.price) >= minPrice && Number(item.product.price) <= maxPrice);
+    }
+
+    setFilteredFavorites(filtered);
+};
+
   return (
     <>
       <Main />
@@ -108,22 +131,16 @@ const Favorites = () => {
             <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  flex-wrap favorites__categories">
               <h1>Favorites videos</h1>
               <div className="d-flex gap-3 flex-wrap">
-                {/* <button className="favorites_videos_filter ">
-                  <img src={filter} alt="upload" />
-                  Filter
-                </button> */}
-                {/* <div className="favorites_videos-sort">
-                  <img src={sort} alt="sort" />
-                  Sort by
-                </div> */}
+
+                <FilterModal applyFilter={applyFilter} />
                 <div className="custom-select">
-               <SortProduct sortedProducts={favorites} setSortedProducts={setFavorites}/>
+                  <SortProduct sortedProducts={favorites} setSortedProducts={setFavorites} />
                 </div>
               </div>
             </div>
-            {favorites?.map((item, index) => {
+            {filteredFavorites?.map((item, index) => {
               return (
-                <div className="col-lg-4 p-3" key={index}>
+                <div className="col-lg-4 col-sm-6 p-3" key={index}>
                   <div className="videoCard" >
                     <div className="main">
                       <span className="card_price">
@@ -134,26 +151,26 @@ const Favorites = () => {
                         src={item?.cover_image}
                         alt="cover"
                       />
-                     <Plyr
-                          ref={playerRef}
-                          source={{
-                            type: "video",
-                            sources: [
-                              {
-                                src: item?.original_video,
-                                type: "video/mp4",
-                              },
-                            ],
-                          }}
-                          options={{ muted: true, controls: ["play", "pause", "progress"] }}
-                          onReady={onPlayerReady}
-                        // onDuration={handleDuration}
-                        />
-                        {loading && (
-                          <div className="loading-overlay">
-                            <AiOutlineLoading3Quarters color="#fff" />
-                          </div>
-                        )}
+                      <Plyr
+                        ref={playerRef}
+                        source={{
+                          type: "video",
+                          sources: [
+                            {
+                              src: item?.original_video,
+                              type: "video/mp4",
+                            },
+                          ],
+                        }}
+                        options={{ muted: true, controls: ["play", "pause", "progress"] }}
+                        onReady={onPlayerReady}
+                      // onDuration={handleDuration}
+                      />
+                      {loading && (
+                        <div className="loading-overlay">
+                          <AiOutlineLoading3Quarters color="#fff" />
+                        </div>
+                      )}
                     </div>
                     <NavLink
                       className="heading w-100 flex-column justify-content-start align-items-start"
@@ -181,38 +198,37 @@ const Favorites = () => {
                         </span>
                       </div>
                       <div className="icons">
-                        <button
-                         onClick={() => handleWishlistToggle(item)}
-                        >
-<svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M10 2.52422L10.765 1.70229C12.8777 -0.567429 16.3029 -0.567429 18.4155 1.70229C20.5282 3.972 20.5282 7.65194 18.4155 9.92165L11.5301 17.3191C10.685 18.227 9.31495 18.227 8.4699 17.3191L1.58447 9.92165C-0.528156 7.65194 -0.528155 3.972 1.58447 1.70229C3.69709 -0.56743 7.12233 -0.567428 9.23495 1.70229L10 2.52422ZM15 2.25C14.5858 2.25 14.25 2.58579 14.25 3C14.25 3.41421 14.5858 3.75 15 3.75C15.6904 3.75 16.25 4.30964 16.25 5C16.25 5.41421 16.5858 5.75 17 5.75C17.4142 5.75 17.75 5.41421 17.75 5C17.75 3.48122 16.5188 2.25 15 2.25Z" fill="var(--textColor)"/>
-</svg>
+                         <button
+                          onClick={() => handleWishlistToggle(item)}
+                         >
+ <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+ <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2.52422L10.765 1.70229C12.8777 -0.567429 16.3029 -0.567429 18.4155 1.70229C20.5282 3.972 20.5282 7.65194 18.4155 9.92165L11.5301 17.3191C10.685 18.227 9.31495 18.227 8.4699 17.3191L1.58447 9.92165C-0.528156 7.65194 -0.528155 3.972 1.58447 1.70229C3.69709 -0.56743 7.12233 -0.567428 9.23495 1.70229L10 2.52422ZM15 2.25C14.5858 2.25 14.25 2.58579 14.25 3C14.25 3.41421 14.5858 3.75 15 3.75C15.6904 3.75 16.25 4.30964 16.25 5C16.25 5.41421 16.5858 5.75 17 5.75C17.4142 5.75 17.75 5.41421 17.75 5C17.75 3.48122 16.5188 2.25 15 2.25Z" fill="var(--textColor)"/>
+ </svg>
 
-                        </button>
+                         </button>
                       
 
-                        <button
-                         onClick={() =>{
-                          handleAddToBasket(
-                            item?.product,
-                            user,
-                            axiosInstance
-                          );
-                          addItem(item?.product);
-                        }
-                      }
-                        >
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Icon/Bag 3">
-<path id="Rectangle 794" d="M13.3332 5.00008C13.3332 3.15913 11.8408 1.66675 9.99984 1.66675C8.15889 1.66675 6.6665 3.15913 6.6665 5.00008" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Rectangle 788" d="M3.80146 7.91988C4.00997 6.25179 5.42797 5 7.10905 5H12.8905C14.5716 5 15.9896 6.25179 16.1981 7.91988L17.0314 14.5866C17.2801 16.5761 15.7288 18.3333 13.7238 18.3333H6.27572C4.27073 18.3333 2.71944 16.5761 2.96813 14.5866L3.80146 7.91988Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-<path id="Vector 1788" d="M7.5 13.3333C9.46345 14.4502 10.5396 14.4385 12.5 13.3333" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
+                         <button
+                          onClick={() =>{
+                           handleAddToBasket(
+                             item?.product,
+                             user,
+                             axiosInstance
+                           );
+                           addItem(item?.product);
+                         }
+                       }
+                         >
+                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+ <g id="Icon/Bag 3">
+ <path id="Rectangle 794" d="M13.3332 5.00008C13.3332 3.15913 11.8408 1.66675 9.99984 1.66675C8.15889 1.66675 6.6665 3.15913 6.6665 5.00008" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+ <path id="Rectangle 788" d="M3.80146 7.91988C4.00997 6.25179 5.42797 5 7.10905 5H12.8905C14.5716 5 15.9896 6.25179 16.1981 7.91988L17.0314 14.5866C17.2801 16.5761 15.7288 18.3333 13.7238 18.3333H6.27572C4.27073 18.3333 2.71944 16.5761 2.96813 14.5866L3.80146 7.91988Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+ <path id="Vector 1788" d="M7.5 13.3333C9.46345 14.4502 10.5396 14.4385 12.5 13.3333" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+ </g>
+ </svg>
 
-                        </button>
+                         </button>
 
-                     
                       </div>
                     </div>
                   </div>
