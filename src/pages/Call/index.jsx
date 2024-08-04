@@ -4,6 +4,7 @@ import microphone_mute from '../../assets/icons/microphone-mute.svg'
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import { useNavigate } from 'react-router-dom';
 import { ChatContext } from '../../context/ChatContext';
+import Cookies from 'js-cookie';
 
 
 
@@ -26,7 +27,7 @@ const Call = () => {
         serverSecret,
         roomID,
         userId,
-        JSON.parse(localStorage.authTokens).username
+        JSON.parse(Cookies.get('authTokens')).username
     );
     zp = ZegoUIKitPrebuilt.create(kitToken);
 

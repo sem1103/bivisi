@@ -5,6 +5,8 @@ import edit from "../../../../assets/icons/edit-bg.svg";
 import useAxios from "../../../../utils/useAxios";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../../context/authContext";
+import Cookies from 'js-cookie';
+
 
 const ProfileInformation = () => {
   const axiosInstance = useAxios();
@@ -142,7 +144,7 @@ const ProfileInformation = () => {
           }
         );
         console.log("Profile updated successfully:", response.data);
-        let authTokens = JSON.parse(localStorage.authTokens);
+        let authTokens = JSON.parse(Cookies.get('authTokens'));
         localStorage.setItem('authTokens', JSON.stringify({
           ...authTokens,
           first_name:  response.data.first_name,

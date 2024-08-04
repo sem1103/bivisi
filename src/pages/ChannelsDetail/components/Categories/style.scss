@@ -8,7 +8,7 @@
 
     .active {
         border-radius: 16px !important;
-        background: var(--Text-11, #23272e) !important;
+        background: var(--primaryColor) !important;
     }
 
     a {
@@ -19,7 +19,7 @@
         background-color: transparent;
         border-radius: 16px;
         border: 1px solid var(--Text-11, #23272e);
-        color: var(--Text-4, #a2a8b7);
+        color: var(--textColor);
         text-decoration: none;
 
         /* Poppins/16/SemiBold */
@@ -33,7 +33,7 @@
 
         &:hover {
             border-radius: 16px;
-            background: var(--Gray-400, #292929);
+            background: var(--primaryColor)       
         }
     }
 }

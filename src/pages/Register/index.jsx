@@ -7,6 +7,9 @@ import eye from "../../assets/icons/eye.svg";
 import { AuthContext } from "../../context/authContext";
 import toast from "react-hot-toast";
 import { isPasswordValid } from "../../utils/validation";
+import Cookies from 'js-cookie';
+
+
 const Register = () => {
   const [checked, setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState({
@@ -115,7 +118,8 @@ const Register = () => {
 
       if (response.status === 201) {
         console.log("okey");
-        localStorage.setItem("email", formData.email);
+        Cookies.set('email', email, { expires: 1, path: '/', secure: true, sameSite: 'Strict' });
+
         localStorage.setItem("context", "register");
         setFormData({
           username: "",

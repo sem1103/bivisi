@@ -12,6 +12,7 @@ import WishBtn from "../../../../components/WishlistBtn";
 import bag from "../../../../assets/icons/Bag-3.svg";
 import blueHeart from "../../../../assets/icons/blueHeart.svg";
 import { handleAddToBasket } from "../../../../helpers";
+import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 const ChannelsVideo = ({ item }) => {
   const { user } = useContext(AuthContext);
   const { playingVideo, setPlaying } = useContext(VideoContext);
@@ -19,7 +20,7 @@ const ChannelsVideo = ({ item }) => {
   const [videoDuration, setVideoDuration] = useState(null);
   const { addItem } = useCart();
   const [loading, setLoading] = useState(false);
-
+  const {countryCurrencySymbol} = getCurrencyByCountry()
 
   const playerRef = useRef(null);
 
@@ -143,7 +144,7 @@ const ChannelsVideo = ({ item }) => {
           <div className="main">
 
             <img className="card_logo" src={logo} alt="" />
-            <span className="card_price">$ {item?.product?.price}</span>
+            <span className="card_price"> {  item?.product?.price  + countryCurrencySymbol}</span>
             {/* <span className="video_count">{videoDuration}</span> */}
             <img
               className={`coverImage `}
@@ -176,7 +177,7 @@ const ChannelsVideo = ({ item }) => {
             onClick={handleNavigation}
           >
             <div className="d-flex w-100 justify-content-between align-items-center">
-              <h1>{item.product.user.name}</h1>
+              <h4>{item.product.user.name}</h4>
               <h6>
                 <img src={blueHeart} alt="" />
                 {item.product?.like_count}
@@ -186,25 +187,37 @@ const ChannelsVideo = ({ item }) => {
           </div>
           <div className="cardBottom">
             <div className="card_viev_count">
-              <img src={eye} alt="eye.svg" />
+            <svg style={{margin: "0 5px 0 0"}} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon/Eye/Solid">
+<path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M17.6084 11.7892C18.5748 10.7724 18.5748 9.22772 17.6084 8.211C15.9786 6.49619 13.1794 4.16675 9.99984 4.16675C6.82024 4.16675 4.02108 6.49619 2.39126 8.211C1.42492 9.22772 1.42492 10.7724 2.39126 11.7892C4.02108 13.504 6.82024 15.8334 9.99984 15.8334C13.1794 15.8334 15.9786 13.504 17.6084 11.7892ZM9.99984 12.5001C11.3805 12.5001 12.4998 11.3808 12.4998 10.0001C12.4998 8.61937 11.3805 7.50008 9.99984 7.50008C8.61913 7.50008 7.49984 8.61937 7.49984 10.0001C7.49984 11.3808 8.61913 12.5001 9.99984 12.5001Z" fill="white"/>
+</g>
+</svg>
               <span>{formatViewCount(item?.product?.view_count)}</span>
             </div>
-            <div className="icons">
+            <div className="icons stroke__change">
               <WishBtn item={item} />
-              <img
-                src={bag}
-                alt=""
-                onClick={() => {
-                  if (user.id === item.id) {
-                    toast.warning(
-                      "You cannot add your own product to the basket"
-                    );
-                  } else {
-                    handleAddToBasket(item, user, axiosInstance);
-                    addItem(item);
-                  }
-                }}
-              />
+              <button
+              onClick={() => {
+                if (user.id === item.id) {
+                  toast.warning(
+                    "You cannot add your own product to the basket"
+                  );
+                } else {
+                  handleAddToBasket(item, user, axiosInstance);
+                  addItem(item);
+                }
+              }}
+              >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon/Bag 3">
+<path id="Rectangle 794" d="M13.3332 5.00008C13.3332 3.15913 11.8408 1.66675 9.99984 1.66675C8.15889 1.66675 6.6665 3.15913 6.6665 5.00008" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Rectangle 788" d="M3.80146 7.91988C4.00997 6.25179 5.42797 5 7.10905 5H12.8905C14.5716 5 15.9896 6.25179 16.1981 7.91988L17.0314 14.5866C17.2801 16.5761 15.7288 18.3333 13.7238 18.3333H6.27572C4.27073 18.3333 2.71944 16.5761 2.96813 14.5866L3.80146 7.91988Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+<path id="Vector 1788" d="M7.5 13.3333C9.46345 14.4502 10.5396 14.4385 12.5 13.3333" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>
+
+              </button>
+
             </div>
           </div>
         </div>

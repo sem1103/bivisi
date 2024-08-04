@@ -53,6 +53,7 @@ import LiveStreem from "../pages/LiveSteem";
 import NewStream from "../pages/LiveSteem/CreateStreem";
 import ShowMyStream from "../pages/LiveSteem/CreateStreem/ShowMyStream";
 import { ThemeContext } from "../context/ThemeContext";
+import Cookies from 'js-cookie';
 
 
 const AppRouter = () => {
@@ -60,7 +61,7 @@ const AppRouter = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [themeMode, setThemeMode] = useState(localStorage.themeMode ? JSON.parse(localStorage.themeMode) : false)
   useEffect(() => {
-    setTheme(themeMode);
+    setTheme(themeMode);    
   }, []);
  
   return (

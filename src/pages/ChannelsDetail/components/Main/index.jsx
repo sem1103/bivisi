@@ -16,14 +16,16 @@ import telephone from "./../../../../assets/icons/telephone.svg";
 import smile from "./../../../../assets/icons/Smile.svg";
 import send from "./../../../../assets/icons/Send.svg";
 import attachment from "./../../../../assets/icons/Attachment.svg";
+import Cookies from 'js-cookie';
 
 
 import EmojiPicker from "emoji-picker-react";
+import { ThemeContext } from "../../../../context/ThemeContext";
 
 
 const MainChannels = () => {
   const { USER_TOKKEN, myId, CHAT_API, allChats, chatId, messages, setMessages, newMessage, lastMessages, setNewMessage, socket, newChatUser, isModalCallOpen, onlineUsers, sendMessage, getMessage, addChat, getChats, deleteChat, setNewChatUser, setIsModalCallOpen } = useContext(ChatContext)
-
+  const {themeMode} = useContext(ThemeContext)
   const location = useLocation();
   const [channelData, setChannelData] = useState({});
   const [isOpen, setIsOpen] = useState(false)
@@ -65,7 +67,7 @@ const MainChannels = () => {
         avatar: location.state.channelDetailData?.avatar,
         follower_count: location.state?.channelDetailData?.follower_count,
       };
-      console.log(channelData);
+      console.log(location);
       setChannelData(channelData);
       setChannelId(channelData.id);
     }
@@ -164,7 +166,7 @@ const MainChannels = () => {
                           target: newChatUser.userId, message: {
                             action: `call to ${newChatUser.userId}`,
                             userInfo: newChatUser,
-                            fromUserName: JSON.parse(localStorage.authTokens).first_name,
+                            fromUserName: JSON.parse(Cookies.get('authTokens')).first_name,
                             fromUserId: String(myId),
                             callType: 'voice'
                           }
@@ -172,20 +174,22 @@ const MainChannels = () => {
 
                       }
                       }
-                      className="voice__call">
+                      className="voice__call stroke__change">
                       <button>
-                        <img src={telephone} alt="" />
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.5 15.8333V14.4617C17.5 13.7802 17.0851 13.1674 16.4523 12.9143L14.7572 12.2362C13.9524 11.9143 13.0352 12.263 12.6475 13.0383L12.5 13.3333C12.5 13.3333 10.4167 12.9167 8.75 11.25C7.08333 9.58333 6.66667 7.5 6.66667 7.5L6.96168 7.35249C7.73698 6.96484 8.08571 6.04761 7.76379 5.2428L7.08574 3.54768C6.83263 2.91492 6.21979 2.5 5.53828 2.5H4.16667C3.24619 2.5 2.5 3.24619 2.5 4.16667C2.5 11.5305 8.46954 17.5 15.8333 17.5C16.7538 17.5 17.5 16.7538 17.5 15.8333Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+</svg>
                       </button>
                     </div>
 
-                    <div className="video__call">
+                    <div className="video__call stroke__change">
                       <button onClick={() => {
 
                         socket.emit('sendMessage', {
                           target: newChatUser.userId, message: {
                             action: `call to ${newChatUser.userId}`,
                             userInfo: newChatUser,
-                            fromUserName: JSON.parse(localStorage.authTokens).first_name,
+                            fromUserName: JSON.parse(Cookies.get('authTokens')).first_name,
                             fromUserId: String(myId),
                             callType: 'video'
                           }
@@ -193,15 +197,23 @@ const MainChannels = () => {
 
                       }
                       }>
-                        <img src={camera} alt="" />
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.66602 6.66634C1.66602 4.82539 3.1584 3.33301 4.99935 3.33301H10.8327C12.6736 3.33301 14.166 4.82539 14.166 6.66634V13.333C14.166 15.174 12.6736 16.6663 10.8327 16.6663H4.99935C3.1584 16.6663 1.66602 15.174 1.66602 13.333V6.66634Z" stroke="white" stroke-width="1.5"/>
+<path d="M14.166 7.77745L15.4501 6.40774C16.4835 5.30548 18.3327 6.03675 18.3327 7.54764V12.4517C18.3327 13.9626 16.4835 14.6939 15.4501 13.5916L14.166 12.2219V7.77745Z" stroke="white" stroke-width="1.5"/>
+<path d="M10.8327 8.33301C10.8327 9.25348 10.0865 9.99968 9.16602 9.99968C8.24554 9.99968 7.49935 9.25348 7.49935 8.33301C7.49935 7.41253 8.24554 6.66634 9.16602 6.66634C10.0865 6.66634 10.8327 7.41253 10.8327 8.33301Z" stroke="white" stroke-width="1.5"/>
+</svg>
                       </button>
                     </div>
 
 
-                    <ul className="chat__options">
+                    <ul className="chat__options stroke__change">
                       <li>
                         <button >
-                          <img src={Menu} alt="" />
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="10.2077" cy="6.04167" r="1.04167" fill="white"/>
+<circle cx="10.2077" cy="10.2087" r="1.04167" fill="white"/>
+<circle cx="10.2077" cy="14.3747" r="1.04167" fill="white"/>
+</svg>
                         </button>
                         <ul>
                           <li>
@@ -408,8 +420,10 @@ const MainChannels = () => {
                     e.preventDefault();
                     sendMessage(newMessage)
                   }}>
-                    <button >
-                      <img src={attachment} alt="" />
+                    <button className="fill__change">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9.0026 3.44728C10.474 1.97591 12.8596 1.97591 14.3309 3.44728C15.8023 4.91866 15.8023 7.30423 14.3309 8.77561L9.88649 13.2201C9.02876 14.0778 7.63811 14.0778 6.78038 13.2201C5.92265 12.3623 5.92265 10.9717 6.78038 10.114L11.2248 5.66951C11.4689 5.42543 11.8646 5.42543 12.1087 5.66951C12.3528 5.91358 12.3528 6.30931 12.1087 6.55339L7.66426 10.9978C7.29469 11.3674 7.29469 11.9666 7.66426 12.3362C8.03384 12.7057 8.63303 12.7057 9.0026 12.3362L13.4471 7.89173C14.4303 6.90851 14.4303 5.31439 13.447 4.33117C12.4638 3.34794 10.8697 3.34794 9.88649 4.33117L5.44204 8.77562C3.84517 10.3725 3.84517 12.9615 5.44204 14.5584C7.03891 16.1553 9.62795 16.1553 11.2248 14.5584L15.6693 10.114C15.9133 9.86987 16.3091 9.86987 16.5532 10.114C16.7972 10.358 16.7972 10.7538 16.5532 10.9978L12.1087 15.4423C10.0237 17.5273 6.64318 17.5273 4.55816 15.4423C2.47313 13.3573 2.47313 9.97676 4.55815 7.89173L9.0026 3.44728Z" fill="white"/>
+</svg>
                     </button>
                     {/* <input type="text"  value={newMessage}  /> */}
                     <textarea value={newMessage} name="newMessage" id="new__message" placeholder="Write a message" onChange={e => setNewMessage(e.target.value)}
@@ -427,7 +441,7 @@ const MainChannels = () => {
 
                           height={270}
                           searchDisabled={true}
-                          theme='dark'
+                          theme={themeMode ?  'light' : 'dark'}
                           lazyLoadEmojis={true}
                           onEmojiClick={(e) => {
                             setNewMessage(prev => prev + e.emoji)
@@ -435,15 +449,21 @@ const MainChannels = () => {
                         />
                       }
 
-                      <button type="button" onClick={() => {
+                      <button
+                      className="stroke__change"
+                      type="button" onClick={() => {
                         setIsOpenEmoji(!isOpenEmoji)
                       }}>
-                        <img src={smile} alt="" className="smile" />
+ <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.49996 12.4993C7.49996 12.4993 8.43746 13.3327 9.99996 13.3327C11.5625 13.3327 12.5 12.4993 12.5 12.4993M14.1666 8.33268C14.1666 8.79292 13.7935 9.16602 13.3333 9.16602C12.8731 9.16602 12.5 8.79292 12.5 8.33268C12.5 7.87245 12.8731 7.49935 13.3333 7.49935C13.7935 7.49935 14.1666 7.87245 14.1666 8.33268ZM18.3333 9.99935C18.3333 14.6017 14.6023 18.3327 9.99996 18.3327C5.39759 18.3327 1.66663 14.6017 1.66663 9.99935C1.66663 5.39698 5.39759 1.66602 9.99996 1.66602C14.6023 1.66602 18.3333 5.39698 18.3333 9.99935ZM7.49996 8.33268C7.49996 8.79292 7.12686 9.16602 6.66663 9.16602C6.20639 9.16602 5.83329 8.79292 5.83329 8.33268C5.83329 7.87245 6.20639 7.49935 6.66663 7.49935C7.12686 7.49935 7.49996 7.87245 7.49996 8.33268Z" stroke="var(--textColor)" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 
                       </button>
                     </div>
-                    <button type="submit">
-                      <img src={send} alt="" className="send" />
+                    <button type="submit" className="fill__change">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.8779 3.55093L17.2368 8.22752C18.6988 8.95809 18.6988 11.0432 17.2368 11.7738L7.87789 16.4504C6.21335 17.2821 4.42231 15.5717 5.17814 13.8721L6.54178 10.8058C6.56808 10.7466 6.59135 10.6865 6.61159 10.6257L9.99996 10.6257C10.3451 10.6257 10.625 10.3458 10.625 10.0007C10.625 9.65547 10.3451 9.37565 9.99996 9.37565L6.61159 9.37565C6.59136 9.31479 6.56808 9.25467 6.54178 9.19551L5.17814 6.12919C4.42231 4.4296 6.21335 2.71916 7.8779 3.55093ZM1.04163 8.33398C1.04163 7.98881 1.32145 7.70898 1.66663 7.70898H3.33329C3.67847 7.70898 3.95829 7.98881 3.95829 8.33398C3.95829 8.67916 3.67847 8.95898 3.33329 8.95898H1.66663C1.32145 8.95898 1.04163 8.67916 1.04163 8.33398ZM1.66663 11.0423C1.32145 11.0423 1.04163 11.3221 1.04163 11.6673C1.04163 12.0125 1.32145 12.2923 1.66663 12.2923H3.33329C3.67847 12.2923 3.95829 12.0125 3.95829 11.6673C3.95829 11.3221 3.67847 11.0423 3.33329 11.0423H1.66663Z" fill="var(--textColor)"/>
+</svg>
                     </button>
                   </form>
 

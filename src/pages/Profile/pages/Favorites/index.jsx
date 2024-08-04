@@ -130,7 +130,7 @@ const Favorites = () => {
           <div className="row">
             <div className="col-lg-12 d-flex justify-content-between align-items-center pb-4  flex-wrap favorites__categories">
               <h1>Favorites videos</h1>
-              <div className="d-flex gap-3 flex-wrap">
+              <div className="d-flex gap-3 flex-wrap align-items-center">
 
                 <FilterModal applyFilter={applyFilter} />
                 <div className="custom-select">

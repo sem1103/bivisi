@@ -120,7 +120,6 @@
 
 .channels_videocard {
     display: flex;
-    height: 370px;
     width: 100%;
     position: relative;
     // padding: 10px 16px;
@@ -128,7 +127,7 @@
     align-items: flex-start;
     gap: 12px;
     border-radius: 12px;
-    background: var(--Gray-600, #141414);
+    background: var(--primaryColor);
     transition: all 0.3s ease;
     cursor: pointer;
 
@@ -261,8 +260,8 @@
         align-items: center;
         padding: 0 16px;
 
-        h1 {
-            color: var(--Text-3, #c5c9d3);
+        h4 {
+            color: var(--textColor);
             margin: 0;
             font-family: Poppins;
             font-size: 14px;
@@ -272,7 +271,7 @@
         }
 
         h6 {
-            color: var(--Text-3, #c5c9d3);
+            color: var(--textColor);
             font-family: Poppins;
             font-size: 14px;
             font-style: normal;
@@ -286,7 +285,7 @@
     }
 
     p {
-        color: var(--Text-1, #f3f4f6);
+        color: var(--textColor);
         font-family: Poppins;
         font-size: 15px;
         font-style: normal;
@@ -312,7 +311,7 @@
             }
 
             span {
-                color: var(--Text-1, #f3f4f6);
+                color: var(--textColor);
                 font-family: Poppins;
                 font-size: 13px;
                 font-style: normal;
@@ -327,21 +326,24 @@
             align-items: center;
             gap: 10px;
 
-            img {
+            button {
                 display: flex;
                 width: 44px;
                 padding: 12px;
+                margin: 0 0 5px 0;
                 justify-content: center;
                 align-items: center;
+                background: transparent;
                 gap: 8px;
                 border-radius: 16px;
-                border: 1px solid var(--Gray-400, #292929);
+                border: 1px solid var(--Gray-400, #777777);
                 transition: all 0.3s ease;
                 cursor: pointer;
-
+                
                 &:hover {
                     border-radius: 16px;
-                    background: var(--Gray-400, #292929);
+                    background: var(--primaryColor);
+                    box-shadow: 0 0 5px 1px #0b90d4;
                 }
             }
         }
