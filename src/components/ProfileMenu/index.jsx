@@ -119,8 +119,8 @@ const ProfileMenu = () => {
               </div>
             </div>
             <div className="profile-menu-item mt-2 mb-2" onClick={() => {
-              setTheme(!themeMode, themeSwitcher.current)
-              setThemeMode(!themeMode)
+              setTheme(false, themeSwitcher.current)
+              setThemeMode(false)
               logoutUser()
             }}>
               <img src={logout} alt="" />

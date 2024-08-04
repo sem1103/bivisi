@@ -1,11 +1,11 @@
 .filter-modal {
-    background-color: var(--Gray-600, #141414);
-    color: #fff;
+    background-color: var(--primaryColor);
+    color: var(--textColor);
     position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: 99999;
+    z-index: 9999999999999;
     padding: 20px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
@@ -17,7 +17,7 @@
         background-color: transparent;
         border: none;
         outline: none;
-        color: #fff;
+        color: var(--textColor);
     }
 
     .modal-head {
@@ -57,7 +57,7 @@
 
             .ant-select-selector {
                 background-color: #141414;
-                color: #fff;
+                color: var(--textColor);
                 border-radius: 10px;
                 border: 1px solid #555;
             }
@@ -77,11 +77,11 @@
 
             input {
                 width: 49%;
-                background-color: #141414;
+                background-color: var(--backgroundColor);
                 border: 1px solid #555;
                 border-radius: 10px;
                 padding: 5px 10px;
-                color: #fff;
+                color: var(--textColor);
             }
         }
     }
@@ -111,13 +111,13 @@
         }
 
         .clear-btn {
-            background-color: transparent
+            background-color: transparent;
+            color:var(--textColor)
         }
     }
 }
 .modal-overlay{
-    background-color: rgba(0, 0, 0, 0.6);
- 
+    backdrop-filter: blur(5px);
     position: fixed;
     top: 0;
     left: 0;
@@ -125,11 +125,11 @@
     right: 0;
     width: 100%;
     height: 100%;
-    z-index: 999;
+    z-index: 9999999999;
 }
 .custom_dropdown {
-    background-color: #141414;
-    color: #555;
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
     width: 100%;
     border-radius: 10px;
     height: 35px;

@@ -3,6 +3,7 @@ import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import emptyAvatar from '../../../assets/images/user-empty-avatar.png'
+import Cookies from 'js-cookie';
 
 export default function ShowMyStream() {
     const roomId = window.location.pathname.split('/').reverse()[0];
@@ -35,7 +36,7 @@ export default function ShowMyStream() {
                     serverSecret,
                     roomId,
                     userId,
-                    JSON.parse(localStorage.authTokens).username
+                    JSON.parse(Cookies.get('authTokens')).username
                 );
 
                 console.log('Generated kitToken:', kitToken);
@@ -64,14 +65,14 @@ export default function ShowMyStream() {
 
                         let res = await axios.post('https://bivisibackend.store/api/core/stream/', {
                             room_id: roomId,
-                            user_name: JSON.parse(localStorage.authTokens).username,
+                            user_name: JSON.parse(Cookies.get('authTokens')).username,
                             room_name: localStorage.roomName,
                             cover_image: base64ToFile(localStorage.streamThumb, 'image.png'),
                             product: localStorage.streamSelectProductId
                         }, {
                             headers: {
                                 'Content-Type': 'multipart/form-data',
-                                'Authorization': 'Bearer ' + JSON.parse(localStorage.authTokens).access
+                                'Authorization': 'Bearer ' + JSON.parse(Cookies.get('authTokens')).access
                             }
                         })
 

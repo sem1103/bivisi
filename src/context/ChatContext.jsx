@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import axios from "axios";
 import { AuthContext } from "./authContext";
 import { toast } from "react-toastify";
+import Cookies from 'js-cookie';
 
 
 
@@ -14,7 +15,7 @@ export default function ChatProvider({ children }) {
     const CHAT_API = 'https://bivisichat.online/api/chat/';
     const SOCKET_URL = 'https://bivisisocket.online';
     let socketInstance = '';
-    const USER_TOKKEN = localStorage.authTokens != undefined ? JSON.parse(localStorage.authTokens).access : false;
+    const USER_TOKKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
     const [socket, setSocket] = useState(null);
     const [allChats, setAllChats] = useState([]);
     const [chatId, setChatId] = useState(0);
@@ -176,7 +177,7 @@ export default function ChatProvider({ children }) {
         socket.emit('sendMessage', { target: newChatUser ? newChatUser.userId : localStorage.fromCallUserId, message: {
             action: `decline ${ newChatUser ? newChatUser.userId : localStorage.fromCallUserId}`,
             userInfo: newChatUser,
-            fromUserName: JSON.parse(localStorage.authTokens).first_name
+            fromUserName: JSON.parse(Cookies.get('authTokens')).first_name
           } });
     }
 

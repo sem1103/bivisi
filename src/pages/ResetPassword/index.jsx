@@ -6,6 +6,9 @@ import { AuthContext } from "../../context/authContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { BASE_URL } from "../../api/baseUrl";
+import Cookies from 'js-cookie';
+
+
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
@@ -24,17 +27,21 @@ const ResetPassword = () => {
           `${BASE_URL}/user/send_email_reset_password/`,
           { email }
         );
+        
         if (response.status === 200) {
-          console.log("okey");
           toast.success("Please check your email");
           setEmail("");
           localStorage.setItem("context", "forgot-password");
-          localStorage.setItem('email', email)
+          Cookies.set('email', email, { expires: 1, path: '/', secure: true, sameSite: 'Strict' });
           navigate("/user/verify-otp");
+
         } else {
           toast.error("An error occurred");
+          
         }
       } catch (error) {
+        console.log(error);
+        
         if (error.response) {
           if (error.response.status === 400) {
             toast.error("Invalid email address or user not found");
@@ -42,7 +49,7 @@ const ResetPassword = () => {
             toast.error("An error occurred:");
           }
         } else {
-          toast.error("An error occurred:");
+          toast.error("An error occurreds:");
         }
       }
     }

@@ -4,19 +4,22 @@ import { createContext, useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../api/baseUrl";
+import Cookies from 'js-cookie';
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [authTokens, setAuthTokens] = useState(
-    localStorage.getItem("authTokens")
-      ? JSON.parse(localStorage.getItem("authTokens"))
+    Cookies.get('authTokens')
+      ? JSON.parse(Cookies.get('authTokens'))
       : null
   );
   const [user, setUser] = useState(
-    localStorage.getItem("authTokens")
-      ? jwtDecode(localStorage.getItem("authTokens"))
+    Cookies.get('authTokens')
+      ? jwtDecode(Cookies.get('authTokens'))
       : null
   );
+
 
   const fetchUserDetails = async (token) => {
     try {
@@ -66,7 +69,9 @@ export const AuthProvider = ({ children }) => {
       if (response.status === 200) {
         setAuthTokens(response.data);
         setUser(jwtDecode(response.data.access));
-        localStorage.setItem("authTokens", JSON.stringify(response.data));
+        
+        
+        Cookies.set('authTokens', JSON.stringify(response.data), { expires: 14, path: '/', secure: true, sameSite: 'Strict' });
         await fetchUserDetails(response.data.access);
         return response.data;
       }
@@ -83,7 +88,7 @@ export const AuthProvider = ({ children }) => {
     setAuthTokens(null);
     setUser(null);
     setUserDetails(null);
-    localStorage.removeItem("authTokens");
+    Cookies.remove('authTokens', { path: '/' })
     // localStorage.removeItem('wishlist')
     window.location.assign("/login");
     window.location.reload()

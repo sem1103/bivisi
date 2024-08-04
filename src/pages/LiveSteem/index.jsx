@@ -7,6 +7,7 @@ import emptyAvatar from './../../assets/images/user-empty-avatar.png'
 import liveStreemIcon from './../../layout/Sidebar/icons/live-streem.svg'
 import getCurrencyByCountry from '../../utils/getCurrencyService';
 import { Modal } from 'antd';
+import Cookies from 'js-cookie';
 
 
 export default function LiveStreams() {
@@ -40,7 +41,7 @@ export default function LiveStreams() {
             serverSecret,
             roomId,
             userId,
-            JSON.parse(localStorage.authTokens).username
+            localStorage.authTokens ? JSON.parse(Cookies.get('authTokens')).username : 'Guest'
         );
 
         zp.current = ZegoUIKitPrebuilt.create(kitToken);
