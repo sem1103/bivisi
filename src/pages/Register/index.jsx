@@ -7,6 +7,9 @@ import eye from "../../assets/icons/eye.svg";
 import { AuthContext } from "../../context/authContext";
 import toast from "react-hot-toast";
 import { isPasswordValid } from "../../utils/validation";
+import Cookies from 'js-cookie';
+
+
 const Register = () => {
   const [checked, setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState({
@@ -96,17 +99,9 @@ const Register = () => {
         success:
           "Registration Successful, Please Check Your Email and Verify Otp Code",
         error: (err) => {
-          if (
-            err.response &&
-            err.response.status === 400 &&
-            err.response.data.email
-          ) {
-            return "This email is already in use. Please use a different email.";
-          } else if (
-            err.response &&
-            err.response.status === 400 &&
-            err.response.data.username
-          ) {
+          if (err.response && err.response.status === 400 && err.response.data.email) {
+            return "This email address is already in use. Please use a different email address or log in to your account";
+          } else if ( err.response && err.response.status === 400 && err.response.data.username) {
             return "This username is already taken. Please choose a different username.";
           }
           return "There was a server issue";
@@ -115,7 +110,10 @@ const Register = () => {
 
       if (response.status === 201) {
         console.log("okey");
-        localStorage.setItem("email", formData.email);
+        console.log(formData);
+        
+        Cookies.set('email', formData.email, { expires: 1, path: '/', secure: true, sameSite: 'Strict' });
+
         localStorage.setItem("context", "register");
         setFormData({
           username: "",

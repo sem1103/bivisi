@@ -422,7 +422,7 @@ useEffect(() => {
                   </table>
                 </div>
                       {
-                         productDetail.properties.length &&
+                         productDetail.properties.length > 0 &&
                          <div className="video__properties">
                          <h4>Properties</h4>
                          <table style={{ borderCollapse: 'collapse', width: '100%', background: 'var(--backgroundColor)', margin: ' 0 0 20px 0' }}>

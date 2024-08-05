@@ -74,7 +74,7 @@
             align-items: center;
 
             h4 {
-                color: var(--Neutral-White, #FFF);
+                color: var(--textColor);
                 font-size: 17px;
                 font-style: normal;
                 font-weight: 400;
@@ -82,13 +82,13 @@
             }
 
             p {
-                color: var(--Text-5, #979EAF);
+                color: var(--textColor);
                 font-size: 14px;
                 font-style: normal;
                 font-weight: 400;
 
                 span {
-                    color: var(--Neutral-White, #FFF);
+                    color: var(--textColor);
 
                     /* Poppins/18/Medium */
                     font-family: Poppins;

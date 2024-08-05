@@ -23,6 +23,7 @@ const FilterModal = ({ setShowModal }) => {
     applyFilter("All", 0, 0);
   };
 
+
   useEffect(() => {
     setSelectedCategory("All");
   }, []);

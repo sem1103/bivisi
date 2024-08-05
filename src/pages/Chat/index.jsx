@@ -16,6 +16,7 @@ import { Modal } from 'antd';
 import EmojiPicker from "emoji-picker-react";
 import { BASE_URL } from "../../api/baseUrl";
 import { ThemeContext } from "../../context/ThemeContext";
+import Cookies from 'js-cookie';
 
 
 
@@ -301,7 +302,7 @@ const Chat = () => {
                         socket.emit('sendMessage', { target: newChatUser.userId, message: {
                           action: `call to ${newChatUser.userId}`,
                           userInfo: newChatUser,
-                          fromUserName: JSON.parse(localStorage.authTokens).first_name,
+                          fromUserName: JSON.parse(Cookies.get('authTokens')).first_name,
                           fromUserId: String(myId),
                           callType: 'voice'
                         } });
@@ -324,7 +325,7 @@ const Chat = () => {
                         socket.emit('sendMessage', { target: newChatUser.userId, message: {
                           action: `call to ${newChatUser.userId}`,
                           userInfo: newChatUser,
-                          fromUserName: JSON.parse(localStorage.authTokens).first_name,
+                          fromUserName: JSON.parse(Cookies.get('authTokens')).first_name,
                           fromUserId: String(myId),
                           callType: 'video'
                         } });

@@ -9,7 +9,8 @@ import { BASE_URL } from "../../api/baseUrl";
 import Cookies from 'js-cookie';
 
 
-const ResetPassword = () => {
+export default function ReRegister() {
+  const {resendOtp} = useContext(AuthContext)
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -23,15 +24,12 @@ const ResetPassword = () => {
       toast.warning("Please enter a valid email address");
     } else {
       try {
-        const response = await axios.post(
-          `${BASE_URL}/user/send_email_reset_password/`,
-          { email }
-        );
+        const response = await resendOtp( email );
         
         if (response.status === 200) {
           toast.success("Please check your email");
           setEmail("");
-          localStorage.setItem("context", "forgot-password");
+          localStorage.setItem("context", "register");
           Cookies.set('email', email, { expires: 1, path: '/', secure: true, sameSite: 'Strict' });
           navigate("/user/verify-otp");
 
@@ -63,13 +61,8 @@ const ResetPassword = () => {
           <img src={logo} alt="" />
         </div>
         <div className="right-content">
-          <h5>Reset password</h5>
-          <p>
-            Got your password?{" "}
-            <span>
-              <NavLink to={"/login"}>Login</NavLink>
-            </span>
-          </p>
+          <h5>Verify your e-mail</h5>
+          
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -84,7 +77,7 @@ const ResetPassword = () => {
             </div>
 
             <div className="pt-4">
-              <button type="submit">Request my password</button>
+              <button type="submit">Send OTP-code</button>
             </div>
           </div>
         </form>
@@ -93,4 +86,3 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;

@@ -5,10 +5,13 @@ import { toast } from "react-toastify";
 import OtpInput from "react-otp-input";
 import "./style.scss";
 import logo from "../../assets/images/logoLight.svg";
+import Cookies from 'js-cookie';
+
+
 const Otp = () => {
   const [otp_code, setOtp] = useState("");
   const [email, setEmail] = useState(
-    localStorage.getItem("email") ? localStorage.getItem("email") : null
+    Cookies.get('email') ? Cookies.get('email') : null
   );
 
   const { verifyOtp, resendOtp } = useContext(AuthContext);

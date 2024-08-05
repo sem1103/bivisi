@@ -1,0 +1,147 @@
+.reset {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .left {
+    width: 40%;
+    height: 100%;
+    background-image: url("../../assets/images/authBg.png");
+    background-position: center;
+    background-size: cover;
+  }
+
+  .right {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .logo {
+      width: 184px;
+      height: 50.573px;
+      padding-bottom: 100px;
+    }
+
+    .right-content {
+      text-align: center;
+
+      h5 {
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 40px;
+        color: #f6f3f4; //$cultured_white
+      }
+
+      p {
+        color: var(--Gray-200, #7a7a7a);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+      }
+
+      span {
+        a {
+          color: var(--blue-blue-500, #0385ca);
+          font-size: 15px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 26px;
+          text-decoration: none;
+        }
+      }
+    }
+
+    form {
+      .wrapper {
+        width: 450px;
+        padding: 30px;
+
+        .input-data {
+          height: 50px;
+          width: 100%;
+          position: relative;
+
+          input {
+            height: 100%;
+            width: 100%;
+            border: none;
+            border: 1px solid var(--Gray-400, #292929);
+            background-color: transparent;
+            border-radius: 16px;
+            outline: none;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            color: white;
+            padding-left: 15px;
+          }
+
+          input:focus ~ label,
+          input:valid ~ label {
+            transform: translateY(-40px);
+            color: white;
+            font-size: 13px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+          }
+
+          label {
+            position: absolute;
+            bottom: 13px;
+            color: var(--Gray-200, #7a7a7a);
+            left: 0;
+            transition: all 0.3s ease;
+            padding-left: 15px;
+          }
+        }
+
+        button {
+          width: 100%;
+          border-radius: 16px;
+          background: var(--blue-blue-500, #0385ca);
+          border: none;
+          color: white;
+          padding: 12px 24px;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 24px;
+        }
+      }
+    }
+  }
+}
+
+
+
+@media (max-width:"673px") {
+  
+  .reset{
+    .left{
+      display: none;
+    }
+
+    .right{
+      width: 100% !important;
+  
+      form{
+        width: 100%;
+        .wrapper{
+          width: 100% !important;
+
+         
+        }
+      }
+    }
+  }
+
+}

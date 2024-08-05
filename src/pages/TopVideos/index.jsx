@@ -13,6 +13,7 @@ import InputMask from 'react-input-mask';
 import { BASE_URL } from '../../api/baseUrl';
 import Select from 'react-select';
 import CustomSingleValue from '../Profile/pages/CustomSymbol';
+import Cookies from 'js-cookie';
 
 
 const TopVideos = () => {
@@ -194,7 +195,7 @@ const TopVideos = () => {
                             <button
                                 className='add__video'
                                 onClick={() => {
-                                    let array = viewMyVideos.map(item => item.user.name == JSON.parse(localStorage.authTokens).username && !item.is_premium);
+                                    let array = viewMyVideos.map(item => item.user.name == JSON.parse(Cookies.get('authTokens')).username && !item.is_premium);
                                     if (array.some(item => item == true)) setIsOpen(!isOpen)
                                     else toast.error('All your videos are premium, please upload a new video..')
 
@@ -256,7 +257,7 @@ const TopVideos = () => {
                                                     viewMyVideos.length ?
                                                     
                                                         viewMyVideos.map(item => {
-                                                            if (item.user.name == JSON.parse(localStorage.authTokens).username && !item.is_premium) {
+                                                            if (item.user.name == JSON.parse(Cookies.get('authTokens')).username && !item.is_premium) {
                                                                 return <div key={item.id} className="video__item">
                                                                     <div className="cover__img">
                                                                         <div>

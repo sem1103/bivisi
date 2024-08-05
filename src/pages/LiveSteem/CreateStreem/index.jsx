@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { ChatContext } from '../../../context/ChatContext';
 import Select, { components } from 'react-select';
 import getCurrencyByCountry from '../../../utils/getCurrencyService';
+import Cookies from 'js-cookie';
 
 
 const CustomOption = (props) => {
@@ -104,7 +105,7 @@ export default function NewStream() {
             let res = await axios.get('https://bivisibackend.store/api/user/user_detail/', {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + JSON.parse(localStorage.authTokens).access
+                    'Authorization': 'Bearer ' + JSON.parse(Cookies.get('authTokens')).access
                 }
             })
             localStorage.setItem('avatar', res.data.avatar)

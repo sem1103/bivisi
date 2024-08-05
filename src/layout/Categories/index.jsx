@@ -8,7 +8,44 @@ const Categories = () => {
   const { pathname } = location;
   const { selectedCategory, setSelectedCategory, category } = useContext(ProductContext);
   const isExcludedPath = () => {
-    const excludedPaths = [];
+
+    const excludedPaths = [
+      "/login",
+      "/register",
+      "/reset_password",
+      "/re-register",
+      "/your_profile",
+      "/your_profile/my_videos",
+      "/your_profile/favorites",
+      "/your_profile/liked_videos",
+      "/your_profile/shorts",
+      "/your_profile/about",
+      "/404",
+      "/chat",
+      "/shorts",
+      "/trending",
+      "/top_videos",
+      "/popular_channels",
+      "/latest_videos",
+      "/user/verify-otp",
+      "/faq",
+      "/user/reset-password",
+      "/settings",
+      "/basket",
+      "/payment",
+      "/call",
+      "/your_profile/upload_video",
+      "/your_profile/upload_shorts",
+      "/your_profile/subscriptions",
+      "/history",
+      "/all_channels",
+      "/channels_detail",
+      "/channels_detail/channels_videos",
+      "/channels_detail/channels_shorts",
+      "/your_profile/edit_video/",
+      "/live-streams",
+      "/new-stream"
+      ];
 
     let flag = excludedPaths.some(item => pathname.includes(item));
 

@@ -53,6 +53,8 @@ import LiveStreem from "../pages/LiveSteem";
 import NewStream from "../pages/LiveSteem/CreateStreem";
 import ShowMyStream from "../pages/LiveSteem/CreateStreem/ShowMyStream";
 import { ThemeContext } from "../context/ThemeContext";
+import Cookies from 'js-cookie';
+import ReRegister from "../pages/ReRegister";
 
 
 const AppRouter = () => {
@@ -60,7 +62,7 @@ const AppRouter = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [themeMode, setThemeMode] = useState(localStorage.themeMode ? JSON.parse(localStorage.themeMode) : false)
   useEffect(() => {
-    setTheme(themeMode);
+    setTheme(themeMode);    
   }, []);
  
   return (
@@ -88,6 +90,7 @@ const AppRouter = () => {
             <Route element={<Register />} path="/register" />
             <Route element={<Login />} path="/login" />
             <Route element={<ResetPassword />} path="/reset_password" />
+            <Route element={<ReRegister />} path="/re-register" />
             <Route element={<NewPassword />} path="/user/reset-password" />
             <Route element={<Otp />} path="/user/verify-otp" />
             <Route path="*" element={<Navigate replace to="/404" />} />
