@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import camera_img from "../../../../layout/Sidebar/icons/camera-outline.svg"
+import React, { useContext, useEffect } from "react";
+import camera_img from "../../../../layout/Sidebar/icons/camera-outline.svg";
 import "./style.scss";
 import { ProductContext } from "../../../../context/ProductContext";
 import { Link } from "react-router-dom";
@@ -8,29 +8,33 @@ import 'swiper/css';
 import LastVideoCard from "../../../../components/VideoCard";
 
 const LatestVideos = () => {
-  const { product, selectedCategory } = useContext(ProductContext);
+  const { filteredProducts, selectedCategory, minPrice, maxPrice, setSelectedCategory } = useContext(ProductContext);
+
+  useEffect(() => {
+    if (selectedCategory === null) {
+      setSelectedCategory("All");
+    }
+  }, [selectedCategory, setSelectedCategory]);
+
 
   if (
-    !product ||
-    !Array.isArray(product.results) ||
-    product.results.length === 0
+    !filteredProducts ||
+    !Array.isArray(filteredProducts) ||
+    filteredProducts.length === 0
   ) {
     return null;
   }
 
-  const latestVideos = product.results
+  const latestVideos = filteredProducts
     .filter((item) => {
-      if (selectedCategory) {
-        return (
-          item.product_video_type[0]?.product_type === "Video" &&
-          item.category.includes(selectedCategory)
-        );
-      } else {
-        return item.product_video_type[0]?.product_type === "Video";
-      }
+      const isCategoryMatch = selectedCategory === "All" || item.category.includes(Number(selectedCategory));
+      const isPriceMatch = (minPrice === 0 || Number(item.price) >= minPrice) && (maxPrice === 0 || Number(item.price) <= maxPrice);
+
+      return item.product_video_type[0]?.product_type === "Video" && isCategoryMatch && isPriceMatch;
     })
     .sort((a, b) => new Date(b._added) - new Date(a.date_added))
     .slice(0, 4);
+
 
   return (
     <section className="latestVideos">
@@ -59,7 +63,6 @@ const LatestVideos = () => {
               0: {
                 spaceBetween: 5,
                 slidesPerView: 1,
-
               },
               500: {
                 spaceBetween: 1,
@@ -69,7 +72,6 @@ const LatestVideos = () => {
                 spaceBetween: 15,
                 slidesPerView: 3,
               },
-
               912: {
                 spaceBetween: 15,
                 slidesPerView: 3,
@@ -87,7 +89,6 @@ const LatestVideos = () => {
                   <LastVideoCard ProductItemVideoCard={item} page="home" />
                 </SwiperSlide>
               ))}
-
           </Swiper>
         </div>
       </div>
