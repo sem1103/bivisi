@@ -14,7 +14,9 @@ export default function ChatProvider({ children }) {
     const {user} = useContext(AuthContext)
     const CHAT_API = 'https://bivisichat.online/api/chat/';
     const SOCKET_URL = 'https://bivisisocket.online';
+    const SOCKET_URL2 = 'https://bivisibackend.store/ws/notifications/';
     let socketInstance = '';
+    let socketInstance2 = '';
     const USER_TOKKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
     const [socket, setSocket] = useState(null);
     const [allChats, setAllChats] = useState([]);
@@ -33,7 +35,8 @@ export default function ChatProvider({ children }) {
     const [isAccept, setIsAccept] = useState();
     const [isVideoCall, setIsVideoCall] = useState(false)
     let roomId = ''
-  
+    const [socket2, setSocket2] = useState(null);
+
 
 
 
@@ -191,11 +194,33 @@ export default function ChatProvider({ children }) {
             socketInstance = io(SOCKET_URL, {
                 query: { customerId: user?.user_id }
             });
+
+            const newSocket = new WebSocket('wss://bivisibackend.store/ws/notifications/');       
+
+            // Обработчик открытия соединения
+            newSocket.onopen = () => {
+            console.log('WebSocket открыт.');
+            };
+
+
+
+            socketInstance2 = io(SOCKET_URL2, {
+                query: { customerId: user?.user_id },
+                transports: ['websocket'], // явное указание на использование WebSocket
+                
+            });
+            socketInstance2.on('connect', () => {
+                console.log('Connected to Notification server!');
+            });
+
+
             socketInstance.on('connect', () => {
                 console.log('Connected to WebSocket server!');
                 getChats()
             });
+            
            
+
             socketInstance.on('online-users', (users) => {
                 userss = users;
                 setOnlineUsers(prev => users);               
