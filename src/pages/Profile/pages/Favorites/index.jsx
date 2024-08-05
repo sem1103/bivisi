@@ -16,6 +16,7 @@ import { useCart } from "react-use-cart";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import FilterModal from "../../../../components/FilterModal";
 import { ProductContext } from "../../../../context/ProductContext";
+import filter from "../../../../assets/icons/filter.svg";
 import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 const Favorites = () => {
   const {countryCurrencySymbol} = getCurrencyByCountry()
@@ -28,6 +29,7 @@ const Favorites = () => {
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef(null);
 
+  const [showModal, setShowModal] = useState(false);
 
   const { addItem } = useCart();
   useEffect(() => {
@@ -132,7 +134,11 @@ const Favorites = () => {
               <h1>Favorites videos</h1>
               <div className="d-flex gap-3 flex-wrap">
 
-                <FilterModal applyFilter={applyFilter} />
+              <button className="favorites_videos_filter" onClick={() => setShowModal(true)}>
+                <img src={filter} alt="upload" />
+                Filter
+            </button>
+     {showModal&&<FilterModal setShowModal={setShowModal} applyFilter={applyFilter} />}
                 <div className="custom-select">
                   <SortProduct sortedProducts={favorites} setSortedProducts={setFavorites} />
                 </div>

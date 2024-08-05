@@ -4,18 +4,13 @@
   display: flex;
   background-color: var(--backgroundColor);
   align-items: center;
-  // justify-content: center;
-  // justify-content: space-between;
   gap: 15px;
-  // padding: 20px 27px;
-  // padding-top: 10px;
   position: sticky;
   right: 0;
-  // top: 13vh;
-  // z-index: -2;
   overflow-x: auto; 
   white-space: nowrap; 
   position: relative;
+  padding-bottom: 10px;
   .b_cat{
     gap: 15px;
   }
@@ -28,12 +23,11 @@
     border-radius: 16px;
     border: 1px solid #292929;
     color: #a2a8b7;
-    /* Poppins/16/Medium */
     font-family: Poppins;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 24px; /* 150% */
+    line-height: 24px;
     background-color: transparent;
     outline: none;
     transition: all .3s ease;
@@ -58,7 +52,7 @@
 }
 
 .b_categories::-webkit-scrollbar {
-  height: 7px;
+  height: 3px;
 }
 
 .b_categories::-webkit-scrollbar-track {
