@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import ShortCard from "../../../../components/ShortCard";
 import "./style.scss";
 import { ProductContext } from "../../../../context/ProductContext";
@@ -6,29 +6,31 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 const ShortCards = () => {
-  const { product, selectedCategory } = useContext(ProductContext);
+  const { filteredProducts, selectedCategory, minPrice, maxPrice, setSelectedCategory } = useContext(ProductContext);
+  useEffect(() => {
+    if (selectedCategory === null) {
+      setSelectedCategory("All");
+    }
+  }, [selectedCategory, setSelectedCategory]);
+
+
   if (
-    !product ||
-    !Array.isArray(product.results) ||
-    product.results.length === 0
+    !filteredProducts ||
+    !Array.isArray(filteredProducts) ||
+    filteredProducts.length === 0
   ) {
     return null;
   }
 
-  let videoProducts;
+  const videoProducts = filteredProducts
+    .filter((item) => {
+      const isCategoryMatch = selectedCategory === "All" || item.category.includes(Number(selectedCategory));
+      const isPriceMatch = (minPrice === 0 || Number(item.price) >= minPrice) && (maxPrice === 0 || Number(item.price) <= maxPrice);
 
-  if (selectedCategory) {
-    videoProducts = product.results.filter(
-      (item) =>
-        item.product_video_type[0]?.product_type === "Shorts" &&
-        item.category.includes(selectedCategory)
-    );
-  } else {
-    videoProducts = product.results.filter(
-      (item) => item.product_video_type[0]?.product_type === "Shorts"
-    );
-  }
-console.log(videoProducts,selectedCategory)
+      return item.product_video_type[0]?.product_type === "Shorts" && isCategoryMatch && isPriceMatch;
+    })
+    .sort((a, b) => new Date(b._added) - new Date(a.date_added))
+    .slice(0, 4);
   return (
     <>
       <section className="shortCards">
@@ -45,10 +47,10 @@ console.log(videoProducts,selectedCategory)
                     y="0px"
                     viewBox="0 0 168.071 168.071"
                     xmlSpace="preserve">
-                    
+
                     <g>
                       <g>
-                        <path style={{ fill: "currentColor", color:"#04abf2"}} d="M154.932,91.819L42.473,27.483c-2.219-1.26-4.93-1.26-7.121-0.027 c-2.219,1.233-3.588,3.533-3.615,6.026L31.08,161.059c0,0,0,0,0,0.027c0,2.465,1.369,4.766,3.533,6.026 c1.123,0.63,2.355,0.959,3.615,0.959c1.205,0,2.438-0.301,3.533-0.931l113.116-63.214c2.219-1.26,3.588-3.533,3.588-6.053 c0,0,0,0,0-0.027C158.465,95.38,157.123,93.079,154.932,91.819z">
+                        <path style={{ fill: "currentColor", color: "#04abf2" }} d="M154.932,91.819L42.473,27.483c-2.219-1.26-4.93-1.26-7.121-0.027 c-2.219,1.233-3.588,3.533-3.615,6.026L31.08,161.059c0,0,0,0,0,0.027c0,2.465,1.369,4.766,3.533,6.026 c1.123,0.63,2.355,0.959,3.615,0.959c1.205,0,2.438-0.301,3.533-0.931l113.116-63.214c2.219-1.26,3.588-3.533,3.588-6.053 c0,0,0,0,0-0.027C158.465,95.38,157.123,93.079,154.932,91.819z">
                         </path>
                         <g id="XMLID_15_">
                           <g>
@@ -66,13 +68,13 @@ console.log(videoProducts,selectedCategory)
                 <h4>BiviClips</h4>
               </div>
               <Link to="/shorts" className="see__all">
-                See all 
+                See all
 
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Icon/Right arrow">
-<path id="Vector 190" d="M11.6667 6.66687L15 10.0002M15 10.0002L11.6667 13.3335M15 10.0002L5 10.0002" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
+                  <g id="Icon/Right arrow">
+                    <path id="Vector 190" d="M11.6667 6.66687L15 10.0002M15 10.0002L11.6667 13.3335M15 10.0002L5 10.0002" stroke="var(--textColor)" strokeWidth="1.5" strokeLinecap="round" stroke-linejoin="round" />
+                  </g>
+                </svg>
 
               </Link>
             </div>
