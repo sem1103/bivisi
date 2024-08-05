@@ -99,17 +99,9 @@ const Register = () => {
         success:
           "Registration Successful, Please Check Your Email and Verify Otp Code",
         error: (err) => {
-          if (
-            err.response &&
-            err.response.status === 400 &&
-            err.response.data.email
-          ) {
-            return "This email is already in use. Please use a different email.";
-          } else if (
-            err.response &&
-            err.response.status === 400 &&
-            err.response.data.username
-          ) {
+          if (err.response && err.response.status === 400 && err.response.data.email) {
+            return "This email address is already in use. Please use a different email address or log in to your account";
+          } else if ( err.response && err.response.status === 400 && err.response.data.username) {
             return "This username is already taken. Please choose a different username.";
           }
           return "There was a server issue";

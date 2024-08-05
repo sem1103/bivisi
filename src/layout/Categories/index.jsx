@@ -33,6 +33,7 @@ const Categories = () => {
       "/login",
       "/register",
       "/reset_password",
+      "/re-register",
       "/your_profile",
       "/your_profile/my_videos",
       "/your_profile/favorites",

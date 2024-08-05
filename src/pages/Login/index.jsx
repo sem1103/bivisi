@@ -44,20 +44,19 @@ const Login = () => {
     }
     try {
       const result = await loginUser(formData);
-      if (result === false) {
-        toast.error("User not found or incorrect credentials");
-      } else {
-        toast
-          .promise(Promise.resolve(result), {
-            loading: "Logging in...",
-            success: "Login successful. Redirecting...",
-            error: "An error occurred while logging in",
-          })
-          .then(() => {
-            navigate("/");
-          });
-      }
+      console.log(result);
+      toast
+      .promise(Promise.resolve(result), {
+        loading: "Logging in...",
+        success: "Login successful. Redirecting...",
+        error: "An error occurred while logging in",
+      })
+      .then(() => {
+        navigate("/");
+      });
+      
     } catch (error) {
+      navigate(error.message == 'Please verify your account with OTP.' ? '/re-register' : '/login')
       console.error("Login error:", error.message);
       toast.error(error.message);
     }

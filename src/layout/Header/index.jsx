@@ -203,6 +203,7 @@ const Header = ({ isOpen }) => {
     location.pathname !== "/login" &&
     location.pathname !== "/register" &&
     location.pathname !== "/reset_password" &&
+    location.pathname !== "/re-register" &&
     location.pathname !== "/404" &&
     location.pathname !== "/user/verify-otp"
   ) {
