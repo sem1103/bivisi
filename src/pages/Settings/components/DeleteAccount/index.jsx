@@ -5,6 +5,9 @@ import eye from "../../../../assets/icons/eye.svg";
 import "./style.scss";
 import useAxios from "../../../../utils/useAxios";
 import { Modal } from "antd";
+import { toast } from "react-toastify";
+import Cookies from 'js-cookie';
+
 
 const DeleteAccount = () => {
   const [showPassword, setShowPassword] = useState({
@@ -27,6 +30,7 @@ const DeleteAccount = () => {
 
   const handleOk = async () => {
     try {
+
       const response = await toast.promise(
         axiosInstance.post("/user/delete_account/", {
           email: formData.email,
@@ -38,9 +42,11 @@ const DeleteAccount = () => {
           error: "Failed to delete account. Please try again later",
         }
       );
-      console.log("Hesap başarıyla silindi:", response.data);
       setIsModalVisible(false);
-      localStorage.clear();
+
+      Cookies.remove('authTokens');
+      window.location.href = '/'
+
     } catch (error) {
       console.error("Hesap silinirken bir hata oluştu:", error);
     }
@@ -111,12 +117,26 @@ const DeleteAccount = () => {
         <button type="submit">Delete</button>
       </form>
       <Modal
-        title="Delete Account"
-        visible={isModalVisible}
+        title={<span style={{ color: 'var(--textColor)' }}>Delete Account</span>}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         centered
-        
+
+        styles={{
+          mask: {
+            backdropFilter: 'blur(10px)',
+            zIndex: '999999999999',
+          },
+          header: {
+            background: 'var(--primaryColor)',
+            color: 'var(--textColor)'
+          },
+          content:{
+            background: 'var(--primaryColor)',
+            color: 'var(--textColor)'
+          }
+        }}
       >
         <p>Are you sure you want to delete your account?</p>
       </Modal>

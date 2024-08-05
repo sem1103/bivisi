@@ -42,6 +42,8 @@ export const AuthProvider = ({ children }) => {
 
   const registerUser = async (user) => {
     const response = await axios.post(`${BASE_URL}/user/register/`, user);
+    console.log(response);
+    
     return response;
   };
 
@@ -68,6 +70,8 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (user) => {
     try {
       const response = await axios.post(`${BASE_URL}/user/login/`, user);
+      console.log(response);
+
       if (response.status === 200) {
         setAuthTokens(response.data);
         setUser(jwtDecode(response.data.access));
@@ -78,9 +82,17 @@ export const AuthProvider = ({ children }) => {
         return response.data;
       }
     } catch (error) {
+      console.log(error.response.data.non_field_errors[0]      );
+      console.log(error.response.status);
+      
+      
+      
       if (error.response.status === 404) {
         return false;
-      } else {
+      } else { 
+        if(error.response.data.non_field_errors[0] == 'Please verify your account with OTP.'){
+          throw new Error("Please verify your account with OTP.");
+        } 
         throw new Error("User not found or incorrect credentials");
       }
     }
