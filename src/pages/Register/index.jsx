@@ -118,7 +118,9 @@ const Register = () => {
 
       if (response.status === 201) {
         console.log("okey");
-        Cookies.set('email', email, { expires: 1, path: '/', secure: true, sameSite: 'Strict' });
+        console.log(formData);
+        
+        Cookies.set('email', formData.email, { expires: 1, path: '/', secure: true, sameSite: 'Strict' });
 
         localStorage.setItem("context", "register");
         setFormData({
