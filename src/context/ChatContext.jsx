@@ -14,7 +14,7 @@ export default function ChatProvider({ children }) {
     const {user} = useContext(AuthContext)
     const CHAT_API = 'https://bivisichat.online/api/chat/';
     const SOCKET_URL = 'https://bivisisocket.online';
-    const SOCKET_URL2 = 'https://bivisibackend.store/ws/notifications/';
+    const SOCKET_URL2 = 'wss://bivisibackend.store/ws/notifications/';
     let socketInstance = '';
     let socketInstance2 = '';
     const USER_TOKKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
@@ -194,24 +194,25 @@ export default function ChatProvider({ children }) {
             socketInstance = io(SOCKET_URL, {
                 query: { customerId: user?.user_id }
             });
+            const socket2 = new WebSocket('wss://bivisibackend.store/ws/notifications/');
 
-            const newSocket = new WebSocket('wss://bivisibackend.store/ws/notifications/');       
-
-            // Обработчик открытия соединения
-            newSocket.onopen = () => {
-            console.log('WebSocket открыт.');
-            };
-
+            socket2.onopen = function (event) {
+              console.log("WebSocket is open now.");
+              socket2.send(JSON.stringify({ type: 'authenticate', token: USER_TOKKEN }));
+            }
+            
 
 
-            socketInstance2 = io(SOCKET_URL2, {
-                query: { customerId: user?.user_id },
-                transports: ['websocket'], // явное указание на использование WebSocket
-                
-            });
-            socketInstance2.on('connect', () => {
-                console.log('Connected to Notification server!');
-            });
+
+            // const socketInstance2 = io(SOCKET_URL2, {
+            //     query: { customerId: user?.user_id },
+            //     extraHeaders: {
+            //         Authorization: `Bearer ${USER_TOKKEN}`,
+            //     },
+            //   });
+            // socketInstance2.on('connect', () => {
+            //     console.log('Connected to Notification server!');
+            // });
 
 
             socketInstance.on('connect', () => {

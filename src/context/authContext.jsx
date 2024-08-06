@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   );
   const [user, setUser] = useState(
     Cookies.get('authTokens')
-      ? jwtDecode(Cookies.get('authTokens'))
+      ? JSON.parse(Cookies.get('authTokens'))
       : null
   );
 
