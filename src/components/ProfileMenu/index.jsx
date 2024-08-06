@@ -105,18 +105,25 @@ const ProfileMenu = () => {
               <img src={settingsGray} alt="" />
               <h6>Settings</h6>
             </NavLink>
-            <div className="profile-menu-item d-flex justify-content-between">
+            <div className="profile-menu-item align-items-center d-flex justify-content-between mode__switcher">
               <div className="d-flex align-items-center gap-2">
                 <img src={nightmodeGray} alt="" />
-                <h6 className="m-0">Dark mode</h6>
+                <h6 className="m-0">Mode</h6>
               </div>
-              <div className="dark-mode-switch">
+              {/* <div className="dark-mode-switch">
                 <input ref={themeSwitcher} type="checkbox" id="dark-mode-toggle" checked={themeMode} onClick={() => {
                       setTheme(!themeMode, themeSwitcher.current)
                       setThemeMode(!themeMode)
                 }} />
                 <label htmlFor="dark-mode-toggle" />
-              </div>
+              </div> */}
+
+<div class="wrapper d-flex">
+<input  name="checkbox" class="switch" ref={themeSwitcher} type="checkbox" id="dark-mode-toggle" checked={themeMode} onClick={() => {
+                      setTheme(!themeMode, themeSwitcher.current)
+                      setThemeMode(!themeMode)
+                }}/>
+</div>
             </div>
             <div className="profile-menu-item mt-2 mb-2" onClick={() => {
               setTheme(false, themeSwitcher.current)

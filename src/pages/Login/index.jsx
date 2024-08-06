@@ -6,6 +6,13 @@ import { AuthContext } from "../../context/authContext";
 import eyeoff from "../../assets/icons/eye-off.svg";
 import eye from "../../assets/icons/eye.svg";
 import toast from "react-hot-toast";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+import { BASE_URL } from "../../api/baseUrl";
+import axios from "axios";
+
+
+
 const Login = () => {
   const [checked, setChecked] = useState(false);
   const [formData, setFormData] = useState({
@@ -26,6 +33,19 @@ const Login = () => {
   };
 
   const { loginUser, setAuthTokens, setUser } = useContext(AuthContext);
+
+  const googleLogin = async (accesstoken) => {
+    console.log(accesstoken);
+
+    let res = await axios.post(
+      BASE_URL + '/user/login/google/',
+      {
+        access_token: accesstoken,
+      }
+    );
+    console.log(res);
+    
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -125,6 +145,34 @@ const Login = () => {
                     Forgot your password?
                   </NavLink>
                 </p>
+              </div>
+
+              <div>
+              {/* <GoogleLogin
+
+  onSuccess={credentialResponse => {
+    // console.log(jwtDecode(credentialResponse.credential));
+    googleLogin(credentialResponse.credential)
+    console.log(credentialResponse);
+    
+    // let userObj = {
+    //   access,
+    //   email: jwtDecode(credentialResponse.credential).email,
+    //   first_name,
+    //   last_name,
+    //   username
+    // }
+  }}
+  onError={(err) => {
+    console.log('Login Failed');
+    console.log(err);
+    
+  }}
+  buttonText="Login with Google"
+
+  cookiePolicy={'single_host_origin'}
+
+/>; */}
               </div>
 
               <div className="pt-4">

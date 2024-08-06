@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 
 
 export default function LiveStreams() {
+    
     let roomName = '';
     const navigate = useNavigate();
     const { roomId } = useParams(); // Destructure roomId from useParams
@@ -154,7 +155,8 @@ export default function LiveStreams() {
                     <h4 className='mt-1'>Live Videos</h4>
                 </div>
 
-                <NavLink to={'/new-stream'}>Create New Stream</NavLink>
+                {Cookies.get('authTokens') &&
+                <NavLink to={'/new-stream'}>Create New Stream</NavLink>}
             </div>
 
             <Modal
