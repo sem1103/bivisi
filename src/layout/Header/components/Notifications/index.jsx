@@ -45,6 +45,8 @@ export default function Notifications({notifications, setNotifications}) {
     const { myVideos} = useContext(NotificationContext) 
     const {user} = useContext(AuthContext)
 
+    console.log(notifications);
+    
 
     
     const ntfLikeItem = (ntf,video, text) => {

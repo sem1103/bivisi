@@ -5,7 +5,7 @@ import { ProductContext } from '../../../../context/ProductContext';
 import { MdOutlineClose } from "react-icons/md";
 import './style.scss'
 import { NavLink } from 'react-router-dom';
-const Search = ({ setIsUploadOptionsVisible, setIsNotificationOptionsVisible }) => {
+const Search = ({ setIsUploadOptionsVisible }) => {
   const [inputValue, setInputValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [listening, setListening] = useState(false);
@@ -60,12 +60,7 @@ const Search = ({ setIsUploadOptionsVisible, setIsNotificationOptionsVisible }) 
       ) {
         setIsUploadOptionsVisible(false);
       }
-      if (
-        event.target.closest(".notification-options") === null &&
-        event.target.closest(".notification") === null
-      ) {
-        setIsNotificationOptionsVisible(false);
-      }
+    
     };
 
     document.addEventListener("mousedown", handleClickOutside);

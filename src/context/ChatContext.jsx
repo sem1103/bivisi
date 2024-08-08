@@ -39,6 +39,8 @@ export default function ChatProvider({ children }) {
 
 
     const getChats = async () => {
+        
+        
         const res = await axios.get(`${CHAT_API}getChats`, {
             headers: {
                 Authorization: `Bearer ${USER_TOKKEN}`
@@ -194,7 +196,7 @@ export default function ChatProvider({ children }) {
             });
        
             socketInstance.on('connect', () => {
-                console.log('Connected to WebSocket server!');
+                console.log('Connected to Chat WebSocket server!');
                 getChats()
             });
             

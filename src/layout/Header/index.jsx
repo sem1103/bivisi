@@ -14,6 +14,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { ChatContext } from "../../context/ChatContext";
 import { Modal } from 'antd';
 import callRingtone from './../../assets/images/call.mp3'
+import notificationSound from './../../assets/images/notification.mp3'
 import Search from "./components/Search/Search";
 import Categories from "../Categories";
 import { ThemeContext } from "../../context/ThemeContext";
@@ -31,17 +32,20 @@ const Header = ({ isOpen }) => {
   const navigate = useNavigate();
   const {notificationSocket} = useContext(NotificationContext);
   const { themeMode } = useContext(ThemeContext);
+  const notificationRef1 = useRef(null);
+  const notificationRef2 = useRef(null);
+  const notificationRef3 = useRef(null);
 
   const [notifications, setNotifications] = useState([]);
   const { isModalCallOpen, setIsModalCallOpen, callModalText, declineCall, iCall, acceptACall, isAccept, setIsAccept } = useContext(ChatContext);
   const { user } = useContext(AuthContext);
   const [isUploadOptionsVisible, setIsUploadOptionsVisible] = useState(false);
   
-  const [isNotificationOptionsVisible, setIsNotificationOptionsVisible] =
-    useState(false);
+  const [isNotificationOptionsVisible, setIsNotificationOptionsVisible] = useState(false);
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(false);
   const ringtoneRef = useRef(new Audio(callRingtone)); // Создание рефа для аудиоэлемента
+  const notificationSoundRef = useRef(new Audio(notificationSound)); // Создание рефа для аудиоэлемента
   const [showFilterModal, setShowFilterModal] = useState(false);
   const { totalUniqueItems, totalItems } = useCart();
   const toggleMenu = () => {
@@ -51,11 +55,10 @@ const Header = ({ isOpen }) => {
 
   const toggleUploadOptions = () => {
     setIsUploadOptionsVisible(!isUploadOptionsVisible);
+    
   };
 
-  const toggleNotificationOptions = () => {
-    setIsNotificationOptionsVisible(!isNotificationOptionsVisible);
-  };
+
 
   const handleOptionClick = () => {
     setIsUploadOptionsVisible(false);
@@ -95,6 +98,8 @@ function getFormattedDate() {
         let eventObj = JSON.parse(event.data);
         
         setNotifications(prev => {
+          notificationSoundRef.current.pause();
+          notificationSoundRef.current.play();
             return [
                 {
                     id: eventObj.notification_id,
@@ -123,6 +128,33 @@ function getFormattedDate() {
     }
 
   }, [isModalCallOpen]);
+
+
+  const handleClickOutside = (event) => {
+    if (
+      notificationRef1.current &&
+      notificationRef2.current &&
+      notificationRef3.current &&
+      !notificationRef1.current.contains(event.target) &&
+      !notificationRef2.current.contains(event.target) &&
+      !notificationRef3.current.contains(event.target) 
+    ) {
+      setIsNotificationOptionsVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isNotificationOptionsVisible) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isNotificationOptionsVisible]);
+
   if (
     location.pathname !== "/login" &&
     location.pathname !== "/register" &&
@@ -222,7 +254,7 @@ function getFormattedDate() {
             <div className="d-flex align-items-center justify-content-end w-100 gap-2">
 
               <Categories />
-              <Search setIsUploadOptionsVisible={setIsUploadOptionsVisible} setIsNotificationOptionsVisible={setIsNotificationOptionsVisible} />
+              <Search setIsUploadOptionsVisible={setIsUploadOptionsVisible} />
 
               {user ? (
                 <div className="content_left d-flex align-items-center justify-content-end gap-3">
@@ -325,14 +357,21 @@ function getFormattedDate() {
                       <span className="basket_items_count">{totalUniqueItems}</span>
                     </NavLink>
                     <div
-                      className="upload ntf"
-                      onClick={toggleNotificationOptions}
+                    ref={notificationRef1}
+                      className=" ntf"
+                     
                     >
-                      {/* <img src={Notification} alt="" /> */}
-                      <svg width={18} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <button className="ntf__button"
+                       onClick={() => {
+                        setIsNotificationOptionsVisible(!isNotificationOptionsVisible);
+                      }}
+                      >
+  <svg width={18} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.22647 3.39111C6.88616 3.74444 5.01449 5.67732 4.73307 8.16156L4.44567 10.6986C4.37426 11.329 4.11876 11.9223 3.71295 12.3999C2.85178 13.4135 3.55072 14.9999 4.85849 14.9999H15.1416C16.4494 14.9999 17.1483 13.4135 16.2871 12.3999C15.8813 11.9223 15.6258 11.329 15.5544 10.6986L15.3645 9.02215M12.5 16.6665C12.1361 17.6375 11.1542 18.3332 10 18.3332C8.84585 18.3332 7.86394 17.6375 7.50004 16.6665" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
                         <circle cx="14" cy="4" r="2.4" stroke="white" strokeWidth="1.2" />
                       </svg>
+                      </button>
+                    
 
 
                       {isNotificationOptionsVisible && (
@@ -607,7 +646,7 @@ function getFormattedDate() {
                 </div>
               </div>
               <div className="burger_menu d-flex align-content-center w-100 gap-2">
-                <Search setIsUploadOptionsVisible={setIsUploadOptionsVisible} setIsNotificationOptionsVisible={setIsNotificationOptionsVisible} />
+                <Search setIsUploadOptionsVisible={setIsUploadOptionsVisible}  />
                 {
                   user ? (
                     <div className="d-flex align-items-center gap-2 tablet__menu">
@@ -706,16 +745,21 @@ function getFormattedDate() {
                           </div>
                         )}
                       </div>
-                     <div className="ntf sm__ntf__dropdown">
-                     <button className="sm_ntf " onClick={toggleNotificationOptions}
+                     <div className="ntf sm__ntf__dropdown"  ref={notificationRef2}>
+                     <button className="sm_ntf " 
+                       onClick={() => {
+                        
+                        setIsNotificationOptionsVisible(!isNotificationOptionsVisible);
+                      }}
                       >
                         <svg width="15" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M9.22647 3.39111C6.88616 3.74444 5.01449 5.67732 4.73307 8.16156L4.44567 10.6986C4.37426 11.329 4.11876 11.9223 3.71295 12.3999C2.85178 13.4135 3.55072 14.9999 4.85849 14.9999H15.1416C16.4494 14.9999 17.1483 13.4135 16.2871 12.3999C15.8813 11.9223 15.6258 11.329 15.5544 10.6986L15.3645 9.02215M12.5 16.6665C12.1361 17.6375 11.1542 18.3332 10 18.3332C8.84585 18.3332 7.86394 17.6375 7.50004 16.6665" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
                           <circle cx="14" cy="4" r="2.4" stroke="white" strokeWidth="1.2" />
                         </svg>
                       </button>
+                      
                       {isNotificationOptionsVisible && (
-                        <div className="notification-options medium__dropdown" onClick={toggleNotificationOptions}>
+                        <div className="notification-options medium__dropdown" >
                           <h1>Notifications</h1>
                           <Notifications notifications={notifications} setNotifications={setNotifications}/>
                         </div>
@@ -749,7 +793,7 @@ function getFormattedDate() {
               </div>
             </div>
             <div className="mob-search d-md-none d-flex align-items-center">
-              <Search setIsUploadOptionsVisible={setIsUploadOptionsVisible} setIsNotificationOptionsVisible={setIsNotificationOptionsVisible} />
+              <Search setIsUploadOptionsVisible={setIsUploadOptionsVisible}/>
               <div className="d-flex gap-2">
                 <div className="filter" onClick={() => setShowFilterModal(true)}>
                   <svg width="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -781,8 +825,12 @@ function getFormattedDate() {
                     </NavLink>
 
 
-                    <div className="ntf sm__ntf__dropdown">
-                     <button className="sm_ntf " onClick={toggleNotificationOptions}
+                    <div className="ntf sm__ntf__dropdown"  ref={notificationRef3}>
+                     <button className="sm_ntf " 
+                       onClick={() => {
+                        
+                        setIsNotificationOptionsVisible(!isNotificationOptionsVisible);
+                      }}
                       >
                          <svg width="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.22647 3.39111C6.88616 3.74444 5.01449 5.67732 4.73307 8.16156L4.44567 10.6986C4.37426 11.329 4.11876 11.9223 3.71295 12.3999C2.85178 13.4135 3.55072 14.9999 4.85849 14.9999H15.1416C16.4494 14.9999 17.1483 13.4135 16.2871 12.3999C15.8813 11.9223 15.6258 11.329 15.5544 10.6986L15.3645 9.02215M12.5 16.6665C12.1361 17.6375 11.1542 18.3332 10 18.3332C8.84585 18.3332 7.86394 17.6375 7.50004 16.6665" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
@@ -790,7 +838,7 @@ function getFormattedDate() {
                       </svg>
                       </button>
                       {isNotificationOptionsVisible && (
-                        <div className="notification-options " onClick={toggleNotificationOptions}>
+                        <div className="notification-options " >
                           <h1>Notifications</h1>
                           <Notifications notifications={notifications} setNotifications={setNotifications}/>
                         </div>

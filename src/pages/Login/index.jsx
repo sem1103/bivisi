@@ -46,8 +46,8 @@ const Login = () => {
       }
     );
     console.log(res);
-    
-    
+
+
   };
 
   const handleChange = (e) => {
@@ -69,21 +69,26 @@ const Login = () => {
       const result = await loginUser(formData);
       console.log(result);
       toast
-      .promise(Promise.resolve(result), {
-        loading: "Logging in...",
-        success: "Login successful. Redirecting...",
-        error: "An error occurred while logging in",
-      })
-      .then(() => {
-        navigate("/");
-      });
-      
+        .promise(Promise.resolve(result), {
+          loading: "Logging in...",
+          success: "Login successful. Redirecting...",
+          error: "An error occurred while logging in",
+        })
+        .then(() => {
+          navigate("/");
+        });
+
     } catch (error) {
       navigate(error.message == 'Please verify your account with OTP.' ? '/re-register' : '/login')
       console.error("Login error:", error.message);
       toast.error(error.message);
     }
   };
+  const getLogin = async () => {
+    const res = await axios.get('https://bivisibackend.store/api/user/google/callback/')
+    console.log(res);
+  }
+
 
   return (
     <>
@@ -91,12 +96,12 @@ const Login = () => {
         <div className="left"></div>
         <div className="right">
           <div className="logo mb-5">
-          <Link to='/'><img src={logo} alt="" /></Link>
+            <Link to='/'><img src={logo} alt="" /></Link>
           </div>
           <div className="right-content">
             <h5>Welcome back!</h5>
             <p>
-            Don’t you have an account?{" "}
+              Don’t you have an account?{" "}
               <span>
                 <NavLink to={"/register"}>Sign up</NavLink>
               </span>
@@ -150,32 +155,12 @@ const Login = () => {
                 </p>
               </div>
 
-              <div>
-              <GoogleLogin
-
-  onSuccess={credentialResponse => {
-    // console.log(jwtDecode(credentialResponse.credential));
-    googleLogin(credentialResponse.credential)
-    console.log(credentialResponse);
-    
-    // let userObj = {
-    //   access,
-    //   email: jwtDecode(credentialResponse.credential).email,
-    //   first_name,
-    //   last_name,
-    //   username
-    // }
-  }}
-  onError={(err) => {
-    console.log('Login Failed');
-    console.log(err);
-    
-  }}
-  buttonText="Login with Google"
-
-  cookiePolicy={'single_host_origin'}
-
-/>;
+              <div >
+                <button onClick={() => {
+                  window.location.href = 'https://bivisibackend.store/api/user/google/redirect/'
+                }}>
+                  Login with Google
+                </button>
               </div>
 
               <div className="pt-4">
