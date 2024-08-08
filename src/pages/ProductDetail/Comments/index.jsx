@@ -9,8 +9,10 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { FaChevronDown } from "react-icons/fa6";
 import delete_img from "../../../assets/icons/delete.svg";
 import { Modal } from "antd";
+import { NotificationContext } from "../../../context/NotificationContext";
 
 const CommentsComponent = ({ productDetail }) => {
+  const {notificationSocket} = useContext(NotificationContext)
   const [comments, setComments] = useState([]);
   const [user_comment, setUser_comment] = useState("");
   const [user_comment_sub, setUser_comment_sub] = useState("");
@@ -70,14 +72,15 @@ const CommentsComponent = ({ productDetail }) => {
       parent_comment: replyToCommentId,
     };
     try {
-      const res = await axiosInstance.post(`/product_comment/`, payload);
+      const res = await axiosInstance.post(`/create_comment/`, payload);
       console.log("Payload:", payload);
-      console.log("Response:", res.data);
+      console.log("Response:", res);
       if (res.status === 201) {
         setUser_comment("");
         setReplyToCommentId(null);
         toast.success("Your comment successfully posted!");
         fetchParentComments();
+        
       } else {
         toast.error("Failed to post comment");
       }
@@ -101,9 +104,9 @@ const CommentsComponent = ({ productDetail }) => {
       parent_comment: replyToCommentId,
     };
     try {
-      const res = await axiosInstance.post(`/product_comment/`, payload);
+      const res = await axiosInstance.post(`/create_comment/`, payload);
       // console.log("Payload:", payload);
-      // console.log("Response:", res.data);
+      console.log("Response:", res);
       if (res.status === 201) {
         setUser_comment_sub("");
         setReplyToCommentId(null);
@@ -148,6 +151,41 @@ const CommentsComponent = ({ productDetail }) => {
     }
   };
 
+  const likeCounterHandler = (id, isSubComment, incDec) => {
+     // If it's a sub-comment, find and update the like count of that sub-comment
+     if (isSubComment) {
+      setComments((prevComments) => {
+        return  prevComments.map((parentComment) => ({
+          ...parentComment,
+          sub_comments: parentComment.sub_comments.map((subComment) => {
+            if (subComment.id === id) {
+              return {
+                ...subComment,
+                like_count: incDec ? ++subComment.like_count : --subComment.like_count,
+              };
+            }
+            return subComment;
+          }),
+        }))
+      }
+        
+      );
+    } else {
+      setComments((prevComments) =>{
+        return  prevComments.map((comment) => {
+          if (comment.id === id) {
+            return {
+              ...comment,
+              like_count: incDec ? ++comment.like_count : --comment.like_count,
+            };
+          }
+          return comment;
+        })
+      }
+      );
+    }
+  }
+
   const toggleCommentLike = async (id, isSubComment) => {
     if (!user) {
       toast.warning("Please log in");
@@ -159,44 +197,31 @@ const CommentsComponent = ({ productDetail }) => {
       );
 
       const response = await axiosInstance.get(`/product_comment/${id}/`);
-      // console.log("Response:", res.data);
-      if (res.data.message === "Product comment liked") {
+      console.log("Response:", res.data);
+
+      if (res.data.message != undefined) {
         toast.success("You liked the comment successfully!");
+        likeCounterHandler(id, isSubComment, true)
+        notificationSocket.send(
+          JSON.stringify({notification_type: res.data.notification_type, 
+            message: res.data.message ,
+            sender: {
+              ...res.data.sender,
+              avatar : res.data.sender.avatar ? '' : res.data.sender
+            },
+            notification_id: res.data.notification_id
+          })
+        )
       } else {
+        likeCounterHandler(id, isSubComment, false)
         toast.error("You unliked the comment successfully!");
       }
-      const updatedComment = response.data;
+      console.log(response.data);
+      
+      
+     
 
-      // If it's a sub-comment, find and update the like count of that sub-comment
-      if (isSubComment) {
-        setComments((prevComments) =>
-          prevComments.map((parentComment) => ({
-            ...parentComment,
-            sub_comments: parentComment.sub_comments.map((subComment) => {
-              if (subComment.id === id) {
-                return {
-                  ...subComment,
-                  like_count: updatedComment.like_count,
-                };
-              }
-              return subComment;
-            }),
-          }))
-        );
-      } else {
-        // Otherwise, update the like count of the parent comment
-        setComments((prevComments) =>
-          prevComments.map((comment) => {
-            if (comment.id === id) {
-              return {
-                ...comment,
-                like_count: updatedComment.like_count,
-              };
-            }
-            return comment;
-          })
-        );
-      }
+     
     } catch (error) {
       console.error("Error toggling comment like:", error);
     }
@@ -273,13 +298,13 @@ const CommentsComponent = ({ productDetail }) => {
         </div>
 
         <div className="comments">
-          {comments && comments.length > 0 && (
+          { comments.length > 0 && (
             <div className="comments_count mb-5">
               <p>{comments.length} comments</p>
             </div>
           )}
 
-          {comments && comments.length > 0 ? (
+          {comments.length > 0 ? (
             comments.map((comment) => (
               <div key={comment.id} className="mb-2">
                 <div className="d-flex align-items-start gap-3 ">
@@ -293,7 +318,7 @@ const CommentsComponent = ({ productDetail }) => {
                       <div className="d-flex align-items-center gap-3">
                         <button
                           className="like-btn fill__change"
-                          onClick={() => toggleCommentLike(comment.id)}
+                          onClick={() => toggleCommentLike(comment.id, false)}
                         >
 <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="like">

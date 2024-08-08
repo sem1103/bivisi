@@ -42,7 +42,7 @@ export default function LiveStreams() {
             serverSecret,
             roomId,
             userId,
-            localStorage.authTokens ? JSON.parse(Cookies.get('authTokens')).username : 'Guest'
+            Cookies.get('authTokens') ? JSON.parse(Cookies.get('authTokens')).username : 'Guest'
         );
 
         zp.current = ZegoUIKitPrebuilt.create(kitToken);

@@ -42,6 +42,7 @@ export const ProductProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/product/`);
+     
         setProduct(res.data);
         setFilteredProducts(res.data.results); 
       } catch (error) {

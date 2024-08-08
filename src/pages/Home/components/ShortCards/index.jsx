@@ -30,7 +30,7 @@ const ShortCards = () => {
       return item.product_video_type[0]?.product_type === "Shorts" && isCategoryMatch && isPriceMatch;
     })
     .sort((a, b) => new Date(b._added) - new Date(a.date_added))
-    .slice(0, 4);
+    .slice(0, 15);
   return (
     <>
       <section className="shortCards">
@@ -115,7 +115,6 @@ const ShortCards = () => {
                 </p>
               ) : (
                 videoProducts
-                  .slice(0, 6)
                   .map((item) =>
                     <SwiperSlide key={item.id}><ShortCard product={item} /></SwiperSlide>)
               )}
