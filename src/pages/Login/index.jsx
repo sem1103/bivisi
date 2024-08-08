@@ -36,14 +36,17 @@ const Login = () => {
 
   const googleLogin = async (accesstoken) => {
     console.log(accesstoken);
+    console.log(jwtDecode(accesstoken));
 
     let res = await axios.post(
       BASE_URL + '/user/login/google/',
       {
+        id_token: jwtDecode(accesstoken).sub,
         access_token: accesstoken,
       }
     );
     console.log(res);
+    
     
   };
 
@@ -148,7 +151,7 @@ const Login = () => {
               </div>
 
               <div>
-              {/* <GoogleLogin
+              <GoogleLogin
 
   onSuccess={credentialResponse => {
     // console.log(jwtDecode(credentialResponse.credential));
@@ -172,7 +175,7 @@ const Login = () => {
 
   cookiePolicy={'single_host_origin'}
 
-/>; */}
+/>;
               </div>
 
               <div className="pt-4">

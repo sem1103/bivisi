@@ -79,10 +79,10 @@ const Chat = () => {
   }, [messages]);
 
 
-  const containerHeight = messages.length && newChatUser.userId || newChatUser ? "48vh" : "75vh";
-  const containerPadding = messages.length && newChatUser.userId || newChatUser ? "48px" : "";
+  const containerHeight = messages.length && newChatUser?.userId || newChatUser ? "48vh" : "75vh";
+  const containerPadding = messages.length && newChatUser?.userId || newChatUser ? "48px" : "";
 
-
+  
 
 
 
@@ -446,7 +446,6 @@ const Chat = () => {
                               const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Месяцы начинаются с 0
                               const year = dateObject.getFullYear();
                               date = `${day}.${month}`
-
                             }
 
 

@@ -28,6 +28,7 @@ import ShareModal from "../../components/ShareModal";
 import { useCart } from "react-use-cart";
 import Map, { Marker } from 'react-map-gl';
 import getCurrencyByCountry from "../../utils/getCurrencyService";
+import { NotificationContext } from "../../context/NotificationContext";
 
 
 const ProductDetail = () => {
@@ -38,7 +39,8 @@ const ProductDetail = () => {
   const serviceId = Number(id);
   const [category, setCategory] = useState([])
   const [subcategory, setSubcategory] = useState([]);
-
+  
+  const {notificationSocket} = useContext(NotificationContext);
 
   const [viewed, setViewed] = useState(false);
   const [productDetail, setProductDetail] = useState(false);
@@ -133,12 +135,23 @@ const ProductDetail = () => {
           like_count: prevDetail.like_count + 1,
           is_liked: true,
         }));
+        
+        notificationSocket.send(
+          JSON.stringify({notification_type: res.data.notification_type, 
+            message: res.data.message ,
+            sender: {
+              ...res.data.sender,
+              avatar : res.data.sender.avatar ? '' : res.data.sender
+            },
+            notification_id: res.data.notification_id
+          })
+        )
       } else {
         toast.error("You Dislike Short!");
         setLiked(false);
         setProductDetail((prevDetail) => ({
           ...prevDetail,
-          like_count: prevDetail.like_count - 1,
+          like_count: prevDetail.like_count && prevDetail.like_count - 1,
           is_liked: false,
         }));
       }

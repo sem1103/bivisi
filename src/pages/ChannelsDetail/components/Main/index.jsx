@@ -57,17 +57,18 @@ const MainChannels = () => {
 
 
   useEffect(() => {
+    
     if (location.state) {
+
       const channelData = {
         username: params?.username,
-        first_name: location.state.channelDetailData.first_name,
-        last_name: location.state.channelDetailData.last_name,
+        first_name: location.state.channelDetailData?.first_name,
+        last_name: location.state.channelDetailData?.last_name,
         id: location.state.channelDetailData?.id,
         cover_image: location.state.channelDetailData?.cover_image,
         avatar: location.state.channelDetailData?.avatar,
         follower_count: location.state?.channelDetailData?.follower_count,
       };
-      console.log(location);
       setChannelData(channelData);
       setChannelId(channelData.id);
     }

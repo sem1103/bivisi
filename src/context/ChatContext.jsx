@@ -14,9 +14,7 @@ export default function ChatProvider({ children }) {
     const {user} = useContext(AuthContext)
     const CHAT_API = 'https://bivisichat.online/api/chat/';
     const SOCKET_URL = 'https://bivisisocket.online';
-    const SOCKET_URL2 = 'wss://bivisibackend.store/ws/notifications/';
     let socketInstance = '';
-    let socketInstance2 = '';
     const USER_TOKKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
     const [socket, setSocket] = useState(null);
     const [allChats, setAllChats] = useState([]);
@@ -194,27 +192,7 @@ export default function ChatProvider({ children }) {
             socketInstance = io(SOCKET_URL, {
                 query: { customerId: user?.user_id }
             });
-            const socket2 = new WebSocket('wss://bivisibackend.store/ws/notifications/');
-
-            socket2.onopen = function (event) {
-              console.log("WebSocket is open now.");
-              socket2.send(JSON.stringify({ type: 'authenticate', token: USER_TOKKEN }));
-            }
-            
-
-
-
-            // const socketInstance2 = io(SOCKET_URL2, {
-            //     query: { customerId: user?.user_id },
-            //     extraHeaders: {
-            //         Authorization: `Bearer ${USER_TOKKEN}`,
-            //     },
-            //   });
-            // socketInstance2.on('connect', () => {
-            //     console.log('Connected to Notification server!');
-            // });
-
-
+       
             socketInstance.on('connect', () => {
                 console.log('Connected to WebSocket server!');
                 getChats()
@@ -238,7 +216,6 @@ export default function ChatProvider({ children }) {
                 let { message, target } = data;
              
                 message?.action && setIsModalCallOpen(true) // Eyer action varsa o zaman call modal pencereni activ edir 
-                console.log(message);
                 if (!userss.some(item => +item == +target) && message.action == `call to ${target}`) { // Проверка, находится ли пользователь оффлайн
                     console.log('User is offline');
                 
@@ -447,6 +424,7 @@ export default function ChatProvider({ children }) {
             chatId,
             messages,
             socket,
+            socket2,
             newMessage,
             lastMessages,
             newChatUser,

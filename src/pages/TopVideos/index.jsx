@@ -34,11 +34,11 @@ const TopVideos = () => {
 
     const getData = async () => {
         let res = await axios.get(`${BASE_URL}/product/`);
-        console.log(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
 
         setOriginalVideos(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
         setVideoProducts(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"));
         setViewMyVideos(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
+        
     }
 
     useEffect(() => {

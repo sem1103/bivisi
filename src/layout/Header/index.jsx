@@ -19,13 +19,24 @@ import Categories from "../Categories";
 import { ThemeContext } from "../../context/ThemeContext";
 import FilterModal from "../../components/FilterModal";
 import { menuItem, menuItem2, authItems } from "../../contsant";
+import Notifications from "./components/Notifications";
+import { NotificationContext } from "../../context/NotificationContext";
+import Cookies from 'js-cookie'
+import axios from "axios";
+
 
 const Header = ({ isOpen }) => {
+  const USER_TOKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
+
   const navigate = useNavigate();
+  const {notificationSocket} = useContext(NotificationContext);
   const { themeMode } = useContext(ThemeContext);
+
+  const [notifications, setNotifications] = useState([]);
   const { isModalCallOpen, setIsModalCallOpen, callModalText, declineCall, iCall, acceptACall, isAccept, setIsAccept } = useContext(ChatContext);
   const { user } = useContext(AuthContext);
   const [isUploadOptionsVisible, setIsUploadOptionsVisible] = useState(false);
+  
   const [isNotificationOptionsVisible, setIsNotificationOptionsVisible] =
     useState(false);
   const location = useLocation();
@@ -49,11 +60,57 @@ const Header = ({ isOpen }) => {
   const handleOptionClick = () => {
     setIsUploadOptionsVisible(false);
   };
+
+
+  const getNotifications = async () => {
+    const resp = await axios.get(`https://bivisibackend.store/api/notifications`, {
+        headers: {
+            Authorization: `Bearer ${USER_TOKEN}`,
+        }
+    });
+
+    setNotifications(resp.data);
+}
+
+function getFormattedDate() {
+  const date = new Date();
+  const isoString = date.toISOString();
+  
+  const microseconds = String(date.getMilliseconds()).padStart(3, '0') + '133';
+  
+  return isoString.slice(0, -1) + microseconds + 'Z';
+}
+
+
   useEffect(() => {
     isAccept && navigate(`/call/${localStorage.videoCallRoomId}`)
 
     setIsAccept(false)
   }, [isAccept])
+
+  useEffect(() => {
+    if(notificationSocket != null){
+      getNotifications()
+      notificationSocket.onmessage = function (event) {
+        let eventObj = JSON.parse(event.data);
+        
+        setNotifications(prev => {
+            return [
+                {
+                    id: eventObj.notification_id,
+                    created_at: getFormattedDate(),
+                    notification_type: eventObj.notification_type,
+                    message: eventObj.message,
+                    product_id: eventObj.product_id,
+                    sender: eventObj.sender
+                },
+                ...prev
+            ]
+        });
+    };
+    }
+  
+  }, [notificationSocket]);
 
   useEffect(() => {
     if (isModalCallOpen && sessionStorage.iCall == 'false') {
@@ -281,9 +338,7 @@ const Header = ({ isOpen }) => {
                       {isNotificationOptionsVisible && (
                         <div className="notification-options">
                           <h1>Notifications</h1>
-                          <div className="ntf_content">
-                            <img src={Ntf} alt="" />
-                          </div>
+                          <Notifications notifications={notifications} setNotifications={setNotifications}/>
                         </div>
                       )}
                     </div>
@@ -651,14 +706,21 @@ const Header = ({ isOpen }) => {
                           </div>
                         )}
                       </div>
-                      <button className="sm_ntf">
-                        {/* <img src={Notification} alt="" /> */}
+                     <div className="ntf sm__ntf__dropdown">
+                     <button className="sm_ntf " onClick={toggleNotificationOptions}
+                      >
                         <svg width="15" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M9.22647 3.39111C6.88616 3.74444 5.01449 5.67732 4.73307 8.16156L4.44567 10.6986C4.37426 11.329 4.11876 11.9223 3.71295 12.3999C2.85178 13.4135 3.55072 14.9999 4.85849 14.9999H15.1416C16.4494 14.9999 17.1483 13.4135 16.2871 12.3999C15.8813 11.9223 15.6258 11.329 15.5544 10.6986L15.3645 9.02215M12.5 16.6665C12.1361 17.6375 11.1542 18.3332 10 18.3332C8.84585 18.3332 7.86394 17.6375 7.50004 16.6665" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
                           <circle cx="14" cy="4" r="2.4" stroke="white" strokeWidth="1.2" />
                         </svg>
-
                       </button>
+                      {isNotificationOptionsVisible && (
+                        <div className="notification-options medium__dropdown" onClick={toggleNotificationOptions}>
+                          <h1>Notifications</h1>
+                          <Notifications notifications={notifications} setNotifications={setNotifications}/>
+                        </div>
+                      )}
+                     </div>
                       <NavLink
                         className="upload msg"
                         to="/chat"
@@ -718,15 +780,22 @@ const Header = ({ isOpen }) => {
                       <span className="basket_items_count">{totalUniqueItems}</span>
                     </NavLink>
 
-                    <button className="sm_ntf">
-                      {/* <img src={Notification} alt="" /> */}
-                      <svg width="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                    <div className="ntf sm__ntf__dropdown">
+                     <button className="sm_ntf " onClick={toggleNotificationOptions}
+                      >
+                         <svg width="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.22647 3.39111C6.88616 3.74444 5.01449 5.67732 4.73307 8.16156L4.44567 10.6986C4.37426 11.329 4.11876 11.9223 3.71295 12.3999C2.85178 13.4135 3.55072 14.9999 4.85849 14.9999H15.1416C16.4494 14.9999 17.1483 13.4135 16.2871 12.3999C15.8813 11.9223 15.6258 11.329 15.5544 10.6986L15.3645 9.02215M12.5 16.6665C12.1361 17.6375 11.1542 18.3332 10 18.3332C8.84585 18.3332 7.86394 17.6375 7.50004 16.6665" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
                         <circle cx="14" cy="4" r="2.4" stroke="white" strokeWidth="1.2" />
                       </svg>
-
-                    </button>
-
+                      </button>
+                      {isNotificationOptionsVisible && (
+                        <div className="notification-options " onClick={toggleNotificationOptions}>
+                          <h1>Notifications</h1>
+                          <Notifications notifications={notifications} setNotifications={setNotifications}/>
+                        </div>
+                      )}
+                     </div>
 
                   </div>
                 )

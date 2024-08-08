@@ -4,6 +4,7 @@ import useAxios from "../utils/useAxios";
 import { AuthContext } from "../context/authContext";
 import axios from "axios";
 import { BASE_URL } from "../api/baseUrl";
+import { NotificationContext } from "../context/NotificationContext";
 const useSubscription = (channelId, initialFollowersCount) => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [followersCount, setFollowersCount] = useState(initialFollowersCount);
@@ -11,6 +12,7 @@ const useSubscription = (channelId, initialFollowersCount) => {
   const [loading, setLoading] = useState(false);
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
+  const {notificationSocket} = useContext(NotificationContext);
 
   useEffect(() => {
     const fetchSubscribers = async () => {
@@ -37,12 +39,37 @@ const useSubscription = (channelId, initialFollowersCount) => {
     setLoading(true);
     try {
       const response = await axiosInstance.post(`/user/toggle_subscribe/${channelId}/`);
+   
+      
+
+      
       if (response.status === 201) {
         setIsSubscribed(true);
         const responseChannel = await axios.get(`${BASE_URL}/user/popular-channels/`);
         const channel = responseChannel?.data.results.find((item) => item.id === channelId);
         setFollowersCount(channel?.follower_count);
         toast.success("Subscribed successfully");
+        console.log( response);
+        console.log({notification_type: response.data.notification_type, 
+          message: response.data.message ,
+          sender: {
+            ...response.data.sender,
+            avatar : response.data.sender.avatar == null ? '' : response.data.sender.avatar
+          },
+          notification_id: response.data.notification_id
+        });
+        
+        
+        notificationSocket.send(
+          JSON.stringify({notification_type: response.data.notification_type, 
+            message: response.data.message ,
+            sender: {
+              ...response.data.sender,
+              avatar : response.data.sender.avatar ? '' : response.data.sender
+            },
+            notification_id: response.data.notification_id
+          })
+        )
       }
     } catch (error) {
       console.error('Failed to subscribe:', error);
