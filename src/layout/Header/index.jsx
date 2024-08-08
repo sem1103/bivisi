@@ -95,11 +95,21 @@ function getFormattedDate() {
     if(notificationSocket != null){
       getNotifications()
       notificationSocket.onmessage = function (event) {
+       
         let eventObj = JSON.parse(event.data);
-        
-        setNotifications(prev => {
+
+        if(eventObj.sender.username != user.username){
           notificationSoundRef.current.pause();
           notificationSoundRef.current.play();
+        };
+
+        
+        
+        
+       
+
+        setNotifications(prev => {
+          
             return [
                 {
                     id: eventObj.notification_id,
