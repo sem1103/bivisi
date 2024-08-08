@@ -103,11 +103,6 @@ function getFormattedDate() {
           notificationSoundRef.current.play();
         };
 
-        
-        
-        
-       
-
         setNotifications(prev => {
           
             return [
