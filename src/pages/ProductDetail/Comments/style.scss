@@ -231,9 +231,16 @@
     }
 
     .comment_user {
-      color: var(--textColor);
+      a{
+        color: var(--textColor);
+      }
     }
-
+    .create__date__comment{
+      color: var(--textColor);
+      opacity: .3;
+      font-size: 10px;
+      margin: 0;
+    }
     .comment {
       color: #a2a8b7;
     }

@@ -248,15 +248,15 @@
 }
 
 .live__icon {
-    svg {
-        margin: 0 0 2px 0;
-    }
-
-    background: #C00;
+    background: #cc0000;
     border-radius: 24px;
     display: flex;
     align-items: center;
     padding: 6px 8px 4px 8px;
+
+    svg {
+        margin: 0 0 2px 0;
+    }
 
     p {
         font-size: 12px;
@@ -402,12 +402,13 @@ svg[data-icon="close"]{
 
 
     .stream__name {
+        margin: 16px 0;
+        font-size: 20px;
         &::first-letter {
             text-transform: uppercase;
         }
 
-        margin: 16px 0;
-        font-size: 20px;
+        
     }
 
     .stream__host {
@@ -436,7 +437,8 @@ svg[data-icon="close"]{
     display: flex;
     justify-content: space-between;
     flex: 1;
-
+    position: relative;
+    z-index: 5555;
     button {
         background: none;
         border-radius: 16px;
@@ -448,8 +450,7 @@ svg[data-icon="close"]{
         align-items: center;
     }
 
-    position: relative;
-    z-index: 5555;
+  
 
     &.hide__tools {
         z-index: 4;

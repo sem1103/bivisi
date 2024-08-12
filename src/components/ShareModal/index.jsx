@@ -52,7 +52,6 @@ const ShareModal = ({ item }) => {
       }}>
         <div className="d-flex align-items-center justify-content-between modal_head">
           <h1>Share</h1>
-          <img onClick={handleClose} src={close} alt="" />
         </div>
         <div className="share_icons">
           <FacebookShareButton

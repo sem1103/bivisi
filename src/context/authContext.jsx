@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
       ? JSON.parse(Cookies.get('authTokens'))
       : null
   );
+  
 
 
   const fetchUserDetails = async (token) => {
@@ -107,6 +108,13 @@ export const AuthProvider = ({ children }) => {
     window.location.reload()
   };
 
+  const getLogin = async () => {
+    const res = await axios.get('https://bivisibackend.store/api/user/google/callback/')
+    console.log(res);
+  }
+
+  
+
   const contextData = {
     user,
     setUser,
@@ -121,6 +129,7 @@ export const AuthProvider = ({ children }) => {
     userDetails,
     setUserDetails,
     fetchUserDetails,
+    getLogin
   };
 
   useEffect(() => {
@@ -130,6 +139,14 @@ export const AuthProvider = ({ children }) => {
     }
     setLoading(false);
   }, [authTokens, loading]);
+
+  useEffect(() => {
+    Cookies.get('data') && console.log(JSON.parse(Cookies.get('data')))
+    
+    return () => {
+      
+    };
+  }, []);
 
   return (
     <AuthContext.Provider value={contextData}>
