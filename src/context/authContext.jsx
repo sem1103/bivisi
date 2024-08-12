@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { BASE_URL } from "../api/baseUrl";
 import Cookies from 'js-cookie';
 
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -19,8 +20,9 @@ export const AuthProvider = ({ children }) => {
       ? JSON.parse(Cookies.get('authTokens'))
       : null
   );
+  const [loading, setLoading] = useState(true);
+  const [userDetails, setUserDetails] = useState(null);
   
-
 
   const fetchUserDetails = async (token) => {
     try {
@@ -30,6 +32,7 @@ export const AuthProvider = ({ children }) => {
         },
       });
       setUserDetails(response.data);
+      console.log(response.data);
       
     } catch (error) {
       console.error("Error fetching user details:", error);
@@ -37,8 +40,54 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const [loading, setLoading] = useState(true);
-  const [userDetails, setUserDetails] = useState(null);
+  const fetchGoogleUserDetails = async (codeResponse) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/user/login/google/`,  {
+        access_token : codeResponse.access_token
+      });
+      
+      setAuthTokens(response.data);
+      setUser({
+        ...jwtDecode(response.data.access_token),
+        user_id: response.data.id
+      });
+
+      await fetchUserDetails(response.data.access_token);
+      Cookies.set('authTokens', JSON.stringify({
+        ...response.data,
+        access: response.data.access_token
+      }), { expires: 14, path: '/', secure: true, sameSite: 'Strict' });
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      throw error;
+    }
+  };
+
+  const fetchFaceboookUserDetails = async (codeResponse) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/user/login/facebook/`,  {
+        access_token : codeResponse.accessToken
+      });     
+
+      setAuthTokens(response.data);
+      setUser({
+        ...jwtDecode(response.data.access_token),
+        user_id: response.data.id
+      });
+
+      await fetchUserDetails(response.data.access_token);
+      Cookies.set('authTokens', JSON.stringify({
+        ...response.data,
+        access: response.data.access_token
+      }), { expires: 14, path: '/', secure: true, sameSite: 'Strict' });
+
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      throw error;
+    }
+  };
+
+
 
   const registerUser = async (user) => {
     const response = await axios.post(`${BASE_URL}/user/register/`, user);
@@ -70,7 +119,6 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (user) => {
     try {
       const response = await axios.post(`${BASE_URL}/user/login/`, user);
-      console.log(response);
 
       if (response.status === 200) {
         setAuthTokens(response.data);
@@ -81,10 +129,7 @@ export const AuthProvider = ({ children }) => {
         await fetchUserDetails(response.data.access);
         return response.data;
       }
-    } catch (error) {
-      console.log(error.response.data.non_field_errors[0]      );
-      console.log(error.response.status);
-      
+    } catch (error) {  
       
       
       if (error.response.status === 404) {
@@ -108,10 +153,6 @@ export const AuthProvider = ({ children }) => {
     window.location.reload()
   };
 
-  const getLogin = async () => {
-    const res = await axios.get('https://bivisibackend.store/api/user/google/callback/')
-    console.log(res);
-  }
 
   
 
@@ -129,24 +170,21 @@ export const AuthProvider = ({ children }) => {
     userDetails,
     setUserDetails,
     fetchUserDetails,
-    getLogin
+    fetchGoogleUserDetails,
+    fetchFaceboookUserDetails
   };
 
   useEffect(() => {
+    console.log(user);
+    
     if (authTokens) {
-      setUser(jwtDecode(authTokens.access));
-      fetchUserDetails(authTokens.access);
+      setUser(jwtDecode(authTokens.access ? authTokens.access : authTokens.access_token));
+      fetchUserDetails(authTokens.access ? authTokens.access : authTokens.access_token);
     }
     setLoading(false);
   }, [authTokens, loading]);
 
-  useEffect(() => {
-    Cookies.get('data') && console.log(JSON.parse(Cookies.get('data')))
-    
-    return () => {
-      
-    };
-  }, []);
+
 
   return (
     <AuthContext.Provider value={contextData}>

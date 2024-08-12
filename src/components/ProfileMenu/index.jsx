@@ -27,6 +27,7 @@ const ProfileMenu = () => {
       handleMenuClose();
     }
   };
+  const [showLangs, setShowLangs] = useState(false)
 
  
   useEffect(() => {
@@ -35,6 +36,8 @@ const ProfileMenu = () => {
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
+    console.log(userDetails);
+    
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -42,8 +45,9 @@ const ProfileMenu = () => {
   }, [menuOpened]);
 
   return (
-    <div className="profile_menu_dropdown" ref={menuRef}>
+    <div className="profile_menu_dropdown" >
       <Menu
+      ref={menuRef}
         shadow="md"
         width={200}
         transitionProps={{ transition: "rotate-right", duration: 600 }}
@@ -93,9 +97,12 @@ const ProfileMenu = () => {
               <img src={userGray} alt="" />
               <h6>View profile</h6>
             </NavLink>
-            <div className="profile-menu-item">
+            <div className={`profile-menu-item set__lang ${showLangs ? 'show__langs' : ''}`} onClick={() => setShowLangs(false)}>
               <img src={langGray} alt="" />
               <h6>English</h6>
+              <ul>
+                <li><button>Русский</button></li>
+              </ul>
             </div>
             <NavLink
               to="/settings"
