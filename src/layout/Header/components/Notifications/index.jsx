@@ -42,15 +42,13 @@ const getNtfDate = (CreateDate) => {
 
 export default function Notifications({notifications, setNotifications}) {
 
-    const { myVideos} = useContext(NotificationContext) 
     const {user} = useContext(AuthContext)
 
-    console.log(notifications);
     
 
     
-    const ntfLikeItem = (ntf,video, text) => {
-    
+    const ntfLikeItem = (ntf, text) => {
+        
     return (
         <div key={ntf.id} className={`ntf__item ${ntf.is_read ? 'is__read__ntf' : ''}`} onClick={() => {
             if(!ntf.is_read) {
@@ -84,7 +82,7 @@ export default function Notifications({notifications, setNotifications}) {
                 </p>
             </div>
             <div className="ntf__video">
-                <img src={video.cover_image} alt={video.product.name} />
+                <img src={ntf.product_cover_image} alt={'cover img'} />
             </div>
         </div>
     )
@@ -99,18 +97,18 @@ export default function Notifications({notifications, setNotifications}) {
             {
                 notifications.map(ntf => {
                     if(ntf.notification_type == "Like" || ntf.notification_type == 'Comment'){
-                        return myVideos?.map(video => {
-                            if(video.id == ntf.product_id && ntf.message == `${ntf.sender.username} liked your product.`){
-                                return  ntfLikeItem(ntf, video, 'liked your video!')
-                            }else if(video.id == ntf.product_id && ntf.message == `${ntf.sender.username} liked your comment.` && user.username != ntf.sender.username){
-                                return  ntfLikeItem(ntf, video, 'liked your comment!')
-                            }else if(video.id == ntf.product_id && ntf.message == `${ntf.sender.username} commented on your product.` && user.username != ntf.sender.username){
-                                return  ntfLikeItem(ntf, video, 'commented on your product...')
-                            }else if(video.id == ntf.product_id && ntf.message == `${ntf.sender.username} replied to your comment.` && user.username != ntf.sender.username){
-                                return  ntfLikeItem(ntf, video, 'replied to your comment...')
+                        
+                            if( ntf.message == `${ntf.sender.username} liked your product.`){
+                                return  ntfLikeItem(ntf,  'liked your video!')
+                            }else if( ntf.message == `${ntf.sender.username} liked your comment.` && user.username != ntf.sender.username){
+                                return  ntfLikeItem(ntf,  'liked your comment!')
+                            }else if( ntf.message == `${ntf.sender.username} commented on your product.` && user.username != ntf.sender.username){
+                                return  ntfLikeItem(ntf,  'commented on your product...')
+                            }else if( ntf.message == `${ntf.sender.username} replied to your comment.` && user.username != ntf.sender.username){
+                                return  ntfLikeItem(ntf,  'replied to your comment...')
                             }
                             
-                        })
+                        
                     } else if(ntf.notification_type == 'Subscribe'){
                         return <div key={ntf.id} className={`ntf__item subscribe__ntf__item ${ntf.is_read ? 'is__read__ntf' : ''}`} onClick={() => {
                             if(!ntf.is_read) {

@@ -49,27 +49,22 @@ const useSubscription = (channelId, initialFollowersCount) => {
         const channel = responseChannel?.data.results.find((item) => item.id === channelId);
         setFollowersCount(channel?.follower_count);
         toast.success("Subscribed successfully");
-        console.log( response);
-        console.log({notification_type: response.data.notification_type, 
-          message: response.data.message ,
-          sender: {
-            ...response.data.sender,
-            avatar : response.data.sender.avatar == null ? '' : response.data.sender.avatar
-          },
-          notification_id: response.data.notification_id
-        });
+        console.log(response.data);
         
         
         notificationSocket.send(
-          JSON.stringify({notification_type: response.data.notification_type, 
+          JSON.stringify(
+            {
+            notification_type: response.data.notification_type, 
             message: response.data.message ,
             sender: {
               ...response.data.sender,
-              avatar : response.data.sender.avatar ? '' : response.data.sender
+              avatar : response.data.sender.avatar ? '' : response.data.sender.avatar
             },
             notification_id: response.data.notification_id
           })
         )
+
       }
     } catch (error) {
       console.error('Failed to subscribe:', error);
@@ -87,6 +82,8 @@ const useSubscription = (channelId, initialFollowersCount) => {
         const channel = responseChannel?.data.results.find((item) => item.id === channelId);
         setFollowersCount(channel?.follower_count);
         toast.success("Unsubscribed successfully");
+        console.log(response);
+        
       }
     } catch (error) {
       console.error('Failed to unsubscribe:', error);

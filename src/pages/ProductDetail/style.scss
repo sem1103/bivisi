@@ -170,6 +170,14 @@
 
       .video_bottom_left {
         gap: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 16px;
+        border: 1px solid var(--Text-11, #23272e);
+        padding: 14px;
+        background-color: transparent;
+        transition: all 0.3s;
 
         .heart {
           cursor: pointer;
@@ -182,14 +190,7 @@
             height: 20px;
           }
 
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-radius: 16px;
-          border: 1px solid var(--Text-11, #23272e);
-          padding: 14px;
-          background-color: transparent;
-          transition: all 0.3s;
+      
 
           &:hover {
             background-color: #0087cc !important;
@@ -197,13 +198,6 @@
         }
 
         .add_basket {
-          cursor: pointer;
-
-          img {
-            width: 20px;
-            height: 20px;
-          }
-
           display: flex;
           justify-content: center;
           align-items: center;
@@ -212,6 +206,14 @@
           padding: 14px;
           background-color: transparent;
           transition: all 0.3s;
+          cursor: pointer;
+
+          img {
+            width: 20px;
+            height: 20px;
+          }
+
+          
 
           &:hover {
             background-color: #0087cc !important;
@@ -271,12 +273,12 @@
           border: 1px solid var(--Text-11, #23272e) !important;
           padding: 14px;
           background-color: transparent;
+          transition: all 0.5s;
 
           &:hover {
             background-color: #0087cc !important;
           }
 
-          transition: all 0.5s;
 
           img {
             width: 20px;
@@ -547,28 +549,22 @@
 
       .heart {
         cursor: pointer;
-
-        img {
-          width: 20px;
-          height: 20px;
-        }
-
         display: flex;
         padding: 12px;
         justify-content: center;
         align-items: center;
         border-radius: 16px;
         border: 1px solid var(--Text-11, #23272e);
-      }
-
-      .add_basket {
-        cursor: pointer;
-
         img {
           width: 20px;
           height: 20px;
         }
 
+       
+      }
+
+      .add_basket {
+        cursor: pointer;
         display: flex;
         padding: 12px;
         justify-content: center;
@@ -577,6 +573,12 @@
         border-radius: 16px;
         border: 1px solid var(--Text-11, #23272e);
 
+        img {
+          width: 20px;
+          height: 20px;
+        }
+
+        
         span {
           color: var(--Neutral-White, #fff);
           font-size: 16px;
@@ -832,6 +834,11 @@
 
 @media (max-width: 540px) {
   .product_detail .video_content {
+    .video_content_name {
+      h4{
+        white-space: normal;
+      }
+    }
     .video_content_bottom {
       .video_bottom_right {
         .like-btn {

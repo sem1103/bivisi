@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./style.scss";
 import logo from "../../assets/images/logoLight.svg";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -32,7 +32,7 @@ const Login = () => {
     }));
   };
 
-  const { loginUser, setAuthTokens, setUser } = useContext(AuthContext);
+  const { loginUser, setAuthTokens, setUser,getLogin } = useContext(AuthContext);
 
   const googleLogin = async (accesstoken) => {
     console.log(accesstoken);
@@ -84,12 +84,8 @@ const Login = () => {
       toast.error(error.message);
     }
   };
-  const getLogin = async () => {
-    const res = await axios.get('https://bivisibackend.store/api/user/google/callback/')
-    console.log(res);
-  }
-
-
+ 
+  
   return (
     <>
       <section className="login">
@@ -156,7 +152,7 @@ const Login = () => {
               </div>
 
               <div >
-                <button onClick={() => {
+                <button type="button" onClick={() => {
                   window.location.href = 'https://bivisibackend.store/api/user/google/redirect/'
                 }}>
                   Login with Google

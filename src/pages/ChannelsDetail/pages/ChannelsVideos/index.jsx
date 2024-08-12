@@ -16,7 +16,7 @@ const ChannelsVideos = () => {
         const response = await axios.get(
           `${BASE_URL}/channel_web_products/${username}/?product_type=Video`
         );
-
+        
         setChannels(response.data.results);
       } catch (error) {
         console.error("Failed to fetch popular channels:", error);

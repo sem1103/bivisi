@@ -1,6 +1,5 @@
 
 import axios from 'axios';
-
 import { useEffect, useState } from 'react';
 
 export default  function getCurrencyByCountry ()  {
@@ -9,15 +8,17 @@ export default  function getCurrencyByCountry ()  {
     let currencyCode = '';
     let countryCurrencySymbol = ''
 
+    const getUserLocation =  () => {
+      axios.get('https://restcountries.com/v3.1/all')
+    .then((response) => {
+      setCountries(response.data);
+    })
+      axios.get('https://ipapi.co/json/').then(res => {                   
+        setLocation(res.data.country)
+      });
+    };
 
    useEffect(() => {
-    const getUserLocation =  () => {
-        axios.get('https://restcountries.com/v3.1/all')
-      .then((response) => {
-        setCountries(response.data);
-      })
-        axios.get('https://ipinfo.io?token=43204887945501').then(res => setLocation(res.data.country));
-      };
       getUserLocation()
    }, []) 
 

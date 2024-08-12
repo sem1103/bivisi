@@ -152,11 +152,12 @@
 }
 @media(max-width:576px){
     .filter-modal{
+        border-radius: 0;
+        padding: 10px;
         .sub-title{
             font-size: 16px;
         }
-        border-radius: 0;
-        padding: 10px;
+       
        .modal-head {
         margin-top: 10px;
         .modal-title{

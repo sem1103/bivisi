@@ -72,7 +72,8 @@ const Header = ({ isOpen }) => {
         }
     });
 
-    setNotifications(resp.data);
+    setNotifications(resp.data.results);
+    
 }
 
 function getFormattedDate() {
@@ -94,17 +95,20 @@ function getFormattedDate() {
   useEffect(() => {
     if(notificationSocket != null){
       getNotifications()
-      notificationSocket.onmessage = function (event) {
+      notificationSocket.onmessage =  (event) => {
        
         let eventObj = JSON.parse(event.data);
-
-        if(eventObj.sender.username != user.username){
+        console.log(eventObj);
+        
+        if(eventObj.type == 'delete_notification'){
+          setNotifications(prev => {
+            return prev.filter(ntf => ntf.id != eventObj.data.notification_id)
+        });
+        }
+        else if(eventObj.sender.username != user.username){
           notificationSoundRef.current.pause();
           notificationSoundRef.current.play();
-        };
-
-        setNotifications(prev => {
-          
+          setNotifications(prev => {
             return [
                 {
                     id: eventObj.notification_id,
@@ -112,11 +116,15 @@ function getFormattedDate() {
                     notification_type: eventObj.notification_type,
                     message: eventObj.message,
                     product_id: eventObj.product_id,
-                    sender: eventObj.sender
+                    sender: eventObj.sender,
+                    product_cover_image: eventObj.product_cover_image ? eventObj.product_cover_image : ''
                 },
                 ...prev
             ]
         });
+        };
+
+       
     };
     }
   

@@ -45,6 +45,8 @@ export const ProductProvider = ({ children }) => {
      
         setProduct(res.data);
         setFilteredProducts(res.data.results); 
+        console.log(res.data);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
       }

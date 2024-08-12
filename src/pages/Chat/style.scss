@@ -559,12 +559,13 @@
       }
       
       .chat__options{
+        margin: 0;
+
         & > button{
           border-radius: 16px;
           color: var(--textColor);
 
         }
-        margin: 0;
         &:hover ul{
           right: 0;
           opacity: 1;

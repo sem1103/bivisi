@@ -137,13 +137,17 @@ const ProductDetail = () => {
         }));
         
         notificationSocket.send(
-          JSON.stringify({notification_type: res.data.notification_type, 
+          JSON.stringify(
+            {
+            notification_type: res.data.notification_type, 
             message: res.data.message ,
             sender: {
               ...res.data.sender,
               avatar : res.data.sender.avatar ? '' : res.data.sender
             },
-            notification_id: res.data.notification_id
+            notification_id: res.data.notification_id,
+            product_cover_image: res.data.product_cover_image
+
           })
         )
       } else {
