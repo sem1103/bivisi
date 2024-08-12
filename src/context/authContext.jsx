@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
       : null
   );
   const [user, setUser] = useState(
-    Cookies.get('data')
-      ? JSON.parse(Cookies.get('data'))
+    Cookies.get('authTokens')
+      ? JSON.parse(Cookies.get('authTokens'))
       : null
   );
   
