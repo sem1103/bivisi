@@ -132,6 +132,35 @@
 
        
       }
+      &.set__lang{
+        position: relative;
+        ul{
+          position: absolute;
+          overflow: hidden;
+          top: 100%;
+          background: var(--primaryColor);
+          border-radius: 8px;
+          list-style: none;
+          width: 100%;
+          margin: 5px 0 0 0;
+          left: 0;
+          max-height: 0;
+          button{
+            background: none;
+            border: 0;
+            color: var(--textColor);
+            opacity: .6;
+            padding: 5px 10px;
+            background: color-mix(in oklab, var(--primaryColor) 50&, white 30%);
+            width: 100%;
+            text-align: left;
+          }
+        }
+      &.show__langs{
+        max-height: 500px;
+        padding: 5px 10px !important;
+      }
+      }
 
       h6 {
         color: #a2a8b7;

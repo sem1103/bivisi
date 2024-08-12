@@ -58,7 +58,7 @@
     }
 
     form {
-      padding-top: 50px;
+      padding-top: 25px;
 
       .wrapper {
         width: 450px;
@@ -228,4 +228,106 @@
     }
   }
 
+}
+
+.soc__login{
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+  & > div{
+    margin: 0 5px;
+  }
+}
+
+.fb__login, .google__login{
+  width: max-content;
+  align-items: center;
+button {
+  width: initial;
+  font-family: inherit;
+  font-size: 18px;
+  background: rgb(24,119,240);
+  background: linear-gradient(90deg, rgba(24,119,240,1) 0%, rgba(29,37,253,1) 50%, rgba(11,9,140,1) 100%);
+  color: white;
+  padding: 0.8em 1.2em;
+  display: grid;
+  grid-template-columns: auto 0fr;
+  align-items: center;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+ 
+}
+
+button:hover {
+  cursor: pointer;
+  transform: translateY(-3px);
+  box-shadow: 0 0 7px 2px #1877f0;
+  grid-template-columns: auto 1fr;
+}
+
+button:active {
+  transform: scale(0.95);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+button span {
+  display: block;
+  margin-left: 0.4em;
+  transition: all 0.3s;
+}
+
+button svg {
+  transition: all 0.3s;
+}
+
+button .svg-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s;
+  margin: 0;
+}
+
+button:hover .svg-wrapper {
+  background-color: rgba(255, 255, 255, 0.5);
+  margin-right: 3px;
+  animation: bounce 1.2s ease-in-out;
+}
+
+.text {
+  overflow: hidden;
+}
+
+@keyframes bounce {
+  0% {
+    translate: 0;
+  }
+
+  50% {
+    translate: 0 -8px;
+  }
+
+  100% {
+    translate: 0;
+  }
+}
+
+
+}
+.google__login{
+   button{
+    background: #19242b !important;
+    &:hover{
+      box-shadow:  0 0 10px 2px #19242b ;
+    }
+  }
+  .svg-wrapper{
+    background-color: #fff !important;
+  }
 }
