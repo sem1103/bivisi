@@ -10,11 +10,11 @@
   overflow-x: auto; 
   white-space: nowrap; 
   position: relative;
-  padding-bottom: 10px;
   .b_cat{
     gap: 15px;
   }
   button {
+    width: 100%;
     display: flex;
     padding: 5px 24px;
     justify-content: center;

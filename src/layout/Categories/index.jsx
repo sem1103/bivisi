@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import "./style.scss";
 import { useLocation } from "react-router-dom";
 import { ProductContext } from "../../context/ProductContext";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const Categories = () => {
   const location = useLocation();
@@ -67,23 +68,36 @@ const Categories = () => {
   return (
     <section className="b_categories ">
       <div className="container-fluid d-flex align-items-center b_cat">
-        <button
+      <Swiper
+      spaceBetween={15}
+      slidesPerView={3}
+      >
+      <SwiperSlide>
+      <button
           onClick={() => setSelectedCategory(null)}
           className={selectedCategory === "All" ? "selected" : ""}
         >
           All
         </button>
-        
+      </SwiperSlide>
+         
         {category?.map((item) => (
-          <button
+           <SwiperSlide>
+            <button
             key={item.id}
             onClick={() => setSelectedCategory(item.id)}
             className={selectedCategory === item.id ? "selected" : ""}
           >
             {item.name}
           </button>
+           </SwiperSlide>
+          
         ))}
+        
+        </Swiper>
+
       </div>
+
     </section>
   );
 };
