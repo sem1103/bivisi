@@ -441,6 +441,7 @@ const CommentsComponent = ({ productDetail }) => {
                                 </p>
                               </div>
                               <div>
+                               
                                 <h5 className="comment_user">
                                 <Link to={`/channels_detail/channels_videos/${comment.user?.name}`}>{subComment.user?.name}</Link>
                                 </h5>

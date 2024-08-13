@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useRef, useState , useEffect} from "react";
 import GeneralSettings from "./components/General";
 import ProfileInformation from "./components/ProfileInfo";
 import Privacy from "./components/Privacy";
@@ -12,11 +12,21 @@ import Trash from "./icons/Trash.svg";
 import PrivacyIcon from "./icons/Privacy.svg";
 import MoneyBag from "./icons/MoneyBag.svg";
 import "./style.scss";
+import { AuthContext } from "../../context/authContext";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("general");
+  const {userDetails} = useContext(AuthContext)
+  const passwordChangeRef = useRef(null);
+
+  useEffect(() => {
+    passwordChangeRef.current.disabled = 
+      userDetails?.sign_up_method === 'facebook' || 
+      userDetails?.sign_up_method === 'google';
+  }, [userDetails]);
 
   const renderContent = () => {
+    if((userDetails?.sign_up_method === 'facebook' || userDetails?.sign_up_method === 'google') && activeTab == 'password') return
     switch (activeTab) {
       case "general":
         return <GeneralSettings />;
@@ -45,43 +55,55 @@ const Settings = () => {
          className={activeTab === "general" ? "active" : ""}
          onClick={() => setActiveTab("general")}
        >
+         <button>
          <img src={SettingsIcon} alt="" />
          General
+         </button>
        </li>
        <li
          className={activeTab === "profile" ? "active" : ""}
          onClick={() => setActiveTab("profile")}
        >
+         <button>
          <img src={User} alt="" />
          Profile Information
+         </button>
        </li>
        <li
          className={activeTab === "privacy" ? "active" : ""}
          onClick={() => setActiveTab("privacy")}
        >
-         <img src={PrivacyIcon} alt="" />
-         Privacy
+        <button>
+        <img src={PrivacyIcon} alt="" />
+        Privacy
+        </button>
        </li>
        <li
          className={activeTab === "password" ? "active" : ""}
          onClick={() => setActiveTab("password")}
        >
-         <img src={Lock} alt="" />
-         Password
+        <button ref={passwordChangeRef}>
+        <img src={Lock} alt="" />
+        Password
+        </button>
        </li>
        <li
          className={activeTab === "balance" ? "active" : ""}
          onClick={() => setActiveTab("balance")}
        >
-         <img src={MoneyBag} alt="" />
-         Balance
+       <button>
+       <img src={MoneyBag} alt="" />
+       Balance
+       </button>
        </li>
        <li
          className={activeTab === "delete" ? "active" : ""}
          onClick={() => setActiveTab("delete")}
        >
-         <img src={Trash} alt="" />
-         Delete Account
+        <button>
+        <img src={Trash} alt="" />
+        Delete Account
+        </button>
        </li>
      </ul>
       </div>
