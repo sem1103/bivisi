@@ -52,6 +52,7 @@ const CommentsComponent = ({ productDetail }) => {
   };
 
   useEffect(() => {
+    
     if (productDetail && productDetail.id) {
       fetchParentComments();
       // console.log("Fetching comments for product:", productDetail.id);
@@ -348,7 +349,9 @@ const CommentsComponent = ({ productDetail }) => {
                   <img src={comment?.user?.avatar||avatarImage} alt="avatarImage" />
                 </div>
                 <div className="w-100">
-                  <h5 className="comment_user"><Link to={`/channels_detail/channels_videos/${comment.user?.name}`}>{comment.user?.name}</Link></h5>
+                  <h5 className="comment_user">
+                    <Link to={`/channels_detail/channels_videos/${comment.user?.name}`}>{comment.user?.name}</Link>
+                    </h5>
                   <p className="create__date__comment">{formatDateTime(comment.created_at)}</p>
                   <p className="mb-0 comment">{comment?.comment}</p>
                   <div className="mt-1 d-flex gap-3 comment_footer">
