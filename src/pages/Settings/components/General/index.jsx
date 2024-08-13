@@ -11,6 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 const General = () => {
   const { userDetails, fetchUserDetails, authTokens } = useContext(AuthContext);
   const axiosInstance = useAxios();
+  const [genderValue, setGenderValue] = useState()
 
   const [formData, setFormData] = useState({
     username: "",
@@ -49,6 +50,9 @@ const General = () => {
   };
 
   const handleGenderChange = (value) => {
+    setGenderValue(
+      {value: value.value , label: value.value}
+    )
     setFormData({
       ...formData,
       gender: value.value,
@@ -193,6 +197,7 @@ const General = () => {
                       styles={selectStyles}
                       placeholder=''
                       isSearchable={false}
+                      value={genderValue}
                       defaultValue={{value: userDetails.gender , label: userDetails.gender}}
                       onChange={handleGenderChange}
                       options={[

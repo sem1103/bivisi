@@ -35,9 +35,7 @@ const ProfileMenu = () => {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
-    }
-    console.log(userDetails);
-    
+    }    
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
