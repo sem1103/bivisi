@@ -1,0 +1,38 @@
+{
+    "menu": {
+        "title": "Menu",
+        "name1": "Home",
+        "name2": "BiviClips"
+    },
+    "forYou": {
+        "title": "FOR YOU",
+        "name1": "Your profile",
+        "name2": "History",
+        "name3": "Your subscriptions"
+    },
+    "moreVideos": {
+        "title": "MORE VIDEOS",
+        "name1": "Latest videos",
+        "name2": "Trending",
+        "name3": "Top videos",
+        "name4": "All Channels",
+        "name5": "Popular Channels",
+        "name6": "Live"
+    },
+    "exploreMore": {
+        "title": "EXPLORE MORE",
+        "name1" : "Help"
+    },
+    "footer": {
+        "name1": "Refund Policy",
+        "name2": "FAQs",
+        "name3": "Terms of use Privacy Policy",
+        "name4": "About us",
+        "name5" : "Contact us",
+        "name6": "Developers",
+        "copyRight": {
+            "name1": "Copyright © 2024 Bivisi.live.",
+            "name2": "All rights reserved."
+        }
+    }
+}

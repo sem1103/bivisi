@@ -191,7 +191,7 @@ header {
     cursor: pointer;
     color: var(--Text-4, #a2a8b7);
 
-    font-family: Poppins;
+    font-family: inherit;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
@@ -699,4 +699,29 @@ header {
   }
 
 
+}
+
+
+/* From Uiverse.io by mrhyddenn */ 
+.shadow__btn {
+  padding: 10px 20px;
+  border: none;
+  font-size: 17px;
+  color: #fff;
+  border-radius: 7px;
+  letter-spacing: 4px;
+  transition: 0.5s;
+  transition-property: box-shadow;
+}
+
+.shadow__btn {
+  background: rgb(0,140,255);
+  box-shadow: 0 0 15px rgb(0,140,255);
+}
+
+.shadow__btn:hover {
+  box-shadow: 0 0 5px rgb(0,140,255),
+              0 0 15px rgb(0,140,255),
+              0 0 30px rgb(0,140,255),
+              0 0 60px rgb(0,140,255);
 }

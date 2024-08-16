@@ -5,7 +5,9 @@ import { ProductContext } from "../../../../context/ProductContext";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import { useTranslation } from "react-i18next";
 const ShortCards = () => {
+  const {t} = useTranslation(['homePage'])
   const { filteredProducts, selectedCategory, minPrice, maxPrice, setSelectedCategory } = useContext(ProductContext);
   useEffect(() => {
     if (selectedCategory === null) {
@@ -68,7 +70,7 @@ const ShortCards = () => {
                 <h4>BiviClips</h4>
               </div>
               <Link to="/shorts" className="see__all">
-                See all
+                {t('seeAllBtn')}
 
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="Icon/Right arrow">

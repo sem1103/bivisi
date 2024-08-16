@@ -1,0 +1,27 @@
+{
+  "videoSearch": {
+    "placeholder" : "Search for videos",
+    "voiceModal" : "Listening...",
+    "emptyFind" : "Product not found!"
+  },
+  "uploadMenu" : {
+    "name1" : "Video"
+  },
+  "ntfMenu" : {
+    "title" : "Notifications",
+    "ntf1" : "liked your product!",
+    "ntf2" : "liked your comment!",
+    "ntf3" : "commented on your product...",
+    "ntf4" : "replied to your comment...",
+    "ntf5" : "has subscribed to your channel!"
+  },
+  "profileMenu" : {
+    "pointsSystem" : {
+
+    },
+    "name1" : "View profile",
+    "name2" : "Settings",
+    "name3" : "Mode",
+    "name4" : "Log out"
+  }
+}

@@ -80,8 +80,8 @@ const Login = () => {
 
   const googleLogin = useGoogleLogin({
     onSuccess: (authResponse) => {
-      fetchGoogleUserDetails(authResponse)
-      navigate('/');
+      fetchGoogleUserDetails(authResponse).then(() => navigate('/'));
+
 
     },
     onError: (error) => console.log('Login Failed:', error)
@@ -89,8 +89,7 @@ const Login = () => {
 
   const facebookLogin = useFacebookLogin({
     onSuccess: (authResponse) => {
-      fetchFaceboookUserDetails(authResponse);
-      navigate('/');
+      fetchFaceboookUserDetails(authResponse).then(() => navigate('/'));
     }
   });
 

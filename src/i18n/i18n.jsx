@@ -1,25 +1,38 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import en from './langs/en.json'
-import ru from './langs/ru.json'
+import LanguageDetector from 'i18next-browser-languagedetector'; // Автоопределение языка
+
+import enSidebarMenu from './langs/en/sidebarMenu.json';
+import enTopHeader from './langs/en/topHeader.json'
+import enHomePage from './langs/en/homePage.json'
+
+
+import ruSidebarMenu from './langs/ru/sidebarMenu.json'
+import ruTopHeader from './langs/ru/topHeader.json'
+import ruHomePage from './langs/ru/homePage.json'
+
+
 
 const resources = {
     en: {
-        translation: en
+        sidebarMenu: enSidebarMenu,
+        topHeader : enTopHeader,
+        homePage : enHomePage
     },
     ru: {
-        translation: ru
+        sidebarMenu: ruSidebarMenu,
+        topHeader : ruTopHeader,
+        homePage : ruHomePage
+
     }
 };
 
-i18n.use(initReactI18next) // Подключаем i18next к React
+i18n.use(LanguageDetector).use(initReactI18next) // Подключаем i18next к React
     .init({
         resources,
-        lng: 'en', // Язык по умолчанию
         fallbackLng: 'en', // Язык для использования, если перевод не найден
-        interpolation: {
-            escapeValue: false, // Не экранируем строки (это не нужно для React)
-        }
+        ns: ['sidebarMenu', 'topHeader', 'homePage'],
+
     });
 
 export default i18n;

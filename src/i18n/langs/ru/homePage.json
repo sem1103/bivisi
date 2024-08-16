@@ -1,0 +1,12 @@
+{
+    "seeAllBtn" : "Посмотреть все",
+    "latestVideos" : {
+        "title" : "Последние видео"
+    },
+    "popularChannels" : {
+        "title" : "Популярные каналы"
+    },
+    "topVideos" : {
+        "title" : "Топ видео"
+    }
+}

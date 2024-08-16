@@ -5,7 +5,9 @@ import { ProductContext } from '../../../../context/ProductContext';
 import { MdOutlineClose } from "react-icons/md";
 import './style.scss'
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 const Search = ({ setIsUploadOptionsVisible }) => {
+  const {t} = useTranslation(['topHeader'])
   const [inputValue, setInputValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [listening, setListening] = useState(false);
@@ -129,7 +131,7 @@ const Search = ({ setIsUploadOptionsVisible }) => {
 
             <input
               type="text"
-              placeholder="Search for videos"
+              placeholder={t('videoSearch.placeholder')}
               value={inputValue}
               onChange={(e) => handleFilter(e.target.value)}
               onBlur={handleBlur}
@@ -150,7 +152,7 @@ const Search = ({ setIsUploadOptionsVisible }) => {
             <div className="search_result_content p-3">
               {product.length === 0 ? (
                 <div className="p-3 not_found_result">
-                  Product not found!
+                  {t('videoSearch.emptyFind')}
                 </div>
               ) : (
                 product.map((d, i) => (
@@ -175,7 +177,7 @@ const Search = ({ setIsUploadOptionsVisible }) => {
       {listening &&
         <div className='listening-modal' ref={searchModalRef}>
           <div className='d-flex justiy-content-between'>
-            <div className='modal-title'>Listening...</div>
+            <div className='modal-title'>{t('videoSearch.voiceModal')}</div>
             <MdOutlineClose className='close' onClick={() => setListening(false)} />
           </div>
           <button className={`modal-microphone ${listening ? 'listening' : ''}`} onClick={handleVoiceInput}>

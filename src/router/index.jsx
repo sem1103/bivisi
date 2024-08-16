@@ -93,8 +93,7 @@ const AppRouter = () => {
             <Route element={<ReRegister />} path="/re-register" />
             <Route element={<NewPassword />} path="/user/reset-password" />
             <Route element={<Otp />} path="/user/verify-otp" />
-            <Route path="*" element={<Navigate replace to="/404" />} />
-            <Route element={<NotFound />} path="/404" />
+           
 
             <Route element={<ProtectedRoute />}>
               <Route element={<Settings />} path="/settings" />
@@ -149,12 +148,16 @@ const AppRouter = () => {
             <Route element={<TopVideos />} path="/top_videos" />
             <Route element={<AllChannels />} path="/all_channels" />
             <Route element={<PopularChannels />} path="/popular_channels" />
+            <Route element={<ProductDetail />} path="/product_detail/:id/comment/:commentId" />
             <Route element={<ProductDetail />} path="/product_detail/:id" />
 
             <Route element={<LiveStreem />} path="/live-streams" />
             <Route element={<LiveStreem />} path="/live-streams/:roomId" />
             <Route element={<NewStream />} path="/new-stream" />
             <Route element={<ShowMyStream />} path="/new-stream/:roomId" />
+
+            <Route path="*" element={<Navigate replace to="/404" />} />
+            <Route element={<NotFound />} path="/404" />
           </Routes>
         </Sidebar>
       </BrowserRouter>

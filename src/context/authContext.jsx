@@ -48,14 +48,14 @@ export const AuthProvider = ({ children }) => {
       
       setAuthTokens(response.data);
       setUser({
-        ...jwtDecode(response.data.access_token),
+        ...jwtDecode(response.data.access),
         user_id: response.data.id
       });
 
-      await fetchUserDetails(response.data.access_token);
+      await fetchUserDetails(response.data.access);
       Cookies.set('authTokens', JSON.stringify({
         ...response.data,
-        access: response.data.access_token
+        access: response.data.access
       }), { expires: 14, path: '/', secure: true, sameSite: 'Strict' });
     } catch (error) {
       console.error("Error fetching user details:", error);
@@ -71,14 +71,14 @@ export const AuthProvider = ({ children }) => {
 
       setAuthTokens(response.data);
       setUser({
-        ...jwtDecode(response.data.access_token),
+        ...jwtDecode(response.data.access),
         user_id: response.data.id
       });
 
-      await fetchUserDetails(response.data.access_token);
+      await fetchUserDetails(response.data.access);
       Cookies.set('authTokens', JSON.stringify({
         ...response.data,
-        access: response.data.access_token
+        access: response.data.access
       }), { expires: 14, path: '/', secure: true, sameSite: 'Strict' });
 
     } catch (error) {
@@ -178,8 +178,8 @@ export const AuthProvider = ({ children }) => {
     console.log(user);
     
     if (authTokens) {
-      setUser(jwtDecode(authTokens.access ? authTokens.access : authTokens.access_token));
-      fetchUserDetails(authTokens.access ? authTokens.access : authTokens.access_token);
+      setUser(jwtDecode(authTokens.access ));
+      fetchUserDetails(authTokens.access);
     }
     setLoading(false);
   }, [authTokens, loading]);
