@@ -3,12 +3,7 @@ import "./style.scss";
 import "./map.scss";
 
 import eye from "../../assets/icons/eye.svg";
-import like from "../../assets/icons/like.svg";
-import download_img from "../../assets/icons/Download.svg";
-import left from "../../assets/icons/direaction-left.svg";
-import right from "../../assets/icons/direaction-right.svg";
-import bag from "../../assets/icons/Bag-3.svg";
-import wp from "../../assets/images/wp.svg";
+
 import { Link, useParams } from "react-router-dom";
 import { ProductContext } from "../../context/ProductContext";
 import useAxios from "../../utils/useAxios";
@@ -35,7 +30,8 @@ const ProductDetail = () => {
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
   const { product, setProduct } = useContext(ProductContext);
-  const { id } = useParams();
+  const { id} = useParams();
+  const params = useParams()
   const serviceId = Number(id);
   const [category, setCategory] = useState([])
   const [subcategory, setSubcategory] = useState([]);
@@ -147,7 +143,7 @@ const ProductDetail = () => {
             },
             notification_id: res.data.notification_id,
             product_cover_image: res.data.product_cover_image
-
+        
           })
         )
       } else {

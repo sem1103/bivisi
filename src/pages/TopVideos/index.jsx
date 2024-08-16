@@ -192,17 +192,20 @@ const TopVideos = () => {
                         </div>
 
                         <div className="right_tools align-items-center ">
-                            <button
-                                className='add__video'
-                                onClick={() => {
-                                    let array = viewMyVideos.map(item => item.user.name == JSON.parse(Cookies.get('authTokens')).username && !item.is_premium);
-                                    if (array.some(item => item == true)) setIsOpen(!isOpen)
-                                    else toast.error('All your videos are premium, please upload a new video..')
+                           {
+                            Cookies.get('authTokens') &&
+                             <button
+                             className='add__video'
+                             onClick={() => {
+                                 let array = viewMyVideos.map(item => item.user.name == JSON.parse(Cookies.get('authTokens')).username && !item.is_premium);
+                                 if (array.some(item => item == true)) setIsOpen(!isOpen)
+                                 else toast.error('All your videos are premium, please upload a new video..')
 
-                                }}
-                            >
-                                + <span>Add premium video</span>
-                            </button>
+                             }}
+                         >
+                             + <span>Add premium video</span>
+                         </button>
+                           }
                            
                             <Select
                             defaultValue={filters[0]}
@@ -254,7 +257,7 @@ const TopVideos = () => {
                                             <div id="my__videos">
 
                                                 {
-                                                    viewMyVideos.length ?
+                                                    viewMyVideos.length && Cookies.get('authTokens') ?
                                                     
                                                         viewMyVideos.map(item => {
                                                             if (item.user.name == JSON.parse(Cookies.get('authTokens')).username && !item.is_premium) {

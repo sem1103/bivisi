@@ -11,8 +11,10 @@ import User from "../../assets/icons/User.svg";
 import { AuthContext } from "../../context/authContext";
 import { NavLink } from "react-router-dom";
 import { ThemeContext } from "../../context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 const ProfileMenu = () => {
+  const {i18n, t} = useTranslation(['topHeader']);
   const { setTheme} = useContext(ThemeContext)
   const { userDetails, logoutUser } = useContext(AuthContext);
   const [themeMode, setThemeMode] = useState(localStorage.themeMode ? JSON.parse(localStorage.themeMode) : false)
@@ -27,7 +29,9 @@ const ProfileMenu = () => {
       handleMenuClose();
     }
   };
-  const [showLangs, setShowLangs] = useState(false)
+  const [showLangs, setShowLangs] = useState(false);
+  const activeLocalLang = localStorage.i18nextLng
+  const [activeShowLang, setActiveShowLang] = useState(activeLocalLang == 'en' ? 'English' : activeLocalLang == 'ru' ? 'Русский' : '')
 
  
   useEffect(() => {
@@ -93,13 +97,49 @@ const ProfileMenu = () => {
               onClick={handleMenuClose}
             >
               <img src={userGray} alt="" />
-              <h6>View profile</h6>
+              <h6>{t('profileMenu.name1')}</h6>
             </NavLink>
-            <div className={`profile-menu-item set__lang ${showLangs ? 'show__langs' : ''}`} onClick={() => setShowLangs(false)}>
+            <div className={`profile-menu-item set__lang ${showLangs ? 'active' : ''}`} >
+              <button 
+              onClick={() => {
+                setShowLangs(!showLangs)
+              }}
+              >
               <img src={langGray} alt="" />
-              <h6>English</h6>
-              <ul>
-                <li><button>Русский</button></li>
+                
+                {
+                  activeShowLang ? 
+                  activeShowLang 
+                  :
+                  'English'
+                }
+                
+               
+              </button>
+              <ul className={`${showLangs ? 'show__langs' : ''}`}>
+              <li><button
+                className={`${activeShowLang == 'English' ? 'active__lang' : ''}`}
+                onClick={() => {
+                  i18n.changeLanguage('en')
+                  setActiveShowLang('English')
+                  setShowLangs(!showLangs)
+                }}
+                >
+                  English
+                </button>
+                </li>
+                <li><button
+                className={`${activeShowLang == 'Русский' ? 'active__lang' : ''}`}
+
+                onClick={() => {
+                  i18n.changeLanguage('ru')
+                  setActiveShowLang('Русский')
+                  setShowLangs(!showLangs)
+                }}
+                >
+                  Русский
+                </button>
+                </li>
               </ul>
             </div>
             <NavLink
@@ -108,7 +148,7 @@ const ProfileMenu = () => {
               onClick={handleMenuClose}
             >
               <img src={settingsGray} alt="" />
-              <h6>Settings</h6>
+              <h6>{t('profileMenu.name2')}</h6>
             </NavLink>
             <div className="profile-menu-item align-items-center d-flex justify-content-between mode__switcher" onClick={() => {
                       setTheme(!themeMode, themeSwitcher.current)
@@ -116,7 +156,7 @@ const ProfileMenu = () => {
                 }}>
               <div className="d-flex align-items-center gap-2">
                 <img src={nightmodeGray} alt="" />
-                <h6 className="m-0">Mode</h6>
+                <h6 className="m-0">{t('profileMenu.name3')}</h6>
               </div>
              
 
@@ -130,7 +170,7 @@ const ProfileMenu = () => {
               logoutUser()
             }}>
               <img src={logout} alt="" />
-              <span>Log out</span>
+              <span>{t('profileMenu.name4')}</span>
             </div>
           </div>
         </Menu.Dropdown>

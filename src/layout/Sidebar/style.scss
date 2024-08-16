@@ -100,9 +100,9 @@
   width: 100%;
   .menu-section-title {
     color: var(--Text-4, #a2a8b7) !important;
-
+    text-transform: uppercase;
     /* Poppins/14/SemiBold */
-    font-family: Poppins;
+    font-family: inherit;
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
@@ -130,7 +130,7 @@
       span {
         color: #a2a8b7;
         /* Poppins/16/SemiBold */
-        font-family: Poppins;
+        font-family: inherit;
         font-size: 16px;
         font-style: normal;
         font-weight: 400;
@@ -154,7 +154,7 @@
     color: var(--Text-6, #80889d);
 
     /* Poppins/14/Medium */
-    font-family: Poppins;
+    font-family: inherit;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -169,7 +169,7 @@
       color: var(--Text-6, #80889d);
 
       /* Poppins/14/Medium */
-      font-family: Poppins;
+      font-family: inherit;
       font-size: 14px;
       font-style: normal;
       font-weight: 400;

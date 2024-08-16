@@ -174,7 +174,6 @@
         justify-content: center;
         align-items: center;
         border-radius: 16px;
-        border: 1px solid var(--Text-11, #23272e);
         padding: 14px;
         background-color: transparent;
         transition: all 0.3s;
@@ -197,7 +196,7 @@
           }
         }
 
-        .add_basket {
+        .add_basket, .heart {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -207,7 +206,7 @@
           background-color: transparent;
           transition: all 0.3s;
           cursor: pointer;
-
+          height: 50px;
           img {
             width: 20px;
             height: 20px;

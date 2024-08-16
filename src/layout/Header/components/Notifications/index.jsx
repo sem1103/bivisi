@@ -6,6 +6,7 @@ import emptyAvatar from './../../../../assets/images/user-empty-avatar.png'
 import { AuthContext } from "../../../../context/authContext";
 import axios from "axios";
 import Cookies from 'js-cookie'
+import { useTranslation } from "react-i18next";
 
 
 const isReadHandler = async (ntfId) => {
@@ -44,10 +45,13 @@ export default function Notifications({notifications, setNotifications}) {
 
     const {user} = useContext(AuthContext)
 
+    const {t} = useTranslation(['topHeader']);   
+
+    console.log(notifications);
     
 
     
-    const ntfLikeItem = (ntf, text) => {
+    const ntfLikeItem = (ntf, text, commentId = false) => {
         
     return (
         <div key={ntf.id} className={`ntf__item ${ntf.is_read ? 'is__read__ntf' : ''}`} onClick={() => {
@@ -65,7 +69,7 @@ export default function Notifications({notifications, setNotifications}) {
                 isReadHandler(ntf.id);
             }
         }}>
-            <Link to={`/product_detail/${ntf.product_id}`}></Link>
+            <Link to={`/product_detail/${ntf.product_id}${commentId ? '/comment/' + commentId : ''}`}></Link>
             {
                 !ntf.is_read && <hr className="ntf__is__read" />
 
@@ -96,16 +100,17 @@ export default function Notifications({notifications, setNotifications}) {
         <div className="ntf_content">
             {
                 notifications.map(ntf => {
+                    
                     if(ntf.notification_type == "Like" || ntf.notification_type == 'Comment'){
                         
                             if( ntf.message == `${ntf.sender.username} liked your product.`){
-                                return  ntfLikeItem(ntf,  'liked your video!')
+                                return  ntfLikeItem(ntf,  t('ntfMenu.ntf1'))
                             }else if( ntf.message == `${ntf.sender.username} liked your comment.` && user.username != ntf.sender.username){
-                                return  ntfLikeItem(ntf,  'liked your comment!')
-                            }else if( ntf.message == `${ntf.sender.username} commented on your product.` && user.username != ntf.sender.username){
-                                return  ntfLikeItem(ntf,  'commented on your product...')
-                            }else if( ntf.message == `${ntf.sender.username} replied to your comment.` && user.username != ntf.sender.username){
-                                return  ntfLikeItem(ntf,  'replied to your comment...')
+                                return  ntfLikeItem(ntf,  t('ntfMenu.ntf2') , ntf?.comment_id?.id)
+                            }else if( ntf.message == `${ntf.sender.username} commented on your product` && user.username != ntf.sender.username){
+                                return  ntfLikeItem(ntf,  t('ntfMenu.ntf3'), ntf?.comment_id?.id)
+                            }else if( ntf.message == `${ntf.sender.username} replied to your comment` && user.username != ntf.sender.username){
+                                return  ntfLikeItem(ntf,  t('ntfMenu.ntf4'), ntf?.comment_id?.id)
                             }
                             
                         
@@ -134,7 +139,7 @@ export default function Notifications({notifications, setNotifications}) {
                             </div>
                             <div className="ntf__text ">
                                 <h3>
-                                {`${ntf.sender.first_name} has subscribed to your channel!`}     
+                                {`${ntf.sender.first_name} ${t('ntfMenu.ntf5')}`}     
                                 </h3>
                                 <p className="ntf__create">
                                     {getNtfDate(ntf.created_at)}
