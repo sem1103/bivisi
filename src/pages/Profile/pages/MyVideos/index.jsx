@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState , useEffect} from "react";
 import Main from "../../components/Main";
 import Categories from "../../components/Categories";
 import "./style.scss";
@@ -14,25 +14,36 @@ import SortProduct from "../../../../components/SortProduct";
 
 
 
+
 const MyVideos = () => {
-  const [selectedOption, setSelectedOption] = useState("");
-  const { user } = useContext(AuthContext);
-  const { product } = useContext(ProductContext);
-  const hasProducts =
-    product && Array.isArray(product.results) && product.results.length > 0;
+  const { myProduct } = useContext(ProductContext);
+  const [sortedProducts, setSortedProducts] = useState([])
 
-  const activeUserProducts = hasProducts
-    ? product.results.filter(
-      (item) =>
-        item.user.name === user.username &&
-
-        item.product_video_type[0]?.product_type === "Video"
-    )
-    : [];
-
-  const [sortedProducts, setSortedProducts] = useState([...activeUserProducts])
+  
 
 
+
+
+  useEffect(() => {
+    if(myProduct){
+      setSortedProducts(myProduct?.filter(item => {
+    
+        if(item.product_type === "Video") return item;
+          
+      }))
+
+      console.log(myProduct?.filter(item => {
+    
+        if(item.product_type === "Video") return item;
+          
+      }));
+      
+    }
+    
+   
+  }, [myProduct]);
+
+    
 
   return (
     <>
@@ -53,12 +64,18 @@ const MyVideos = () => {
                   <span>Upload</span>
                 </Link>
                 <div className="custom-select">
+                
+                  {
+                    
+                        sortedProducts &&            
                 <SortProduct sortedProducts={sortedProducts} setSortedProducts={setSortedProducts}/>
+
+                  }
                 </div>
               </div>
             </div>
 
-            {sortedProducts && sortedProducts.length > 0 ? (
+            {sortedProducts ? (
               sortedProducts.map((item) => {
                 return <MyVideo productItem={item} key={item.id} />;
               })
@@ -66,7 +83,7 @@ const MyVideos = () => {
               <div className="no_product">
                 <img src={VideoIcon} alt="" />
               </div>
-            )}
+             )}
           </div>
         </div>
       </div>

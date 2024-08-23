@@ -193,7 +193,26 @@ input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }
 
+.modal-backdrop{
+  z-index: 9999999999 !important;
+  backdrop-filter: blur(10px) !important;
+}
+.modal.fade.show{
+  z-index: 99999999999 !important;
 
+}
+.close__modal{
+  border: 0;
+  background: none;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.modal-content{
+  padding: 25px;
+  background: var(--backgroundColor) !important;
+
+}
 
 /*----Light Theme------*/
 
@@ -290,7 +309,7 @@ input[type="number"] {
 
   .stroke__change, .write__message{
     svg, path{
-      stroke: #626262;
+      stroke: #626262 !important;
     }
   }
 
@@ -354,3 +373,4 @@ input[type="number"] {
  }
 
 }
+

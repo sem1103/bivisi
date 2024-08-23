@@ -1,11 +1,15 @@
 import axios from "axios";
 import { useEffect, useState, createContext } from "react";
 import { BASE_URL } from "../api/baseUrl";
+import Cookies from 'js-cookie';
 
 export const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
+  const USER_TOKKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
+
   const [product, setProduct] = useState([]);
+  const [myProduct, setMyProduct] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [category, setCategory] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
@@ -25,6 +29,17 @@ export const ProductProvider = ({ children }) => {
     setFilteredProducts(filtered);
   };
 
+  const getMyProducts = async () => {
+    const res = await axios.get(`https://bivisibackend.store/api/user_web_products/`, {
+      headers: {
+          Authorization: `Bearer ${USER_TOKKEN}`
+      }
+  })
+  setMyProduct(res.data.results);
+  
+  
+}
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,6 +51,7 @@ export const ProductProvider = ({ children }) => {
     };
 
     fetchData();
+    getMyProducts()
   }, []);
 
   useEffect(() => {
@@ -45,7 +61,6 @@ export const ProductProvider = ({ children }) => {
      
         setProduct(res.data);
         setFilteredProducts(res.data.results); 
-        console.log(res.data);
         
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -58,6 +73,7 @@ export const ProductProvider = ({ children }) => {
     <ProductContext.Provider
       value={{
         product,
+        myProduct,
         filteredProducts,
         setProduct,
         selectedCategory,

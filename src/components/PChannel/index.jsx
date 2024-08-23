@@ -18,10 +18,18 @@ const PopularChannelCard = ({ popularChannels, page }) => {
   
   const navigate = useNavigate();
 
-  const getChannelDetail =async (popularChannels) => {
+  const getChannelDetail = async (popularChannels) => {
     const responseChannel = await axios.get(`${BASE_URL}/user/popular-channels/`);
-    const channel = responseChannel?.data.results.find((item) => item.id == popularChannels?.id);
+    const channel = responseChannel?.data.results.find((item) => item?.id == popularChannels?.id);
     navigate(`/channels_detail/channels_videos/${popularChannels.username}`, { state: { channelDetailData: channel } });
+    // localStorage.setItem('newUserChatId',channel.id )
+    // responseChannel?.data.results.map((item) => {
+    //   console.log(item, popularChannels)
+      
+    // })
+
+    console.log(responseChannel);
+    
   };
 
   const colClass = ['channelcard'].includes(page) ? 'col-lg-6 col-md-6 col-sm-12 col-12' : '';

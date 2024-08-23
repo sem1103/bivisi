@@ -7,6 +7,8 @@ import useAxios from "../../../../utils/useAxios";
 import { Modal } from "antd";
 import { toast } from "react-toastify";
 import Cookies from 'js-cookie';
+import { CModal , CButton, CModalFooter, CModalTitle} from "@coreui/react";
+
 
 
 const DeleteAccount = () => {
@@ -116,30 +118,26 @@ const DeleteAccount = () => {
         </div>
         <button type="submit">Delete</button>
       </form>
-      <Modal
-        title={<span style={{ color: 'var(--textColor)' }}>Delete Account</span>}
-        open={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        centered
+      <CModal
+        visible={isModalVisible}
+        // onOk={handleOk}
+        onClose={handleCancel}
+        alignment="center"
 
-        styles={{
-          mask: {
-            backdropFilter: 'blur(10px)',
-            zIndex: '999999999999',
-          },
-          header: {
-            background: 'var(--primaryColor)',
-            color: 'var(--textColor)'
-          },
-          content:{
-            background: 'var(--primaryColor)',
-            color: 'var(--textColor)'
-          }
-        }}
+        
       >
-        <p>Are you sure you want to delete your account?</p>
-      </Modal>
+                <CModalTitle style={{ color: 'var(--textColor)' }} id="VerticallyCenteredExample">Delete Account</CModalTitle>
+
+        <p style={{ color: 'var(--textColor)' }}>Are you sure you want to delete your account?</p>
+
+        <CModalFooter>
+        <CButton color="secondary" onClick={() => handleCancel()}>
+          Close
+        </CButton>
+        <CButton color="primary" onClick={handleOk}>Delete</CButton>
+      </CModalFooter>
+      </CModal>
+    
     </section>
   );
 };

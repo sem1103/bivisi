@@ -14,6 +14,7 @@ import { Link, useParams } from "react-router-dom";
 
 const CommentsComponent = ({ productDetail }) => {
   const { commentId } = useParams();
+  const [isShowComment, setIsShowComment] = useState(false)
   const { notificationSocket } = useContext(NotificationContext)
   const [comments, setComments] = useState([]);
   const [commentsCount, setCommentsCount] = useState([]);
@@ -365,11 +366,12 @@ const CommentsComponent = ({ productDetail }) => {
   }
 
   useEffect(() => {
-    if (comments.length > 0 && commentId) {
+    if (comments.length > 0 && commentId && !isShowComment) {
 
       const element = document.querySelector(`[data-id="${commentId}"]`);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setIsShowComment(true)
       }
     }
 

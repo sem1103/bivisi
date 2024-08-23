@@ -602,15 +602,22 @@
   font-size: 19px;
 }
 
-.modal-content {
+.chat-modal-content {
   width: 100%;
-  min-height: 200px !important;
-  background-color: #0f0f0f !important;
+  min-height: 90vh !important;
   display: flex !important;
   justify-content: flex-start !important;
   align-items: flex-start !important;
   flex-direction: column !important;
-  padding: 25px;
+  margin: auto;
+  .modal-dialog{
+    margin: auto;
+  }
+  .modal-content{
+    padding: 25px;
+    background: var(--backgroundColor);
+
+  }
 
   .modal_head {
     width: 100%;
@@ -638,6 +645,17 @@
     justify-content: flex-start;
     align-items: center;
     padding: 10px 0;
+  }
+  .chat_messages{
+    padding: 15px;
+  }
+  .chat_section{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .empty__message{
+    margin: auto;
   }
 }
 

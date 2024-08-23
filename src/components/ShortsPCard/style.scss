@@ -14,7 +14,7 @@
   }
 }
 
-.ant-modal-body .short__info {
+ .short__info {
 
   h3 {
     margin: 0 0 15px 0;
@@ -76,6 +76,8 @@
         position: absolute;
         bottom: 130px;
         left: 10px;
+        max-width: 180px;
+        text-align: left;
         .short__inform {
           display: flex;
           flex-direction: column;
@@ -647,6 +649,10 @@
 }
 
 .modal-delete {
+
+  h5, p{
+    color: var(--textColor);
+  }
 
   .ant-modal-content {
     background-color: #0F0F0F;

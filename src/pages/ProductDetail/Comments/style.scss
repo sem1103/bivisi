@@ -217,8 +217,9 @@
       color: var(--textColor);
     }
     .comment__items{
-      max-height: 800px;
+      max-height: 70vh;
       overflow-x: auto;
+      padding: 5px 0;
     }
     .comment_avatar {
       background-color: white;
@@ -451,6 +452,7 @@ line-height: 20px;
   height: 60px;
   position: relative;
   z-index: 1;
+  margin: auto;
 }
 
 .circle {

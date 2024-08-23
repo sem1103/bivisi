@@ -30,13 +30,13 @@ const ProductDetail = () => {
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
   const { product, setProduct } = useContext(ProductContext);
-  const { id} = useParams();
+  const { id } = useParams();
   const params = useParams()
   const serviceId = Number(id);
   const [category, setCategory] = useState([])
   const [subcategory, setSubcategory] = useState([]);
-  
-  const {notificationSocket} = useContext(NotificationContext);
+
+  const { notificationSocket } = useContext(NotificationContext);
 
   const [viewed, setViewed] = useState(false);
   const [productDetail, setProductDetail] = useState(false);
@@ -46,7 +46,7 @@ const ProductDetail = () => {
   const playerRef = useRef(null);
   const [isShowMap, setIsShowMap] = useState(false)
   const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA';
-  const {countryCurrencySymbol} = getCurrencyByCountry();
+  const { countryCurrencySymbol } = getCurrencyByCountry();
   const [initialViewState, setInitialViewState] = useState({
     longitude: 0,
     latitude: 0,
@@ -75,8 +75,8 @@ const ProductDetail = () => {
       const { features } = response.data;
       if (features && features.length > 0) {
         const [longitude, latitude] = features[0].center;
-       
-      
+
+
         setInitialViewState({
           longitude,
           latitude,
@@ -131,20 +131,20 @@ const ProductDetail = () => {
           like_count: prevDetail.like_count + 1,
           is_liked: true,
         }));
-        
+
         notificationSocket.send(
           JSON.stringify(
             {
-            notification_type: res.data.notification_type, 
-            message: res.data.message ,
-            sender: {
-              ...res.data.sender,
-              avatar : res.data.sender.avatar ? '' : res.data.sender
-            },
-            notification_id: res.data.notification_id,
-            product_cover_image: res.data.product_cover_image
-        
-          })
+              notification_type: res.data.notification_type,
+              message: res.data.message,
+              sender: {
+                ...res.data.sender,
+                avatar: res.data.sender.avatar ? '' : res.data.sender
+              },
+              notification_id: res.data.notification_id,
+              product_cover_image: res.data.product_cover_image
+
+            })
         )
       } else {
         toast.error("You Dislike Short!");
@@ -244,36 +244,51 @@ const ProductDetail = () => {
 
 
 
-useEffect(() => {
+  useEffect(() => {
 
-  const fetchData = async () => {
-    try {
-      const categoryRes = await axios.get(
-        `${BASE_URL}/categories/`
-      );
-      setCategory(categoryRes.data.results);
-      
-      
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    const fetchData = async () => {
+      try {
+        const categoryRes = await axios.get(
+          `${BASE_URL}/categories/`
+        );
+        setCategory(categoryRes.data.results);
 
-  fetchData();
+
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      setIsShowMap(false)
+
+    };
+  }, []);
+
+
+
   
-  return () => {
-    setIsShowMap(false)
+const EmbedCodeGenerator = (videoUrl) => {
+  return (
+    <div>
+      <h3>Embed Code:</h3>
+      <textarea
+        readOnly
+        value={`<iframe width="560" height="315" src="${videoUrl}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`}
+        rows="4"
+        cols="50"
+      />
+    </div>
+  );
+};
 
-  };
-}, []);
- 
 
 
 
- 
 
- 
-    
+
 
   return (
     <div className="product_detail">
@@ -346,10 +361,10 @@ useEffect(() => {
                         onClick={() => toggleLike(productDetail.id)}
                       >
                         <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="like">
-<path id="combo shape" fill-rule="evenodd" clip-rule="evenodd" d="M7.62205 15.5H5.28959C3.45412 15.5 1.85419 14.2508 1.40902 12.4701L0.287751 7.98507C-0.0278224 6.72278 0.926894 5.5 2.22804 5.5H6.33315L5.59098 4.38675C4.48339 2.72536 5.67437 0.5 7.67111 0.5H7.99982L11.2014 6.10276C11.2877 6.25386 11.3331 6.42487 11.3331 6.5989V13.2981C11.3331 13.6325 11.166 13.9447 10.8879 14.1302L9.84085 14.8282C9.18378 15.2662 8.41175 15.5 7.62205 15.5ZM12.5832 6.54167V13.625C12.5832 14.6605 13.4226 15.5 14.4582 15.5C15.4937 15.5 16.3332 14.6605 16.3332 13.625V6.54166C16.3332 5.50613 15.4937 4.66667 14.4582 4.66667C13.4226 4.66667 12.5832 5.50613 12.5832 6.54167Z" fill="white"/>
-</g>
-</svg>
+                          <g id="like">
+                            <path id="combo shape" fill-rule="evenodd" clip-rule="evenodd" d="M7.62205 15.5H5.28959C3.45412 15.5 1.85419 14.2508 1.40902 12.4701L0.287751 7.98507C-0.0278224 6.72278 0.926894 5.5 2.22804 5.5H6.33315L5.59098 4.38675C4.48339 2.72536 5.67437 0.5 7.67111 0.5H7.99982L11.2014 6.10276C11.2877 6.25386 11.3331 6.42487 11.3331 6.5989V13.2981C11.3331 13.6325 11.166 13.9447 10.8879 14.1302L9.84085 14.8282C9.18378 15.2662 8.41175 15.5 7.62205 15.5ZM12.5832 6.54167V13.625C12.5832 14.6605 13.4226 15.5 14.4582 15.5C15.4937 15.5 16.3332 14.6605 16.3332 13.625V6.54166C16.3332 5.50613 15.4937 4.66667 14.4582 4.66667C13.4226 4.66667 12.5832 5.50613 12.5832 6.54167Z" fill="white" />
+                          </g>
+                        </svg>
 
                       </button>
                       <span>{productDetail?.like_count}</span>
@@ -372,38 +387,42 @@ useEffect(() => {
                         }
                       }}
                     >
-<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Icon/Bag 3">
-<path id="Rectangle 794" d="M13.3332 5.00008C13.3332 3.15913 11.8408 1.66675 9.99984 1.66675C8.15889 1.66675 6.6665 3.15913 6.6665 5.00008" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Rectangle 788" d="M3.80146 7.91988C4.00997 6.25179 5.42797 5 7.10905 5H12.8905C14.5716 5 15.9896 6.25179 16.1981 7.91988L17.0314 14.5866C17.2801 16.5761 15.7288 18.3333 13.7238 18.3333H6.27572C4.27073 18.3333 2.71944 16.5761 2.96813 14.5866L3.80146 7.91988Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-<path id="Vector 1788" d="M7.5 13.3333C9.46345 14.4502 10.5396 14.4385 12.5 13.3333" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="Icon/Bag 3">
+                          <path id="Rectangle 794" d="M13.3332 5.00008C13.3332 3.15913 11.8408 1.66675 9.99984 1.66675C8.15889 1.66675 6.6665 3.15913 6.6665 5.00008" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          <path id="Rectangle 788" d="M3.80146 7.91988C4.00997 6.25179 5.42797 5 7.10905 5H12.8905C14.5716 5 15.9896 6.25179 16.1981 7.91988L17.0314 14.5866C17.2801 16.5761 15.7288 18.3333 13.7238 18.3333H6.27572C4.27073 18.3333 2.71944 16.5761 2.96813 14.5866L3.80146 7.91988Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+                          <path id="Vector 1788" d="M7.5 13.3333C9.46345 14.4502 10.5396 14.4385 12.5 13.3333" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </g>
+                      </svg>
                       <span></span>
                     </div>
                     <div className="d-flex align-items-center gap-2">
                       <button className="download-btn stroke__change" onClick={handleDownload}>
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Icon/Download">
-<path id="Vector 347" d="M7.5 10L10 12.5M10 12.5L12.5 10M10 12.5L10 2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Vector 354" d="M6.25 7.5V7.5C4.17893 7.5 2.5 9.17893 2.5 11.25L2.5 13.5C2.5 15.7091 4.29086 17.5 6.5 17.5H13.5C15.7091 17.5 17.5 15.7091 17.5 13.5V11.25C17.5 9.17893 15.8211 7.5 13.75 7.5V7.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <g id="Icon/Download">
+                            <path id="Vector 347" d="M7.5 10L10 12.5M10 12.5L12.5 10M10 12.5L10 2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path id="Vector 354" d="M6.25 7.5V7.5C4.17893 7.5 2.5 9.17893 2.5 11.25L2.5 13.5C2.5 15.7091 4.29086 17.5 6.5 17.5H13.5C15.7091 17.5 17.5 15.7091 17.5 13.5V11.25C17.5 9.17893 15.8211 7.5 13.75 7.5V7.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          </g>
+                        </svg>
                       </button>
                     </div>
                     <div className="d-flex align-items-center gap-2">
-                      <button className="lr-btn fill__change">
-                      <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="direaction left">
-<path id="Vector 175 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M5.21849 0.164376C5.54194 0.423133 5.59438 0.895102 5.33562 1.21855L1.71044 5.75003L5.33562 10.2815C5.59438 10.605 5.54194 11.0769 5.21849 11.3357C4.89505 11.5944 4.42308 11.542 4.16432 11.2185L0.164321 6.21855C-0.0548108 5.94464 -0.0548108 5.55542 0.164321 5.28151L4.16432 0.281506C4.42308 -0.0419402 4.89505 -0.0943812 5.21849 0.164376Z" fill="white"/>
-</g>
-</svg>
+                      <button className="lr-btn fill__change"
+                      onClick={() =>{
+                        EmbedCodeGenerator()
+                      }}
+                      >
+                        <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <g id="direaction left">
+                            <path id="Vector 175 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M5.21849 0.164376C5.54194 0.423133 5.59438 0.895102 5.33562 1.21855L1.71044 5.75003L5.33562 10.2815C5.59438 10.605 5.54194 11.0769 5.21849 11.3357C4.89505 11.5944 4.42308 11.542 4.16432 11.2185L0.164321 6.21855C-0.0548108 5.94464 -0.0548108 5.55542 0.164321 5.28151L4.16432 0.281506C4.42308 -0.0419402 4.89505 -0.0943812 5.21849 0.164376Z" fill="white" />
+                          </g>
+                        </svg>
 
-<svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="direaction right">
-<path id="Vector 175 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M0.781506 0.164376C0.45806 0.423133 0.405619 0.895102 0.664376 1.21855L4.28956 5.75003L0.664376 10.2815C0.405618 10.605 0.458059 11.0769 0.781506 11.3357C1.10495 11.5944 1.57692 11.542 1.83568 11.2185L5.83568 6.21855C6.05481 5.94464 6.05481 5.55542 5.83568 5.28151L1.83568 0.281506C1.57692 -0.0419401 1.10495 -0.0943811 0.781506 0.164376Z" fill="white"/>
-</g>
-</svg>
+                        <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <g id="direaction right">
+                            <path id="Vector 175 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M0.781506 0.164376C0.45806 0.423133 0.405619 0.895102 0.664376 1.21855L4.28956 5.75003L0.664376 10.2815C0.405618 10.605 0.458059 11.0769 0.781506 11.3357C1.10495 11.5944 1.57692 11.542 1.83568 11.2185L5.83568 6.21855C6.05481 5.94464 6.05481 5.55542 5.83568 5.28151L1.83568 0.281506C1.57692 -0.0419401 1.10495 -0.0943811 0.781506 0.164376Z" fill="white" />
+                          </g>
+                        </svg>
                       </button>
                     </div>
                     <div className="d-flex align-items-center gap-2">
@@ -412,7 +431,7 @@ useEffect(() => {
                   </div>
                 </div>
 
-           
+
                 <div className="video__properties">
                   <h4>Categories</h4>
                   <table style={{ borderCollapse: 'collapse', width: '100%', background: 'var(--backgroundColor)', margin: ' 0 0 20px 0' }}>
@@ -420,40 +439,40 @@ useEffect(() => {
                       {
 
                         category.map(item => {
-                          if(item.id == productDetail.category[0]){
-                            return  <tr >
+                          if (item.id == productDetail.category[0]) {
+                            return <tr >
                               <td style={{ fontWeight: '600' }}>{item.name}</td>
                               <td >{item.children.map(sub => sub.id == productDetail.category[1] && sub.name)}</td>
                             </tr>
                           }
                         })
-                        
-                         
-                       
+
+
+
                       }
                     </tbody>
                   </table>
                 </div>
-                      {
-                         productDetail.properties.length > 0 &&
-                         <div className="video__properties">
-                         <h4>Properties</h4>
-                         <table style={{ borderCollapse: 'collapse', width: '100%', background: 'var(--backgroundColor)', margin: ' 0 0 20px 0' }}>
-                           <tbody>
-                             {
-                              
-                               productDetail.properties.map((item) => (
-                                 <tr key={item.id}>
-                                   <td style={{ fontWeight: '600' }}>{item.product_property}</td>
-                                   <td >{item.property_value}</td>
-                                 </tr>
-                               ))
-                             }
-                           </tbody>
-                         </table>
-                       </div>
-                      }
-              
+                {
+                  productDetail.properties.length > 0 &&
+                  <div className="video__properties">
+                    <h4>Properties</h4>
+                    <table style={{ borderCollapse: 'collapse', width: '100%', background: 'var(--backgroundColor)', margin: ' 0 0 20px 0' }}>
+                      <tbody>
+                        {
+
+                          productDetail.properties.map((item) => (
+                            <tr key={item.id}>
+                              <td style={{ fontWeight: '600' }}>{item.product_property}</td>
+                              <td >{item.property_value}</td>
+                            </tr>
+                          ))
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                }
+
 
                 <div className="video__address">
                   <h4>Address</h4>
@@ -462,26 +481,26 @@ useEffect(() => {
                   </a></p>
 
 
-                <div className="address__map">
-                  {isShowMap &&
-                   <Map
-                   initialViewState={initialViewState}
-                   mapStyle="mapbox://styles/mapbox/streets-v9"
-                   mapboxAccessToken={TOKEN}
-                   width="100%"
-                   height="250px"
+                  <div className="address__map">
+                    {isShowMap &&
+                      <Map
+                        initialViewState={initialViewState}
+                        mapStyle="mapbox://styles/mapbox/streets-v9"
+                        mapboxAccessToken={TOKEN}
+                        width="100%"
+                        height="250px"
 
-                 >
-                 <Marker longitude={markerPosition.longitude} latitude={markerPosition.latitude} >
-                 <svg width={30} viewBox="0 0 24 24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1028.4)"> <path d="m12 0c-4.4183 2.3685e-15 -8 3.5817-8 8 0 1.421 0.3816 2.75 1.0312 3.906 0.1079 0.192 0.221 0.381 0.3438 0.563l6.625 11.531 6.625-11.531c0.102-0.151 0.19-0.311 0.281-0.469l0.063-0.094c0.649-1.156 1.031-2.485 1.031-3.906 0-4.4183-3.582-8-8-8zm0 4c2.209 0 4 1.7909 4 4 0 2.209-1.791 4-4 4-2.2091 0-4-1.791-4-4 0-2.2091 1.7909-4 4-4z" transform="translate(0 1028.4)" fill="#e74c3c"></path> <path d="m12 3c-2.7614 0-5 2.2386-5 5 0 2.761 2.2386 5 5 5 2.761 0 5-2.239 5-5 0-2.7614-2.239-5-5-5zm0 2c1.657 0 3 1.3431 3 3s-1.343 3-3 3-3-1.3431-3-3 1.343-3 3-3z" transform="translate(0 1028.4)" fill="#c0392b"></path> </g> </g></svg>
-                 </Marker>
-                 </Map>
-                  
-                  }
-               
-                </div>
+                      >
+                        <Marker longitude={markerPosition.longitude} latitude={markerPosition.latitude} >
+                          <svg width={30} viewBox="0 0 24 24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1028.4)"> <path d="m12 0c-4.4183 2.3685e-15 -8 3.5817-8 8 0 1.421 0.3816 2.75 1.0312 3.906 0.1079 0.192 0.221 0.381 0.3438 0.563l6.625 11.531 6.625-11.531c0.102-0.151 0.19-0.311 0.281-0.469l0.063-0.094c0.649-1.156 1.031-2.485 1.031-3.906 0-4.4183-3.582-8-8-8zm0 4c2.209 0 4 1.7909 4 4 0 2.209-1.791 4-4 4-2.2091 0-4-1.791-4-4 0-2.2091 1.7909-4 4-4z" transform="translate(0 1028.4)" fill="#e74c3c"></path> <path d="m12 3c-2.7614 0-5 2.2386-5 5 0 2.761 2.2386 5 5 5 2.761 0 5-2.239 5-5 0-2.7614-2.239-5-5-5zm0 2c1.657 0 3 1.3431 3 3s-1.343 3-3 3-3-1.3431-3-3 1.343-3 3-3z" transform="translate(0 1028.4)" fill="#c0392b"></path> </g> </g></svg>
+                        </Marker>
+                      </Map>
 
-                  
+                    }
+
+                  </div>
+
+
                 </div>
 
 
