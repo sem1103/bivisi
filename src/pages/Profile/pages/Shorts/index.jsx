@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState , useEffect} from "react";
 import Main from "../../components/Main";
 import Categories from "../../components/Categories";
 import "./style.scss";
@@ -16,20 +16,9 @@ const Shorts = () => {
   const { Option } = Select;
   const [selectedOption, setSelectedOption] = useState("");
   const { user } = useContext(AuthContext);
-  const { product } = useContext(ProductContext);
-  const hasProducts =
-    product && Array.isArray(product.results) && product.results.length > 0;
+  const { myProduct } = useContext(ProductContext);
 
-  // Ürün dizisi yoksa veya ürün dizisi boşsa, boş bir dizi oluştur
-  const activeUserProducts = hasProducts
-    ? product.results.filter(
-        (item) =>
-          item.user.name === user.username &&
-
-          item.product_video_type[0]?.product_type === "Shorts"
-      )
-    : [];
-
+ 
   const handleSelect = (value) => {
     setSelectedOption(value);
   };
@@ -38,7 +27,26 @@ const Shorts = () => {
     setSelectedOption("");
   };
 
-  const [sortedProducts, setSortedProducts] = useState([...activeUserProducts]);
+  const [sortedProducts, setSortedProducts] = useState([]);
+
+  useEffect(() => {
+    if(myProduct){
+      setSortedProducts(myProduct?.filter(item => {
+    
+        if(item.product_type === "Shorts") return item;
+          
+      }))
+
+      console.log(myProduct?.filter(item => {
+    
+        if(item.product_type === "Shorts") return item;
+          
+      }));
+      
+    }
+    
+   
+  }, [myProduct]);
 
   return (
     <>
@@ -62,12 +70,16 @@ const Shorts = () => {
                   Sort by
                 </div> */}
                 <div className="custom-select">
-                <SortProduct sortedProducts={sortedProducts} setSortedProducts={setSortedProducts}/>
+                  {
+                    sortedProducts &&
+                    <SortProduct sortedProducts={sortedProducts} setSortedProducts={setSortedProducts}/>
+
+                  }
                 </div>
               </div>
             </div>
 
-            {sortedProducts && sortedProducts.length > 0 ? (
+            {sortedProducts ? (
               sortedProducts.map((item) => {
                 return <MyShortCard productShortItem={item} key={item.id} />;
               })

@@ -109,7 +109,7 @@ const MyShortCard = ({ productShortItem }) => {
           <div className="main">
             <img
               className={`coverImage ${isHovered ? "hidden" : ""}`}
-              src={productShortItem.product_video_type[0]?.cover_image}
+              src={productShortItem.cover_image}
               alt="cover"
             />
             <HiOutlineDotsHorizontal
@@ -127,8 +127,8 @@ const MyShortCard = ({ productShortItem }) => {
           </div>
           <div className="shortCard-content">
             <div className="text">
-              <p>{productShortItem?.name}</p>
-              <span>{productShortItem?.price}{countryCurrencySymbol}</span>
+              <p>{productShortItem?.product.name}</p>
+              <span>{productShortItem?.product.price}{countryCurrencySymbol}</span>
             </div>
           </div>
         </div>

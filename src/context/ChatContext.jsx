@@ -216,7 +216,7 @@ export default function ChatProvider({ children }) {
 
             socketInstance.on("newMessage", (data) => {
                 let { message, target } = data;
-             
+                
                 message?.action && setIsModalCallOpen(true) // Eyer action varsa o zaman call modal pencereni activ edir 
                 if (!userss.some(item => +item == +target) && message.action == `call to ${target}`) { // Проверка, находится ли пользователь оффлайн
                     console.log('User is offline');

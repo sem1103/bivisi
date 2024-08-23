@@ -36,20 +36,20 @@ const MyVideo = ({ productItem }) => {
       <div className="myVideoCard">
         {/* <span className="card_price">$ {productItem?.price}</span> */}
         <img
-          src={productItem.product_video_type[0].cover_image}
+          src={productItem.cover_image}
           alt=""
           className="main"
         />
         <NavLink to={`/product_detail/${productItem?.id}`} className="heading">
-          <h1>{productItem.description}</h1>
+          <h1>{productItem.product.description}</h1>
           <h6>
             <img src={blueHeartd} alt="" />
-            {productItem.like_count}
+            {productItem.product.like_count}
           </h6>
         </NavLink>
-        <p>{productItem.name}</p>
+        <p>{productItem.product.name}</p>
         <div className="cardBottom">
-          <span>{productItem.price} {countryCurrencySymbol}</span>
+          <span>{productItem.product.price} {countryCurrencySymbol}</span>
           <div className="icons">
             <NavLink to={`/your_profile/edit_video/${productItem.id}`} onClick={() => {
               localStorage.setItem('myEditVideo', JSON.stringify(productItem))

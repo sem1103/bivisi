@@ -23,6 +23,8 @@ import replay from "../../assets/icons/replay-rectangle.png";
 import { Modal } from "antd";
 import ShareModal from "../ShareModal";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
+import { CModal, CModalHeader, CModalTitle , CModalFooter, CButton} from "@coreui/react";
+
 
 const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, setPlaying }) => {
   const axiosInstance = useAxios();
@@ -45,7 +47,6 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   }, [user, productItemShort.is_liked]);
   
 
-  console.log(productItemShort);
   useEffect(() => {
     if (
       !isPlaying &&
@@ -125,7 +126,6 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
             }
           });
 
-          setShowMap(true)
         }
       })
       .catch(error => console.error('Error fetching coordinates:', error));
@@ -263,9 +263,9 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   };
 
   const showModal = (commentId, isSubComment) => {
+    setIsModalVisible(true);
     setDeleteCommentId(commentId);
     setDeleteIsSubComment(isSubComment);
-    setIsModalVisible(true);
   };
 
   const handleCancel = () => {
@@ -284,17 +284,34 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
 
   return (
     <>
-      {" "}
-      <Modal
-        title="Delete Comment"
+
+      <CModal
+        onClose={handleCancel}
+        alignment="center"
+      className='modal-delete'
         visible={isModalVisible}
-        onOk={handleDeleteComment}
-        onCancel={handleCancel}
-        centered
-        className="modal-delete"
+
       >
+        <button
+        className="close__modal stroke__change"
+        onClick={() => {
+          handleCancel()
+        }}
+        >
+        <svg width={28} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+        </button>
+      
+        <CModalTitle id="VerticallyCenteredExample">Delete Comment</CModalTitle>
+    
         <p>Are you sure you want to delete this comment?</p>
-      </Modal>
+
+        <CModalFooter>
+        <CButton color="secondary" onClick={() => handleCancel()}>
+          Close
+        </CButton>
+        <CButton color="primary" onClick={handleDeleteComment}>Save changes</CButton>
+      </CModalFooter>
+      </CModal>
 
 
       <div className="col-lg-12 col-md-12 col-sm-12 col-12 pb-3 mb-4 d-flex justify-content-center align-items-center">
@@ -327,19 +344,28 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
 
 
               <div className="sp_desc">
-                <Modal
-                  className={'modal__body chat__modal'}
+              <CModal
+  
+      alignment="center"
+      visible={detailModal}
+      onClose={() => {
+        setDetailModal(false)
 
-                  open={detailModal}
-                  onCancel={() => setDetailModal(false)}
-                  styles={{
-                    mask: {
-                      backdropFilter: 'blur(10px)',
-                      zIndex: 999999999999,
-                    }
-                  }}
-                >
-                  <div className="short__info">
+      }}
+      
+    >
+ 
+        <button
+        className="close__modal stroke__change"
+        onClick={() => {
+          setDetailModal(false)
+        }}
+        >
+        <svg width={28} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+        </button>
+     
+
+        <div className="short__info">
                     <h3>{productItemShort.name}</h3>
                     <h4>{productItemShort.description}</h4>
 
@@ -387,8 +413,8 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                       </div>
                     </div>
                   </div>
-
-                </Modal>
+      </CModal>
+             
                 <div className="short__inform">
                 <p >{productItemShort.name.slice(0, 20)}... <button onClick={() => setDetailModal(true)}>Read more</button></p>
                 <span>{productItemShort.price + countryCurrencySymbol}</span>
@@ -592,6 +618,8 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                         <div className="drop_menu">
                                           <button
                                             onClick={() => {
+                                              console.log(isModalVisible);
+
                                               showModal(comment.id, false);
                                             }}
                                           >
@@ -712,6 +740,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                                             <div className="drop_menu">
                                                               <button
                                                                 onClick={() => {
+                                                                  
                                                                   showModal(
                                                                     subComment.id,
                                                                     true

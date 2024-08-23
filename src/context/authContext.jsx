@@ -35,7 +35,13 @@ export const AuthProvider = ({ children }) => {
       console.log(response.data);
       
     } catch (error) {
-      console.error("Error fetching user details:", error);
+      if(error.response.data.code == 'token_not_valid') {
+        setAuthTokens(null);
+    setUser(null);
+    setUserDetails(null);
+    Cookies.remove('authTokens', { path: '/' })
+      }
+      console.error("Error fetching user details:", error.response.data.code);
       throw error;
     }
   };

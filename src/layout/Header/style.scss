@@ -421,54 +421,66 @@ header {
   cursor: pointer;
 }
 
-.call__modal {
+.call__modal__wrapper{
+  .modal-dialog{
+    max-width: 300px;
+    margin: 15px auto;
+    
 
-  text-align: center;
-
-  h3 {
-    font-size: clamp(20px, 3vw, 26px);
-    color: var(--textColor);
+  }
+  .modal-content{
+    padding: 25px;
+    animation-name: boxShadowAnimate;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
   }
 
-  .call__btns {
-    display: flex;
-    justify-content: center;
-    gap: 10px 20px;
-    margin: 35px 0 0 0;
+  .call__modal {
 
-    button {
-      background-color: transparent;
-      border: 0;
-      outline: 0;
-      border-radius: 50%;
-      transition: all .4s ease-in-out;
-
-      &.decline__call:hover {
-        box-shadow: 0 0 5px 3px #ce4646;
-      }
-
-      &.accept__call:hover {
-        box-shadow: 0 0 5px 3px #51fb5c;
-      }
-
-      .video__svg {
-        background-color: #51fb5c;
+    text-align: center;
+  
+    h3 {
+      font-size: clamp(20px, 3vw, 24px);
+      color: var(--textColor);
+    }
+  
+    .call__btns {
+      display: flex;
+      justify-content: center;
+      gap: 10px 20px;
+      margin: 35px 0 0 0;
+  
+      button {
+        background-color: transparent;
+        border: 0;
+        outline: 0;
         border-radius: 50%;
+        transition: all .4s ease-in-out;
+  
+        &.decline__call:hover {
+          box-shadow: 0 0 5px 3px #ce4646;
+        }
+  
+        &.accept__call:hover {
+          box-shadow: 0 0 5px 3px #51fb5c;
+        }
+  
+        .video__svg {
+          background-color: #51fb5c;
+          border-radius: 50%;
+        }
       }
     }
+  
+  
   }
 
-
+ 
 }
 
-.call__modal {
-  .ant-modal-content {
-    animation-name: boxShadowAnimate;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-  }
-}
+
+
 
 @keyframes boxShadowAnimate {
   0% {
