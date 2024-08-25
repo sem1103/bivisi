@@ -21,15 +21,21 @@ import Plyr from "plyr-react";
 import WhatsAppButton from "../../components/WhatsAppButton";
 import ShareModal from "../../components/ShareModal";
 import { useCart } from "react-use-cart";
-import Map, { Marker } from 'react-map-gl';
 import getCurrencyByCountry from "../../utils/getCurrencyService";
 import { NotificationContext } from "../../context/NotificationContext";
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 
 
 const ProductDetail = () => {
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
   const { product, setProduct } = useContext(ProductContext);
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: 'AIzaSyDSalM865lZHc8e3B7a0KWSCJKzGm7m37Q',
+  });
+
+
   const { id } = useParams();
   const params = useParams()
   const serviceId = Number(id);
@@ -47,55 +53,39 @@ const ProductDetail = () => {
   const [isShowMap, setIsShowMap] = useState(false)
   const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA';
   const { countryCurrencySymbol } = getCurrencyByCountry();
-  const [initialViewState, setInitialViewState] = useState({
-    longitude: 0,
-    latitude: 0,
-    zoom: 13,
-  });
+  const [center, setCenter] = useState({ lat: 37.7749, lng: -122.4194 })
 
 
 
-  const [markerPosition, setMarkerPosition] = useState({
-    longitude: 0,
-    latitude: 0,
-  });
+
 
   const { addItem } = useCart();
 
   const fetchCoordinates = async (ADDRESS) => {
-    setIsShowMap(false)
+    setIsShowMap(false);
 
     try {
-      const response = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(ADDRESS)}.json`, {
+      const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
         params: {
-          access_token: TOKEN
-        }
+          address: ADDRESS,
+          key: 'AIzaSyDSalM865lZHc8e3B7a0KWSCJKzGm7m37Q',
+        },
       });
 
-      const { features } = response.data;
-      if (features && features.length > 0) {
-        const [longitude, latitude] = features[0].center;
+      const { results } = response.data;
+      if (results && results.length > 0) {
+        const { lat, lng } = results[0].geometry.location;
 
-
-        setInitialViewState({
-          longitude,
-          latitude,
-          zoom: 13,
+        setCenter({
+          lat,
+          lng,
         });
-
-        setMarkerPosition({
-          longitude,
-          latitude,
-          zoom: 13,
-        });
-
-        setIsShowMap(true)
+        setIsShowMap(true);
       }
     } catch (error) {
       console.error('Ошибка при геокодировании:', error);
     }
   };
-
   const handleAddToHistory = async (productDetail) => {
     try {
       const watchDate = new Date().toISOString();
@@ -482,21 +472,22 @@ const EmbedCodeGenerator = (videoUrl) => {
 
 
                   <div className="address__map">
-                    {isShowMap &&
-                      <Map
-                        initialViewState={initialViewState}
-                        mapStyle="mapbox://styles/mapbox/streets-v9"
-                        mapboxAccessToken={TOKEN}
-                        width="100%"
-                        height="250px"
+                  {isLoaded && isShowMap && (
+        <GoogleMap
+        mapContainerStyle={{ width: '100%', height: '100%' , borderRadius: '16px'}}
 
-                      >
-                        <Marker longitude={markerPosition.longitude} latitude={markerPosition.latitude} >
-                          <svg width={30} viewBox="0 0 24 24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1028.4)"> <path d="m12 0c-4.4183 2.3685e-15 -8 3.5817-8 8 0 1.421 0.3816 2.75 1.0312 3.906 0.1079 0.192 0.221 0.381 0.3438 0.563l6.625 11.531 6.625-11.531c0.102-0.151 0.19-0.311 0.281-0.469l0.063-0.094c0.649-1.156 1.031-2.485 1.031-3.906 0-4.4183-3.582-8-8-8zm0 4c2.209 0 4 1.7909 4 4 0 2.209-1.791 4-4 4-2.2091 0-4-1.791-4-4 0-2.2091 1.7909-4 4-4z" transform="translate(0 1028.4)" fill="#e74c3c"></path> <path d="m12 3c-2.7614 0-5 2.2386-5 5 0 2.761 2.2386 5 5 5 2.761 0 5-2.239 5-5 0-2.7614-2.239-5-5-5zm0 2c1.657 0 3 1.3431 3 3s-1.343 3-3 3-3-1.3431-3-3 1.343-3 3-3z" transform="translate(0 1028.4)" fill="#c0392b"></path> </g> </g></svg>
-                        </Marker>
-                      </Map>
+          center={center}
+          zoom={15}
 
-                    }
+          options={{
+            disableDefaultUI: true, // Отключить стандартный интерфейс
+            gestureHandling: 'greedy', // Управление жестами
+            zoomControl: true, // Включить управление зумом
+          }}
+        >
+          <Marker position={center} />
+        </GoogleMap>
+      )}
 
                   </div>
 

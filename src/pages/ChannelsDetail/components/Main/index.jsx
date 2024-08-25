@@ -67,6 +67,9 @@ const MainChannels = () => {
       
       setChannelData(channelData);
       setChannelId(channelData.id);
+
+      console.log(location.state);
+      
       
     }
   }, [location.state, params]);

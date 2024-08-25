@@ -19,7 +19,7 @@ const AllChannels = () => {
                 const filteredChannels = response.data.results.filter(channel => channel.username !== user?.username);
                 setPopularAllC(filteredChannels);
                 setSortedChannels(filteredChannels);
-
+                
             } catch (error) {
                 console.error('Failed to fetch popular channels:', error);
             }

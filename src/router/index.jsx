@@ -156,8 +156,11 @@ const AppRouter = () => {
             <Route element={<NewStream />} path="/new-stream" />
             <Route element={<ShowMyStream />} path="/new-stream/:roomId" />
 
+
             <Route path="*" element={<Navigate replace to="/404" />} />
             <Route element={<NotFound />} path="/404" />
+
+            
           </Routes>
         </Sidebar>
       </BrowserRouter>

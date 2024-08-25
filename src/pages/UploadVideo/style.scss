@@ -1,3 +1,8 @@
+.map-container {
+  height: 400%;
+  width: 100%;
+}
+
 .upload_video {
   width: 100%;
   height: auto;
@@ -472,60 +477,55 @@
           flex: 1;
         }
 
-        .mapboxgl-ctrl-geocoder--input {
+        .search__input  {
           width: 100%;
-          border: 1px solid #0087cc8f !important;
-          padding: 5px 15px !important;
-          font: 14px Poppins !important;
-          background-color: var(--primaryColor) !important;
-          color: var(--textColor) !important;
 
-          &::placeholder {
+          input{
+            width: 100%;
+            background-color: var(--primaryColor) !important;
             color: var(--textColor) !important;
-          }
-        }
+            font: 14px Poppins !important;
+            border: 1px solid #0087cc8f !important;
+            padding: 5px 15px !important;
+            border-radius: 8px;
 
-        .mapboxgl-canvas {
-
-          border-radius: 14px;
-
-        }
-
-        .mapboxgl-ctrl-top-left {
-          position: relative;
-        }
-
-        .suggestions-wrapper {
-          position: absolute;
-          color: var(--textColor);
-          top: 45px;
-
-          ul {
-            padding: 8px 15px;
-            border: 1px solid #0087cc8f;
-            border-radius: 20px;
-            background: var(--backgroundColor);
-            max-height: 150px;
-            overflow: auto;
-          }
-
-          .mapboxgl-ctrl-geocoder--powered-by {
-            display: none !important;
-          }
-
-          li {
-            list-style: none;
-            font: 14px Poppins;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 14px;
-            margin: 0 0 3px 0;
-
-            &:hover {
-              background: var(--primaryColor) 0% 0% no-repeat padding-box;
+            &::placeholder {
+              color: var(--textColor) !important;
             }
           }
+          
+
+          
+            ul {
+              padding: 8px 15px;
+              border: 1px solid #0087cc8f;
+              border-radius: 20px;
+              background: var(--backgroundColor);
+              max-height: 150px;
+              overflow: auto;
+              list-style: none;
+              margin: 15px 0 0 0;
+            }
+  
+          
+            li {
+              list-style: none;
+              font: 14px Poppins;
+              cursor: pointer;
+              padding: 5px;
+              border-radius: 14px;
+              margin: 0 0 3px 0;
+              color: var(--textColor);
+              &:hover {
+                background: var(--primaryColor) 0% 0% no-repeat padding-box;
+              }
+            }
+          
         }
+
+       
+
+       
       }
 
       .video__type__settings {

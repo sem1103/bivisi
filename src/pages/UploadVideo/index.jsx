@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef, useCallback } from "react";
+import React, { useContext, useEffect, useState, useRef, useCallback, useMemo } from "react";
 import "./style.scss";
 import { Progress, Input, Radio, Space } from "antd";
 import Select from 'react-select';
@@ -10,20 +10,28 @@ import toast from "react-hot-toast";
 import { ProductContext } from "../../context/ProductContext";
 import { capitalizeFirstLetter } from "../../utils/validation";
 import { FaCheck } from "react-icons/fa";
-import Map, { Marker } from 'react-map-gl';
+// import Map, { Marker } from 'react-map-gl';
 import GeocoderControl from "../../components/reactMap/geocoder-control";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useLocation, useNavigate } from "react-router-dom";
-import '../ProductDetail/map.scss'
+// import '../ProductDetail/map.scss'
 import { BASE_URL } from "../../api/baseUrl";
 import { ThemeContext } from "../../context/ThemeContext";
 import { others } from "@chakra-ui/react";
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import Autocomplete from "./Autocomplete";
 
 
 const UploadV = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const [center, setCenter] = useState({ lat: 37.7749, lng: -122.4194 })
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: "AIzaSyDSalM865lZHc8e3B7a0KWSCJKzGm7m37Q",
+    libraries: ['places']
+  })
 
   const [editVideo, setEditVideo] = useState(localStorage.myEditVideo != undefined ? JSON.parse(localStorage.myEditVideo) : false);
   const [category, setCategory] = useState([]);
@@ -62,6 +70,8 @@ const UploadV = () => {
 
   const [showMap, setShowMap] = useState(false)
 
+
+
   const [userLocation, setUserLocation] = useState({
     latitude: 0,
     longitude: 0,
@@ -84,7 +94,7 @@ const UploadV = () => {
     }),
     menu: (styles) => (
       {
-        ...styles, 
+        ...styles,
         borderRadius: '12px',
         background: 'var(--primaryColor)',
 
@@ -146,17 +156,7 @@ const UploadV = () => {
 
 
 
-  const handleGeocoderResult = useCallback((event) => {
-    const { result } = event;
-    const { center, place_name } = result;
-    const [longitude, latitude] = center;
 
-    const link = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
-    setMapLink({
-      url: link,
-      location: place_name
-    });
-  }, []);
 
 
 
@@ -183,8 +183,14 @@ const UploadV = () => {
   };
 
   const handleFileChange = (e) => {
+
     const { name, files } = e.target;
     const file = files[0];
+    if (file.type != "video/mp4") {
+      toast.error('Please, upload only video file.');
+      return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: file,
@@ -207,20 +213,25 @@ const UploadV = () => {
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
-          setUserLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            zoom: 13
-          });
+        
+          setCenter(
+           {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+           }
+          )
 
-          fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${position.coords.longitude},${position.coords.latitude}.json?access_token=${TOKEN}`)
+          
+
+          fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyDSalM865lZHc8e3B7a0KWSCJKzGm7m37Q`)
             .then(response => response.json())
             .then(data => {
-              if (data.features && data.features.length > 0) {
+              
+              if (data.results && data.results.length > 0) {
                 const link = `https://www.google.com/maps/search/?api=1&query=${position.coords.latitude},${position.coords.longitude}`;
                 setMapLink({
                   url: link,
-                  location: data.features[0].place_name
+                  location: data.results[0].formatted_address
                 });
               }
             })
@@ -319,7 +330,7 @@ const UploadV = () => {
         ...prevData,
         category: [prevData.category[0], +value.value],
       }));
-console.log(value);
+      console.log(value);
 
     } else {
       setFormData((prevData) => ({
@@ -490,8 +501,8 @@ console.log(value);
   };
 
 
-  
-  
+
+
   useEffect(() => {
 
 
@@ -528,10 +539,10 @@ console.log(value);
           handleSelectChange("category", selectedCategory, categoryArray)
           handleSelectChange("subcategory", selectedSubcategory, categoryArray.subcategory)
 
-          
+
           console.log(selectedCategory);
-       
-           
+
+
         }
       } catch (err) {
         console.log(err);
@@ -555,7 +566,7 @@ console.log(value);
       })
     }
 
-    
+
   }, []);
 
 
@@ -724,7 +735,7 @@ console.log(value);
                             setSelectedCategories(null)
                             handleSelectChange("category", value)
                           }}
-                    
+
                         />
                       </div>
 
@@ -825,7 +836,29 @@ console.log(value);
 
                     <div className="react__map input_data ">
                       <label >Address</label>
-                      {
+
+                      <div className="search__input">
+                        <Autocomplete isLoaded={isLoaded} setCenter={setCenter} mapLink={mapLink} setMapLink={setMapLink}/>
+                      </div>
+
+                      <GoogleMap
+                        mapContainerStyle={{ width: '100%', height: '300px' , borderRadius: '16px'}}
+                        center={center}
+                        zoom={15}
+                        options={{
+                          disableDefaultUI: true, // Отключить стандартный интерфейс
+                          gestureHandling: 'greedy', // Управление жестами
+                          zoomControl: true, // Включить управление зумом
+                        }}
+                      >
+                        <Marker
+                          position={center}
+                          >
+                          <svg width={30} viewBox="0 0 24 24" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1028.4)"> <path d="m12 0c-4.4183 2.3685e-15 -8 3.5817-8 8 0 1.421 0.3816 2.75 1.0312 3.906 0.1079 0.192 0.221 0.381 0.3438 0.563l6.625 11.531 6.625-11.531c0.102-0.151 0.19-0.311 0.281-0.469l0.063-0.094c0.649-1.156 1.031-2.485 1.031-3.906 0-4.4183-3.582-8-8-8zm0 4c2.209 0 4 1.7909 4 4 0 2.209-1.791 4-4 4-2.2091 0-4-1.791-4-4 0-2.2091 1.7909-4 4-4z" transform="translate(0 1028.4)" fill="#e74c3c"></path> <path d="m12 3c-2.7614 0-5 2.2386-5 5 0 2.761 2.2386 5 5 5 2.761 0 5-2.239 5-5 0-2.7614-2.239-5-5-5zm0 2c1.657 0 3 1.3431 3 3s-1.343 3-3 3-3-1.3431-3-3 1.343-3 3-3z" transform="translate(0 1028.4)" fill="#c0392b"></path> </g> </g></svg>
+                        </Marker>                        </GoogleMap>
+
+
+                      {/* {
                         showMap &&
                         <div className="address__map">
                           <Map
@@ -845,7 +878,7 @@ console.log(value);
                             </Marker>
                           </Map>
                         </div>
-                      }
+                      } */}
                     </div>
 
                     <div className="input_data thumbernails">
