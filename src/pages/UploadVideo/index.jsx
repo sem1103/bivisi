@@ -11,7 +11,6 @@ import { ProductContext } from "../../context/ProductContext";
 import { capitalizeFirstLetter } from "../../utils/validation";
 import { FaCheck } from "react-icons/fa";
 // import Map, { Marker } from 'react-map-gl';
-import GeocoderControl from "../../components/reactMap/geocoder-control";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useLocation, useNavigate } from "react-router-dom";
