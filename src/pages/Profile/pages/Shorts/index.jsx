@@ -47,7 +47,7 @@ const Shorts = () => {
     
    
   }, [myProduct]);
-
+console.log(sortedProducts,myProduct)
   return (
     <>
       <Main />

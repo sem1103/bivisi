@@ -60,7 +60,7 @@
         top: 0;
         left: 0;
         width: 100% !important;
-        height: 100vh !important;
+        height: 80vh !important;
         // z-index: 2598728;
         object-fit: cover;
 
@@ -746,17 +746,7 @@
       z-index: 2;
     }
 
-    &::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: var(--primaryColor);
-      left: 0;
-      top: 0;
-      z-index: 1;
-      opacity: .6;
-    }
+  
   }
 
   .comment-open .sp_desc {
@@ -812,11 +802,11 @@
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
-          height: initial !important;
+       
           width: 100% !important;
 
           video {
-            height: initial !important;
+           
             width: 90% !important;
           }
         }

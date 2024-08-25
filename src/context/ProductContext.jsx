@@ -30,7 +30,7 @@ export const ProductProvider = ({ children }) => {
   };
 
   const getMyProducts = async () => {
-    const res = await axios.get(`https://bivisibackend.store/api/user_web_products/`, {
+    const res = await axios.get(`${BASE_URL}/user_web_products/`, {
       headers: {
           Authorization: `Bearer ${USER_TOKKEN}`
       }

@@ -374,3 +374,11 @@ input[type="number"] {
 
 }
 
+@media(max-width:576px){
+  .stroke__change,.fill__change{
+    width: 42px;
+    height: 42px;
+    border-radius: 13px !important;
+    padding: 0 !important;
+  }
+}
