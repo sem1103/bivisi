@@ -32,7 +32,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const { countryCurrencySymbol } = getCurrencyByCountry()
-
+  const [isDelayedHovered, setIsDelayedHovered] = useState(false);
   const playerRef = useRef(null);
   const isPlayingRef = useRef(false);
 
@@ -61,12 +61,15 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
   };
 
   const handleMouseEnter = () => {
-    setIsHovered(true);
-    playVideo();
+    hoverTimeoutRef.current = setTimeout(() => {
+      setIsDelayedHovered(true);
+      playVideo();
+    }, 3000);
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
+    clearTimeout(hoverTimeoutRef.current);
+    setIsDelayedHovered(false);
     pauseVideo();
   };
   const onPlayerReady = () => {
