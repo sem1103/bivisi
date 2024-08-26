@@ -23,18 +23,15 @@ import { Modal } from "antd";
 import ShareModal from "../ShareModal";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
 import { CModal, CModalHeader, CModalTitle , CModalFooter, CButton} from "@coreui/react";
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import axios from "axios";
 
 
 const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, setPlaying }) => {
   const axiosInstance = useAxios();
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyDSalM865lZHc8e3B7a0KWSCJKzGm7m37Q',
-  });
+  
 
-  const { product, setProduct } = useContext(ProductContext);
+  const { product, setProduct, isLoaded } = useContext(ProductContext);
   const { user, userDetails } = useContext(AuthContext);
   const [liked, setLiked] = useState(false);
   const [animate, setAnimate] = useState(false);

@@ -23,17 +23,14 @@ import ShareModal from "../../components/ShareModal";
 import { useCart } from "react-use-cart";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
 import { NotificationContext } from "../../context/NotificationContext";
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 
 
 const ProductDetail = () => {
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
-  const { product, setProduct } = useContext(ProductContext);
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyDSalM865lZHc8e3B7a0KWSCJKzGm7m37Q',
-  });
+  const { product, setProduct, isLoaded } = useContext(ProductContext);
+  
 
 
   const { id } = useParams();

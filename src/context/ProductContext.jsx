@@ -2,12 +2,17 @@ import axios from "axios";
 import { useEffect, useState, createContext } from "react";
 import { BASE_URL } from "../api/baseUrl";
 import Cookies from 'js-cookie';
+import { useJsApiLoader } from "@react-google-maps/api";
 
 export const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
   const USER_TOKKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
-
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: "AIzaSyDSalM865lZHc8e3B7a0KWSCJKzGm7m37Q",
+    libraries: ['places']
+  })
   const [product, setProduct] = useState([]);
   const [myProduct, setMyProduct] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -73,6 +78,7 @@ export const ProductProvider = ({ children }) => {
     <ProductContext.Provider
       value={{
         product,
+        isLoaded,
         myProduct,
         filteredProducts,
         setProduct,

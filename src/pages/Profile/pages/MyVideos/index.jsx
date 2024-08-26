@@ -30,14 +30,7 @@ const MyVideos = () => {
     
         if(item.product_type === "Video") return item;
           
-      }))
-
-      console.log(myProduct?.filter(item => {
-    
-        if(item.product_type === "Video") return item;
-          
-      }));
-      
+      }))     
     }
     
    
