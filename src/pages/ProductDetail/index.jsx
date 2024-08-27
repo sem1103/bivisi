@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState, useRef, useMemo } from "react";
 import "./style.scss";
-import "./map.scss";
 
 import eye from "../../assets/icons/eye.svg";
-
-import { Link, useParams } from "react-router-dom";
+import empryAvatar from './../../assets/images/user-empty-avatar.png'
+import { Link, useLocation, useParams } from "react-router-dom";
 import { ProductContext } from "../../context/ProductContext";
 import useAxios from "../../utils/useAxios";
 import ReactPlayer from "react-player";
@@ -24,17 +23,20 @@ import { useCart } from "react-use-cart";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
 import { NotificationContext } from "../../context/NotificationContext";
 import { GoogleMap, Marker } from '@react-google-maps/api';
+import Cookies from 'js-cookie';
+import useSubscription from "../../hooks/useSubscription";
 
 
 const ProductDetail = () => {
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
   const { product, setProduct, isLoaded } = useContext(ProductContext);
-  
-
+  const USER_TOKKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
+  const [videoAuthor, setVideoAuthor] = useState(false)
+  const [subscribeCount, setSubscribeCount] = useState(0);
 
   const { id } = useParams();
-  const params = useParams()
+  const location = useLocation();
   const serviceId = Number(id);
   const [category, setCategory] = useState([])
   const [subcategory, setSubcategory] = useState([]);
@@ -48,10 +50,18 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(false);
   const playerRef = useRef(null);
   const [isShowMap, setIsShowMap] = useState(false)
-  const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA';
   const { countryCurrencySymbol } = getCurrencyByCountry();
   const [center, setCenter] = useState({ lat: 37.7749, lng: -122.4194 })
+  console.log(location.state);
 
+  const {
+    isSubscribed,
+    followersCount,
+    handleSubscribe,
+    handleUnsubscribe,
+    searchUser,
+    checkSubscribed
+  } = useSubscription(location.state.channellId, 0)
 
 
 
@@ -179,6 +189,8 @@ const ProductDetail = () => {
       setLiked(productData.is_liked);
       handleAddToHistory(response.data);
       fetchCoordinates(productData.location);
+
+
     } catch (error) {
       console.error("Error fetching product details:", error);
     }
@@ -191,23 +203,35 @@ const ProductDetail = () => {
     }
   }, [serviceId]);
 
-  const handleDownload = () => {
-    if (productDetail?.product_video_type[0]?.original_video) {
+  const handleDownload = async () => {
+    const videoUrl = productDetail?.product_video_type[0]?.original_video;
+
+    if (videoUrl) {
       try {
-        const a = document.createElement("a");
-        a.style.display = "none";
-        a.href = productDetail?.product_video_type[0]?.original_video;
-        a.download = "video.mp4";
-        a.target = "_blank";
+        const response = await fetch(videoUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'video/mp4',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'video.mp4';
         document.body.appendChild(a);
         a.click();
+        window.URL.revokeObjectURL(url); // Освободить память
         document.body.removeChild(a);
       } catch (error) {
-        console.error("Error downloading video:", error);
-        toast.error("Video yüklənmədi");
+        console.error('Error downloading video:', error);
       }
-    } else {
-      toast.error("Video URL mövcud deyil");
     }
   };
 
@@ -227,24 +251,25 @@ const ProductDetail = () => {
   }
 
 
+  const fetchData = async () => {
+    try {
+      const categoryRes = await axios.get(
+        `${BASE_URL}/categories/`
+      );
+      setCategory(categoryRes.data.results);
+
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+
 
 
 
 
   useEffect(() => {
-
-    const fetchData = async () => {
-      try {
-        const categoryRes = await axios.get(
-          `${BASE_URL}/categories/`
-        );
-        setCategory(categoryRes.data.results);
-
-
-      } catch (err) {
-        console.log(err);
-      }
-    };
 
     fetchData();
 
@@ -254,22 +279,32 @@ const ProductDetail = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if(productDetail){
+      searchUser(productDetail.user.name)
+      checkSubscribed()
+    }
+
+  }, [productDetail, id]);
 
 
-  
-const EmbedCodeGenerator = (videoUrl) => {
-  return (
-    <div>
-      <h3>Embed Code:</h3>
-      <textarea
-        readOnly
-        value={`<iframe width="560" height="315" src="${videoUrl}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`}
-        rows="4"
-        cols="50"
-      />
-    </div>
-  );
-};
+
+
+  const EmbedCodeGenerator = (videoUrl) => {
+    return (
+      <div>
+        <h3>Embed Code:</h3>
+        <textarea
+          readOnly
+          value={`<iframe width="560" height="315" src="${videoUrl}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`}
+          rows="4"
+          cols="50"
+        />
+      </div>
+    );
+  };
+
+
 
 
 
@@ -281,8 +316,8 @@ const EmbedCodeGenerator = (videoUrl) => {
     <div className="product_detail">
       <div className="container-fluid">
         {productDetail && !loading ? (
-          <div className="row">
-            <div className="col-xl-9 col-xxl-9 ">
+          <div className="video__detail">
+            <div className="video">
               <div className="video_content">
                 <div className="video_detail_content">
                   <img src={logo} className="video_logo" alt="" />
@@ -321,6 +356,8 @@ const EmbedCodeGenerator = (videoUrl) => {
                     />
                   </div>
                 </div>
+
+
                 <div className="video_content_name mt-3">
                   <div className="d-flex justify-content-center align-items-start flex-column h-100">
                     <h4>{productDetail.name}</h4>
@@ -334,8 +371,39 @@ const EmbedCodeGenerator = (videoUrl) => {
                   </div>
                 </div>
 
+                <div className="user__block">
+                  <div className="left__block">
+                    <div className="user__avatar">
+                      <img src={productDetail.user.avatar ? productDetail.user.avatar : empryAvatar} alt="" />
+                    </div>
+                    <div className="user__desc">
+                      <h2 className="user__name">
+                        {productDetail.user.name}
+                      </h2>
+                      {
+                        user &&
+                        <p>
+                          {followersCount} subscribers
+                        </p>
+                      }
 
+                    </div>
+                  </div>
 
+                  <div className="right__block">
+                    {
+                      productDetail.user.name != user?.username && user &&
+                      <div className="subs_btn">
+                        <button
+                          onClick={() => {
+                            isSubscribed ? handleUnsubscribe() : handleSubscribe()
+                          }}
+                          className={`subs-button ${isSubscribed ? 'unsubs-button' : ''}`}>{!isSubscribed ? <span>Subscribe</span> : <span>Unsubscribe</span>}</button>
+                      </div>
+                    }
+
+                  </div>
+                </div>
 
                 <div className="video_content_bottom">
                   <div className="d-flex video_bottom_right">
@@ -395,9 +463,9 @@ const EmbedCodeGenerator = (videoUrl) => {
                     </div>
                     <div className="d-flex align-items-center gap-2">
                       <button className="lr-btn fill__change"
-                      onClick={() =>{
-                        EmbedCodeGenerator()
-                      }}
+                        onClick={() => {
+                          EmbedCodeGenerator()
+                        }}
                       >
                         <svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <g id="direaction left">
@@ -417,6 +485,13 @@ const EmbedCodeGenerator = (videoUrl) => {
                     </div>
                   </div>
                 </div>
+
+
+
+
+
+
+
 
 
                 <div className="video__properties">
@@ -469,22 +544,22 @@ const EmbedCodeGenerator = (videoUrl) => {
 
 
                   <div className="address__map">
-                  {isLoaded && isShowMap && (
-        <GoogleMap
-        mapContainerStyle={{ width: '100%', height: '100%' , borderRadius: '16px'}}
+                    {isLoaded && isShowMap && (
+                      <GoogleMap
+                        mapContainerStyle={{ width: '100%', height: '100%', borderRadius: '16px' }}
 
-          center={center}
-          zoom={15}
+                        center={center}
+                        zoom={15}
 
-          options={{
-            disableDefaultUI: true, // Отключить стандартный интерфейс
-            gestureHandling: 'greedy', // Управление жестами
-            zoomControl: true, // Включить управление зумом
-          }}
-        >
-          <Marker position={center} />
-        </GoogleMap>
-      )}
+                        options={{
+                          disableDefaultUI: true, // Отключить стандартный интерфейс
+                          gestureHandling: 'greedy', // Управление жестами
+                          zoomControl: true, // Включить управление зумом
+                        }}
+                      >
+                        <Marker position={center} />
+                      </GoogleMap>
+                    )}
 
                   </div>
 
@@ -496,13 +571,15 @@ const EmbedCodeGenerator = (videoUrl) => {
                 <CommentsComponent productDetail={productDetail} />
               </div>
             </div>
+
+            <RelatedVideos category={productDetail.category[0]} />
+
           </div>
         ) : (
           <div className="loading_section">
             <h4>Loading...</h4>
           </div>
         )}
-        <RelatedVideos />
       </div>
     </div>
   );

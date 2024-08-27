@@ -601,6 +601,18 @@
   color: white;
   font-size: 19px;
 }
+.video__detail{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  .video{
+    flex-basis: 70%;
+  }
+  .related_videos{
+    width: 30%;
+    padding: 5px 15px 25px 15px;
+  }
+}
 
 .chat-modal-content {
   width: 100%;
@@ -686,22 +698,7 @@
     color: var(--textColor);
   }
 
-  .mapboxgl-map {
-
-    .mapboxgl-canvas-container {
-      overflow: hidden;
-
-      canvas {
-        height: 100% !important;
-        border-radius: 16px;
-        overflow: hidden;
-      }
-    }
-
-    .mapboxgl-ctrl {
-      display: none;
-    }
-  }
+  
 }
 
 .address__map {
@@ -709,6 +706,53 @@
   height: 250px;
 }
 
+.user__block{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin:  0 0 15px 0;
+  border: 1px solid var(--primaryColor);
+  padding: 10px 15px;
+  border-radius: 16px;
+  .user__avatar{
+    max-width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+    img{
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+  .left__block{
+    display: flex;
+    align-items: center;
+    .user__desc{
+      margin: 0 0 0 10px;
+    }
+    p{
+      margin: 0;
+      color: var(--textColor);
+      font-size: 12px;
+      opacity: .7;
+    }
+  }
+  h2{
+    color: var(--textColor);
+    font-size: 20px;
+    margin: 0;
+  }
+}
+
+@media (width < 950px) {
+  .video__detail{
+    flex-direction: column;
+    .related_videos{
+      width: 100%;
+    }
+  }
+ 
+}
 
 @media (max-width: 576px) {
 

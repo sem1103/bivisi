@@ -34,6 +34,18 @@ export const ProductProvider = ({ children }) => {
     setFilteredProducts(filtered);
   };
 
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/product/`);
+   
+      setProduct(res.data);
+      setFilteredProducts(res.data.results); 
+      
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   const getMyProducts = async () => {
     const res = await axios.get(`${BASE_URL}/user_web_products/`, {
       headers: {
@@ -60,17 +72,7 @@ export const ProductProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`${BASE_URL}/product/`);
-     
-        setProduct(res.data);
-        setFilteredProducts(res.data.results); 
-        
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+ 
     fetchData();
   }, []);
 
@@ -88,8 +90,10 @@ export const ProductProvider = ({ children }) => {
         setMinPrice,
         maxPrice,
         setMaxPrice,
+        fetchData,
         category,
         setCategory,
+        getMyProducts,
         applyFilter,
       }}
     >

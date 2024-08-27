@@ -22,7 +22,7 @@ const PopularChannelCard = ({ popularChannels, page }) => {
   const navigate = useNavigate();
 
   const getChannelDetail = async (popularChannels) => {
-    navigate(`/channels_detail/channels_videos/${popularChannels.username}`, { state: { channelDetailData: popularChannels } });    
+    navigate(`/channels_detail/channels_videos/${popularChannels.username}`, { state: { channellId: popularChannels } });    
   };
 
   const colClass = ['channelcard'].includes(page) ? 'col-lg-6 col-md-6 col-sm-12 col-12' : '';

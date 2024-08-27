@@ -28,8 +28,7 @@ const MainChannels = () => {
   const [isShowMessages, setIsShowMessages] = useState(false)
 
   const params = useParams();
-  const [channelId, setChannelId] = useState(null);
-  const { isSubscribed, handleSubscribe, handleUnsubscribe, followersCount, setFollowersCount, loading } = useSubscription(channelId, channelData.follower_count);
+  const { isSubscribed, handleSubscribe, handleUnsubscribe, followersCount, setFollowersCount, loading } = useSubscription(channelData, channelData.follower_count);
   const [showFollowersCount, setShowFollowersCount] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
   const pickerRef = useRef(null)
@@ -56,7 +55,7 @@ const MainChannels = () => {
     if (location.state) {
 
       const channelData = {
-        username: params?.username,
+        name: params?.username,
         first_name: location.state.channelDetailData?.first_name,
         last_name: location.state.channelDetailData?.last_name,
         id: location.state.channelDetailData?.id,
@@ -66,7 +65,6 @@ const MainChannels = () => {
       };
       
       setChannelData(channelData);
-      setChannelId(channelData.id);
 
       console.log(location.state);
       
@@ -104,7 +102,7 @@ const MainChannels = () => {
             style={{ backgroundImage: `url(${channelData?.avatar || user_emptyavatar})` }}
           ></div>
           <div>
-            <h4>{channelData?.username}</h4>
+            <h4>{channelData?.name}</h4>
             {channelData?.bio && <p>{channelData?.bio}</p>}
             <p>
               {showFollowersCount && (

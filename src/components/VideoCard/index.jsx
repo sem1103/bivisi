@@ -59,7 +59,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
       }
     }
   };
-
+  
   const handleMouseEnter = () => {
     hoverTimeoutRef.current = setTimeout(() => {
       setIsDelayedHovered(true);
@@ -85,14 +85,14 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
       setLoading(true);
 
       setTimeout(() => {
-        navigate(`/product_detail/${ProductItemVideoCard.id}`);
+        navigate(`/product_detail/${ProductItemVideoCard.id}`,{ state: { channellId: ProductItemVideoCard.user } });
         setLoading(false);
       }, 2000);
     } else {
-      navigate(`/product_detail/${ProductItemVideoCard.id}`);
+      navigate(`/product_detail/${ProductItemVideoCard.id}`, { state: { channellId: ProductItemVideoCard.user } });
     }
   };
-
+  
   const handleDuration = (duration) => {
     const minutes = Math.floor(duration / 60);
     const seconds = Math.floor(duration % 60);

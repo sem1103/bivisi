@@ -1,6 +1,6 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect  } from "react";
 import "./style.scss";
-import {useNavigate } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../../context/authContext";
 import { VideoContext } from "../../../../context/VideoContext";
 import useAxios from "../../../../utils/useAxios";
@@ -21,7 +21,13 @@ const ChannelsVideo = ({ item }) => {
   const { addItem } = useCart();
   const [loading, setLoading] = useState(false);
   const {countryCurrencySymbol} = getCurrencyByCountry()
+  const location = useLocation();
+  const [chanellData, setChanellData] = useState(null)
 
+  
+  
+
+  
   const playerRef = useRef(null);
 
   const [playerState, setPlayerState] = useState({
@@ -77,11 +83,11 @@ const ChannelsVideo = ({ item }) => {
       setLoading(true);
 
       setTimeout(() => {
-        navigate(`/product_detail/${item.id}`);
+        navigate(`/product_detail/${item.product.id}`, { state: { channellId: chanellData } });
         setLoading(false);
       }, 2000);
     } else {
-      navigate(`/product_detail/${item.id}`);
+      navigate(`/product_detail/${item.product.id}`, { state: { channellId: chanellData } });
     }
   };
 
@@ -90,6 +96,30 @@ const ChannelsVideo = ({ item }) => {
     const seconds = Math.floor(duration % 60);
     setVideoDuration(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);
   };
+
+  console.log(location.state);
+  
+
+  useEffect(() => {
+    
+    if (location.state) {
+
+      const channelData = {
+        name: location.state.channelDetailData?.username,
+        first_name: location.state.channelDetailData?.first_name,
+        last_name: location.state.channelDetailData?.last_name,
+        id: location.state.channelDetailData?.id,
+        cover_image: location.state.channelDetailData?.cover_image,
+        avatar: location.state.channelDetailData?.avatar,
+        follower_count: location.state?.channelDetailData?.follower_count,
+      };
+      
+      setChanellData(channelData);
+
+      
+      
+    }
+  }, [location.state]);
 
   // const colClass = ["latestvideo", "topvideo", "trendvideo"].includes(page)
   //   ? "col-xl-3 col-xxl-3 col-lg-4 col-md-4 col-sm-6 col-12"

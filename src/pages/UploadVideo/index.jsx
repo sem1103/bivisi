@@ -24,7 +24,7 @@ export default function UploadV()  {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [center, setCenter] = useState({ lat: 37.7749, lng: -122.4194 })
-  const {isLoaded} = useContext(ProductContext)
+  const {isLoaded, getMyProducts, fetchData} = useContext(ProductContext)
 
   const [editVideo, setEditVideo] = useState(localStorage.myEditVideo != undefined ? JSON.parse(localStorage.myEditVideo) : false);
   const [category, setCategory] = useState([]);
@@ -415,6 +415,7 @@ export default function UploadV()  {
             },
           }).then(res => {
             setTimeout(() => {
+              fetchData();
               localStorage.removeItem('myEditVideo')
               navigate('/')
             }, 200);
@@ -430,6 +431,7 @@ export default function UploadV()  {
             }
           ).then(res => {
             setTimeout(() => {
+              getMyProducts()
               localStorage.removeItem('myEditVideo')
               navigate('/your_profile/my_videos')
             }, 200);

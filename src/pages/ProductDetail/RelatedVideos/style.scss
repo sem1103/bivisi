@@ -1,6 +1,6 @@
 .related_videos {
   width: 100%;
-  height: auto;
+  height: 100vh;
   padding: 40px 0;
   .title {
     color: #fff;
@@ -12,6 +12,31 @@
     font-weight: 400;
     margin-bottom: 10px;
     line-height: 36px; /* 128.571% */
+  }
+}
+.related__items{
+  max-height: 100vh;
+  overflow: auto;
+}
+.videos__slider{
+  display: none;
+}
+.empty__related{
+
+    color: var(--textColor);
+  font-size: 16px;
+  text-align: center;
+  background: var(--primaryColor);
+  padding: 10px;
+  border-radius: 16px;
+}
+@media(max-width: 950px){
+  .related__items{
+    display: none;
+  }
+  .videos__slider{
+    display: block;
+
   }
 }
 @media(max-width:576px){

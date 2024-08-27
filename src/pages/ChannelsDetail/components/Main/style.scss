@@ -99,36 +99,38 @@
             }
         }
 
-        .subs_btn {
-            button {
-                display: flex;
-                padding: 12px 24px;
-                justify-content: center;
-                align-items: center;
-                gap: 8px;
-                border-radius: 16px;
-                background: var(--blue-blue-500, #0385CA);
-                border: none;
-                color: #F6F3F4;
-
-                /* Poppins/16/SemiBold */
-                font-family: Poppins;
-                font-size: 16px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: 24px;
-                /* 150% */
-                &.unsubs-button {
-                    background-color: transparent;
-                    border: 1px solid var(--Text-11, #23272E);
-                    color: var(--Text-4, #A2A8B7);
-                  }
-            }
-        }
         
     }
 
 }
+
+.subs_btn {
+    button {
+        display: flex;
+        padding: 12px 24px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border-radius: 16px;
+        background: var(--blue-blue-500, #0385CA);
+        border: none;
+        color: #F6F3F4;
+
+        /* Poppins/16/SemiBold */
+        font-family: Poppins;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+        /* 150% */
+        &.unsubs-button {
+            background-color: transparent;
+            border: 1px solid var(--Text-11, #23272E);
+            color: var(--Text-4, #A2A8B7);
+          }
+    }
+}
+
 
 @media(max-width:768px){
    

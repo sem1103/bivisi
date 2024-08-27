@@ -113,6 +113,11 @@ const CommentsComponent = ({ productDetail }) => {
       fetchParentComments(0);
       // console.log("Fetching comments for product:", productDetail.id);
     }
+
+    return () => {
+      setComments([])
+      setcommentsPaginCount(0)
+    }
   }, [productDetail]);
 
   const handlePostComment = async (e) => {

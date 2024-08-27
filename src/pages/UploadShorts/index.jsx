@@ -26,7 +26,7 @@ export default function UploadS()  {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [center, setCenter] = useState({ lat: 37.7749, lng: -122.4194 })
-  const {isLoaded} = useContext(ProductContext)
+  const {isLoaded, getMyProducts, fetchData} = useContext(ProductContext)
 
   const [editVideo, setEditVideo] = useState(localStorage.myEditVideo != undefined ? JSON.parse(localStorage.myEditVideo) : false);
   const [category, setCategory] = useState([]);
@@ -325,7 +325,6 @@ export default function UploadS()  {
         ...prevData,
         category: [prevData.category[0], +value.value],
       }));
-      console.log(value);
 
     } else {
       setFormData((prevData) => ({
@@ -417,6 +416,7 @@ export default function UploadS()  {
             },
           }).then(res => {
             setTimeout(() => {
+              fetchData();
               localStorage.removeItem('myEditVideo')
               navigate('/')
             }, 200);
@@ -432,6 +432,7 @@ export default function UploadS()  {
             }
           ).then(res => {
             setTimeout(() => {
+              getMyProducts()
               localStorage.removeItem('myEditVideo')
               navigate('/your_profile/my_videos')
             }, 200);
@@ -533,11 +534,6 @@ export default function UploadS()  {
           setSecondSelectValue(selectedSubcategory)
           handleSelectChange("category", selectedCategory, categoryArray)
           handleSelectChange("subcategory", selectedSubcategory, categoryArray.subcategory)
-
-
-          console.log(selectedCategory);
-          console.log(selectedSubcategory);
-
 
         }
       } catch (err) {
