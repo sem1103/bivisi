@@ -1,6 +1,6 @@
 // MyVideo.js
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAxios from "../../../../utils/useAxios";
 import { ProductContext } from "../../../../context/ProductContext";
@@ -14,7 +14,7 @@ import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 
 
 const MyVideo = ({ productItem }) => {
-  
+  const navigate = useNavigate()
   const {  setProduct } = useContext(ProductContext);
   const axiosInstance = useAxios();
   const { countryCurrencySymbol } = getCurrencyByCountry();
@@ -31,6 +31,12 @@ const MyVideo = ({ productItem }) => {
     }
   };
 
+  const handleNavigation = (e) => {
+    console.log(productItem);
+    
+    navigate(`/product_detail/${productItem.product.id}`, { state: { channellId: productItem.product.user } });
+  };
+
 
   return (
     <div className="col-lg-4 pb-3">
@@ -41,13 +47,13 @@ const MyVideo = ({ productItem }) => {
           alt=""
           className="main"
         />
-        <NavLink to={`/product_detail/${productItem?.id}`} className="heading">
+          <div className="heading" onClick={handleNavigation} style={{cursor: 'pointer'}}>
           <h1>{productItem.product.description}</h1>
           <h6>
             <img src={blueHeartd} alt="" />
             {productItem.product.like_count}
           </h6>
-        </NavLink>
+          </div>
         <p>{productItem.product.name}</p>
         <div className="cardBottom">
           <span>{productItem.product.price} {countryCurrencySymbol}</span>
