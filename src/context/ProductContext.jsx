@@ -1,14 +1,18 @@
 import axios from "axios";
-import { useEffect, useState, createContext } from "react";
+import { useEffect, useState, createContext, useContext } from "react";
 import { BASE_URL } from "../api/baseUrl";
 import Cookies from 'js-cookie';
 import { useJsApiLoader } from "@react-google-maps/api";
 import { useInView } from 'react-intersection-observer';
+import getCurrencyByCountry from "../utils/getCurrencyService";
 
 
 export const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
+  const {currencyCode, countryCurrencySymbol} = getCurrencyByCountry();
+  console.log(countryCurrencySymbol);
+  
   const USER_TOKKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -111,6 +115,8 @@ useEffect(() => {
         productsCount,
         filteredProducts,
         productsPaginCount,
+        currencyCode, 
+        countryCurrencySymbol,
         setProduct,
         selectedCategory,
         setSelectedCategory,

@@ -20,6 +20,7 @@ import getCurrencyByCountry from "../../utils/getCurrencyService";
 import { ThemeContext } from "../../context/ThemeContext";
 import cartLoad from './../../assets/images/videoCardLoad.png'
 import { useInView } from 'react-intersection-observer';
+import { ProductContext } from "../../context/ProductContext";
 
 
 const LastVideoCard = ({ ProductItemVideoCard, page }) => {
@@ -38,7 +39,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
     playing: false,
   });
   const [isLoading, setIsLoading] = useState(true);
-  const { countryCurrencySymbol } = getCurrencyByCountry()
+  const { countryCurrencySymbol } = useContext(ProductContext)
   const [isDelayedHovered, setIsDelayedHovered] = useState(false);
   const playerRef = useRef(null);
   const isPlayingRef = useRef(false);

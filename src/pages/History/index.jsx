@@ -20,7 +20,7 @@ import { useCart } from "react-use-cart";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
 const History = () => {
   const { addItem } = useCart();
-  const { product } = useContext(ProductContext);
+  const { product, countryCurrencySymbol } = useContext(ProductContext);
   if (
     !product ||
     !Array.isArray(product) ||
@@ -107,7 +107,6 @@ const History = () => {
       navigate("/shorts");
     }, 1000);
   };
-  const {countryCurrencySymbol} = getCurrencyByCountry();
 
   function formatViewCount(num) {
     if (num >= 1000000000) {

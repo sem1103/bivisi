@@ -13,7 +13,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 
 const MyShortCard = ({ productShortItem }) => {
-  const {countryCurrencySymbol} =  getCurrencyByCountry();
   const [localPlaying, setLocalPlaying] = useState(false);
   const { playingVideo, setPlaying: setGlobalPlaying } =
     useContext(VideoContext);
@@ -22,7 +21,7 @@ const MyShortCard = ({ productShortItem }) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
   console.log(productShortItem);
-  const { product, setProduct } = useContext(ProductContext);
+  const { product, setProduct, countryCurrencySymbol } = useContext(ProductContext);
   const axiosInstance = useAxios();
 
   const deleteShortCard = async (id) => {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import './style.scss';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
@@ -8,6 +8,7 @@ import liveStreemIcon from './../../layout/Sidebar/icons/live-streem.svg'
 import getCurrencyByCountry from '../../utils/getCurrencyService';
 import { Modal } from 'antd';
 import Cookies from 'js-cookie';
+import { ProductContext } from '../../context/ProductContext';
 
 
 export default function LiveStreams() {
@@ -19,7 +20,7 @@ export default function LiveStreams() {
     const [isJoined, setIsJoined] = useState(false); // State to track if joined
     const [allStreams, setAllStreams] = useState([]);
     const [randomIndex, setRandomIndex] = useState(0);
-    const { countryCurrencySymbol } = getCurrencyByCountry();
+    const { countryCurrencySymbol } = useContext(ProductContext);
     const [showStream, setShowStream] = useState(roomId ? true : false)
     const [isProductDetailVisible, setProductDetailVisible] = useState(true);
 

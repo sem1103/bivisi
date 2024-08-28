@@ -4,6 +4,7 @@ import "./style.scss";
 import { VideoContext } from "../../context/VideoContext";
 import useAxios from "../../utils/useAxios";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
+import { ProductContext } from "../../context/ProductContext";
 
 const ShortCard = ({ product }) => {
   const [localPlaying, setLocalPlaying] = useState(false);
@@ -12,7 +13,7 @@ const ShortCard = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [viewed, setViewed] = useState(false);
   const navigate = useNavigate();
-  const {countryCurrencySymbol} = getCurrencyByCountry();
+  const {countryCurrencySymbol} = useContext(ProductContext);
   const handlePlay = () => {
     if (playingVideo !== product.id) {
       setGlobalPlaying(product.id);

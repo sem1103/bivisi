@@ -19,6 +19,7 @@ import { CModal } from '@coreui/react';
 
 
 const TopVideos = () => {
+    const {countryCurrencySymbol} = useContext(ProductContext)
     const [selectedOption, setSelectedOption] = useState('');
     const [originalVideos, setOriginalVideos ] = useState([])
     const [videoProducts, setVideoProducts] = useState([]);
@@ -31,7 +32,6 @@ const TopVideos = () => {
     const [dayCounter, setDayCounter] = useState(1);
     const [isPay, setIsPay] = useState(undefined);
     const axiosInstance = useAxios();
-    const { countryCurrencySymbol } = getCurrencyByCountry();
 
 
     const getData = async () => {

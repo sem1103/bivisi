@@ -30,7 +30,7 @@ import useSubscription from "../../hooks/useSubscription";
 const ProductDetail = () => {
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
-  const { product, setProduct, isLoaded } = useContext(ProductContext);
+  const { product, setProduct, isLoaded, countryCurrencySymbol } = useContext(ProductContext);
   const USER_TOKKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
   const [videoAuthor, setVideoAuthor] = useState(false)
   const [subscribeCount, setSubscribeCount] = useState(0);
@@ -50,7 +50,6 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(false);
   const playerRef = useRef(null);
   const [isShowMap, setIsShowMap] = useState(false)
-  const { countryCurrencySymbol } = getCurrencyByCountry();
   const [center, setCenter] = useState({ lat: 37.7749, lng: -122.4194 })
 
   const {

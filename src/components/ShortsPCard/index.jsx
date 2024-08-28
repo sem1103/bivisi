@@ -9,7 +9,7 @@ import chat from "../../assets/icons/chat-ligth.svg";
 import { FaChevronDown } from "react-icons/fa6";
 import ReactPlayer from "react-player";
 import useAxios from "../../utils/useAxios";
-import { ProductContext } from "../../context/ProductContext";
+import { ProductContext, ProductProvider } from "../../context/ProductContext";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../context/authContext";
 import { toggleLike } from "../../helpers/index";
@@ -44,7 +44,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
     checkSubscribed
   } = useSubscription(productItemShort.user.name)
 
-  const { product, setProduct, isLoaded } = useContext(ProductContext);
+  const { product, setProduct, isLoaded, countryCurrencySymbol } = useContext(ProductContext);
   const { user, userDetails } = useContext(AuthContext);
   const [liked, setLiked] = useState(false);
   const [animate, setAnimate] = useState(false);
@@ -56,7 +56,6 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   const playerRef = useRef(null);
   const menuRef = useRef(null);
 
-  const { countryCurrencySymbol } = getCurrencyByCountry()
   useEffect(() => {
     if (user && productItemShort.is_liked) {
       setLiked(true);

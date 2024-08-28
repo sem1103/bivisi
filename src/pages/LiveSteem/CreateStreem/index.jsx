@@ -7,10 +7,11 @@ import { ChatContext } from '../../../context/ChatContext';
 import Select, { components } from 'react-select';
 import getCurrencyByCountry from '../../../utils/getCurrencyService';
 import Cookies from 'js-cookie';
+import { ProductContext } from '../../../context/ProductContext';
 
 
 const CustomOption = (props) => {
-    const {countryCurrencySymbol} = getCurrencyByCountry()
+    const {countryCurrencySymbol} = useContext(ProductContext)
     return (
         <components.Option {...props}>
             <div className='select__video__item'>
@@ -42,7 +43,7 @@ export default function NewStream() {
     const navigate = useNavigate();
     const [thumberSrc, setthumberSrc] = useState('');
     const [myVideos, setMyVideos] = useState([]);
-    const { countryCurrencySymbol } = getCurrencyByCountry();
+    const { countryCurrencySymbol } = useContext(ProductContext);
     const [selectedProduct, setSelectedProduct] = useState(false)
 
     const selectStyles = {

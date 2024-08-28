@@ -26,7 +26,7 @@ export default function UploadS()  {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [center, setCenter] = useState({ lat: 37.7749, lng: -122.4194 })
-  const {isLoaded, getMyProducts, fetchData} = useContext(ProductContext)
+  const {isLoaded, getMyProducts, fetchData, currencyCode, countryCurrencySymbol} = useContext(ProductContext)
 
   const [editVideo, setEditVideo] = useState(localStorage.myEditVideo != undefined ? JSON.parse(localStorage.myEditVideo) : false);
   const [category, setCategory] = useState([]);
@@ -49,7 +49,6 @@ export default function UploadS()  {
   const imgRef = useRef(null);
   const [mapLink, setMapLink] = useState('');
 
-  const currency = getCurrencyByCountry();
   const subCategories = useRef(null)
   const { register, control, handleSubmit } = useForm({
     defaultValues: {
@@ -699,9 +698,9 @@ export default function UploadS()  {
                           type="number"
                           value={formData.price}
                           onChange={handleInputChange}
-                          placeholder={currency.currencyCode}
+                          placeholder={currencyCode}
                         />
-                        <span className="countryCurrencySymbol">{currency.countryCurrencySymbol}</span>
+                        <span className="countryCurrencySymbol">{countryCurrencySymbol}</span>
                       </div>
                     </div>
 

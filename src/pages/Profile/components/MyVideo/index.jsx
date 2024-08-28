@@ -15,9 +15,9 @@ import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 
 const MyVideo = ({ productItem }) => {
   const navigate = useNavigate()
-  const {  setProduct } = useContext(ProductContext);
+  const {  setProduct, countryCurrencySymbol } = useContext(ProductContext);
+  
   const axiosInstance = useAxios();
-  const { countryCurrencySymbol } = getCurrencyByCountry();
   const deletePost = async (id) => {
     try {
       await axiosInstance.delete(`/product_delete/${id}/`);

@@ -19,7 +19,7 @@ import { ProductContext } from "../../../../context/ProductContext";
 import filter from "../../../../assets/icons/filter.svg";
 import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 const Favorites = () => {
-  const {countryCurrencySymbol} = getCurrencyByCountry()
+  const {countryCurrencySymbol} = useContext(ProductContext)
   const [favorites, setFavorites] = useState([]);
   const [filteredFavorites, setFilteredFavorites] = useState([]);
   const { user } = useContext(AuthContext)

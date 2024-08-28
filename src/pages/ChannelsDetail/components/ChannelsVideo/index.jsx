@@ -12,7 +12,7 @@ import WishBtn from "../../../../components/WishlistBtn";
 import bag from "../../../../assets/icons/Bag-3.svg";
 import blueHeart from "../../../../assets/icons/blueHeart.svg";
 import { handleAddToBasket } from "../../../../helpers";
-import getCurrencyByCountry from "../../../../utils/getCurrencyService";
+import { ProductContext } from "../../../../context/ProductContext";
 const ChannelsVideo = ({ item }) => {
   const { user } = useContext(AuthContext);
   const { playingVideo, setPlaying } = useContext(VideoContext);
@@ -20,7 +20,7 @@ const ChannelsVideo = ({ item }) => {
   const [videoDuration, setVideoDuration] = useState(null);
   const { addItem } = useCart();
   const [loading, setLoading] = useState(false);
-  const {countryCurrencySymbol} = getCurrencyByCountry()
+  const {countryCurrencySymbol} = useContext(ProductContext)
   const {username} = useParams();
   const [chanellData, setChanellData] = useState(null)
 
