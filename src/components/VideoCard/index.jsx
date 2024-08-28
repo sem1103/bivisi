@@ -18,10 +18,17 @@ import Plyr from "plyr-react";
 import eye from "../../assets/icons/eye.svg";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
 import { ThemeContext } from "../../context/ThemeContext";
+import cartLoad from './../../assets/images/videoCardLoad.png'
+import { useInView } from 'react-intersection-observer';
+
 
 const LastVideoCard = ({ ProductItemVideoCard, page }) => {
+  const { ref, inView } = useInView({
+    threshold: 0.5,      // Триггер срабатывает, когда 10% элемента видны
+    triggerOnce: true
+  });
   const { user } = useContext(AuthContext);
-  const {themeMode} = useContext(ThemeContext)
+  const { themeMode } = useContext(ThemeContext)
   const { playingVideo, setPlaying } = useContext(VideoContext);
   const [isHovered, setIsHovered] = useState(false);
   const [videoDuration, setVideoDuration] = useState(null);
@@ -59,7 +66,7 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
       }
     }
   };
-  
+
   const handleMouseEnter = () => {
     hoverTimeoutRef.current = setTimeout(() => {
       setIsDelayedHovered(true);
@@ -85,14 +92,14 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
       setLoading(true);
 
       setTimeout(() => {
-        navigate(`/product_detail/${ProductItemVideoCard.id}`,{ state: { channellId: ProductItemVideoCard.user } });
+        navigate(`/product_detail/${ProductItemVideoCard.id}`, { state: { channellId: ProductItemVideoCard.user } });
         setLoading(false);
       }, 2000);
     } else {
       navigate(`/product_detail/${ProductItemVideoCard.id}`, { state: { channellId: ProductItemVideoCard.user } });
     }
   };
-  
+
   const handleDuration = (duration) => {
     const minutes = Math.floor(duration / 60);
     const seconds = Math.floor(duration % 60);
@@ -116,111 +123,122 @@ const LastVideoCard = ({ ProductItemVideoCard, page }) => {
     return num;
   }
   return (
-    <div className={`${colClass} p-2`}>
-      <div
-        className="videoCard"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        {
-          ProductItemVideoCard.is_premium &&
-          <div className="premiup__icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" viewBox="0 0 10 12" fill="none">
-              <path fillRule="evenodd" clipRule="evenodd" d="M7.91634 2.16669V2.45377C7.06917 1.92837 6.06985 1.62502 4.99967 1.62502C3.9295 1.62502 2.93018 1.92837 2.08301 2.45377V2.16669C2.08301 1.06212 2.97844 0.166687 4.08301 0.166687H5.91634C7.02091 0.166687 7.91634 1.06212 7.91634 2.16669ZM9.66634 7.16669C9.66634 9.74402 7.577 11.8334 4.99967 11.8334C2.42235 11.8334 0.333008 9.74402 0.333008 7.16669C0.333008 4.58936 2.42235 2.50002 4.99967 2.50002C7.577 2.50002 9.66634 4.58936 9.66634 7.16669ZM5.45868 5.13002L5.78318 5.81363C5.85774 5.9707 6.00187 6.07957 6.16859 6.10476L6.89419 6.21438C7.31403 6.27781 7.48167 6.81425 7.17787 7.12214L6.65282 7.65426C6.53218 7.77652 6.47713 7.95268 6.50561 8.12532L6.62956 8.87668C6.70128 9.31143 6.26238 9.64297 5.88686 9.43771L5.23787 9.08296C5.08875 9.00145 4.9106 9.00145 4.76148 9.08296L4.11249 9.43771C3.73697 9.64297 3.29807 9.31143 3.36979 8.87668L3.49374 8.12532C3.52222 7.95268 3.46717 7.77652 3.34653 7.65426L2.82148 7.12214C2.51768 6.81425 2.68532 6.27781 3.10516 6.21438L3.83076 6.10476C3.99748 6.07957 4.14161 5.9707 4.21617 5.81363L4.54066 5.13002C4.72842 4.73447 5.27092 4.73447 5.45868 5.13002Z" fill="white" />
-            </svg>
-            <p>Premium</p>
-          </div>
-        }
-        <div className="main">
-
-            {themeMode ? 
-             <img src={logoLightMode} alt="" className="card_logo" />
-             :
-             <img src={logo} alt="" className="card_logo"/> }
-          <span className="card_price">{countryCurrencySymbol} {ProductItemVideoCard?.price}</span>
-
-          <img
-            className={`coverImage `}
-            src={ProductItemVideoCard?.product_video_type[0]?.cover_image}
-            alt="cover"
-          />
-          <Plyr
-            ref={playerRef}
-            source={{
-              type: "video",
-              sources: [
-                {
-                  src: ProductItemVideoCard?.product_video_type[0]
-                    ?.original_video,
-                  type: "video/mp4",
-                },
-              ],
-            }}
-            options={{ muted: true, controls: ["play", "pause", "progress"] }}
-            onReady={onPlayerReady}
-          // onDuration={handleDuration}
-
-          />
-          {/* <span className="video_count">{videoDuration}</span> */}
-          {loading && (
-            <div className="loading-overlay">
-              <AiOutlineLoading3Quarters color="#fff" />
-            </div>
-          )}
+    <div className={`${colClass} p-2 v_cart`} ref={ref}>
+      {
+        <div className={`cart__loader ${inView ? 'hide__loader' : ''}`} >
+          <img src={cartLoad} alt="" />
         </div>
-        <div className="w-100" onClick={handleNavigation}>
-          <div
-            className="heading w-100 flex-column justify-content-start align-items-start"
+      }
 
-          >
-            <div className="d-flex w-100 justify-content-between align-items-center">
-              <div className="user_name">{ProductItemVideoCard.user.name}</div>
-              <h6>
-                <img src={blueHeart} alt="" />
-                {ProductItemVideoCard.like_count}
-              </h6>
-            </div>
-            <p>{ProductItemVideoCard.name}</p>
-          </div>
-          <div className="cardBottom">
-            <div className="card_viev_count">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="Icon/Eye/Solid">
-                  <path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M17.6084 11.7892C18.5748 10.7724 18.5748 9.22772 17.6084 8.211C15.9786 6.49619 13.1794 4.16675 9.99984 4.16675C6.82024 4.16675 4.02108 6.49619 2.39126 8.211C1.42492 9.22772 1.42492 10.7724 2.39126 11.7892C4.02108 13.504 6.82024 15.8334 9.99984 15.8334C13.1794 15.8334 15.9786 13.504 17.6084 11.7892ZM9.99984 12.5001C11.3805 12.5001 12.4998 11.3808 12.4998 10.0001C12.4998 8.61937 11.3805 7.50008 9.99984 7.50008C8.61913 7.50008 7.49984 8.61937 7.49984 10.0001C7.49984 11.3808 8.61913 12.5001 9.99984 12.5001Z" fill="var(--textColor)" />
-                </g>
+      {
+
+        <div
+          className={`videoCard ${inView ? 'show__content' : ''}`}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          {
+            ProductItemVideoCard.is_premium &&
+            <div className="premiup__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" viewBox="0 0 10 12" fill="none">
+                <path fillRule="evenodd" clipRule="evenodd" d="M7.91634 2.16669V2.45377C7.06917 1.92837 6.06985 1.62502 4.99967 1.62502C3.9295 1.62502 2.93018 1.92837 2.08301 2.45377V2.16669C2.08301 1.06212 2.97844 0.166687 4.08301 0.166687H5.91634C7.02091 0.166687 7.91634 1.06212 7.91634 2.16669ZM9.66634 7.16669C9.66634 9.74402 7.577 11.8334 4.99967 11.8334C2.42235 11.8334 0.333008 9.74402 0.333008 7.16669C0.333008 4.58936 2.42235 2.50002 4.99967 2.50002C7.577 2.50002 9.66634 4.58936 9.66634 7.16669ZM5.45868 5.13002L5.78318 5.81363C5.85774 5.9707 6.00187 6.07957 6.16859 6.10476L6.89419 6.21438C7.31403 6.27781 7.48167 6.81425 7.17787 7.12214L6.65282 7.65426C6.53218 7.77652 6.47713 7.95268 6.50561 8.12532L6.62956 8.87668C6.70128 9.31143 6.26238 9.64297 5.88686 9.43771L5.23787 9.08296C5.08875 9.00145 4.9106 9.00145 4.76148 9.08296L4.11249 9.43771C3.73697 9.64297 3.29807 9.31143 3.36979 8.87668L3.49374 8.12532C3.52222 7.95268 3.46717 7.77652 3.34653 7.65426L2.82148 7.12214C2.51768 6.81425 2.68532 6.27781 3.10516 6.21438L3.83076 6.10476C3.99748 6.07957 4.14161 5.9707 4.21617 5.81363L4.54066 5.13002C4.72842 4.73447 5.27092 4.73447 5.45868 5.13002Z" fill="white" />
               </svg>
-
-              <span>{formatViewCount(ProductItemVideoCard?.view_count)}</span>
+              <p>Premium</p>
             </div>
-            <div className="icons" onClick={(e) => e.stopPropagation()}>
-              <WishBtn ProductItemVideoCard={ProductItemVideoCard} />
-              
+          }
+          <div className="main">
 
-              <button
-                onClick={() => {
-                  if (user.user_id === ProductItemVideoCard.user.id) {
-                    toast.warning(
-                      "You cannot add your own product to the basket"
-                    );
-                  } else {
-                    handleAddToBasket(ProductItemVideoCard, user, axiosInstance);
-                    addItem(ProductItemVideoCard);
-                  }
-                }}>
+            {themeMode ?
+              <img src={logoLightMode} alt="" className="card_logo" loading="lazy" />
+              :
+              <img src={logo} alt="" className="card_logo" loading="lazy" />}
+            <span className="card_price">{countryCurrencySymbol} {ProductItemVideoCard?.price}</span>
+
+            <img
+              className={`coverImage `}
+              src={ProductItemVideoCard?.product_video_type[0]?.cover_image}
+              alt="cover"
+              loading="lazy"
+            />
+            <Plyr
+              ref={playerRef}
+              source={{
+                type: "video",
+                sources: [
+                  {
+                    src: ProductItemVideoCard?.product_video_type[0]
+                      ?.original_video,
+                    type: "video/mp4",
+                  },
+                ],
+              }}
+              options={{ muted: true, controls: ["play", "pause", "progress"] }}
+              onReady={onPlayerReady}
+
+
+            />
+
+            {loading && (
+              <div className="loading-overlay">
+                <AiOutlineLoading3Quarters color="#fff" />
+              </div>
+            )}
+          </div>
+          <div className="w-100" onClick={handleNavigation}>
+            <div
+              className="heading w-100 flex-column justify-content-start align-items-start"
+
+            >
+              <div className="d-flex w-100 justify-content-between align-items-center">
+                <div className="user_name">{ProductItemVideoCard.user.name}</div>
+                <h6>
+                  <img src={blueHeart} alt="" />
+                  {ProductItemVideoCard.like_count}
+                </h6>
+              </div>
+              <p>{ProductItemVideoCard.name}</p>
+            </div>
+            <div className="cardBottom">
+              <div className="card_viev_count">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g id="Icon/Bag 3">
-                    <path id="Rectangle 794" d="M13.3332 5.00008C13.3332 3.15913 11.8408 1.66675 9.99984 1.66675C8.15889 1.66675 6.6665 3.15913 6.6665 5.00008" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    <path id="Rectangle 788" d="M3.80146 7.91988C4.00997 6.25179 5.42797 5 7.10905 5H12.8905C14.5716 5 15.9896 6.25179 16.1981 7.91988L17.0314 14.5866C17.2801 16.5761 15.7288 18.3333 13.7238 18.3333H6.27572C4.27073 18.3333 2.71944 16.5761 2.96813 14.5866L3.80146 7.91988Z" stroke="var(--textColor)" stroke-width="1.5" stroke-linejoin="round" />
-                    <path id="Vector 1788" d="M7.5 13.3333C9.46345 14.4502 10.5396 14.4385 12.5 13.3333" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <g id="Icon/Eye/Solid">
+                    <path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M17.6084 11.7892C18.5748 10.7724 18.5748 9.22772 17.6084 8.211C15.9786 6.49619 13.1794 4.16675 9.99984 4.16675C6.82024 4.16675 4.02108 6.49619 2.39126 8.211C1.42492 9.22772 1.42492 10.7724 2.39126 11.7892C4.02108 13.504 6.82024 15.8334 9.99984 15.8334C13.1794 15.8334 15.9786 13.504 17.6084 11.7892ZM9.99984 12.5001C11.3805 12.5001 12.4998 11.3808 12.4998 10.0001C12.4998 8.61937 11.3805 7.50008 9.99984 7.50008C8.61913 7.50008 7.49984 8.61937 7.49984 10.0001C7.49984 11.3808 8.61913 12.5001 9.99984 12.5001Z" fill="var(--textColor)" />
                   </g>
                 </svg>
-              </button>
+
+                <span>{formatViewCount(ProductItemVideoCard?.view_count)}</span>
+              </div>
+              <div className="icons" onClick={(e) => e.stopPropagation()}>
+                <WishBtn ProductItemVideoCard={ProductItemVideoCard} />
 
 
+                <button
+                  onClick={() => {
+                    if (user.user_id === ProductItemVideoCard.user.id) {
+                      toast.warning(
+                        "You cannot add your own product to the basket"
+                      );
+                    } else {
+                      handleAddToBasket(ProductItemVideoCard, user, axiosInstance);
+                      addItem(ProductItemVideoCard);
+                    }
+                  }}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="Icon/Bag 3">
+                      <path id="Rectangle 794" d="M13.3332 5.00008C13.3332 3.15913 11.8408 1.66675 9.99984 1.66675C8.15889 1.66675 6.6665 3.15913 6.6665 5.00008" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      <path id="Rectangle 788" d="M3.80146 7.91988C4.00997 6.25179 5.42797 5 7.10905 5H12.8905C14.5716 5 15.9896 6.25179 16.1981 7.91988L17.0314 14.5866C17.2801 16.5761 15.7288 18.3333 13.7238 18.3333H6.27572C4.27073 18.3333 2.71944 16.5761 2.96813 14.5866L3.80146 7.91988Z" stroke="var(--textColor)" stroke-width="1.5" stroke-linejoin="round" />
+                      <path id="Vector 1788" d="M7.5 13.3333C9.46345 14.4502 10.5396 14.4385 12.5 13.3333" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </g>
+                  </svg>
+                </button>
+
+
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
+
     </div>
   );
 };

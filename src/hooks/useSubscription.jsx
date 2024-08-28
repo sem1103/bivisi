@@ -139,7 +139,7 @@ const useSubscription = (chanellName) => {
 
   
 
-  return {userChanell, isSubscribed, followersCount, setFollowersCount,handleSubscribe, handleUnsubscribe, loading , searchUser, checkSubscribed};
+  return {userChanell, isSubscribed, followersCount, fetchSubscribers,setFollowersCount,handleSubscribe, handleUnsubscribe, loading , searchUser, checkSubscribed};
 };
 
 export default useSubscription;

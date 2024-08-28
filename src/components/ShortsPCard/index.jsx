@@ -22,25 +22,41 @@ import replay from "../../assets/icons/replay-rectangle.png";
 import { Modal } from "antd";
 import ShareModal from "../ShareModal";
 import getCurrencyByCountry from "../../utils/getCurrencyService";
-import { CModal, CModalHeader, CModalTitle , CModalFooter, CButton} from "@coreui/react";
+import { CModal, CModalHeader, CModalTitle, CModalFooter, CButton } from "@coreui/react";
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import axios from "axios";
+import { BASE_URL } from "../../api/baseUrl";
+import useSubscription from "../../hooks/useSubscription";
+import empryAvatar from './../../assets/images/user-empty-avatar.png'
+import { NavLink } from "react-router-dom";
 
 
 const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, setPlaying }) => {
   const axiosInstance = useAxios();
-  
+
+  const {
+    isSubscribed,
+    followersCount,
+    handleSubscribe,
+    handleUnsubscribe,
+    searchUser,
+    fetchSubscribers,
+    checkSubscribed
+  } = useSubscription(productItemShort.user.name)
 
   const { product, setProduct, isLoaded } = useContext(ProductContext);
   const { user, userDetails } = useContext(AuthContext);
   const [liked, setLiked] = useState(false);
   const [animate, setAnimate] = useState(false);
   const [openComment, setOpenComment] = useState(false);
+  const [category, setCategory] = useState([])
+
   const { addItem } = useCart();
   const [showSubCommentId, setShowSubCommentId] = useState(null);
   const playerRef = useRef(null);
   const menuRef = useRef(null);
-  const {countryCurrencySymbol} = getCurrencyByCountry()
+
+  const { countryCurrencySymbol } = getCurrencyByCountry()
   useEffect(() => {
     if (user && productItemShort.is_liked) {
       setLiked(true);
@@ -48,7 +64,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
       setLiked(false);
     }
   }, [user, productItemShort.is_liked]);
-  
+
 
   useEffect(() => {
     if (
@@ -71,7 +87,8 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   }, [productItemShort]);
 
   useEffect(() => {
-    handleSearch(productItemShort.location)
+    handleSearch(productItemShort.location);
+    fetchCategoriesData()
   }, []);
 
   const [comments, setComments] = useState([]);
@@ -83,7 +100,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   const [deleteIsSubComment, setDeleteIsSubComment] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
-  
+
   const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA';
 
 
@@ -114,7 +131,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   };
 
   const handleSearch = async (searchText) => {
-    
+
     try {
       const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
         params: {
@@ -288,35 +305,49 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
     userDetails?.avatar ||
     "https://as2.ftcdn.net/v2/jpg/05/49/98/39/1000_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg";
 
+
+  const fetchCategoriesData = async () => {
+    try {
+      const categoryRes = await axios.get(
+        `${BASE_URL}/categories/`
+      );
+      setCategory(categoryRes.data.results);
+
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
 
       <CModal
         onClose={handleCancel}
         alignment="center"
-      className='modal-delete'
+        className='modal-delete'
         visible={isModalVisible}
 
       >
         <button
-        className="close__modal stroke__change"
-        onClick={() => {
-          handleCancel()
-        }}
+          className="close__modal stroke__change"
+          onClick={() => {
+            handleCancel()
+          }}
         >
-        <svg width={28} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+          <svg width={28} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
         </button>
-      
+
         <CModalTitle id="VerticallyCenteredExample">Delete Comment</CModalTitle>
-    
+
         <p>Are you sure you want to delete this comment?</p>
 
         <CModalFooter>
-        <CButton color="secondary" onClick={() => handleCancel()}>
-          Close
-        </CButton>
-        <CButton color="primary" onClick={handleDeleteComment}>Save changes</CButton>
-      </CModalFooter>
+          <CButton color="secondary" onClick={() => handleCancel()}>
+            Close
+          </CButton>
+          <CButton color="primary" onClick={handleDeleteComment}>Save changes</CButton>
+        </CModalFooter>
       </CModal>
 
 
@@ -350,50 +381,109 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
 
 
               <div className="sp_desc">
-              <CModal
-  
-      alignment="center"
-      visible={detailModal}
-      onClose={() => {
-        setDetailModal(false)
+                <CModal
 
-      }}
-      
-    >
- 
-        <button
-        className="close__modal stroke__change"
-        onClick={() => {
-          setDetailModal(false)
-        }}
-        >
-        <svg width={28} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
-        </button>
-     
+                  alignment="center"
+                  visible={detailModal}
+                  onClose={() => {
+                    setDetailModal(false)
 
-        <div className="short__info">
+                  }}
+
+                >
+
+                  <button
+                    className="close__modal stroke__change"
+                    onClick={() => {
+                      setDetailModal(false)
+                    }}
+                  >
+                    <svg width={28} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                  </button>
+
+
+                  <div className="short__info">
                     <h3>{productItemShort.name}</h3>
                     <h4>{productItemShort.description}</h4>
 
-                  {productItemShort.properties.length > 0  &&
-                    <div className="video__properties">
-                    <h5>Properties</h5>
-                    <table style={{ borderCollapse: 'collapse', width: '100%', background: 'var(--backgroundColor)',  margin: ' 0 0 20px 0' }}>
-                      <tbody>
+                    <br />
+                    <div className="user__block">
+                      <div className="left__block">
+                        <div className="user__avatar">
+                          <img src={productItemShort.user.avatar ? productItemShort.user.avatar : empryAvatar} alt="" />
+                        </div>
+                        <div className="user__desc">
+                          <NavLink to={`/channels_detail/channels_videos/${productItemShort.user.name}`} />
+                          <h2 className="user__name">
+                            {productItemShort.user.name}
+                          </h2>
+                          {
+                            user &&
+                            <p>
+                              {followersCount} subscribers
+                            </p>
+                          }
+
+                        </div>
+                      </div>
+
+                      {/* <div className="right__block">
                         {
-                          
-                          productItemShort.properties.map((item) => (
-                            <tr key={item.id}>
-                              <td style={{ fontWeight: '600' }}>{item.product_property}</td>
-                              <td >{item.property_value}</td>
-                            </tr>
-                          ))
+                          productItemShort.user.name != user?.username && user &&
+                          <div className="subs_btn">
+                            <button
+                              onClick={() => {
+                                isSubscribed ? handleUnsubscribe() : handleSubscribe()
+                              }}
+                              className={`subs-button ${isSubscribed ? 'unsubs-button' : ''}`}>{!isSubscribed ? <span>Subscribe</span> : <span>Unsubscribe</span>}</button>
+                          </div>
                         }
-                      </tbody>
-                    </table>
-                  </div>
-                  }
-                  
+
+                      </div> */}
+                    </div>
+
+
+                    <div className="video__properties">
+                      <h4>Categories</h4>
+                      <table style={{ borderCollapse: 'collapse', width: '100%', background: 'var(--backgroundColor)', margin: ' 0 0 20px 0' }}>
+                        <tbody>
+                          {
+
+                            category.map(item => {
+                              if (item.id == productItemShort.category[0]) {
+                                return <tr >
+                                  <td style={{ fontWeight: '600' }}>{item.name}</td>
+                                  <td >{item.children.map(sub => sub.id == productItemShort.category[1] && sub.name)}</td>
+                                </tr>
+                              }
+                            })
+
+
+
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {productItemShort.properties.length > 0 &&
+                      <div className="video__properties">
+                        <h5>Properties</h5>
+                        <table style={{ borderCollapse: 'collapse', width: '100%', background: 'var(--backgroundColor)', margin: ' 0 0 20px 0' }}>
+                          <tbody>
+                            {
+
+                              productItemShort.properties.map((item) => (
+                                <tr key={item.id}>
+                                  <td style={{ fontWeight: '600' }}>{item.product_property}</td>
+                                  <td >{item.property_value}</td>
+                                </tr>
+                              ))
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    }
+
 
                     <div className="video__address">
                       <h4>Address</h4>
@@ -401,30 +491,34 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                         {productItemShort.location}
                       </a></p>
                       <div className="address__map">
-                       {isLoaded && (
-        <GoogleMap
-        mapContainerStyle={{ width: '100%', height: '100%' , borderRadius: '16px'}}
+                        {isLoaded && (
+                          <GoogleMap
+                            mapContainerStyle={{ width: '100%', height: '100%', borderRadius: '16px' }}
 
-          center={center}
-          zoom={15}
+                            center={center}
+                            zoom={15}
 
-          options={{
-            disableDefaultUI: true, // Отключить стандартный интерфейс
-            gestureHandling: 'greedy', // Управление жестами
-            zoomControl: true, // Включить управление зумом
-          }}
-        >
-          <Marker position={center} />
-        </GoogleMap>
-      )}
+                            options={{
+                              disableDefaultUI: true, // Отключить стандартный интерфейс
+                              gestureHandling: 'greedy', // Управление жестами
+                              zoomControl: true, // Включить управление зумом
+                            }}
+                          >
+                            <Marker position={center} />
+                          </GoogleMap>
+                        )}
                       </div>
                     </div>
                   </div>
-      </CModal>
-             
+                </CModal>
+
                 <div className="short__inform">
-                <p >{productItemShort.name.slice(0, 20)}... <button onClick={() => setDetailModal(true)}>Read more</button></p>
-                <span>{productItemShort.price + countryCurrencySymbol}</span>
+                  <p >{productItemShort.name.slice(0, 20)}... <button onClick={() => {
+                    checkSubscribed()
+
+                    setDetailModal(true)
+                  }}>Read more</button></p>
+                  <span>{productItemShort.price + countryCurrencySymbol}</span>
                 </div>
               </div>
             </div>
@@ -546,17 +640,17 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                           /> */}
 
                           <button
-                           className="close_btn"
-                           onClick={() => {
-                             setOpenComment(!openComment);
-                             handleLeave()
-                           }}
-                           >
-                          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Icon/Remove">
-<path id="Vector" d="M18.9498 9.05029L9.05029 18.9498M18.9498 18.9497L9.05029 9.05023" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
+                            className="close_btn"
+                            onClick={() => {
+                              setOpenComment(!openComment);
+                              handleLeave()
+                            }}
+                          >
+                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <g id="Icon/Remove">
+                                <path id="Vector" d="M18.9498 9.05029L9.05029 18.9498M18.9498 18.9497L9.05029 9.05023" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                              </g>
+                            </svg>
 
                           </button>
                         </div>
@@ -585,10 +679,10 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                     >
                                       {/* <img src={like} alt="like.svg" /> */}
                                       <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="like">
-<path id="combo shape" fill-rule="evenodd" clip-rule="evenodd" d="M9.78888 18H6.12309C4.28761 18 2.68768 16.7508 2.24252 14.9701L0.621247 8.48507C0.305674 7.22278 1.26039 6 2.56153 6H7.99998L6.59115 3.88675C5.48355 2.22536 6.67453 0 8.67127 0H9.99998L13.8682 6.76943C13.9546 6.92052 14 7.09154 14 7.26556V15.4648C14 15.7992 13.8329 16.1114 13.5547 16.2969L12.0077 17.3282C11.3506 17.7662 10.5786 18 9.78888 18ZM18 5H17.5C16.3954 5 15.5 5.89543 15.5 7V16C15.5 17.1046 16.3954 18 17.5 18H18C19.1045 18 20 17.1046 20 16V7C20 5.89543 19.1045 5 18 5Z" fill="var(--textColor)"/>
-</g>
-</svg>
+                                        <g id="like">
+                                          <path id="combo shape" fill-rule="evenodd" clip-rule="evenodd" d="M9.78888 18H6.12309C4.28761 18 2.68768 16.7508 2.24252 14.9701L0.621247 8.48507C0.305674 7.22278 1.26039 6 2.56153 6H7.99998L6.59115 3.88675C5.48355 2.22536 6.67453 0 8.67127 0H9.99998L13.8682 6.76943C13.9546 6.92052 14 7.09154 14 7.26556V15.4648C14 15.7992 13.8329 16.1114 13.5547 16.2969L12.0077 17.3282C11.3506 17.7662 10.5786 18 9.78888 18ZM18 5H17.5C16.3954 5 15.5 5.89543 15.5 7V16C15.5 17.1046 16.3954 18 17.5 18H18C19.1045 18 20 17.1046 20 16V7C20 5.89543 19.1045 5 18 5Z" fill="var(--textColor)" />
+                                        </g>
+                                      </svg>
                                     </button>
                                     <span>{comment.like_count}</span>
                                   </div>
@@ -603,8 +697,8 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                       {/* <img src={replay} alt="like.svg" /> */}
 
                                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M4.00002 0.666626C2.15907 0.666626 0.666687 2.15901 0.666687 3.99996V14C0.666687 15.8409 2.15907 17.3333 4.00002 17.3333H14C15.841 17.3333 17.3334 15.8409 17.3334 14V3.99996C17.3334 2.15901 15.841 0.666626 14 0.666626H4.00002ZM7.82 5.14666C8.1072 4.95519 8.49525 5.0328 8.68672 5.32C8.87819 5.60721 8.80058 5.99525 8.51337 6.18672L7.49126 6.86813C8.62083 7.06979 9.69827 7.46437 10.5967 8.06333C11.9908 8.99269 12.9584 10.4243 12.9584 12.3334C12.9584 12.6785 12.6785 12.9584 12.3334 12.9584C11.9882 12.9584 11.7084 12.6785 11.7084 12.3334C11.7084 10.9091 11.0093 9.84069 9.90333 9.10339C9.0731 8.5499 8.01734 8.18954 6.88817 8.03884L7.85339 9.48667C8.04486 9.77388 7.96725 10.1619 7.68004 10.3534C7.39284 10.5449 7.00479 10.4673 6.81332 10.18L5.14666 7.68005C4.95519 7.39284 5.03279 7.0048 5.32 6.81333L7.82 5.14666Z" fill="var(--textColor)"/>
-</svg>
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M4.00002 0.666626C2.15907 0.666626 0.666687 2.15901 0.666687 3.99996V14C0.666687 15.8409 2.15907 17.3333 4.00002 17.3333H14C15.841 17.3333 17.3334 15.8409 17.3334 14V3.99996C17.3334 2.15901 15.841 0.666626 14 0.666626H4.00002ZM7.82 5.14666C8.1072 4.95519 8.49525 5.0328 8.68672 5.32C8.87819 5.60721 8.80058 5.99525 8.51337 6.18672L7.49126 6.86813C8.62083 7.06979 9.69827 7.46437 10.5967 8.06333C11.9908 8.99269 12.9584 10.4243 12.9584 12.3334C12.9584 12.6785 12.6785 12.9584 12.3334 12.9584C11.9882 12.9584 11.7084 12.6785 11.7084 12.3334C11.7084 10.9091 11.0093 9.84069 9.90333 9.10339C9.0731 8.5499 8.01734 8.18954 6.88817 8.03884L7.85339 9.48667C8.04486 9.77388 7.96725 10.1619 7.68004 10.3534C7.39284 10.5449 7.00479 10.4673 6.81332 10.18L5.14666 7.68005C4.95519 7.39284 5.03279 7.0048 5.32 6.81333L7.82 5.14666Z" fill="var(--textColor)" />
+                                      </svg>
                                     </button>
                                   </div>
 
@@ -630,11 +724,11 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                               showModal(comment.id, false);
                                             }}
                                           >
-<svg style={{opacity: 0.7}} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Icon/Trash/Outline">
-<path id="Vector" d="M15.8333 7.49935L15.2367 15.255C15.1032 16.9917 13.655 18.3327 11.9132 18.3327H8.08677C6.34498 18.3327 4.89684 16.9917 4.76326 15.255L4.16667 7.49935M17.5 5.83268C15.3351 4.77766 12.7614 4.16602 10 4.16602C7.23862 4.16602 4.66493 4.77766 2.5 5.83268M8.33333 4.16602V3.33268C8.33333 2.41221 9.07953 1.66602 10 1.66602C10.9205 1.66602 11.6667 2.41221 11.6667 3.33268V4.16602M8.33333 9.16602V14.166M11.6667 9.16602V14.166" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round"/>
-</g>
-</svg>
+                                            <svg style={{ opacity: 0.7 }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                              <g id="Icon/Trash/Outline">
+                                                <path id="Vector" d="M15.8333 7.49935L15.2367 15.255C15.1032 16.9917 13.655 18.3327 11.9132 18.3327H8.08677C6.34498 18.3327 4.89684 16.9917 4.76326 15.255L4.16667 7.49935M17.5 5.83268C15.3351 4.77766 12.7614 4.16602 10 4.16602C7.23862 4.16602 4.66493 4.77766 2.5 5.83268M8.33333 4.16602V3.33268C8.33333 2.41221 9.07953 1.66602 10 1.66602C10.9205 1.66602 11.6667 2.41221 11.6667 3.33268V4.16602M8.33333 9.16602V14.166M11.6667 9.16602V14.166" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" />
+                                              </g>
+                                            </svg>
                                           </button>
                                         </div>
                                       )}
@@ -715,11 +809,11 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                                         alt="like.svg"
                                                       /> */}
 
-<svg style={{opacity: 0.6}} width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="like">
-<path id="combo shape" fill-rule="evenodd" clip-rule="evenodd" d="M9.78888 18H6.12309C4.28761 18 2.68768 16.7508 2.24252 14.9701L0.621247 8.48507C0.305674 7.22278 1.26039 6 2.56153 6H7.99998L6.59115 3.88675C5.48355 2.22536 6.67453 0 8.67127 0H9.99998L13.8682 6.76943C13.9546 6.92052 14 7.09154 14 7.26556V15.4648C14 15.7992 13.8329 16.1114 13.5547 16.2969L12.0077 17.3282C11.3506 17.7662 10.5786 18 9.78888 18ZM18 5H17.5C16.3954 5 15.5 5.89543 15.5 7V16C15.5 17.1046 16.3954 18 17.5 18H18C19.1045 18 20 17.1046 20 16V7C20 5.89543 19.1045 5 18 5Z" fill="var(--textColor)"/>
-</g>
-</svg>
+                                                      <svg style={{ opacity: 0.6 }} width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <g id="like">
+                                                          <path id="combo shape" fill-rule="evenodd" clip-rule="evenodd" d="M9.78888 18H6.12309C4.28761 18 2.68768 16.7508 2.24252 14.9701L0.621247 8.48507C0.305674 7.22278 1.26039 6 2.56153 6H7.99998L6.59115 3.88675C5.48355 2.22536 6.67453 0 8.67127 0H9.99998L13.8682 6.76943C13.9546 6.92052 14 7.09154 14 7.26556V15.4648C14 15.7992 13.8329 16.1114 13.5547 16.2969L12.0077 17.3282C11.3506 17.7662 10.5786 18 9.78888 18ZM18 5H17.5C16.3954 5 15.5 5.89543 15.5 7V16C15.5 17.1046 16.3954 18 17.5 18H18C19.1045 18 20 17.1046 20 16V7C20 5.89543 19.1045 5 18 5Z" fill="var(--textColor)" />
+                                                        </g>
+                                                      </svg>
 
                                                     </button>
                                                     <span>
@@ -747,18 +841,18 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                                                             <div className="drop_menu">
                                                               <button
                                                                 onClick={() => {
-                                                                  
+
                                                                   showModal(
                                                                     subComment.id,
                                                                     true
                                                                   );
                                                                 }}
                                                               >
-                                                               <svg style={{opacity: 0.7}} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Icon/Trash/Outline">
-<path id="Vector" d="M15.8333 7.49935L15.2367 15.255C15.1032 16.9917 13.655 18.3327 11.9132 18.3327H8.08677C6.34498 18.3327 4.89684 16.9917 4.76326 15.255L4.16667 7.49935M17.5 5.83268C15.3351 4.77766 12.7614 4.16602 10 4.16602C7.23862 4.16602 4.66493 4.77766 2.5 5.83268M8.33333 4.16602V3.33268C8.33333 2.41221 9.07953 1.66602 10 1.66602C10.9205 1.66602 11.6667 2.41221 11.6667 3.33268V4.16602M8.33333 9.16602V14.166M11.6667 9.16602V14.166" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round"/>
-</g>
-</svg>
+                                                                <svg style={{ opacity: 0.7 }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                  <g id="Icon/Trash/Outline">
+                                                                    <path id="Vector" d="M15.8333 7.49935L15.2367 15.255C15.1032 16.9917 13.655 18.3327 11.9132 18.3327H8.08677C6.34498 18.3327 4.89684 16.9917 4.76326 15.255L4.16667 7.49935M17.5 5.83268C15.3351 4.77766 12.7614 4.16602 10 4.16602C7.23862 4.16602 4.66493 4.77766 2.5 5.83268M8.33333 4.16602V3.33268C8.33333 2.41221 9.07953 1.66602 10 1.66602C10.9205 1.66602 11.6667 2.41221 11.6667 3.33268V4.16602M8.33333 9.16602V14.166M11.6667 9.16602V14.166" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" />
+                                                                  </g>
+                                                                </svg>
 
                                                               </button>
                                                             </div>

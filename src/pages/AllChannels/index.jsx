@@ -23,10 +23,10 @@ const AllChannels = () => {
     const fetchPChannels = async (offset) => {
         try {
             const response = await axios.get(`${BASE_URL}/user/subscriptions/?offset=${offset}`);
-            const filteredChannels = response.data.results.filter(channel => channel.username !== user?.username);
+            const filteredChannels = response.data.results.filter(channel => channel.id !== user?.user_id);
             setSortedChannels(sortedChannels.length ? prevChannels => [...prevChannels, ...filteredChannels] : filteredChannels);
             
-            setChanellsCount(response.data.count)
+            setChanellsCount(response.data.count - 1)
             
         } catch (error) {
             console.error('Failed to fetch popular channels:', error);

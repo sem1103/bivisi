@@ -64,19 +64,20 @@ export const toggleLike = async (
       toast.error("You Dislike Short!");
     }
 
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      results: prevProduct.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            like_count: response.data.like_count,
-            is_liked: response.data.is_liked,
-          };
-        }
-        return item;
-      }),
-    }));
+    setProduct((prevProduct) => {    
+      return [
+        ...prevProduct.map((item) => {
+         if (item.id === id) {
+           return {
+             ...item,
+             like_count: response.data.like_count,
+             is_liked: response.data.is_liked,
+           };
+         }
+         return item;
+       })
+     ]
+    });
   } catch (error) {
     console.error("Error toggling like:", error);
   }

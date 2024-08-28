@@ -1,3 +1,43 @@
+
+.v_cart{
+  position: relative;
+  overflow: hidden;
+  perspective: 700px;
+}
+
+.cart__loader{
+  background-color: var(--backgroundColor);
+  backface-visibility: hidden;
+  width: 100%;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 1s ease-in-out;
+  z-index: 88;
+  &.hide__loader{
+    transform: rotateY(180deg);
+  }
+  img{
+    max-width: 150px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 5px #0b90d4;
+    filter: drop-shadow(0 0 5px #0b90d4);
+  }
+
+}
+.v_cart{
+  .videoCard{
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+
+  }
+}
 .videoCard {
   display: flex;
   min-height: 370px;
@@ -9,9 +49,12 @@
   gap: 12px;
   border-radius: 12px;
   background:#141414;
-  transition: all 0.3s ease;
+  transition: all 1s ease-in-out;
+  
   cursor: pointer;
-
+  &.show__content{
+    transform: rotateY(360deg);
+  }
   .premiup__icon {
     position: absolute;
     top: 15px;
@@ -31,7 +74,7 @@
       color: #fff;
     }
   }
-
+ 
 
   &:hover {
     .premiup__icon {
@@ -67,6 +110,7 @@
     }
 
     .card_price {
+
       position: absolute !important;
       top: 10px !important;
       right: 9px !important;
@@ -81,6 +125,7 @@
       align-items: center;
       backdrop-filter: blur(2.08px);
       padding: 5px 8px;
+      z-index: 77;
     }
 
 

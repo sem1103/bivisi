@@ -29,11 +29,13 @@ const Trending = () => {
             let data = response.data.results.filter(
               (item) => item.product_video_type[0]?.product_type === "Video"
           )
-            setAllProducts(prev => [...prev , ...response.data.results])
-            if(response.data.results.some((item) => item.product_video_type[0]?.product_type === "Video")){
-              setTrendVideo(trendVideo.length ? prev => [...prev , ...data] : data)
-              setOriginalVideos(originalVideos.length ? prev => [...prev , ...data] : data)
-            }
+          setAllProducts(prev => prev.length ? [...prev, ...response.data.results] : response.data.results);
+       
+            
+            setTrendVideo(prev => prev.length ? [...prev, ...data] : data);
+            setOriginalVideos(prev => prev.length ? [...prev, ...data] : data);
+      
+            
            
         } catch (error) {
             console.error('Failed to fetch data:', error);
@@ -192,7 +194,7 @@ const Trending = () => {
                     }
 
 {
-                  allProducts.length != productsCount &&
+                  allProducts.length != productsCount  &&
                     <div className="loading" ref={ref}>
                       <div className="wrapper" >
                         <div className="circle"></div>

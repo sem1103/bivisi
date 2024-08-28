@@ -15,7 +15,7 @@ import lastShort from './../../assets/images/lastshort.png'
 const Shorts = () => {
   const navigate = useNavigate();
   const { product, ref, productsCount } = useContext(ProductContext);
-  const copyProducts = product.filter((item) => {
+  const copyProducts = product?.filter((item) => {
     if (item.product_video_type[0]?.product_type === "Shorts") return item
   }) || []
   const [activeShortId, setActiveShortId] = useState(localStorage.activeShort != undefined ? localStorage.activeShort : copyProducts[Math.floor(Math.random() * copyProducts.length)]?.id);
@@ -34,10 +34,11 @@ const Shorts = () => {
 
   useEffect(() => {
     if (product) {
+      console.log(product);
       setVideoProducts(product.filter((item) => {
         if (item.product_video_type[0]?.product_type === "Shorts") return item
       }).sort((a, b) => a.id == activeShortId ? -1 : b.id == activeShortId ? 1 : 0) || [])
-      console.log(product);
+      
 
     }
   }, [product]);
