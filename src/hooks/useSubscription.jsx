@@ -7,9 +7,10 @@ import { BASE_URL } from "../api/baseUrl";
 import { NotificationContext } from "../context/NotificationContext";
 import Cookies from 'js-cookie';
 
-const useSubscription = (channelId, initialFollowersCount) => {
+const useSubscription = (chanellName) => {
+  const [userChanell, setUserChanell] = useState(null)
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [followersCount, setFollowersCount] = useState(initialFollowersCount);
+  const [followersCount, setFollowersCount] = useState(0);
   const [subscribersList, setSubscribersList] = useState([]);
   const [loading, setLoading] = useState(false);
   const axiosInstance = useAxios();
@@ -20,7 +21,8 @@ const useSubscription = (channelId, initialFollowersCount) => {
   const fetchSubscribers = async () => {
     try {
       const response = await axiosInstance.get('/user/your_subscribers/');
-      setSubscribersList(response.data.results);        
+      setSubscribersList(response.data.results);     
+   
     } catch (error) {
       console.error('Failed to fetch subscribers list:', error);
     }
@@ -34,21 +36,21 @@ const useSubscription = (channelId, initialFollowersCount) => {
           Authorization: `Bearer ${USER_TOKKEN}`
         }
       });
-      setFollowersCount(res.data[0].subscribers_count);
+      let findUser = res.data.find(user => user.username == value)
+      setFollowersCount(findUser.subscribers_count);
+      setUserChanell(findUser)
+      console.log(findUser);
       
     }
   }
 
   const checkSubscribed = () => {
-    const subscribedChannel = subscribersList.find(channel => channel.id === (channelId.name ? channelId.id : channelId));
-    setIsSubscribed(!!subscribedChannel);
+    
+    
   }
 
   useEffect(() => {
-    
-   
-    channelId.name && searchUser(channelId.name)
-
+    searchUser(chanellName)
     fetchSubscribers();
 
     return () => {
@@ -56,11 +58,18 @@ const useSubscription = (channelId, initialFollowersCount) => {
     }
   }, []);
 
-
-
   useEffect(() => {
-    checkSubscribed()
-  }, [subscribersList, channelId]);
+    if(subscribersList.length > 0){
+      setIsSubscribed(subscribersList.some(channel => channel.id === userChanell?.id));
+    }
+    return () => {
+      
+    };
+  }, [subscribersList]);
+
+
+
+
 
   const handleSubscribe = async () => {
     if (!user) {
@@ -69,7 +78,7 @@ const useSubscription = (channelId, initialFollowersCount) => {
     }
     setLoading(true);
     try {
-      const response = await axiosInstance.post(`/user/toggle_subscribe/${channelId.name ? channelId.id : channelId}/`);
+      const response = await axiosInstance.post(`/user/toggle_subscribe/${userChanell.id}/`);
    
       
       
@@ -78,13 +87,12 @@ const useSubscription = (channelId, initialFollowersCount) => {
       if (response.status === 201) {
         setIsSubscribed(true);
   
-        let res = await axios.get(`${BASE_URL}/user/users/?search=${channelId.name}`, {
+        let res = await axios.get(`${BASE_URL}/user/users/?search=${userChanell.username}`, {
           headers: {
             Authorization: `Bearer ${USER_TOKKEN}`
           }
         });
         setFollowersCount(res.data[0].subscribers_count);
-        console.log(res.data[0]);
         
         toast.success("Subscribed successfully");
 
@@ -112,17 +120,16 @@ const useSubscription = (channelId, initialFollowersCount) => {
   const handleUnsubscribe = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.delete(`/user/toggle_subscribe/${channelId.name ? channelId.id : channelId}/`);
+      const response = await axiosInstance.delete(`/user/toggle_subscribe/${userChanell.id}/`);
       if (response.status === 204) {
         setIsSubscribed(false);
                
-        let res = await axios.get(`${BASE_URL}/user/users/?search=${channelId.name}`, {
+        let res = await axios.get(`${BASE_URL}/user/users/?search=${userChanell.username}`, {
           headers: {
             Authorization: `Bearer ${USER_TOKKEN}`
           }
         });
         setFollowersCount(res.data[0].subscribers_count);
-        console.log(res.data[0]);
         toast.success("Unsubscribed successfully");
         
       }
@@ -133,11 +140,9 @@ const useSubscription = (channelId, initialFollowersCount) => {
     }
   };
 
-  useEffect(() => {
-    setFollowersCount(initialFollowersCount);
-  }, [initialFollowersCount]);
+  
 
-  return { isSubscribed, followersCount, setFollowersCount,handleSubscribe, handleUnsubscribe, loading , searchUser, checkSubscribed};
+  return {userChanell, isSubscribed, followersCount, setFollowersCount,handleSubscribe, handleUnsubscribe, loading , searchUser, checkSubscribed};
 };
 
 export default useSubscription;

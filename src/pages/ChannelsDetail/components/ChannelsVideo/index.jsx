@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState, useEffect  } from "react";
 import "./style.scss";
-import {useLocation, useNavigate } from "react-router-dom";
+import {useLocation, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../../context/authContext";
 import { VideoContext } from "../../../../context/VideoContext";
 import useAxios from "../../../../utils/useAxios";
@@ -21,8 +21,7 @@ const ChannelsVideo = ({ item }) => {
   const { addItem } = useCart();
   const [loading, setLoading] = useState(false);
   const {countryCurrencySymbol} = getCurrencyByCountry()
-  const location = useLocation();
-  const [chanellData, setChanellData] = useState(null)
+  const {username} = useParams();
 
   
   
@@ -83,11 +82,11 @@ const ChannelsVideo = ({ item }) => {
       setLoading(true);
 
       setTimeout(() => {
-        navigate(`/product_detail/${item.product.id}`, { state: { channellId: chanellData } });
+        navigate(`/product_detail/${item.product.id}`, { state: { channellName: username } });
         setLoading(false);
-      }, 2000);
+      }, 1000);
     } else {
-      navigate(`/product_detail/${item.product.id}`, { state: { channellId: chanellData } });
+      navigate(`/product_detail/${item.product.id}`, { state: { channellName: username } });
     }
   };
 
@@ -97,33 +96,8 @@ const ChannelsVideo = ({ item }) => {
     setVideoDuration(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);
   };
 
-  console.log(location.state);
   
 
-  useEffect(() => {
-    
-    if (location.state) {
-
-      const channelData = {
-        name: location.state.channelDetailData?.username,
-        first_name: location.state.channelDetailData?.first_name,
-        last_name: location.state.channelDetailData?.last_name,
-        id: location.state.channelDetailData?.id,
-        cover_image: location.state.channelDetailData?.cover_image,
-        avatar: location.state.channelDetailData?.avatar,
-        follower_count: location.state?.channelDetailData?.follower_count,
-      };
-      
-      setChanellData(channelData);
-
-      
-      
-    }
-  }, [location.state]);
-
-  // const colClass = ["latestvideo", "topvideo", "trendvideo"].includes(page)
-  //   ? "col-xl-3 col-xxl-3 col-lg-4 col-md-4 col-sm-6 col-12"
-  //   : "";
 
   function formatViewCount(num) {
     if (num >= 1000000000) {
@@ -140,23 +114,6 @@ const ChannelsVideo = ({ item }) => {
   return (
     <>
       <div className="col-lg-4 col-sm-6 pb-3">
-        {/* <div className="channels_videocard">
-          <img src={item?.cover_image} alt="" className="main" />
-
-          <div className="heading">
-            <h1>{item?.product?.name}</h1>
-            <h6>
-              <img src={blueHeartd} alt="" />
-              {item?.product?.like_count}
-            </h6>
-          </div>
-          <p>Lorem ipsum dolor sit amet consectetur</p>
-          <div className="cardBottom">
-            <span>{item.product.price}$</span>
-            <div className="icons"></div>
-          </div>
-        </div> */}
-
         <div
           className="channels_videocard"
           onMouseEnter={handleMouseEnter}

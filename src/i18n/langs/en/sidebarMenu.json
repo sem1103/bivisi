@@ -8,7 +8,8 @@
         "title": "FOR YOU",
         "name1": "Your profile",
         "name2": "History",
-        "name3": "Your subscriptions"
+        "name3": "Your subscriptions",
+        "name4": "Favorites"
     },
     "moreVideos": {
         "title": "MORE VIDEOS",

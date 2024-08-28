@@ -128,15 +128,15 @@ const AppRouter = () => {
               />
 
               <Route
-                element={<ChannelsVideos />}
+                element={<ChannelsDetail />}
                 path="/channels_detail/channels_videos/:username"
               />
               <Route
-                element={<ChannelsShorts />}
+                element={<ChannelsDetail />}
                 path="/channels_detail/channels_shorts/:username"
               />
               <Route
-                element={<AboutChanell />}
+                element={<ChannelsDetail />}
                 path="/channels_detail/about/:username"
               />
             </Route>

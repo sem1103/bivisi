@@ -9,9 +9,6 @@ const AboutChanell = () => {
   const { username } = useParams();
   return (
     <>
-      <MainChannels />
-      <Categories username={username} />
-
       <div className="channels_videos">
         <div className="container-fluid">
           <div className="row">

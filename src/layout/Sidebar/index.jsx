@@ -130,6 +130,14 @@ const Sidebar = ({ children, isOpen, setIsOpen }) => {
 </svg>
 `,
     },
+    {
+      path: "/your_profile/favorites",
+      name: t('forYou.name4'),
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 15 14.213">
+				  <path id="Path_30542" data-name="Path 30542" d="M17.4,9.366c-.754,3.866-4.717,6.581-6.385,7.57a1.987,1.987,0,0,1-2.024,0c-1.669-.989-5.632-3.7-6.386-7.57A5.6,5.6,0,0,1,3.749,4.781,4.736,4.736,0,0,1,7.451,3,5.135,5.135,0,0,1,10,3.666,5.135,5.135,0,0,1,12.549,3a4.736,4.736,0,0,1,3.7,1.781A5.594,5.594,0,0,1,17.4,9.366Z" transform="translate(-2.5 -3)" fill="#A2A8B7" opacity="0.669"></path>
+				</svg>
+`,
+    },
   ];
 
   return (

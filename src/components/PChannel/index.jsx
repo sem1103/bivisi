@@ -17,12 +17,12 @@ const PopularChannelCard = ({ popularChannels, page }) => {
     handleSubscribe,
     handleUnsubscribe,
     loading,
-  } = useSubscription(popularChannels.id, popularChannels.follower_count);
+  } = useSubscription(popularChannels.username);
   
   const navigate = useNavigate();
 
   const getChannelDetail = async (popularChannels) => {
-    navigate(`/channels_detail/channels_videos/${popularChannels.username}`, { state: { channellId: popularChannels } });    
+    navigate(`/channels_detail/channels_videos/${popularChannels.username}`, { state: { channellName: popularChannels.username } });    
   };
 
   const colClass = ['channelcard'].includes(page) ? 'col-lg-6 col-md-6 col-sm-12 col-12' : '';

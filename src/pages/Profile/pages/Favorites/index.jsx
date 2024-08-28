@@ -52,7 +52,7 @@ const Favorites = () => {
       const { productId, status } = event.detail;
       if (!status) {
         setFavorites((prevFavorites) =>
-          prevFavorites.filter((item) => item.id !== productId)
+          prevFavorites.filter((item) => item.product.id !== productId)
         );
       }
     };
@@ -68,8 +68,9 @@ const Favorites = () => {
   useEffect(() => {
     setFilteredFavorites(favorites);
   }, [favorites]);
+  
   const handleWishlistToggle = async (product) => {
-
+    
     if (!user) {
       toast.warning("Please sign in");
     } else if (user.user_id === product.product.user.id) {
@@ -78,15 +79,18 @@ const Favorites = () => {
 
     if (loading) return;
     setLoading(true);
-    const newStatus = await handleToggleWishlist(product.id, axiosInstance);
+    const newStatus = await handleToggleWishlist(product.product.id, axiosInstance);
     setLoading(false);
     if (newStatus !== null) {
       set_in_wishlist(newStatus);
       const wishlistState = JSON.parse(localStorage.getItem("wishlist")) || {};
       if (newStatus) {
-        wishlistState[product.id] = newStatus;
+        wishlistState[product.product.id] = newStatus;
       } else {
-        delete wishlistState[product.id];
+
+        delete wishlistState[product.product.id];
+        
+        
       }
       localStorage.setItem("wishlist", JSON.stringify(wishlistState));
     } else {

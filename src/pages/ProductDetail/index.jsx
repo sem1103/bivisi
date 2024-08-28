@@ -3,7 +3,7 @@ import "./style.scss";
 
 import eye from "../../assets/icons/eye.svg";
 import empryAvatar from './../../assets/images/user-empty-avatar.png'
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, NavLink, useLocation, useParams } from "react-router-dom";
 import { ProductContext } from "../../context/ProductContext";
 import useAxios from "../../utils/useAxios";
 import ReactPlayer from "react-player";
@@ -52,7 +52,6 @@ const ProductDetail = () => {
   const [isShowMap, setIsShowMap] = useState(false)
   const { countryCurrencySymbol } = getCurrencyByCountry();
   const [center, setCenter] = useState({ lat: 37.7749, lng: -122.4194 })
-  console.log(location.state);
 
   const {
     isSubscribed,
@@ -61,7 +60,7 @@ const ProductDetail = () => {
     handleUnsubscribe,
     searchUser,
     checkSubscribed
-  } = useSubscription(location.state.channellId, 0)
+  } = useSubscription(location.state.username)
 
 
 
@@ -377,6 +376,7 @@ const ProductDetail = () => {
                       <img src={productDetail.user.avatar ? productDetail.user.avatar : empryAvatar} alt="" />
                     </div>
                     <div className="user__desc">
+                      <NavLink to={`/channels_detail/channels_videos/${productDetail.user.name}`} />
                       <h2 className="user__name">
                         {productDetail.user.name}
                       </h2>

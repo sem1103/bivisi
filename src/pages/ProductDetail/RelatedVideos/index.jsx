@@ -11,14 +11,14 @@ const Related_Videos = ({ onProductClick, category }) => {
   const [sortedProducts, setSortedProducts] = useState([])
 
   useEffect(() => {
-    if(product.results.length){
-      setSortedProducts(product?.results?.filter((item) => {
-        if(item.id != id && item.category[0] == category)
+    if(product){
+      setSortedProducts(product?.results?.filter((item) => {        
+        if(item.id != +id && item.category[0] == category)
         return item
       }))
     }
     
-  }, [product]);
+  }, [product, id]);
 
 
   
@@ -30,7 +30,7 @@ const Related_Videos = ({ onProductClick, category }) => {
               <div className="title">Related videos</div>
             </div>
               {
-                sortedProducts.length > 0 ?
+                sortedProducts?.length > 0 ?
 
                 <>
                 <div className="related__items">

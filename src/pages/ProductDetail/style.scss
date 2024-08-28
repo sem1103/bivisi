@@ -727,8 +727,15 @@
   .left__block{
     display: flex;
     align-items: center;
+    position: relative;
+    a{
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
     .user__desc{
       margin: 0 0 0 10px;
+     
     }
     p{
       margin: 0;

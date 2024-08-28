@@ -27,9 +27,6 @@ const ChannelsShorts = () => {
 
   return (
     <>
-      <MainChannels />
-      <Categories username={username} />
-
       <div className="channels_shorts">
         <div className="container-fluid">
           <div className="row">
