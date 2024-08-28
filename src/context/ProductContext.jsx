@@ -45,8 +45,8 @@ export const ProductProvider = ({ children }) => {
   const fetchAllData = async (offset) => {
     try {
       const res = await axios.get(`${BASE_URL}/product/?offset=${offset}`);  
-      setProduct(prev => [...prev, ...res.data.results]);
-      setFilteredProducts(prev => [...prev, ...res.data.results]);
+      setProduct(product.length ? prev => [...prev, ...res.data.results] : res.data.results);
+      setFilteredProducts(filteredProducts.length ? prev => [...prev, ...res.data.results] : res.data.results);
 
       setProductsCount(res.data.count)
 

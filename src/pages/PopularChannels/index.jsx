@@ -19,18 +19,20 @@ const PopularChannels = () => {
 
     const [chanellsPaginCount, setChanellsPaginCount] = useState(0);
     const [chanellsCount, setChanellsCount] = useState(0);
+
     const fetchPChannels = async (offset) => {
         try {
             const response = await axios.get(`${BASE_URL}/user/popular-channels/?offset=${offset}`);
             const filteredChannels = response?.data?.results.filter(channel => channel?.username !== user?.username);
-            setSortedChannels(prevChannels => [...prevChannels, ...filteredChannels]);
-        
-            setChanellsCount(response.data.count - 1)
+            setSortedChannels(sortedChannels.length ? prevChannels => [...prevChannels, ...filteredChannels] : filteredChannels);
+            
+            setChanellsCount(response.data.count)
             
         } catch (error) {
             console.error('Failed to fetch popular channels:', error);
         }
     };
+    console.log(sortedChannels);
     
 
     useEffect(() => {
@@ -42,13 +44,15 @@ const PopularChannels = () => {
     const onScrollEnd = () => {
         setChanellsPaginCount(prevCount => {
             const newCount = sortedChannels.length != chanellsCount && prevCount + 1;
-            fetchPChannels(newCount * 12);
+            sortedChannels.length != chanellsCount && fetchPChannels(newCount * 12);
             return newCount;
         });
 
     }
     useEffect(() => {
         if (inView) {
+            console.log(1);
+            
             onScrollEnd();
         }
     }, [inView]);
@@ -74,7 +78,7 @@ const PopularChannels = () => {
                 </div>
 
                 {
-                    sortedChannels.length != chanellsCount &&
+                   sortedChannels.length != chanellsCount &&
                     <div className="loading" ref={ref}>
                     <div className="wrapper" >
                         <div className="circle"></div>

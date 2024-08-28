@@ -31,8 +31,8 @@ const Trending = () => {
           )
             setAllProducts(prev => [...prev , ...response.data.results])
             if(response.data.results.some((item) => item.product_video_type[0]?.product_type === "Video")){
-              setTrendVideo(prev => [...prev , ...data])
-              setOriginalVideos(prev => [...prev , ...data])
+              setTrendVideo(trendVideo.length ? prev => [...prev , ...data] : data)
+              setOriginalVideos(originalVideos.length ? prev => [...prev , ...data] : data)
             }
            
         } catch (error) {
