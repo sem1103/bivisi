@@ -3,6 +3,8 @@ import { useEffect, useState, createContext } from "react";
 import { BASE_URL } from "../api/baseUrl";
 import Cookies from 'js-cookie';
 import { useJsApiLoader } from "@react-google-maps/api";
+import { useInView } from 'react-intersection-observer';
+
 
 export const ProductContext = createContext();
 
@@ -20,9 +22,15 @@ export const ProductProvider = ({ children }) => {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const { ref, inView } = useInView({
+    threshold: 0.5,      // Триггер срабатывает, когда 10% элемента видны
+  });
+  const [productsPaginCount, setProductsPaginCount] = useState(0);
+  const [productsCount, setProductsCount] = useState(0);
+
 
   const applyFilter = (selectedCategory, minPrice, maxPrice) => {
-    let filtered = product?.results || [];
+    let filtered = product || [];
     if (selectedCategory && selectedCategory !== "All") {
       filtered = filtered?.filter(item => item.category.includes(Number(selectedCategory)));
     }
@@ -34,13 +42,15 @@ export const ProductProvider = ({ children }) => {
     setFilteredProducts(filtered);
   };
 
-  const fetchData = async () => {
+  const fetchAllData = async (offset) => {
     try {
-      const res = await axios.get(`${BASE_URL}/product/`);
-   
-      setProduct(res.data);
-      setFilteredProducts(res.data.results); 
-      
+      const res = await axios.get(`${BASE_URL}/product/?offset=${offset}`);  
+      setProduct(prev => [...prev, ...res.data.results]);
+      setFilteredProducts(prev => [...prev, ...res.data.results]);
+
+      setProductsCount(res.data.count)
+
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -49,13 +59,13 @@ export const ProductProvider = ({ children }) => {
   const getMyProducts = async () => {
     const res = await axios.get(`${BASE_URL}/user_web_products/`, {
       headers: {
-          Authorization: `Bearer ${USER_TOKKEN}`
+        Authorization: `Bearer ${USER_TOKKEN}`
       }
-  })
-  setMyProduct(res.data.results);
-  
-  
-}
+    })
+    setMyProduct(res.data.results);
+
+
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,17 +82,35 @@ export const ProductProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
- 
-    fetchData();
+
+    fetchAllData(0);
   }, []);
+
+
+  const onScrollEnd = () => {
+    setProductsPaginCount(prevCount => {
+        const newCount = product.length != productsCount && prevCount + 1;
+        product.length != productsCount &&  fetchAllData(newCount * 12);
+        return newCount;
+    });
+}
+useEffect(() => {
+    if (inView) {
+        onScrollEnd();
+    }
+}, [inView]);
 
   return (
     <ProductContext.Provider
       value={{
         product,
+        ref,
+        inView,
         isLoaded,
         myProduct,
+        productsCount,
         filteredProducts,
+        productsPaginCount,
         setProduct,
         selectedCategory,
         setSelectedCategory,
@@ -90,7 +118,7 @@ export const ProductProvider = ({ children }) => {
         setMinPrice,
         maxPrice,
         setMaxPrice,
-        fetchData,
+        fetchAllData,
         category,
         setCategory,
         getMyProducts,

@@ -66,7 +66,7 @@ export const toggleLike = async (
 
     setProduct((prevProduct) => ({
       ...prevProduct,
-      results: prevProduct.results.map((item) => {
+      results: prevProduct.map((item) => {
         if (item.id === id) {
           return {
             ...item,

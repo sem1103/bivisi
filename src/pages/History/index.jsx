@@ -23,8 +23,8 @@ const History = () => {
   const { product } = useContext(ProductContext);
   if (
     !product ||
-    !Array.isArray(product.results) ||
-    product.results.length === 0
+    !Array.isArray(product) ||
+    product.length === 0
   ) {
     return null;
   }

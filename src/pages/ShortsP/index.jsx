@@ -9,25 +9,18 @@ import { toast } from "react-toastify";
 import { Swiper, SwiperSlide, } from 'swiper/react';
 import { Mousewheel, Pagination } from 'swiper/modules';
 import { useNavigate } from "react-router-dom";
-
+import lastShort from './../../assets/images/lastshort.png'
 
 
 const Shorts = () => {
   const navigate = useNavigate();
-  const { product } = useContext(ProductContext);
-  const copyProducts = product?.results?.filter((item) => {
+  const { product, ref, productsCount } = useContext(ProductContext);
+  const copyProducts = product.filter((item) => {
     if (item.product_video_type[0]?.product_type === "Shorts") return item
   }) || []
   const [activeShortId, setActiveShortId] = useState(localStorage.activeShort != undefined ? localStorage.activeShort : copyProducts[Math.floor(Math.random() * copyProducts.length)]?.id);
 
-  let videoProducts = product?.results?.filter((item) => {
-    if (item.product_video_type[0]?.product_type === "Shorts") return item
-  }).sort((a, b) => a.id == activeShortId ? -1 : b.id == activeShortId ? 1 : 0) || [];
-
-
-
-  const [shorts, setShorts] = useState([])
-
+  const [videoProducts, setVideoProducts] = useState([])
   const [activeVideo, setActiveVideo] = useState(0);
   const [toTop, setToTop] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -39,6 +32,15 @@ const Shorts = () => {
   const swiperRef = useRef(null);
   const { user } = useContext(AuthContext);
 
+  useEffect(() => {
+    if (product) {
+      setVideoProducts(product.filter((item) => {
+        if (item.product_video_type[0]?.product_type === "Shorts") return item
+      }).sort((a, b) => a.id == activeShortId ? -1 : b.id == activeShortId ? 1 : 0) || [])
+      console.log(product);
+
+    }
+  }, [product]);
 
 
   useEffect(() => {
@@ -61,18 +63,7 @@ const Shorts = () => {
 
   }, [sliderRef.current]);
 
-  // useEffect(() => {
 
-
-  //   let copyArray = [...videoProducts];
-  //   let index = 0;
-  //     videoProducts.forEach((item, ind) => {
-  //       if(item.id == activeShortId) index = ind
-  //     })
-  //     copyArray.unshift(copyArray.splice(index, 1)[0])
-
-  //   //  localStorage.removeItem('activeShort')   
-  // }, [product])
 
   useEffect(() => {
     const highlightedShortId = localStorage.getItem("highlightedShort");
@@ -139,6 +130,8 @@ const Shorts = () => {
 
   const handleSlideChange = (swipper) => {
     setActiveVideo(swipper)
+    console.log(swipper, videoProducts.length);
+
   }
 
   const toTopAndShortHandler = () => {
@@ -208,11 +201,11 @@ const Shorts = () => {
             <button className="create_btn" onClick={handleCreateClick}>
               {/* <img src={plus} alt="plus.svg" /> */}
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10 5V15M15 10L5 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<g id="Icon/Plus">
-<path id="Vector" d="M10 5V15M15 10L5 10" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
+                <path d="M10 5V15M15 10L5 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <g id="Icon/Plus">
+                  <path id="Vector" d="M10 5V15M15 10L5 10" stroke="var(--textColor)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+              </svg>
 
               Create
             </button>
@@ -256,6 +249,27 @@ const Shorts = () => {
                   }
                   )
                 }
+                
+                  <SwiperSlide>
+                  {
+                  product.length != productsCount ?
+                    <div className="loading" ref={ref}>
+                      <div className="wrapper" >
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="shadow"></div>
+                        <div className="shadow"></div>
+                        <div className="shadow"></div>
+                      </div>
+                    </div>
+                    :
+                    <div className="banner">
+                      <img src={lastShort} alt="" />
+                    </div>
+  }       
+                  </SwiperSlide>
+              
               </Swiper>
 
             </div>

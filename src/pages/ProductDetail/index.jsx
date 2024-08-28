@@ -152,9 +152,8 @@ const ProductDetail = () => {
         }));
       }
 
-      setProduct((prevProduct) => ({
-        ...prevProduct,
-        results: prevProduct.results.map((item) => {
+      setProduct((prevProduct) => ([
+        ...prevProduct.map((item) => {
           if (item.id === id) {
             return {
               ...item,
@@ -164,8 +163,8 @@ const ProductDetail = () => {
             };
           }
           return item;
-        }),
-      }));
+        })
+      ]));
     } catch (error) {
       console.error("Error toggling like:", error);
     }

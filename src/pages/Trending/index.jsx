@@ -8,29 +8,40 @@ import axios from 'axios';
 import { BASE_URL } from '../../api/baseUrl';
 import trendOutline from "../../layout/Sidebar/icons/trend-outline.svg";
 import CustomSingleValue from '../Profile/pages/CustomSymbol';
+import { useInView } from 'react-intersection-observer';
+
 
 const Trending = () => {
     const [trendVideo, setTrendVideo] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
     const [originalVideos, setOriginalVideos ] = useState([])
+    const [allProducts, setAllProducts] = useState([])
+    const { ref, inView } = useInView({
+      threshold: 0.5,      // Триггер срабатывает, когда 10% элемента видны
+    });
+    const [productsPaginCount, setProductsPaginCount] = useState(0);
+    const [productsCount, setProductsCount] = useState(0);
 
-
-    const fetchData = async () => {
+    const fetchData = async (offset) => {
         try {
-            const response = await axios.get(`${BASE_URL}/web_trending_videos/`);
-            setTrendVideo(response.data.results.filter(
-                (item) => item.product_video_type[0]?.product_type === "Video"
-            ))
-            setOriginalVideos(response.data.results.filter(
-                (item) => item.product_video_type[0]?.product_type === "Video"
-            ))
+            const response = await axios.get(`${BASE_URL}/web_trending_videos/?offset=${offset}`);
+            setProductsCount(response.data.count)
+            let data = response.data.results.filter(
+              (item) => item.product_video_type[0]?.product_type === "Video"
+          )
+            setAllProducts(prev => [...prev , ...response.data.results])
+            if(response.data.results.some((item) => item.product_video_type[0]?.product_type === "Video")){
+              setTrendVideo(prev => [...prev , ...data])
+              setOriginalVideos(prev => [...prev , ...data])
+            }
+           
         } catch (error) {
             console.error('Failed to fetch data:', error);
         }
     }
     useEffect(() => {
         
-        fetchData();
+        fetchData(0);
     }, [])
 
     const handleSelect = (value) => {
@@ -131,6 +142,20 @@ const Trending = () => {
       }, [selectedOption]);
 
 
+      const onScrollEnd = () => {
+        setProductsPaginCount(prevCount => {
+            const newCount = allProducts.length != productsCount && prevCount + 1;
+            allProducts.length != productsCount &&  fetchData(newCount * 12);
+            return newCount;
+        });
+    }
+    useEffect(() => {
+        if (inView) {
+            onScrollEnd();
+        }
+    }, [inView]);
+
+
     return (
         <div className='trending_videos'>
             <div className="container-fluid">
@@ -165,6 +190,21 @@ const Trending = () => {
                             <LastVideoCard ProductItemVideoCard={item} key={item.id} page="trendvideo" />
                         ))
                     }
+
+{
+                  allProducts.length != productsCount &&
+                    <div className="loading" ref={ref}>
+                      <div className="wrapper" >
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="shadow"></div>
+                        <div className="shadow"></div>
+                        <div className="shadow"></div>
+                      </div>
+                    </div>
+                    
+  }  
                 </div>
             </div>
         </div>

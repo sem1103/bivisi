@@ -39,13 +39,14 @@ const useSubscription = (chanellName) => {
       let findUser = res.data.find(user => user.username == value)
       setFollowersCount(findUser.subscribers_count);
       setUserChanell(findUser)
-      console.log(findUser);
       
     }
   }
 
   const checkSubscribed = () => {
-    
+    if(subscribersList.length > 0){
+      setIsSubscribed(subscribersList.some(channel => channel.id === userChanell?.id));
+    }
     
   }
 
@@ -59,12 +60,8 @@ const useSubscription = (chanellName) => {
   }, []);
 
   useEffect(() => {
-    if(subscribersList.length > 0){
-      setIsSubscribed(subscribersList.some(channel => channel.id === userChanell?.id));
-    }
-    return () => {
-      
-    };
+    checkSubscribed()
+  
   }, [subscribersList]);
 
 

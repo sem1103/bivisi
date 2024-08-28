@@ -143,6 +143,14 @@
 
 
 }
+.banner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px;
+    margin: auto;
+    height: 100vh;
+}
 
 .slide.highlighted {
     transform: scale(1.1);

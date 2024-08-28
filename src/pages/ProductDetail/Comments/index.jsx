@@ -45,10 +45,10 @@ const CommentsComponent = ({ productDetail }) => {
       const parentComments = response.data.results.map(comment => {
         return {
           ...comment,
-          offset 
+          offset
         }
       });
-      
+
 
       // Fetch sub-comments for each parent comment
       const subCommentsPromises = parentComments.map((comment) =>
@@ -68,7 +68,7 @@ const CommentsComponent = ({ productDetail }) => {
       setComments(prev => {
         const updatedComments = commentsWithSubComments.map(newComment => {
           const existingComment = prev.find(comment => comment.id === newComment.id);
-      
+
           if (existingComment) {
             // Обновляем субкомментарии, исключая дубликаты
             const updatedSubComments = newComment.sub_comments.filter(
@@ -76,7 +76,7 @@ const CommentsComponent = ({ productDetail }) => {
                 existingSubComment => existingSubComment.id === subComment.id
               )
             );
-      
+
             return {
               ...existingComment,
               sub_comments: [...existingComment.sub_comments, ...updatedSubComments]
@@ -86,18 +86,18 @@ const CommentsComponent = ({ productDetail }) => {
             return newComment;
           }
         });
-      
+
         // Обновляем существующие комментарии или добавляем новые
         const mergedComments = prev.map(comment => {
           const updatedComment = updatedComments.find(newComment => newComment.id === comment.id);
           return updatedComment ? updatedComment : comment;
         });
-      
+
         // Добавляем новые комментарии, которых ещё нет
         const newUniqueComments = updatedComments.filter(
           newComment => !prev.some(comment => comment.id === newComment.id)
         );
-      
+
         return [...mergedComments, ...newUniqueComments];
       });
 
@@ -142,7 +142,7 @@ const CommentsComponent = ({ productDetail }) => {
         setReplyToCommentId(null);
         toast.success("Your comment successfully posted!");
         fetchParentComments(0);
-        
+
         notificationSocket.send(
           JSON.stringify(
             {
@@ -185,10 +185,10 @@ const CommentsComponent = ({ productDetail }) => {
         setUser_comment_sub("");
         setReplyToCommentId(null);
         toast.success("Your comment successfully posted!");
-        fetchParentComments(offset);       
-         
+        fetchParentComments(offset);
+
         console.log(res);
-        
+
 
         if (res.data?.sender) {
           notificationSocket.send(
@@ -382,21 +382,21 @@ const CommentsComponent = ({ productDetail }) => {
 
   }, [comments]);
 
-  const onScrollEnd  = () => {
+  const onScrollEnd = () => {
     setcommentsPaginCount(prevCount => {
       const newCount = comments.length != commentsCount && prevCount + 1;
       fetchParentComments(newCount * 12);
       return newCount;
     });
-    
+
   }
-  useEffect(() => {    
+  useEffect(() => {
     if (inView) {
       onScrollEnd();
     }
   }, [inView]);
 
-  
+
   return (
     <>
       <Modal
@@ -622,13 +622,13 @@ const CommentsComponent = ({ productDetail }) => {
                 {
                   comments.length != commentsCount &&
                   <div className="wrapper" ref={ref}>
-    <div className="circle"></div>
-    <div className="circle"></div>
-    <div className="circle"></div>
-    <div className="shadow"></div>
-    <div className="shadow"></div>
-    <div className="shadow"></div>
-</div>
+                    <div className="circle"></div>
+                    <div className="circle"></div>
+                    <div className="circle"></div>
+                    <div className="shadow"></div>
+                    <div className="shadow"></div>
+                    <div className="shadow"></div>
+                  </div>
                 }
               </>
               : (

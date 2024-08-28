@@ -185,6 +185,7 @@ const Favorites = () => {
                     <NavLink
                       className="heading w-100 flex-column justify-content-start align-items-start"
                       to={`/product_detail/${item.id}`}
+                      state={{channellName: user.username}}
                     >
                       <div className="d-flex w-100 justify-content-between align-items-center">
                         <div className="user_name">{item.product?.user?.name}</div>

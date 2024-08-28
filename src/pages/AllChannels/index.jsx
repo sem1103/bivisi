@@ -6,38 +6,54 @@ import { BASE_URL } from '../../api/baseUrl';
 import { AuthContext } from '../../context/authContext';
 import boardOutline from "../../layout/Sidebar/icons/board_outline.svg";
 import SortChannel from '../../components/SortChannel';
+import { useInView } from 'react-intersection-observer';
+
+
 
 const AllChannels = () => {
-    const [popularAllC, setPopularAllC] = useState([]);
+    const { ref, inView } = useInView({
+        threshold: 0.5,      // Триггер срабатывает, когда 10% элемента видны
+    });
     const [sortedChannels, setSortedChannels] = useState([]);
     const { user } = useContext(AuthContext);
+    const [chanellsPaginCount, setChanellsPaginCount] = useState(0);
+    const [chanellsCount, setChanellsCount] = useState(0);
+
+
+    const fetchPChannels = async (offset) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/user/subscriptions/?offset=${offset}`);
+            const filteredChannels = response.data.results.filter(channel => channel.username !== user?.username);
+            setSortedChannels(prevChannels => [...prevChannels, ...filteredChannels]);
+            
+            setChanellsCount(response.data.count - 1)
+            
+        } catch (error) {
+            console.error('Failed to fetch popular channels:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchPChannels = async () => {
-            try {
-                const response = await axios.get(`${BASE_URL}/user/subscriptions/`);
-                const filteredChannels = response.data.results.filter(channel => channel.username !== user?.username);
-                setPopularAllC(filteredChannels);
-                setSortedChannels(filteredChannels);
-                
-            } catch (error) {
-                console.error('Failed to fetch popular channels:', error);
-            }
-        };
-        fetchPChannels();
+
+        fetchPChannels(0);
     }, [user]);
 
-    const handleSortChange = (value) => {
-        let sorted;
-        if (value === "option1") {
-            sorted = [...popularAllC].sort((a, b) => a.username.localeCompare(b.username));
-        } else if (value === "option2") {
-            sorted = [...popularAllC].sort((a, b) => b.username.localeCompare(a.username));
-        } else {
-            sorted = [...popularAllC];
+
+    const onScrollEnd = () => {
+        setChanellsPaginCount(prevCount => {
+            const newCount = sortedChannels.length != chanellsCount && prevCount + 1;
+            fetchPChannels(newCount * 12);
+            return newCount;
+        });
+
+    }
+    useEffect(() => {
+        if (inView) {
+            onScrollEnd();
         }
-        setSortedChannels(sorted);
-    };
+    }, [inView]);
+
+  
     return (
         <div className='all_channels_page'>
             <div className="container-fluid">
@@ -55,7 +71,24 @@ const AllChannels = () => {
 
                     }
                     )}
+
+
                 </div>
+             
+                {
+                    sortedChannels.length != chanellsCount &&
+                    <div className="loading" ref={ref}>
+                    <div className="wrapper" >
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="shadow"></div>
+                        <div className="shadow"></div>
+                        <div className="shadow"></div>
+                    </div>
+                </div>
+                }
+
             </div>
         </div>
     );

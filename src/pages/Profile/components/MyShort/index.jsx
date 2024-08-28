@@ -30,7 +30,7 @@ const MyShortCard = ({ productShortItem }) => {
       await axiosInstance.delete(`/product_delete/${id}/`);
       setProduct((prevProduct) => ({
         ...prevProduct,
-        results: prevProduct.results.filter((item) => item.id !== id),
+        results: prevProduct.filter((item) => item.id !== id),
       }));
       toast.success("Product successfully deleted");
     } catch (error) {

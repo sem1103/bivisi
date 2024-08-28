@@ -5,20 +5,27 @@ import "./style.scss";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { useParams } from "react-router-dom";
+
+
+
 const Related_Videos = ({ onProductClick, category }) => {
   const { product } = useContext(ProductContext);
   const {id} = useParams()
   const [sortedProducts, setSortedProducts] = useState([])
+ 
 
   useEffect(() => {
     if(product){
-      setSortedProducts(product?.results?.filter((item) => {        
+      console.log(product);
+      
+      setSortedProducts(product?.filter((item) => {        
         if(item.id != +id && item.category[0] == category)
         return item
       }))
     }
     
   }, [product, id]);
+
 
 
   

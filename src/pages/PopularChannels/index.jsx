@@ -7,35 +7,51 @@ import { Select } from 'antd';
 import { AuthContext } from '../../context/authContext';
 import starOutline from "../../layout/Sidebar/icons/star-outline.svg";
 import SortChannel from '../../components/SortChannel';
+import { useInView } from 'react-intersection-observer';
 
 
 const PopularChannels = () => {
-    const { Option } = Select;
-    const [popularC, setPopularC] = useState([]);
+    const { ref, inView } = useInView({
+        threshold: 0.5,      // Триггер срабатывает, когда 10% элемента видны
+    });
     const [sortedChannels, setSortedChannels] = useState([]);
     const { user } = useContext(AuthContext);
 
-    useEffect(() => {
-        const fetchPChannels = async () => {
-            try {
-                const response = await axios.get(`${BASE_URL}/user/popular-channels/`);
-                const filteredChannels = response?.data?.results.filter(channel => channel?.username !== user?.username);
-                setPopularC(filteredChannels);
-                setSortedChannels(filteredChannels);
-
-            } catch (error) {
-                console.error('Failed to fetch popular channels:', error);
-            }
-
-
-
-        };
+    const [chanellsPaginCount, setChanellsPaginCount] = useState(0);
+    const [chanellsCount, setChanellsCount] = useState(0);
+    const fetchPChannels = async (offset) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/user/popular-channels/?offset=${offset}`);
+            const filteredChannels = response?.data?.results.filter(channel => channel?.username !== user?.username);
+            setSortedChannels(prevChannels => [...prevChannels, ...filteredChannels]);
         
-        fetchPChannels();
+            setChanellsCount(response.data.count - 1)
+            
+        } catch (error) {
+            console.error('Failed to fetch popular channels:', error);
+        }
+    };
+    
+
+    useEffect(() => {
+       
+        fetchPChannels(0);
     }, [user]);
 
 
+    const onScrollEnd = () => {
+        setChanellsPaginCount(prevCount => {
+            const newCount = sortedChannels.length != chanellsCount && prevCount + 1;
+            fetchPChannels(newCount * 12);
+            return newCount;
+        });
 
+    }
+    useEffect(() => {
+        if (inView) {
+            onScrollEnd();
+        }
+    }, [inView]);
   
 
     return (
@@ -56,6 +72,20 @@ const PopularChannels = () => {
                         <PopularChannelCard key={item.id} popularChannels={item} page="channelcard" />
                     ))}
                 </div>
+
+                {
+                    sortedChannels.length != chanellsCount &&
+                    <div className="loading" ref={ref}>
+                    <div className="wrapper" >
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="shadow"></div>
+                        <div className="shadow"></div>
+                        <div className="shadow"></div>
+                    </div>
+                </div>
+                }
             </div>
         </div>
     );

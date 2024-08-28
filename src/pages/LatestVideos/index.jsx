@@ -8,12 +8,12 @@ import Select from 'react-select';
 import CustomSingleValue from "../Profile/pages/CustomSymbol";
 
 const Lastest_Videos = () => {
-  const { product } = useContext(ProductContext);
+  const { product , productsCount, ref} = useContext(ProductContext);
 
   if (
     !product ||
-    !Array.isArray(product.results) ||
-    product.results.length === 0
+    !Array.isArray(product) ||
+    product.length === 0
   ) {
     return null;
   }
@@ -22,7 +22,7 @@ const Lastest_Videos = () => {
   const [selectedOption, setSelectedOption] = useState("");
 
 
-  const [sortedProducts, setSortedProducts] = useState(product?.results.sort(
+  const [sortedProducts, setSortedProducts] = useState(product?.sort(
     (a, b) => new Date(b.created_at) - new Date(a.created_at)
   ).filter(
     (item) => item.product_video_type[0]?.product_type === "Video"
@@ -118,7 +118,7 @@ const Lastest_Videos = () => {
     } else if (selectedOption === "option4") {
       sortedArray.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
     }else {
-      sortedArray = product?.results.sort(
+      sortedArray = product.sort(
         (a, b) => new Date(b.created_at) - new Date(a.created_at)
       ).filter(
         (item) => item.product_video_type[0]?.product_type === "Video"
@@ -130,6 +130,16 @@ const Lastest_Videos = () => {
   }, [selectedOption]);
 
 
+
+  useEffect(() => {
+    if (product) {
+      setSortedProducts(product?.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      ).filter(
+        (item) => item.product_video_type[0]?.product_type === "Video"
+      ))
+    }
+  }, [product]);
  
   return (
     <>
@@ -160,6 +170,21 @@ const Lastest_Videos = () => {
             {sortedProducts.map((item) => (
               <LastVideoCard ProductItemVideoCard={item} key={item.id} page="latestvideo" />
             ))}
+
+{
+                  product.length != productsCount &&
+                    <div className="loading" ref={ref}>
+                      <div className="wrapper" >
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="shadow"></div>
+                        <div className="shadow"></div>
+                        <div className="shadow"></div>
+                      </div>
+                    </div>
+                    
+  }       
           </div>
         </div>
       </section>

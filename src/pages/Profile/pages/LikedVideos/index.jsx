@@ -102,12 +102,11 @@ const LikedVideos = () => {
       setLoading(true);
 
       setTimeout(() => {
-        navigate(`/product_detail/${id}`);
+        navigate(`/product_detail/${id}`, { state: { channellName: user.username } });
         setLoading(false);
       }, 2000);
     } else {
-      navigate(`/product_detail/${id}`);
-    }
+      navigate(`/product_detail/${id}`, { state: { channellName: user.username } });    }
   };
   const handleDuration = (duration) => {
     const minutes = Math.floor(duration / 60);

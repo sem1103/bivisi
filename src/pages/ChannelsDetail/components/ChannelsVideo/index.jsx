@@ -22,7 +22,9 @@ const ChannelsVideo = ({ item }) => {
   const [loading, setLoading] = useState(false);
   const {countryCurrencySymbol} = getCurrencyByCountry()
   const {username} = useParams();
+  const [chanellData, setChanellData] = useState(null)
 
+  console.log(username);
   
   
 
