@@ -19,7 +19,7 @@ import { CModal } from '@coreui/react';
 
 
 const TopVideos = () => {
-    const {countryCurrencySymbol} = useContext(ProductContext)
+    const {countryCurrencySymbol, productsCount} = useContext(ProductContext)
     const [selectedOption, setSelectedOption] = useState('');
     const [originalVideos, setOriginalVideos ] = useState([])
     const [videoProducts, setVideoProducts] = useState([]);
@@ -35,18 +35,19 @@ const TopVideos = () => {
 
 
     const getData = async () => {
-        let res = await axios.get(`${BASE_URL}/product/`);
-
-        setOriginalVideos(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
-        setVideoProducts(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"));
-        setViewMyVideos(res.data.results.filter((item) => item.product_video_type[0]?.product_type === "Video"))
+        let res = await axios.get(`${BASE_URL}/product/?product_type=Video&limit=${productsCount}`);
+        
+        let data = res.data.results
+        setOriginalVideos(data)
+        setVideoProducts(data);
+        setViewMyVideos(data)
         
     }
 
     useEffect(() => {
-        getData();
+        productsCount && getData();
 
-    }, [])
+    }, [productsCount])
 
 
     const addPremiumVideoHandler = async (videosId) => {

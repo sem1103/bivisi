@@ -13,8 +13,8 @@ export default  function getCurrencyByCountry ()  {
     .then((response) => {
       setCountries(response.data);
     })
-      axios.get('http://ip-api.com/json/?fields=61439').then(res => {                   
-        setLocation(res.data.countryCode)
+      axios.get('https://ipapi.co/json').then(res => {                   
+        setLocation(res.data.country_code)
         
       });
     };

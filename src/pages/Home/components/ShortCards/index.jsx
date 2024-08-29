@@ -89,25 +89,25 @@ const ShortCards = () => {
               breakpoints={{
                 0: {
                   spaceBetween: 5,
-                  slidesPerView: 2,
+                  slidesPerView: 2.3,
 
                 },
                 480: {
                   spaceBetween: 1,
-                  slidesPerView: 2,
+                  slidesPerView: 2.3,
                 },
                 768: {
                   spaceBetween: 15,
-                  slidesPerView: 3,
+                  slidesPerView: 3.3,
                 },
 
                 912: {
                   spaceBetween: 15,
-                  slidesPerView: 4,
+                  slidesPerView: 4.3,
                 },
                 1280: {
                   spaceBetween: 5,
-                  slidesPerView: 6,
+                  slidesPerView: 6.3,
                 },
               }}
             >

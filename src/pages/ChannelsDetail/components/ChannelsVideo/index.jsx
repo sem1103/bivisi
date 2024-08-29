@@ -23,8 +23,6 @@ const ChannelsVideo = ({ item }) => {
   const {countryCurrencySymbol} = useContext(ProductContext)
   const {username} = useParams();
   const [chanellData, setChanellData] = useState(null)
-
-  console.log(username);
   
   
 

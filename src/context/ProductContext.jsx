@@ -11,7 +11,6 @@ export const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
   const {currencyCode, countryCurrencySymbol} = getCurrencyByCountry();
-  console.log(countryCurrencySymbol);
   
   const USER_TOKKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
   const { isLoaded } = useJsApiLoader({
@@ -49,11 +48,10 @@ export const ProductProvider = ({ children }) => {
   const fetchAllData = async (offset) => {
     try {
       const res = await axios.get(`${BASE_URL}/product/?offset=${offset}`);  
-      setProduct(product.length ? prev => [...prev, ...res.data.results] : res.data.results);
-      setFilteredProducts(filteredProducts.length ? prev => [...prev, ...res.data.results] : res.data.results);
-
+      setProduct( prev => product.length ? [...prev, ...res.data.results] : res.data.results);
+      setFilteredProducts( prev => filteredProducts.length ? [...prev, ...res.data.results] : res.data.results);
+      
       setProductsCount(res.data.count)
-
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -93,9 +91,12 @@ export const ProductProvider = ({ children }) => {
 
   const onScrollEnd = () => {
     setProductsPaginCount(prevCount => {
-        const newCount = product.length != productsCount && prevCount + 1;
-        product.length != productsCount &&  fetchAllData(newCount * 12);
+      if(product.length != productsCount){
+        const newCount =  prevCount + 1;
+        fetchAllData(newCount * 12);
         return newCount;
+      }
+        
     });
 }
 useEffect(() => {

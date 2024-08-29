@@ -57,8 +57,8 @@
   }
   .premiup__icon {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top: 10px;
+    left: 9px;
     display: flex;
     align-items: center;
     background: #0385CA;
@@ -66,21 +66,16 @@
     padding: 0 8px;
     z-index: 777;
     transition: all .3s ease-in-out;
-
     p {
       height: initial;
       margin: 0 0 0 4px;
-      font-size: 12px;
+      font-size: 14px;
       color: #fff;
     }
   }
  
 
-  &:hover {
-    .premiup__icon {
-      opacity: 0;
-    }
-  }
+
 
   .main {
     width: 100% !important;
@@ -115,7 +110,6 @@
       top: 10px !important;
       right: 9px !important;
       width: auto;
-      height: 32px;
       flex-shrink: 0;
       border-radius: 22px;
       background-color: #0b90d4;
@@ -123,9 +117,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      backdrop-filter: blur(2.08px);
       padding: 5px 8px;
       z-index: 77;
+      font-size: 14px;
     }
 
 
@@ -312,13 +306,3 @@
   }
 }
 
-@media(max-width:576px) {
-  .videoCard {
-    .main {
-      .card_price {
-        font-size: 14px;
-        padding: 3px 6px;
-      }
-    }
-  }
-}

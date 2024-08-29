@@ -70,7 +70,8 @@ const Categories = () => {
       <div className="container-fluid d-flex align-items-center b_cat">
       <Swiper
       spaceBetween={15}
-      slidesPerView={3}
+      slidesPerView={3.2}
+      grabCursor={true}
       >
       <SwiperSlide>
       <button

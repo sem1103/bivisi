@@ -15,6 +15,16 @@
         line-height: 36px;
         /* 128.571% */
     }
+    .user_namechannels{
+        color: var(--textColor);
+        opacity: 0.8;
+        margin: 0;
+        font-family: Poppins;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 22px;
+    }
 
     .liked_videos_filter {
         display: flex;

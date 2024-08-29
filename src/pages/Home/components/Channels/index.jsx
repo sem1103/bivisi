@@ -45,31 +45,35 @@ const PopularChannels = () => {
           </div>
           <Swiper
             grabCursor={true}
-            slidesPerView={3}
+            slidesPerView={3.1}
             spaceBetween={10}
             loop={true}
             breakpoints={{
               0: {
                 spaceBetween: 5,
-                slidesPerView: 1,
+                slidesPerView: 1.1,
+                centeredSlides: true
 
               },
               480: {
                 spaceBetween: 1,
-                slidesPerView: 1,
+                slidesPerView: 1.1,
+                centeredSlides: true
               },
               768: {
                 spaceBetween: 15,
-                slidesPerView: 2,
+                slidesPerView: 2.1,
+                centeredSlides: true
               },
 
               912: {
                 spaceBetween: 15,
-                slidesPerView: 2,
+                slidesPerView: 2.1,
+                centeredSlides: true
               },
               1280: {
                 spaceBetween: 5,
-                slidesPerView: 2,
+                slidesPerView: 2.1,
               },
             }}
           >

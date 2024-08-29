@@ -29,10 +29,16 @@ import { BASE_URL } from "../../api/baseUrl";
 import useSubscription from "../../hooks/useSubscription";
 import empryAvatar from './../../assets/images/user-empty-avatar.png'
 import { NavLink } from "react-router-dom";
+import { useInView } from 'react-intersection-observer';
 
 
 const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, setPlaying }) => {
   const axiosInstance = useAxios();
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+    triggerOnce: true
+  });
+
 
   const {
     isSubscribed,
@@ -42,19 +48,29 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
     searchUser,
     fetchSubscribers,
     checkSubscribed
-  } = useSubscription(productItemShort.user.name)
+  } = useSubscription(productItemShort.user ? productItemShort.user.name : productItemShort.product.user.name)
+
+ 
 
   const { product, setProduct, isLoaded, countryCurrencySymbol } = useContext(ProductContext);
   const { user, userDetails } = useContext(AuthContext);
   const [liked, setLiked] = useState(false);
   const [animate, setAnimate] = useState(false);
   const [openComment, setOpenComment] = useState(false);
-  const [category, setCategory] = useState([])
+  const [category, setCategory] = useState([]);
 
   const { addItem } = useCart();
   const [showSubCommentId, setShowSubCommentId] = useState(null);
   const playerRef = useRef(null);
   const menuRef = useRef(null);
+  
+  const prodId = productItemShort.product ? productItemShort.product.id : productItemShort.product_video_type[0].product 
+  const prodName = productItemShort.name ? productItemShort.name : productItemShort.product.name;
+  const desc = productItemShort.description ? productItemShort.description : productItemShort.product.description;
+  const prodPrice = productItemShort.price ? productItemShort.price : productItemShort.product.price
+  const avatar = productItemShort.user ? productItemShort.user.avatar : productItemShort.product.user.avatar;
+  const properties = productItemShort.properties ? productItemShort.properties : productItemShort.product.properties;
+  const categories = productItemShort.category ? productItemShort.category : productItemShort.product.category;
 
   useEffect(() => {
     if (user && productItemShort.is_liked) {
@@ -69,10 +85,10 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
     if (
       !isPlaying &&
       playerRef.current &&
-      playerRef.current.getInternalPlayer()
+      playerRef.current?.getInternalPlayer()
     ) {
       // playerRef.current.seekTo(0);
-      playerRef.current.getInternalPlayer().pause();
+      playerRef.current?.getInternalPlayer().pause();
 
     }
   }, [isPlaying]);
@@ -80,7 +96,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
 
 
   useEffect(() => {
-    if (productItemShort && productItemShort.id) {
+    if (productItemShort && prodId) {
       fetchParentComments();
     }
   }, [productItemShort]);
@@ -100,7 +116,6 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
 
-  const TOKEN = 'pk.eyJ1Ijoic2VtMTEwMyIsImEiOiJjbHhyemNmYTIxY2l2MmlzaGpjMjlyM3BsIn0.CziZDkWQkfqlxfqiKWW3IA';
 
 
   const [center, setCenter] = useState({ lat: 37.7749, lng: -122.4194 })
@@ -109,7 +124,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   const fetchParentComments = async () => {
     try {
       const response = await axiosInstance.get(
-        `/parent_comments/${productItemShort.id}/`
+        `/parent_comments/${prodId}/`
       );
       const parentComments = response.data.results;
       const subCommentsPromises = parentComments.map((comment) =>
@@ -163,7 +178,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
     }
     const payload = {
       user: user.user_id,
-      product: productItemShort.id,
+      product: prodId,
       comment: comment,
       parent_comment: replyToCommentId,
     };
@@ -280,7 +295,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
   };
 
   const handlePlay = () => {
-    setPlaying(productItemShort.id);
+    setPlaying(prodId);
 
   };
 
@@ -311,12 +326,42 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
         `${BASE_URL}/categories/`
       );
       setCategory(categoryRes.data.results);
-
-
     } catch (err) {
       console.log(err);
     }
   };
+
+  const handleAddToHistory = async (id) => {
+    console.log(id);
+    
+    try {
+      const watchDate = new Date().toISOString();
+      const data = {
+        history: [
+          {
+            product_video_type_id: +id,
+            watch_date: watchDate,
+          },
+        ],
+      };
+      const res = await axiosInstance.post(
+        "/history/user_history_create/",
+        data
+      );
+      console.log(res);
+      
+    } catch (error) {
+      console.error("Error adding product to history", error);
+    }
+  };
+
+
+  useEffect(() => {
+    if(inView){
+      handleAddToHistory(prodId)
+    }
+   
+  }, [inView]);
 
   return (
     <>
@@ -350,7 +395,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
       </CModal>
 
 
-      <div className="col-lg-12 col-md-12 col-sm-12 col-12 pb-3 mb-4 d-flex justify-content-center align-items-center">
+      <div ref={ref} className="col-lg-12 col-md-12 col-sm-12 col-12 pb-3 mb-4 d-flex justify-content-center align-items-center">
         <div className="shorts_page_card">
           <div className={`wrapper ${openComment ? "comment-open" : ""}`}>
 
@@ -358,7 +403,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
 
               <div
                 onClick={() => {
-                  !isPlaying ? playerRef.current.getInternalPlayer().play() : playerRef.current.getInternalPlayer().pause();
+                  !isPlaying ? playerRef.current.getInternalPlayer().play() : playerRef.current?.getInternalPlayer().pause();
                   isPlaying = !isPlaying;
 
 
@@ -369,7 +414,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                   ref={playerRef}
                   className="video"
                   controls={false}
-                  url={productItemShort?.product_video_type[0]?.original_video}
+                  url={productItemShort?.product_video_type ? productItemShort?.product_video_type[0]?.original_video : productItemShort?.original_video}
 
                   style={{ objectFit: "cover" }}
                   playing={isPlaying}
@@ -402,19 +447,19 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
 
 
                   <div className="short__info">
-                    <h3>{productItemShort.name}</h3>
-                    <h4>{productItemShort.description}</h4>
+                    <h3>{prodName}</h3>
+                    <h4>{desc}</h4>
 
                     <br />
                     <div className="user__block">
                       <div className="left__block">
                         <div className="user__avatar">
-                          <img src={productItemShort.user.avatar ? productItemShort.user.avatar : empryAvatar} alt="" />
+                          <img src={avatar ? avatar : empryAvatar} alt="" />
                         </div>
                         <div className="user__desc">
-                          <NavLink to={`/channels_detail/channels_videos/${productItemShort.user.name}`} />
+                          <NavLink to={`/channels_detail/channels_videos/${productItemShort.user ? productItemShort.user.name : productItemShort.product.user.name}`} />
                           <h2 className="user__name">
-                            {productItemShort.user.name}
+                            {productItemShort.user ? productItemShort.user.name : productItemShort.product.user.name}
                           </h2>
                           {
                             user &&
@@ -449,10 +494,10 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                           {
 
                             category.map(item => {
-                              if (item.id == productItemShort.category[0]) {
+                              if (item.id == categories[0]) {
                                 return <tr >
                                   <td style={{ fontWeight: '600' }}>{item.name}</td>
-                                  <td >{item.children.map(sub => sub.id == productItemShort.category[1] && sub.name)}</td>
+                                  <td >{item.children.map(sub => sub.id == categories[1] && sub.name)}</td>
                                 </tr>
                               }
                             })
@@ -464,14 +509,14 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                       </table>
                     </div>
 
-                    {productItemShort.properties.length > 0 &&
+                    { properties.length > 0 &&
                       <div className="video__properties">
                         <h5>Properties</h5>
                         <table style={{ borderCollapse: 'collapse', width: '100%', background: 'var(--backgroundColor)', margin: ' 0 0 20px 0' }}>
                           <tbody>
                             {
 
-                              productItemShort.properties.map((item) => (
+properties.map((item) => (
                                 <tr key={item.id}>
                                   <td style={{ fontWeight: '600' }}>{item.product_property}</td>
                                   <td >{item.property_value}</td>
@@ -510,14 +555,20 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                     </div>
                   </div>
                 </CModal>
-
                 <div className="short__inform">
-                  <p >{productItemShort.name.slice(0, 20)}... <button onClick={() => {
-                    checkSubscribed()
+                  <div className="left__content">
+                    <div className="user__block">
+                    <NavLink to={`/channels_detail/channels_videos/${productItemShort.user ? productItemShort.user.name : productItemShort.product.user.name}`} />
 
+                      <img src={avatar ? avatar : empryAvatar} alt="" />
+                      <h4 className="user__name">@{productItemShort.user ? productItemShort.user.name : productItemShort.product.user.name}</h4>
+                    </div>
+                  <p >{prodName.slice(0, 20)}... <button onClick={() => {
+                    checkSubscribed()
                     setDetailModal(true)
                   }}>Read more</button></p>
-                  <span>{productItemShort.price + countryCurrencySymbol}</span>
+                  </div>
+                  <span>{prodPrice + countryCurrencySymbol}</span>
                 </div>
               </div>
             </div>
@@ -573,7 +624,7 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                     className={`icons ${animate ? "animated" : ""} fill__change`}
                     onClick={() =>
                       toggleLike(
-                        productItemShort.id,
+                        prodId,
                         axiosInstance,
                         setLiked,
                         setProduct,
@@ -613,7 +664,6 @@ const ShortsPCrd = ({ handleEnter, handleLeave, productItemShort, isPlaying, set
                 </div>
                 <div className=" pb-3">
                   <div className="icons fill__change">
-                    {/* <img src={eye} alt="" /> */}
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g id="Icon/Eye/Solid">
                         <path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M17.6084 11.7892C18.5748 10.7724 18.5748 9.22772 17.6084 8.211C15.9786 6.49619 13.1794 4.16675 9.99984 4.16675C6.82024 4.16675 4.02108 6.49619 2.39126 8.211C1.42492 9.22772 1.42492 10.7724 2.39126 11.7892C4.02108 13.504 6.82024 15.8334 9.99984 15.8334C13.1794 15.8334 15.9786 13.504 17.6084 11.7892ZM9.99984 12.5001C11.3805 12.5001 12.4998 11.3808 12.4998 10.0001C12.4998 8.61937 11.3805 7.50008 9.99984 7.50008C8.61913 7.50008 7.49984 8.61937 7.49984 10.0001C7.49984 11.3808 8.61913 12.5001 9.99984 12.5001Z" fill="var(--textColor)" />

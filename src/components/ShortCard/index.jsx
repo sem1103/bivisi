@@ -20,7 +20,8 @@ const ShortCard = ({ product }) => {
     }
     setLocalPlaying(!localPlaying);
   };
-
+  console.log(countryCurrencySymbol);
+  
   const handleMouseEnter = () => {
     setIsHovered(true);
     handlePlay();
@@ -32,10 +33,9 @@ const ShortCard = ({ product }) => {
   };
 
   const handleCardClick = () => {
-    handleAddToHistory(product);
+    // handleAddToHistory(product);
 
     localStorage.setItem("activeShort", product.id);
-    console.log(product);
     setTimeout(() => {
       navigate("/shorts");
     }, 1000);

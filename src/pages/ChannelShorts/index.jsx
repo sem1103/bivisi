@@ -7,20 +7,16 @@ import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { AuthContext } from "../../context/authContext";
 import { toast } from "react-toastify";
 import { Swiper, SwiperSlide, } from 'swiper/react';
-import { Mousewheel } from 'swiper/modules';
-import { useNavigate } from "react-router-dom";
-import lastShort from './../../assets/images/lastshort.png'
+import { Mousewheel, Pagination } from 'swiper/modules';
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../../api/baseUrl";
 
 
-const Shorts = () => {
+export default function ChannelShorts () {
   const navigate = useNavigate();
-  const { product, ref, productsCount } = useContext(ProductContext);
-  const copyProducts = product?.filter((item) => {
-    if (item.product_video_type[0]?.product_type === "Shorts") return item
-  }) || []
-  const [activeShortId, setActiveShortId] = useState(localStorage.activeShort != undefined ? localStorage.activeShort : copyProducts[Math.floor(Math.random() * copyProducts.length)]?.id);
+  const [product, setProduct] = useState([])
+
 
   const [videoProducts, setVideoProducts] = useState([])
   const [activeVideo, setActiveVideo] = useState(0);
@@ -29,37 +25,51 @@ const Shorts = () => {
   const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
   const [highlightedCardIndex, setHighlightedCardIndex] = useState(-1); // State to track highlighted card
   const slideRefs = useRef([]);
-
+  const {username} = useParams()
   const sliderRef = useRef(null);
   const swiperRef = useRef(null);
   const { user } = useContext(AuthContext);
+  
+  const fetchChannelVideos = async (limit) => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/channel_web_products/${username}/?product_type=Shorts&limit=${limit}`
+      );
+      
+      setProduct(response.data.results);
 
-  const getSelectShort = async () => {
-    const res = await axios.get(`${BASE_URL}/product/${activeShortId}/`)
-    console.log(res.data);
-    const filteredProd = product.filter((item) => {
-      if (item.product_video_type[0]?.product_type === "Shorts") return item
-    })
-    setVideoProducts(prev => {
-      return [
-        res.data,
-        ...prev,
-        ...filteredProd
-      ]
-    })
-  }
+    } catch (error) {
+      console.error("Failed to fetch popular channels:", error);
+    }
+  };
 
   useEffect(() => {
-    
+    fetchChannelVideos(localStorage.channelShortsCount)
+  }, []);
+
+  useEffect(() => {
     if (product) {
-      if(localStorage.activeShort) {
-        getSelectShort()
-      }else{
-        setVideoProducts(product.filter((item) => {
-          if (item.product_video_type[0]?.product_type === "Shorts") return item
-        }).sort((a, b) => a.id == activeShortId ? -1 : b.id == activeShortId ? 1 : 0) || [])
-      }
       
+      
+      const activeShortId = localStorage.getItem('activeShort') !== null
+        ? localStorage.getItem('activeShort')
+        : product[Math.floor(Math.random() * product.length)]?.product.id;
+
+        console.log(
+          product.sort((a, b) => {
+            if (a.product.id == activeShortId) return -1; // a.product.id на первое место
+            if (b.product.id == activeShortId) return 1;  // b.product.id на первое место
+            return 0; // Порядок не меняется
+        })
+        );
+        
+      setVideoProducts(
+        product.sort((a, b) => {
+          if (a.product.id == activeShortId) return -1;
+          if (b.product.id == activeShortId) return 1;
+          return 0;
+        }) || []
+      );
     }
   }, [product]);
 
@@ -78,10 +88,6 @@ const Shorts = () => {
       if (Math.trunc(sliderRef.current.getBoundingClientRect().top) <= 0) setToTop(false);
       else if (Math.trunc(sliderRef.current.getBoundingClientRect().top) > 0) setToTop(true);
     }
-
-
-    localStorage.removeItem('activeShort')
-
   }, [sliderRef.current]);
 
 
@@ -151,7 +157,6 @@ const Shorts = () => {
 
   const handleSlideChange = (swipper) => {
     setActiveVideo(swipper)
-
   }
 
   const toTopAndShortHandler = () => {
@@ -252,7 +257,7 @@ const Shorts = () => {
                   videoProducts.map((item, index) => {
                     return <SwiperSlide>
                       <div
-                        key={item.id}
+                        key={item.product.id}
                         className={`slide ${highlightedCardIndex === index ? "highlighted" : ""
                           }`} // Apply highlighted class
                         ref={(el) => (slideRefs.current[index] = el)}
@@ -270,25 +275,7 @@ const Shorts = () => {
                   )
                 }
                 
-                  <SwiperSlide>
-                  {
-                  !(product.length >= productsCount) ?
-                    <div className="loading" ref={ref}>
-                      <div className="wrapper" >
-                        <div className="circle"></div>
-                        <div className="circle"></div>
-                        <div className="circle"></div>
-                        <div className="shadow"></div>
-                        <div className="shadow"></div>
-                        <div className="shadow"></div>
-                      </div>
-                    </div>
-                    :
-                    <div className="banner">
-                      <img src={lastShort} alt="" />
-                    </div>
-  }       
-                  </SwiperSlide>
+                 
               
               </Swiper>
 
@@ -315,4 +302,3 @@ const Shorts = () => {
   );
 };
 
-export default Shorts;

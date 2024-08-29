@@ -33,7 +33,7 @@ const LatestVideos = () => {
       return item.product_video_type[0]?.product_type === "Video" && isCategoryMatch && isPriceMatch;
     })
     .sort((a, b) => new Date(b._added) - new Date(a.date_added))
-    .slice(0, 4);
+    .slice(0, 15);
 
 
   return (
@@ -56,29 +56,34 @@ const LatestVideos = () => {
           </div>
           <Swiper
             grabCursor={true}
-            slidesPerView={3}
+            slidesPerView={3.1}
             spaceBetween={10}
             loop={true}
             breakpoints={{
               0: {
                 spaceBetween: 5,
-                slidesPerView: 1,
+                slidesPerView: 1.1,
+                centeredSlides: true
               },
               500: {
                 spaceBetween: 1,
-                slidesPerView: 2,
+                slidesPerView: 2.1,
+                centeredSlides: true
               },
               800: {
                 spaceBetween: 15,
-                slidesPerView: 3,
+                slidesPerView: 3.1,
+                centeredSlides: true
               },
               912: {
                 spaceBetween: 15,
-                slidesPerView: 3,
+                slidesPerView: 3.1,
+                centeredSlides: true
               },
-              1400: {
+              1280: {
                 spaceBetween: 5,
-                slidesPerView: 4,
+                slidesPerView: 4.1,
+
               },
             }}
           >

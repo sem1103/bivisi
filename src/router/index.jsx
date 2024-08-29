@@ -55,6 +55,7 @@ import ShowMyStream from "../pages/LiveSteem/CreateStreem/ShowMyStream";
 import { ThemeContext } from "../context/ThemeContext";
 import Cookies from 'js-cookie';
 import ReRegister from "../pages/ReRegister";
+import ChannelShorts from "../pages/ChannelShorts";
 
 
 const AppRouter = () => {
@@ -139,6 +140,11 @@ const AppRouter = () => {
                 element={<ChannelsDetail />}
                 path="/channels_detail/about/:username"
               />
+              <Route
+                element={<ChannelShorts />}
+                path="/channel_shorts/:username"
+              />
+
             </Route>
 
             <Route element={<Lastest_Videos />} path="/latest_videos" />
