@@ -818,8 +818,10 @@
         height: 100vh !important;
 
         .sp_desc {
-          bottom: 150px;
-          left: 40px;
+          bottom: 20px;
+          width: 70%;
+          left: 5px;
+          transform: translateX(0);
         }
 
         .video {
