@@ -12,11 +12,40 @@ import { Select } from "antd";
 import { Link } from "react-router-dom";
 import MyShortCard from "../../components/MyShort";
 import SortProduct from "../../../../components/SortProduct";
+import axios from "axios";
+import { BASE_URL } from "../../../../api/baseUrl";
+import Cookies from 'js-cookie';
+import { useInView } from 'react-intersection-observer';
+
+
+
 const Shorts = () => {
   const { Option } = Select;
   const [selectedOption, setSelectedOption] = useState("");
   const { user } = useContext(AuthContext);
-  const { myProduct } = useContext(ProductContext);
+  const [ myProduct, setMyProduct] = useState([]);
+  const [productCount, setProductCount] = useState(0)
+  const [productsPaginCount, setProductsPaginCount] = useState(0);
+
+  const USER_TOKKEN = Cookies.get('authTokens') != undefined ? JSON.parse(Cookies.get('authTokens')).access : false;
+  const { ref, inView } = useInView({
+    threshold: 0.5,      // Триггер срабатывает, когда 10% элемента видны
+  });
+
+  const getMyProducts = async (offset) => {
+    const res = await axios.get(`${BASE_URL}/user_web_products/?product_type=Shorts&offset=${offset}`, {
+      headers: {
+        Authorization: `Bearer ${USER_TOKKEN}`
+      }
+    })
+    setMyProduct(prev => prev.length ? [...prev, ...res.data.results] : res.data.results);
+    setProductCount(res.data.count)
+
+  }
+
+  useEffect(() => {
+    getMyProducts()
+  }, []);
 
  
   const handleSelect = (value) => {
@@ -37,17 +66,27 @@ const Shorts = () => {
           
       }))
 
-      console.log(myProduct?.filter(item => {
-    
-        if(item.product_type === "Shorts") return item;
-          
-      }));
+      
       
     }
     
    
   }, [myProduct]);
-console.log(sortedProducts,myProduct)
+
+  const onScrollEnd = () => {
+    setProductsPaginCount(prevCount => {
+        const newCount = myProduct.length != productCount && prevCount + 1;
+        myProduct.length != productCount &&  getMyProducts(newCount * 12);
+        return newCount;
+    });
+}
+useEffect(() => {
+    if (inView) {
+        onScrollEnd();
+    }
+}, [inView]);
+
+
   return (
     <>
       <Main />
@@ -65,10 +104,7 @@ console.log(sortedProducts,myProduct)
                   <img src={upload} alt="upload" />
                   <span>Upload</span>
                 </Link>
-                {/* <div className="shorts-sort">
-                  <img src={sort} alt="sort" />
-                  Sort by
-                </div> */}
+              
                 <div className="custom-select">
                   {
                     sortedProducts &&
@@ -81,13 +117,29 @@ console.log(sortedProducts,myProduct)
 
             {sortedProducts ? (
               sortedProducts.map((item) => {
-                return <MyShortCard productShortItem={item} key={item.id} />;
+                return <MyShortCard productShortItem={item} key={item.id} productCount={productCount} />;
               })
             ) : (
               <div className="no_product">
                 <img src={VideoIcon} alt="" />
               </div>
             )}
+
+        {
+           myProduct.length > 0 && myProduct.length != productCount &&
+            <div className="loading" ref={ref}>
+              <div className="wrapper" >
+                <div className="circle"></div>
+                <div className="circle"></div>
+                <div className="circle"></div>
+                <div className="shadow"></div>
+                <div className="shadow"></div>
+                <div className="shadow"></div>
+              </div>
+            </div>
+
+          }
+
           </div>
         </div>
       </div>

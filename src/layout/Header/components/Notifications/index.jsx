@@ -69,11 +69,12 @@ export default function Notifications({notifications, setNotifications}) {
                 isReadHandler(ntf.id);
             }
         }}>
-            <Link to={`/product_detail/${ntf.product_id}${commentId ? '/comment/' + commentId : ''}`}></Link>
+            <Link to={`/product_detail/${ntf.product_id}${commentId ? '/comment/' + commentId : ''}`} state={{chanellName: ntf.sender.username}}></Link>
             {
                 !ntf.is_read && <hr className="ntf__is__read" />
 
             }
+         
             <div className="user__avatar">
                 <img src={ntf.sender.avatar ? ntf.sender.avatar : emptyAvatar} alt="User Avatar" />
             </div>

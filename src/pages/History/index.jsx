@@ -361,7 +361,9 @@ const History = () => {
                   <NavLink
                     className="heading w-100 flex-column justify-content-start align-items-start"
                     to={`/product_detail/${item?.product_video_type?.product?.id}`}
+                    state={{chanellName: item.user}}
                   >
+                  
                     <div className="d-flex w-100 justify-content-between align-items-center">
                       <p>{item.product_video_type?.product.name}</p>
                       <h6>{item.product_video_type?.product.like_count}</h6>

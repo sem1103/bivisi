@@ -10,9 +10,8 @@ import { ProductContext } from "../../../../context/ProductContext";
 import useAxios from "../../../../utils/useAxios";
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router-dom";
-import getCurrencyByCountry from "../../../../utils/getCurrencyService";
 
-const MyShortCard = ({ productShortItem }) => {
+const MyShortCard = ({ productShortItem, productCount }) => {
   const [localPlaying, setLocalPlaying] = useState(false);
   const { playingVideo, setPlaying: setGlobalPlaying } =
     useContext(VideoContext);
@@ -69,7 +68,11 @@ const MyShortCard = ({ productShortItem }) => {
 
   const handleCardClick = (event) => {
     event.stopPropagation();
-    setIsModalOpen(true);
+    localStorage.setItem("activeShort", productShortItem.product.id);
+    localStorage.setItem("channelShortsCount", productCount);
+    setTimeout(() => {
+      navigate(`/channel_shorts/${productShortItem.product.user.name}`);
+    }, 1000);
   };
 
   const closeModal = () => {

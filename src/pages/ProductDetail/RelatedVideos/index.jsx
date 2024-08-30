@@ -16,7 +16,6 @@ const Related_Videos = ({ onProductClick, category }) => {
 
   useEffect(() => {
     if(product){
-      console.log(product);
       
       setSortedProducts(product?.filter((item) => {        
         if(item.id != +id && item.category[0] == category)
