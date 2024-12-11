@@ -158,6 +158,8 @@
   }
 }
 
+
+
 @media (max-width:820px) {
   .history_cards {
 
@@ -169,9 +171,20 @@
 
 @media (max-width:540px) {
   .history_cards {
-
+    .shortCard-content{
+      overflow: hidden;
+      opacity: 1;
+      &::after{
+        opacity: 1;
+      }
+    }
+    .shortCard .delete_icon_history{
+      top: 10px;
+      right: 10px;
+    }
     .shortCard {
       height: 250px !important;
     }
+
   }
 }
